@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://{appname}/skin/overlay.css" type="text/css"?>
+<!DOCTYPE overlay SYSTEM "chrome://{appname}/locale/overlay.dtd">
+
+<overlay id="virgilOverlay" 
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    
+    <script src="emailHelper.js"/>
+    <script src="overlay.js"/>
+    
+    <!-- add element to thunderbird menu -->
+    <menupopup id="taskPopup">
+        <menuitem id="menuVirgilKeyRing" label="&keyring.label;" oncommand="virgil.onKeyringOpen();"/>
+    </menupopup>
+
+    <!-- add tool button to mail writing tool box-->
+    
+    <!-- old id was MsgComposeToolbarPalette -->
+    <toolbarpalette id="composeToolbar2">   
+        <toolbarbutton id="virgilButton_test"
+                       class="toolbarbutton-1 chromeclass-toolbar-additional"
+                       label="&toolButton.label;"
+                       image="chrome://{appname}/skin/virgil_24x24.png"
+                       tooltiptext="Mail encryptor"
+                       type="menu-button" >
+            <menupopup>
+                <menuitem id="virgil-button-open-keyring"
+                          label="Open keyring"
+                          oncommand="virgil.onKeyringOpen();" />
+                
+                <menuseparator />
+                
+                <menuitem id="virgil-button-encription"
+                          label="Encrypt mail"
+                          type="checkbox"
+                          autocheck="true"
+                          checked="false" />
+            </menupopup>
+            
+        </toolbarbutton>
+    </toolbarpalette>
+
+</overlay>

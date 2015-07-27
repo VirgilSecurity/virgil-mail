@@ -1,0 +1,10 @@
+content {appname} 					content/
+skin	{appname}	classic/1.0                     skin/
+
+locale	{appname}	en-US                           locale/en-US/
+
+style	chrome://global/content/customizeToolbar.xul                        chrome://{appname}/skin/overlay.css
+
+overlay	chrome://messenger/content/messenger.xul                            chrome://{appname}/content/overlay.xul
+overlay chrome://messenger/content/messengercompose/messengercompose.xul    chrome://{appname}/content/overlay.xul
+overlay chrome://global/content/customizeToolbar.xul                        chrome://{appname}/content/overlay.xul

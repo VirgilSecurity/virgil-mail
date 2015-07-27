@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<RDF:RDF xmlns:em="http://www.mozilla.org/2004/em-rdf#"
+         xmlns:NC="http://home.netscape.com/NC-rdf#"
+         xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <RDF:Description RDF:about="urn:mozilla:install-manifest">
+
+        <em:name>{appname}</em:name>
+        <em:version>{appversion}</em:version>
+        <em:id>{appid}</em:id>
+        <em:description>{appdescription}</em:description>
+        <em:creator>{auther}</em:creator>
+        <em:optionsURL>chrome://{appname}/content/options.xul</em:optionsURL>
+        <em:homepageURL>https://virgilsecurity.com/</em:homepageURL>
+        <em:contributor>Virgil Secure</em:contributor>
+        <em:translator>Virgil Secure</em:translator>
+        <em:iconURL>chrome://{appname}/skin/icon.png</em:iconURL>
+        
+{targetApplications}
+        
+        <em:file>
+         <RDF:Description about="urn:mozilla:extension:file:{appname}.jar">
+            <em:package>content/</em:package>
+            <em:locale>locale/en-US/</em:locale>
+            <em:skin>skin/</em:skin>
+        </RDF:Description>
+       </em:file>
+    </RDF:Description>
+</RDF:RDF>

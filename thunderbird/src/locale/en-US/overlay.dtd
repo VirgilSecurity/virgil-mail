@@ -1,0 +1,3 @@
+<!ENTITY {appname} "{appdisplayname}">
+<!ENTITY keyring.label "Virgil Security Keyring">
+<!ENTITY toolButton.label "Virgil">
