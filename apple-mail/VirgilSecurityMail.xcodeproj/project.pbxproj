@@ -1,0 +1,311 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D11174371B67FBEE00DD9A39 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D11174361B67FBEE00DD9A39 /* CoreFoundation.framework */; };
+		D11174461B6805D400DD9A39 /* VirgilMain.m in Sources */ = {isa = PBXBuildFile; fileRef = D11174451B6805D400DD9A39 /* VirgilMain.m */; };
+		D111744A1B6806DA00DD9A39 /* VirgilSecurityMail-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D111743A1B67FBEE00DD9A39 /* VirgilSecurityMail-Info.plist */; };
+		D111744C1B68078D00DD9A39 /* VirgilSecurityMail.mailbundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = D11174331B67FBEE00DD9A39 /* VirgilSecurityMail.mailbundle */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D111744B1B68076400DD9A39 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = "~/Library/Mail/Bundles";
+			dstSubfolderSpec = 0;
+			files = (
+				D111744C1B68078D00DD9A39 /* VirgilSecurityMail.mailbundle in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		D11174331B67FBEE00DD9A39 /* VirgilSecurityMail.mailbundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VirgilSecurityMail.mailbundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		D11174361B67FBEE00DD9A39 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		D111743A1B67FBEE00DD9A39 /* VirgilSecurityMail-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "VirgilSecurityMail-Info.plist"; sourceTree = "<group>"; };
+		D111743C1B67FBEE00DD9A39 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D111743E1B67FBEE00DD9A39 /* VirgilSecurityMail-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VirgilSecurityMail-Prefix.pch"; sourceTree = "<group>"; };
+		D11174441B6805D400DD9A39 /* VirgilMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilMain.h; path = VirgilSecurityMail/src/VirgilMain.h; sourceTree = "<group>"; };
+		D11174451B6805D400DD9A39 /* VirgilMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilMain.m; path = VirgilSecurityMail/src/VirgilMain.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D11174301B67FBEE00DD9A39 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D11174371B67FBEE00DD9A39 /* CoreFoundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D111742A1B67FBEE00DD9A39 = {
+			isa = PBXGroup;
+			children = (
+				D11174381B67FBEE00DD9A39 /* VirgilSecurityMail */,
+				D11174351B67FBEE00DD9A39 /* Frameworks */,
+				D11174341B67FBEE00DD9A39 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D11174341B67FBEE00DD9A39 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D11174331B67FBEE00DD9A39 /* VirgilSecurityMail.mailbundle */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D11174351B67FBEE00DD9A39 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D11174361B67FBEE00DD9A39 /* CoreFoundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D11174381B67FBEE00DD9A39 /* VirgilSecurityMail */ = {
+			isa = PBXGroup;
+			children = (
+				D11174471B6805DD00DD9A39 /* src */,
+				D11174391B67FBEE00DD9A39 /* Supporting Files */,
+			);
+			path = VirgilSecurityMail;
+			sourceTree = "<group>";
+		};
+		D11174391B67FBEE00DD9A39 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D111743A1B67FBEE00DD9A39 /* VirgilSecurityMail-Info.plist */,
+				D111743B1B67FBEE00DD9A39 /* InfoPlist.strings */,
+				D111743E1B67FBEE00DD9A39 /* VirgilSecurityMail-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D11174471B6805DD00DD9A39 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				D11174441B6805D400DD9A39 /* VirgilMain.h */,
+				D11174451B6805D400DD9A39 /* VirgilMain.m */,
+			);
+			name = src;
+			path = ..;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D11174321B67FBEE00DD9A39 /* VirgilSecurityMail */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D11174411B67FBEE00DD9A39 /* Build configuration list for PBXNativeTarget "VirgilSecurityMail" */;
+			buildPhases = (
+				D111742F1B67FBEE00DD9A39 /* Sources */,
+				D11174301B67FBEE00DD9A39 /* Frameworks */,
+				D11174311B67FBEE00DD9A39 /* Resources */,
+				D111744B1B68076400DD9A39 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = VirgilSecurityMail;
+			productName = VirgilSecurityMail;
+			productReference = D11174331B67FBEE00DD9A39 /* VirgilSecurityMail.mailbundle */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D111742B1B67FBEE00DD9A39 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = Virgil;
+				LastUpgradeCheck = 0500;
+				ORGANIZATIONNAME = "Virgil Security";
+			};
+			buildConfigurationList = D111742E1B67FBEE00DD9A39 /* Build configuration list for PBXProject "VirgilSecurityMail" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = D111742A1B67FBEE00DD9A39;
+			productRefGroup = D11174341B67FBEE00DD9A39 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D11174321B67FBEE00DD9A39 /* VirgilSecurityMail */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D11174311B67FBEE00DD9A39 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D111744A1B6806DA00DD9A39 /* VirgilSecurityMail-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D111742F1B67FBEE00DD9A39 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D11174461B6805D400DD9A39 /* VirgilMain.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		D111743B1B67FBEE00DD9A39 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D111743C1B67FBEE00DD9A39 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		D111743F1B67FBEE00DD9A39 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		D11174401B67FBEE00DD9A39 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		D11174421B67FBEE00DD9A39 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "VirgilSecurityMail/VirgilSecurityMail-Prefix.pch";
+				INFOPLIST_FILE = "VirgilSecurityMail/VirgilSecurityMail-Info.plist";
+				INSTALL_PATH = "$(HOME)/Library/Mail/Bundles";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.9;
+				VALID_ARCHS = x86_64;
+				WRAPPER_EXTENSION = mailbundle;
+			};
+			name = Debug;
+		};
+		D11174431B67FBEE00DD9A39 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "VirgilSecurityMail/VirgilSecurityMail-Prefix.pch";
+				INFOPLIST_FILE = "VirgilSecurityMail/VirgilSecurityMail-Info.plist";
+				INSTALL_PATH = "$(HOME)/Library/Mail/Bundles";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.9;
+				VALID_ARCHS = x86_64;
+				WRAPPER_EXTENSION = mailbundle;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D111742E1B67FBEE00DD9A39 /* Build configuration list for PBXProject "VirgilSecurityMail" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D111743F1B67FBEE00DD9A39 /* Debug */,
+				D11174401B67FBEE00DD9A39 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D11174411B67FBEE00DD9A39 /* Build configuration list for PBXNativeTarget "VirgilSecurityMail" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D11174421B67FBEE00DD9A39 /* Debug */,
+				D11174431B67FBEE00DD9A39 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D111742B1B67FBEE00DD9A39 /* Project object */;
+}
