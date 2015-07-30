@@ -11,10 +11,7 @@
 }
 
 - (id)dynVar:(id)key {
-    if ([self dynVar:key]) {
-        return objc_getAssociatedObject(self, (__bridge const void *)(key));
-    }
-    return nil;
+    return objc_getAssociatedObject(self, (__bridge const void *)(key));
 }
 
 - (BOOL)isExistsDynVar:(id)key {

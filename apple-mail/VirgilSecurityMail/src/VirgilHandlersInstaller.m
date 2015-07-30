@@ -16,6 +16,14 @@
 	return @{
              @"MessageContentController": @[
 					 @"setMessageToDisplay:"
+                     ],
+             @"MimeBody": @[
+					 @"isSignedByMe",
+					 @"_isPossiblySignedOrEncrypted"
+                     ],
+             @"MessageCriterion": @[
+					 @"_evaluateIsDigitallySignedCriterion:",
+					 @"_evaluateIsEncryptedCriterion:"
                      ]
              };
 }
@@ -33,7 +41,15 @@
                                          ]
                                      ]
                              }
-                     }
+                     },
+             @"MimeBody": @{
+					 @"status": @"renamed",
+					 @"name": @"MCMimeBody"
+                     },
+             @"MessageCriterion": @{
+					 @"status": @"renamed",
+					 @"name": @"MFMessageCriterion"
+                     },
              };
 }
 
@@ -93,12 +109,12 @@
 			for(NSString *action in handler[@"selectors"]) {
 				for(id selector in handler[@"selectors"][action]) {
 					if([action isEqualToString:@"added"])
-						[(NSMutableArray *)handler[class] addObject:selector];
+						[(NSMutableArray *)handlers[class] addObject:selector];
 					else if([action isEqualToString:@"removed"])
-						[(NSMutableArray *)handler[class] removeObject:selector];
+						[(NSMutableArray *)handlers[class] removeObject:selector];
 					else if([action isEqualToString:@"replaced"]) {
-						[(NSMutableArray *)handler[class] removeObject:selector[0]];
-						[(NSMutableArray *)handler[class] addObject:selector[1]];
+						[(NSMutableArray *)handlers[class] removeObject:selector[0]];
+						[(NSMutableArray *)handlers[class] addObject:selector[1]];
 					}
                     else if([action isEqualToString:@"renamed"]) {
                         [(NSMutableArray *)handlers[class] removeObject:selector[0]];

@@ -18,6 +18,8 @@
 		D13F60431B6A1D1300508C79 /* VirgilHandlersInstaller.m in Sources */ = {isa = PBXBuildFile; fileRef = D13F60421B6A1D1300508C79 /* VirgilHandlersInstaller.m */; };
 		D13F60461B6A33AC00508C79 /* MailHeaders in Resources */ = {isa = PBXBuildFile; fileRef = D13F60451B6A33AC00508C79 /* MailHeaders */; };
 		D13F60481B6A3ADD00508C79 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D13F60471B6A3ADD00508C79 /* AppKit.framework */; };
+		D13F604C1B6AB38200508C79 /* VirgilMimeBody.m in Sources */ = {isa = PBXBuildFile; fileRef = D13F604B1B6AB38200508C79 /* VirgilMimeBody.m */; };
+		D13F604F1B6ABC4B00508C79 /* VirgilMessageCriterion.m in Sources */ = {isa = PBXBuildFile; fileRef = D13F604E1B6ABC4B00508C79 /* VirgilMessageCriterion.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -53,6 +55,10 @@
 		D13F60421B6A1D1300508C79 /* VirgilHandlersInstaller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilHandlersInstaller.m; path = VirgilSecurityMail/src/VirgilHandlersInstaller.m; sourceTree = "<group>"; };
 		D13F60451B6A33AC00508C79 /* MailHeaders */ = {isa = PBXFileReference; lastKnownFileType = folder; name = MailHeaders; path = VirgilSecurityMail/src/MailHeaders; sourceTree = "<group>"; };
 		D13F60471B6A3ADD00508C79 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		D13F604A1B6AB38200508C79 /* VirgilMimeBody.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilMimeBody.h; path = VirgilSecurityMail/src/CommonMes/VirgilMimeBody.h; sourceTree = "<group>"; };
+		D13F604B1B6AB38200508C79 /* VirgilMimeBody.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilMimeBody.m; path = VirgilSecurityMail/src/CommonMes/VirgilMimeBody.m; sourceTree = "<group>"; };
+		D13F604D1B6ABC4B00508C79 /* VirgilMessageCriterion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilMessageCriterion.h; path = VirgilSecurityMail/src/CommonMes/VirgilMessageCriterion.h; sourceTree = "<group>"; };
+		D13F604E1B6ABC4B00508C79 /* VirgilMessageCriterion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilMessageCriterion.m; path = VirgilSecurityMail/src/CommonMes/VirgilMessageCriterion.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +122,7 @@
 		D11174471B6805DD00DD9A39 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				D13F60491B6AB36400508C79 /* CommonMes */,
 				D13F60451B6A33AC00508C79 /* MailHeaders */,
 				D13F60311B6A1AD700508C79 /* IncommingMes */,
 				D13F602A1B6A1A5E00508C79 /* Helpers */,
@@ -148,6 +155,17 @@
 				D13F603C1B6A1C9A00508C79 /* VirgilMessageContentController.m */,
 			);
 			name = IncommingMes;
+			sourceTree = "<group>";
+		};
+		D13F60491B6AB36400508C79 /* CommonMes */ = {
+			isa = PBXGroup;
+			children = (
+				D13F604A1B6AB38200508C79 /* VirgilMimeBody.h */,
+				D13F604B1B6AB38200508C79 /* VirgilMimeBody.m */,
+				D13F604D1B6ABC4B00508C79 /* VirgilMessageCriterion.h */,
+				D13F604E1B6ABC4B00508C79 /* VirgilMessageCriterion.m */,
+			);
+			name = CommonMes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -236,6 +254,8 @@
 				D13F60401B6A1D0600508C79 /* VirgilMessageRouter.m in Sources */,
 				D13F60431B6A1D1300508C79 /* VirgilHandlersInstaller.m in Sources */,
 				D13F603D1B6A1C9A00508C79 /* VirgilMessageContentController.m in Sources */,
+				D13F604F1B6ABC4B00508C79 /* VirgilMessageCriterion.m in Sources */,
+				D13F604C1B6AB38200508C79 /* VirgilMimeBody.m in Sources */,
 				D13F602F1B6A1A9600508C79 /* JRLPSwizzle.m in Sources */,
 				D13F60301B6A1A9600508C79 /* VirgilDynamicVariables.m in Sources */,
 			);
@@ -326,9 +346,16 @@
 		D11174421B67FBEE00DD9A39 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = "\"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks\"";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "VirgilSecurityMail/VirgilSecurityMail-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"VirgilSecurityMail/src/MailHeaders/**",
+				);
 				INFOPLIST_FILE = "VirgilSecurityMail/VirgilSecurityMail-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Mail/Bundles";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
@@ -342,9 +369,16 @@
 		D11174431B67FBEE00DD9A39 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = "\"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks\"";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "VirgilSecurityMail/VirgilSecurityMail-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"VirgilSecurityMail/src/MailHeaders/**",
+				);
 				INFOPLIST_FILE = "VirgilSecurityMail/VirgilSecurityMail-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Mail/Bundles";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
