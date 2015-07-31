@@ -13,7 +13,7 @@
 - (BOOL)MA_isPossiblySignedOrEncrypted;
 @end
 
-@interface VirgilMimeBody (NativeMailMethods)
+@interface VirgilMimeBody (NativeMimeBodyMethods)
 - (id) message;
 - (NSData *)bodyData;
 - (id) topLevelPart;

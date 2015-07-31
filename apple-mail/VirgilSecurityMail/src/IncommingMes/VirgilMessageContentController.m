@@ -12,7 +12,7 @@
 @implementation VirgilMessageContentController
 
 - (void)MASetMessageToDisplay:(id)message {
-    [message setDynVar:@"UserSelectedMessage" value:@YES];
+    [message setDynVar:@"MessageWasSelectedByUser" value:@YES];
     [self MASetMessageToDisplay:message];
     NSLog(@"Message have been selected by user");
 }

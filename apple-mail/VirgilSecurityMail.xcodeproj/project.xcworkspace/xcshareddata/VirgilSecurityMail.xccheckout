@@ -10,29 +10,29 @@
 	<string>VirgilSecurityMail</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>6B6B8904-490F-4040-8F70-8F73AEE05D35</key>
+		<key>B61EEFF91CBF844E2F72C143CE779333F41C4094</key>
 		<string>https://github.com/VirgilSecurity/virgil-mail.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>apple-mail/VirgilSecurityMail.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>6B6B8904-490F-4040-8F70-8F73AEE05D35</key>
+		<key>B61EEFF91CBF844E2F72C143CE779333F41C4094</key>
 		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/VirgilSecurity/virgil-mail.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>6B6B8904-490F-4040-8F70-8F73AEE05D35</string>
+	<string>B61EEFF91CBF844E2F72C143CE779333F41C4094</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>6B6B8904-490F-4040-8F70-8F73AEE05D35</string>
+			<string>B61EEFF91CBF844E2F72C143CE779333F41C4094</string>
 			<key>IDESourceControlWCCName</key>
 			<string>virgil-mail</string>
 		</dict>

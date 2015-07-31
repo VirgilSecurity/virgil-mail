@@ -21,6 +21,21 @@
 					 @"isSignedByMe",
 					 @"_isPossiblySignedOrEncrypted"
                      ],
+             @"MimePart": @[
+					 @"isEncrypted",
+					 @"newEncryptedPartWithData:recipients:encryptedData:",
+					 @"newSignedPartWithData:sender:signatureData:",
+					 @"verifySignature",
+					 @"decodeWithContext:",
+					 @"decodeTextPlainWithContext:",
+					 @"decodeTextHtmlWithContext:",
+					 @"decodeApplicationOctet_streamWithContext:",
+					 @"isSigned",
+					 @"isMimeSigned",
+					 @"isMimeEncrypted",
+					 @"usesKnownSignatureProtocol",
+					 @"clearCachedDecryptedMessageBody"
+                     ],
              @"MessageCriterion": @[
 					 @"_evaluateIsDigitallySignedCriterion:",
 					 @"_evaluateIsEncryptedCriterion:"
@@ -45,6 +60,10 @@
              @"MimeBody": @{
 					 @"status": @"renamed",
 					 @"name": @"MCMimeBody"
+                     },
+             @"MimePart": @{
+					 @"status": @"renamed",
+					 @"name": @"MCMimePart"
                      },
              @"MessageCriterion": @{
 					 @"status": @"renamed",
