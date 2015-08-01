@@ -9,11 +9,12 @@
 #import <Foundation/Foundation.h>
 #import <Message.h>
 #import <MimePart.h>
+#import "VirgilEncryptorContainer.h"
 
 @interface VirgilProcessingHelper : NSObject
 
 + (BOOL) isNeedToDecrypt;
 + (BOOL) isEncryptedByVirgil : (MimePart *)topMimePart;
-+ (NSDictionary *) prepareDataForDecryptor:(Message *)message topMimePart:(MimePart *)topMimePart;
++ (VirgilEncryptorContainer *) prepareDataForDecryptor:(Message *)message topMimePart:(MimePart *)topMimePart;
 
 @end

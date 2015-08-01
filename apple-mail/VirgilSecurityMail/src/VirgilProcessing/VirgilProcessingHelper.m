@@ -1,5 +1,5 @@
 //
-//  VirgilChecker.m
+//  VirgilProcessingHelper.m
 //  VirgilSecurityMail
 //
 //  Created by Роман Куташенко on 31.07.15.
@@ -49,7 +49,6 @@
     if(![mimePart isType:@"text" subtype:@"html"]) {
         // Exit.
         // Because our encrypted information places to test/html part.
-        NSLog(@"isPartContainsVirgilSignature mime is : %@/%@", [mimePart type], [mimePart subtype]);
         return NO;
     }
         
@@ -73,17 +72,53 @@
             }
         }
     }
-    NSLog(@"???");
     return NO;
 }
 
-+ (NSDictionary *) prepareDataForDecryptor:(Message *)message topMimePart:(MimePart *)topMimePart {
-    NSMutableDictionary *res = [NSMutableDictionary dictionary];
-    NSLog(@"Subject : %@", [message subject]);
-    NSLog(@"Sender : %@", [message sender]);
-    //TODO: Fill it
-    return res;
++ (NSData *) encryptedContent : (MimePart *) mimePart {
+    NSData *bodyData = [mimePart bodyData];
+    NSString* strBody = [[NSString alloc] initWithData:bodyData encoding:NSUTF8StringEncoding];
+    NSError *error = nil;
+    HTMLParser *parser = [[HTMLParser alloc] initWithString:strBody error:&error];
+    
+    if (error) {
+        NSLog(@"Error: %@", error);
+        return NO;
+    }
+    
+    HTMLNode *bodyNode = [parser body];
+    NSArray *inputNodes = [bodyNode findChildTags:@"input"];
+    
+    for (HTMLNode *inputNode in inputNodes) {
+        if ([[inputNode getAttributeNamed:@"id"] isEqualToString:@"virgil-info"]) {
+            if ([[inputNode getAttributeNamed:@"type"] isEqualToString:@"hidden"]) {
+                NSString * base64Data = [inputNode getAttributeNamed:@"value"];
+                NSLog(@"Encrypted data : %@", base64Data);
+                NSData* res = [base64Data dataUsingEncoding:NSUTF8StringEncoding];
+                return res;
+            }
+        }
+    }
+    return nil;
 }
 
++ (VirgilEncryptorContainer *) prepareDataForDecryptor:(Message *)message topMimePart:(MimePart *)topMimePart {
+
+    MimePart * encryptedContentPart = [self partWithVirgilSignature:topMimePart];
+    
+    if (encryptedContentPart != nil) {
+        VirgilEncryptorContainer *res = [[VirgilEncryptorContainer alloc] init];
+    
+        res->content = [self encryptedContent:encryptedContentPart];
+        res->sender = [message sender];
+        // TODO: Get receivers.
+        NSMutableArray * receivers = [[NSMutableArray alloc] init];
+        res->receivers = receivers;
+        res->isEncrypted = YES;
+    
+        return res;
+    }
+    return nil;
+}
 
 @end

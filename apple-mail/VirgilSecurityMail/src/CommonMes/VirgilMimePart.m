@@ -21,16 +21,21 @@
 - (id)MADecodeWithContext:(id)ctx {
     NSLog(@"MADecodeWithContext");
     
-    //Message *currentMessage = [(MimeBody *)[self mimeBody] message];
     MimePart * topLevelPart = [self topLevelPart];
     
     NSMutableArray * mimeParts = [[NSMutableArray alloc] init];
     [mimeParts addObject:topLevelPart];
     
     if ([VirgilProcessingHelper isEncryptedByVirgil:topLevelPart]) {
-        NSLog(@"           Virgil e-mail !!!");
-    } else {
-        NSLog(@"           NOT Virgil e-mail :-(");
+        NSLog(@"Virgil e-mail !");
+        Message *currentMessage = [(MimeBody *)[self mimeBody] message];
+        
+        VirgilEncryptorContainer * encryptorContainer = [VirgilProcessingHelper prepareDataForDecryptor:currentMessage topMimePart:topLevelPart];
+        NSLog(@"Sender : %@", encryptorContainer->sender);
+        //NSLog(@" : %@", encryptorContainer->receivers);
+        NSLog(@"Content : %@", encryptorContainer->content);
+        
+        //TODO: Return decrypted email
     }
     
     return [self MADecodeWithContext:ctx];

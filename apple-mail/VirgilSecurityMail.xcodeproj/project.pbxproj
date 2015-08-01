@@ -25,6 +25,8 @@
 		D13F605C1B6B6D6200508C79 /* VirgilProcessingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D13F605B1B6B6D6200508C79 /* VirgilProcessingHelper.m */; };
 		D15362B41B6C0335000215F9 /* HTMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = D15362B11B6C0335000215F9 /* HTMLNode.m */; };
 		D15362B51B6C0335000215F9 /* HTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D15362B31B6C0335000215F9 /* HTMLParser.m */; };
+		D15362BA1B6C48EB000215F9 /* VirgilEncryptorContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = D15362B91B6C48EB000215F9 /* VirgilEncryptorContainer.m */; };
+		D15362BE1B6C52DB000215F9 /* VirgilKeyRingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D15362BD1B6C52DB000215F9 /* VirgilKeyRingManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -76,6 +78,10 @@
 		D15362B11B6C0335000215F9 /* HTMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTMLNode.m; path = VirgilSecurityMail/src/Helpers/HTMLParser/HTMLNode.m; sourceTree = "<group>"; };
 		D15362B21B6C0335000215F9 /* HTMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLParser.h; path = VirgilSecurityMail/src/Helpers/HTMLParser/HTMLParser.h; sourceTree = "<group>"; };
 		D15362B31B6C0335000215F9 /* HTMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTMLParser.m; path = VirgilSecurityMail/src/Helpers/HTMLParser/HTMLParser.m; sourceTree = "<group>"; };
+		D15362B61B6C43AD000215F9 /* VirgilEncryptorContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilEncryptorContainer.h; path = VirgilSecurityMail/src/VirgilProcessing/VirgilEncryptorContainer.h; sourceTree = "<group>"; };
+		D15362B91B6C48EB000215F9 /* VirgilEncryptorContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilEncryptorContainer.m; path = VirgilSecurityMail/src/VirgilProcessing/VirgilEncryptorContainer.m; sourceTree = "<group>"; };
+		D15362BC1B6C52DB000215F9 /* VirgilKeyRingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilKeyRingManager.h; path = VirgilSecurityMail/src/VirgilProcessing/KeyRing/VirgilKeyRingManager.h; sourceTree = "<group>"; };
+		D15362BD1B6C52DB000215F9 /* VirgilKeyRingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilKeyRingManager.m; path = VirgilSecurityMail/src/VirgilProcessing/KeyRing/VirgilKeyRingManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -192,12 +198,15 @@
 		D13F60531B6B6CB600508C79 /* VirgilProcessing */ = {
 			isa = PBXGroup;
 			children = (
+				D15362BB1B6C52BE000215F9 /* KeyRing */,
 				D13F60541B6B6D0A00508C79 /* VirgilDecryptor.h */,
 				D13F60551B6B6D0A00508C79 /* VirgilDecryptor.m */,
 				D13F60571B6B6D4600508C79 /* VirgilEncryptor.h */,
 				D13F60581B6B6D4600508C79 /* VirgilEncryptor.m */,
 				D13F605A1B6B6D6200508C79 /* VirgilProcessingHelper.h */,
 				D13F605B1B6B6D6200508C79 /* VirgilProcessingHelper.m */,
+				D15362B61B6C43AD000215F9 /* VirgilEncryptorContainer.h */,
+				D15362B91B6C48EB000215F9 /* VirgilEncryptorContainer.m */,
 			);
 			name = VirgilProcessing;
 			sourceTree = "<group>";
@@ -211,6 +220,15 @@
 				D15362B31B6C0335000215F9 /* HTMLParser.m */,
 			);
 			name = HTMLParser;
+			sourceTree = "<group>";
+		};
+		D15362BB1B6C52BE000215F9 /* KeyRing */ = {
+			isa = PBXGroup;
+			children = (
+				D15362BC1B6C52DB000215F9 /* VirgilKeyRingManager.h */,
+				D15362BD1B6C52DB000215F9 /* VirgilKeyRingManager.m */,
+			);
+			name = KeyRing;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -296,9 +314,11 @@
 			files = (
 				D11174461B6805D400DD9A39 /* VirgilMain.m in Sources */,
 				D13F60401B6A1D0600508C79 /* VirgilMessageRouter.m in Sources */,
+				D15362BE1B6C52DB000215F9 /* VirgilKeyRingManager.m in Sources */,
 				D13F60431B6A1D1300508C79 /* VirgilHandlersInstaller.m in Sources */,
 				D13F60561B6B6D0A00508C79 /* VirgilDecryptor.m in Sources */,
 				D13F605C1B6B6D6200508C79 /* VirgilProcessingHelper.m in Sources */,
+				D15362BA1B6C48EB000215F9 /* VirgilEncryptorContainer.m in Sources */,
 				D15362B51B6C0335000215F9 /* HTMLParser.m in Sources */,
 				D13F603D1B6A1C9A00508C79 /* VirgilMessageContentController.m in Sources */,
 				D13F60591B6B6D4600508C79 /* VirgilEncryptor.m in Sources */,
