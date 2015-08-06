@@ -7,7 +7,7 @@
 //
 
 #import "VirgilMimePart.h"
-#import "VirgilProcessingHelper.h"
+#import "VirgilProcessingManager.h"
 #import <MimeBody.h>
 
 @implementation VirgilMimePart
@@ -21,24 +21,16 @@
 - (id)MADecodeWithContext:(id)ctx {
     NSLog(@"MADecodeWithContext");
     
+    Message *currentMessage = [(MimeBody *)[self mimeBody] message];
     MimePart * topLevelPart = [self topLevelPart];
     
-    NSMutableArray * mimeParts = [[NSMutableArray alloc] init];
-    [mimeParts addObject:topLevelPart];
+    // TODO: It'll be good to remove even VirgilProcessingManager from here
+    id decryptedMessage = [VirgilProcessingManager decryptMessage:currentMessage
+                                                      topMimePart:topLevelPart];
     
-    if ([VirgilProcessingHelper isEncryptedByVirgil:topLevelPart]) {
-        NSLog(@"Virgil e-mail !");
-        Message *currentMessage = [(MimeBody *)[self mimeBody] message];
-        
-        VirgilEncryptorContainer * encryptorContainer = [VirgilProcessingHelper prepareDataForDecryptor:currentMessage topMimePart:topLevelPart];
-        NSLog(@"Sender : %@", encryptorContainer->sender);
-        //NSLog(@" : %@", encryptorContainer->receivers);
-        NSLog(@"Content : %@", encryptorContainer->content);
-        
-        //TODO: Return decrypted email
-    }
-    
-    return [self MADecodeWithContext:ctx];
+    return (nil != decryptedMessage) ?
+        decryptedMessage :
+        [self MADecodeWithContext:ctx];
 }
 
 - (MimePart *) topLevelPart {

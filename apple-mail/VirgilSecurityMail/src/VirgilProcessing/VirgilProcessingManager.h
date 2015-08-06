@@ -1,5 +1,5 @@
 //
-//  VirgilProcessingHelper.h
+//  VirgilProcessingManager.h
 //  VirgilSecurityMail
 //
 //  Created by Роман Куташенко on 31.07.15.
@@ -11,10 +11,10 @@
 #import <MimePart.h>
 #import "VirgilEncryptorContainer.h"
 
-@interface VirgilProcessingHelper : NSObject
+@interface VirgilProcessingManager : NSObject
 
 + (BOOL) isNeedToDecrypt;
 + (BOOL) isEncryptedByVirgil : (MimePart *)topMimePart;
-+ (VirgilEncryptorContainer *) prepareDataForDecryptor:(Message *)message topMimePart:(MimePart *)topMimePart;
++ (id) decryptMessage:(Message *)message topMimePart:(MimePart *)topMimePart;
 
 @end

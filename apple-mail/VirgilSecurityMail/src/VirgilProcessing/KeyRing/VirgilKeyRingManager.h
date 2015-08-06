@@ -9,5 +9,5 @@
 #import <Foundation/Foundation.h>
 
 @interface VirgilKeyRingManager : NSObject
-
+//TODO: Implement need keys checking and getting
 @end

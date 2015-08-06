@@ -18,7 +18,7 @@
     // TODO: Need documentation here.
     // Content depends on encryptor work direction.
     NSString * privateKey;
-    NSString * publicKey;
+    NSString * publicKeyID;
 }
 
 @property    BOOL isEncrypted;
@@ -27,6 +27,6 @@
 @property (retain) NSString * content;
 @property (retain) NSString * attachements;
 @property (retain) NSString * privateKey;
-@property (retain) NSString * publicKey;
+@property (retain) NSString * publicKeyID;
 
 @end
