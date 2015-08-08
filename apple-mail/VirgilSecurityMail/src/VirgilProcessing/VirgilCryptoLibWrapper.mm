@@ -18,72 +18,68 @@
 
 #include <virgil/crypto/VirgilByteArray.h>
 using virgil::crypto::VirgilByteArray;
+
 #include <virgil/crypto/VirgilCryptoException.h>
 using virgil::crypto::VirgilCryptoException;
+
 #include <virgil/crypto/VirgilCipher.h>
 using virgil::crypto::VirgilCipher;
 
+#include <virgil/crypto/foundation/VirgilBase64.h>
+using virgil::crypto::foundation::VirgilBase64;
+
 @implementation VirgilCryptoLibWrapper
 
-+ (BOOL) decryptContainer:(VirgilEncryptorContainer **) container {
-    if (!(*container)->isEncrypted) return NO;
-
++ (NSData *) decryptData : (NSData *) data
+             publicKeyId : (NSString *) publicKeyId
+              privateKey : (NSString *) privateKey
+       privateKeyPassword: (NSString *) privateKeyPassword {
     try {
         VirgilCipher cipher;
-
+        
         // Prepare public key id
-        const std::string _publicKeyIdData([(*container)->publicKeyID UTF8String]);
-        VirgilByteArray publicKeyID(_publicKeyIdData.begin(), _publicKeyIdData.end());
+        const std::string _publicKeyIdData([publicKeyId UTF8String]);
+        VirgilByteArray baPublicKeyId(_publicKeyIdData.begin(), _publicKeyIdData.end());
         
         // Prepare private key
-        const std::string _privateKeyData([(*container)->privateKey UTF8String]);
-        VirgilByteArray privateKey(_privateKeyData.begin(), _privateKeyData.end());
+        const std::string _privateKeyData([privateKey UTF8String]);
+        VirgilByteArray baPrivateKey(_privateKeyData.begin(), _privateKeyData.end());
         
-        
-        // Parse json email body, get EmailData and Signature
-        // result in emailDictionary
-        NSError *error = nil;
-        id mailJSON = [NSJSONSerialization
-                     JSONObjectWithData:(*container)->content
-                     options:0
-                     error:&error];
-        
-        if(error) {
-            NSLog(@"Can't read e-mail JSON");
-            return NO;
+        // Prepare private key password
+        VirgilByteArray baPrivateKeyPassword;
+        if (nil != privateKeyPassword) {
+            const std::string _privateKeyPasswordData([privateKeyPassword UTF8String]);
+            baPrivateKeyPassword.assign(_privateKeyPasswordData.begin(), _privateKeyPasswordData.end());
         }
         
-        NSDictionary * emailDictionary = nil;
-        if([mailJSON isKindOfClass:[NSDictionary class]]) {
-            emailDictionary = mailJSON;
-        } else {
-            NSLog(@"Can't read e-mail JSON (not a dictionary)");
-            return NO;
-        }
-        
-        // Prepare byte array of EmailData
-        NSData * dataArray = [NSData dataFromBase64String:[emailDictionary objectForKey:@"EmailData"]];
-        VirgilByteArray data;
-        data.assign(reinterpret_cast<const unsigned char*>([dataArray bytes]),
-                 reinterpret_cast<const unsigned char*>([dataArray bytes]) + [dataArray length]);
+        // Prepare data
+        VirgilByteArray baData;
+        baData.assign(reinterpret_cast<const unsigned char*>([data bytes]),
+                    reinterpret_cast<const unsigned char*>([data bytes]) + [data length]);
 
         
-        // Decrypt EmailData
-        const VirgilByteArray _readyData(cipher.decryptWithKey(data,
-                                                               publicKeyID,
-                                                               privateKey));
         
-        NSLog(@"decryptWithKey done : %s", virgil::crypto::bytes2str(_readyData).c_str());
+        // Decrypt private key if need
+        if (!baPrivateKeyPassword.empty()) {
+            VirgilByteArray decryptedKey (
+                                cipher.decryptWithPassword(
+                                                           VirgilBase64::decode(_privateKeyData),
+                                                           baPrivateKeyPassword
+                                                        ));
+            baPrivateKey.assign(decryptedKey.begin(), decryptedKey.end());
+        }
         
-        // Verify Email signature
-        //TODO:
+        // Decrypt
+        const VirgilByteArray _readyData(cipher.decryptWithKey(baData,
+                                                               baPublicKeyId,
+                                                               baPrivateKey));
+        return [[NSData alloc] initWithBytes:_readyData.data() length:_readyData.size()];
         
     } catch (std::exception& exception) {
-        std::cerr << "Error: " << exception.what() << std::endl;
         const std::string _error(exception.what());
-        NSLog(@"decryptWithKey ERROR %s", _error.c_str());
+        NSLog(@"decryptData ERROR %s", _error.c_str());
     }
-    return NO;
+    return nil;
 }
 
 @end

@@ -9,6 +9,7 @@
 #import "VirgilMimePart.h"
 #import "VirgilProcessingManager.h"
 #import <MimeBody.h>
+#import "VirgilClassNameResolver.h"
 
 @implementation VirgilMimePart
 
@@ -20,25 +21,7 @@
 
 - (id)MADecodeWithContext:(id)ctx {
     NSLog(@"MADecodeWithContext");
-    
-    Message *currentMessage = [(MimeBody *)[self mimeBody] message];
-    MimePart * topLevelPart = [self topLevelPart];
-    
-    // TODO: It'll be good to remove even VirgilProcessingManager from here
-    id decryptedMessage = [VirgilProcessingManager decryptMessage:currentMessage
-                                                      topMimePart:topLevelPart];
-    
-    return (nil != decryptedMessage) ?
-        decryptedMessage :
-        [self MADecodeWithContext:ctx];
-}
-
-- (MimePart *) topLevelPart {
-    MimePart * res = (MimePart *)self;
-    while ([res parentPart] != nil) {
-        res = [res parentPart];
-    }
-    return res;
+    return [self MADecodeWithContext:ctx];
 }
 
 - (id)MADecodeTextPlainWithContext:(MFMimeDecodeContext *)ctx {
@@ -50,7 +33,20 @@
 
 - (id)MADecodeTextHtmlWithContext:(MFMimeDecodeContext *)ctx {
     NSLog(@"MADecodeTextHtmlWithContext");
-    return [self MADecodeTextHtmlWithContext:ctx];
+    id decryptedPart =
+                [[VirgilProcessingManager sharedInstance] decryptMessagePart:(MimePart *)self];
+    
+    return (nil != decryptedPart) ?
+                    decryptedPart :
+                    [self MADecodeTextHtmlWithContext:ctx];
+}
+
+- (MimePart *) topLevelPart {
+    MimePart * res = (MimePart *)self;
+    while ([res parentPart] != nil) {
+        res = [res parentPart];
+    }
+    return res;
 }
 
 - (id)MADecodeApplicationOctet_streamWithContext:(MFMimeDecodeContext *)ctx {

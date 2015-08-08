@@ -7,8 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "VirgilEncryptorContainer.h"
 
 @interface VirgilCryptoLibWrapper : NSObject
-+ (BOOL) decryptContainer:(VirgilEncryptorContainer **) container;
++ (NSData *) decryptData : (NSData *) data
+         publicKeyId : (NSString *) publicKeyId
+          privateKey : (NSString *) privateKey
+   privateKeyPassword: (NSString *) privateKeyPassword;
 @end

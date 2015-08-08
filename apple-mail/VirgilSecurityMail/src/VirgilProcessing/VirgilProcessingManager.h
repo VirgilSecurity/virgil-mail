@@ -9,12 +9,17 @@
 #import <Foundation/Foundation.h>
 #import <Message.h>
 #import <MimePart.h>
-#import "VirgilEncryptorContainer.h"
+#import "VirgilDecryptedMail.h"
 
 @interface VirgilProcessingManager : NSObject
 
-+ (BOOL) isNeedToDecrypt;
-+ (BOOL) isEncryptedByVirgil : (MimePart *)topMimePart;
-+ (id) decryptMessage:(Message *)message topMimePart:(MimePart *)topMimePart;
++ (VirgilProcessingManager *) sharedInstance;
+
+- (id) decryptMessagePart:(MimePart *)mimePart;
+- (BOOL) isNeedToDecrypt;
+- (BOOL) isEncryptedByVirgil : (MimePart *)topMimePart;
+- (MimePart *) topLevelPartByAnyPart:(MimePart *)part;
+
+@property (readonly) VirgilDecryptedMail * decryptedMail;
 
 @end
