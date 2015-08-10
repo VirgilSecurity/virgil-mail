@@ -151,6 +151,12 @@
     return publicKey.publicKeyID;
 }
 
+- (NSString * ) getPublicKeyForAccount:(NSString *)account {
+    VirgilPublicKey * publicKey = [VirgilPKIManager getPublicKey:account];
+    if (nil == publicKey) return nil;
+    return publicKey.publicKey;
+}
+
 - (NSString * ) getPrivateKeyPasswordForAccount:(NSString *)account {
     // Use constant value for this time
     return @"ram12345";
@@ -181,9 +187,9 @@
     
     // Prepare NSData for EmailData
     NSData * emailData = [NSData dataFromBase64String:[emailDictionary objectForKey:@"EmailData"]];
-
+    
     // Prepare NSData for signature
-    NSData * signatureData = [[NSData alloc] init];
+    NSData * signatureData = [NSData dataFromBase64String:[emailDictionary objectForKey:@"Sign"]];
 
     return [[VirgilEncryptedContent alloc] initWithEmailData:emailData
                                                 andSignature:signatureData];
@@ -237,12 +243,24 @@
     return bodyData;
 }
 
+- (NSString *) getSenderFromFullName:(NSString *) name {
+    if (nil == name) return nil;
+
+    NSRange range = [name rangeOfString:@"<"];
+    NSString * rightPart = [name substringFromIndex : range.location + 1];
+    range = [rightPart rangeOfString:@">"];
+    NSString * emailPart = [rightPart substringToIndex:range.location];
+    return emailPart;
+}
+
 - (BOOL) decryptWholeMessage:(MimePart *)topMimePart {
     MimePart * mainVirgilPart = [self partWithVirgilSignature:topMimePart];
     if (nil == mainVirgilPart) return NO;
     Message * message = [(MimeBody *)[topMimePart mimeBody] message];
     NSSet * allMimeParts = [self allMimeParts:topMimePart];
-    NSString * sender = [message sender];
+    NSString * sender = [self getSenderFromFullName:[message sender]];
+    NSLog(@"sender : %@", sender);
+    NSString * senderPublicKey = [self getPublicKeyForAccount:sender];
     NSString * receiver = [self getMyAccountFromMessage:message];
     NSString * publicId = [self getPublicIdForAccount:receiver];
     NSString * privateKey = [self getPrivateKeyForAccount:receiver];
@@ -250,12 +268,22 @@
     VirgilEncryptedContent * encryptedContent = [self getMainEncryptedData:
                                                  [self getEncryptedContent:mainVirgilPart]];
     
-    if (nil == receiver ||
+    if (nil == sender ||
+        nil == senderPublicKey ||
+        nil == receiver ||
         nil == publicId ||
         nil == privateKey) {
         NSLog(@"ERROR : Can't decrypt message !");
         return NO;
     }
+    
+    if (![VirgilCryptoLibWrapper isSignatureCorrect:encryptedContent.signature
+                                              data:encryptedContent.emailData
+                                         publicKey:senderPublicKey]) {
+        //TODO: Place to email information about invalid signature
+        NSLog(@"ERROR : Wrong signature !");
+    }
+    
     VirgilDecryptedContent * decryptedContent = [self decryptContent:encryptedContent
                                                          publicKeyId:publicId
                                                           privateKey:privateKey
@@ -318,6 +346,8 @@
 
 - (NSString * ) getMyAccountFromMessage:(Message *)message {
     if (nil == message) return nil;
+    
+    // TODO: Pay attention at Massage::account
     
     // Get my accounts
     NSMutableSet * myAccounts = [[NSMutableSet alloc] init];

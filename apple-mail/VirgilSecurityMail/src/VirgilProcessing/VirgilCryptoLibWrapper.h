@@ -10,7 +10,12 @@
 
 @interface VirgilCryptoLibWrapper : NSObject
 + (NSData *) decryptData : (NSData *) data
-         publicKeyId : (NSString *) publicKeyId
-          privateKey : (NSString *) privateKey
-   privateKeyPassword: (NSString *) privateKeyPassword;
+             publicKeyId : (NSString *) publicKeyId
+              privateKey : (NSString *) privateKey
+      privateKeyPassword : (NSString *) privateKeyPassword;
+
++ (BOOL) isSignatureCorrect : (NSData *) signature
+                       data : (NSData *) data
+                  publicKey : (NSString *) publicKey;
+
 @end

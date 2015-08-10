@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 Virgil Security. All rights reserved.
 //
 
+#undef verify
+
 #import "VirgilCryptoLibWrapper.h"
 #import "NSData+Base64.h"
 
@@ -24,6 +26,9 @@ using virgil::crypto::VirgilCryptoException;
 
 #include <virgil/crypto/VirgilCipher.h>
 using virgil::crypto::VirgilCipher;
+
+#include <virgil/crypto/VirgilSigner.h>
+using virgil::crypto::VirgilSigner;
 
 #include <virgil/crypto/foundation/VirgilBase64.h>
 using virgil::crypto::foundation::VirgilBase64;
@@ -80,6 +85,37 @@ using virgil::crypto::foundation::VirgilBase64;
         NSLog(@"decryptData ERROR %s", _error.c_str());
     }
     return nil;
+}
+
++ (BOOL) isSignatureCorrect:(NSData *) signature
+                       data:(NSData *) data
+                 publicKey :(NSString *) publicKey {
+    try {
+        // Prepare signature
+        VirgilByteArray baSignature;
+        baSignature.assign(reinterpret_cast<const unsigned char*>([signature bytes]),
+                      reinterpret_cast<const unsigned char*>([signature bytes]) + [signature length]);
+        
+        // Prepare data
+        VirgilByteArray baData;
+        baData.assign(reinterpret_cast<const unsigned char*>([data bytes]),
+                      reinterpret_cast<const unsigned char*>([data bytes]) + [data length]);
+        
+        // Prepare public key
+        const std::string _publicKeyData([publicKey UTF8String]);
+        VirgilByteArray baPublicKey(_publicKeyData.begin(), _publicKeyData.end());
+        
+        // Verify signature
+
+        if (VirgilSigner().verify(baData, baSignature, baPublicKey)) {
+            return YES;
+        }
+        
+    } catch (std::exception& exception) {
+        const std::string _error(exception.what());
+        NSLog(@"decryptData ERROR %s", _error.c_str());
+    }
+    return NO;
 }
 
 @end
