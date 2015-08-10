@@ -1,4 +1,3 @@
-# virgil-mail
 ## Mail encryption: ##
 
 Encrypted mail consist of two parts
@@ -116,3 +115,10 @@ Pseudocode:
 	{   
 	    attachment.Data = cipher.Decrypt(attachemnt.Data, ourPublicKeyId, ourPrivateKey);    
 	}
+
+## Handling unregistered users: ## 
+
+Currently for a recipient who's email is not registered on Public Key Service we send invitation instead of encrypted mail. Sender would have to resend email one more time to deliver it to the initial recipient.
+
+In the case when some of the recipients are not registered adding send mail to available users, and sends invitation mail for unregistered ones. Display info message before mail send.
+
