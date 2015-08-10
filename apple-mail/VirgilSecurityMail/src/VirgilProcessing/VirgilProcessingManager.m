@@ -14,9 +14,13 @@
 #import "NSData+Base64.h"
 #import "VirgilEncryptedContent.h"
 #import "VirgilDecryptedContent.h"
-
+#import "VirgilPKIManager.h"
+#import "VirgilClassNameResolver.h"
 
 #import "MessageStore.h"
+#import "MailAccount.h"
+#import "LocalAccount.h"
+#import "MFMessageAddressee.h"
 
 @implementation VirgilProcessingManager
 
@@ -142,8 +146,9 @@
 }
 
 - (NSString * ) getPublicIdForAccount:(NSString *)account {
-    // Use constant value for this time
-    return @"f4fd0f75-73bf-d960-f53f-dbc1bd8cc958";
+    VirgilPublicKey * publicKey = [VirgilPKIManager getPublicKey:account];
+    if (nil == publicKey) return nil;
+    return publicKey.publicKeyID;
 }
 
 - (NSString * ) getPrivateKeyPasswordForAccount:(NSString *)account {
@@ -238,12 +243,19 @@
     Message * message = [(MimeBody *)[topMimePart mimeBody] message];
     NSSet * allMimeParts = [self allMimeParts:topMimePart];
     NSString * sender = [message sender];
-    NSString * receiver = @"?";
+    NSString * receiver = [self getMyAccountFromMessage:message];
     NSString * publicId = [self getPublicIdForAccount:receiver];
     NSString * privateKey = [self getPrivateKeyForAccount:receiver];
     NSString * privateKeyPassword = [self getPrivateKeyPasswordForAccount:receiver];
     VirgilEncryptedContent * encryptedContent = [self getMainEncryptedData:
                                                  [self getEncryptedContent:mainVirgilPart]];
+    
+    if (nil == receiver ||
+        nil == publicId ||
+        nil == privateKey) {
+        NSLog(@"ERROR : Can't decrypt message !");
+        return NO;
+    }
     VirgilDecryptedContent * decryptedContent = [self decryptContent:encryptedContent
                                                          publicKeyId:publicId
                                                           privateKey:privateKey
@@ -302,6 +314,29 @@
 - (NSData *) decryptedAttachementByName:(NSString *) name {
     if (nil == name) return nil;
     return [_decryptedMail attachementByHash:name];
+}
+
+- (NSString * ) getMyAccountFromMessage:(Message *)message {
+    if (nil == message) return nil;
+    
+    // Get my accounts
+    NSMutableSet * myAccounts = [[NSMutableSet alloc] init];
+    for (LocalAccount * account in [[VirgilClassNameResolver resolveClassFromName:@"MailAccount"] mailAccounts]) {
+        for (NSString * email in account.emailAddresses) {
+            [myAccounts addObject:email];
+        }
+    }
+    
+    // Iterate throw all email receivers
+    for (MFMessageAddressee * addressee in message.toRecipients) {
+        for (NSString * email in myAccounts) {
+            if ([email isEqualTo:addressee.address]) {
+                return email;
+            }
+        }
+    }
+    
+    return nil;
 }
 
 @end

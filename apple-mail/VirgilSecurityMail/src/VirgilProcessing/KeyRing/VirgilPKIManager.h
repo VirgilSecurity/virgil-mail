@@ -1,5 +1,5 @@
 //
-//  VirgilKeyRingManager.h
+//  VirgilPKIManager.h
 //  VirgilSecurityMail
 //
 //  Created by Роман Куташенко on 01.08.15.
@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "VirgilPublicKey.h"
 
-@interface VirgilKeyRingManager : NSObject
-//TODO: Implement need keys checking and getting
+@interface VirgilPKIManager : NSObject
++ (VirgilPublicKey *) getPublicKey:(NSString *) account;
 @end
