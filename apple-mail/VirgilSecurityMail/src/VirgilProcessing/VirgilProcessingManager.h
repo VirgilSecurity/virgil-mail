@@ -16,6 +16,7 @@
 + (VirgilProcessingManager *) sharedInstance;
 
 - (id) decryptMessagePart:(MimePart *)mimePart;
+- (NSData *) decryptedAttachementByName:(NSString *) name;
 - (BOOL) isNeedToDecrypt;
 - (BOOL) isEncryptedByVirgil : (MimePart *)topMimePart;
 - (MimePart *) topLevelPartByAnyPart:(MimePart *)part;

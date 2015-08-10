@@ -56,55 +56,25 @@
     [_mailParts setValue:part forKey:[self hashVal:partHash]];
 }
 
+- (void) addAttachement:(id)attach attachHash:(id)attachHash {
+    if ([self isEmpty]) return;
+    [_mailParts setValue:attach forKey:attachHash];
+}
+
 - (id) partByHash:(id)partHash {
-    if ([self isEmpty]) return nil;
+    if ([self isEmpty]) {
+        NSLog(@"Error: PART NOT PRESENT");
+        return nil;
+    }
     return [_mailParts	valueForKey:[self hashVal:partHash]];
 }
 
-/*
-+ (MimeBody *) create:(VirgilEncryptorContainer *) dataContainer {
-    // 1. Create a new Message using messageWithRFC822Data:
-    // This creates the message store automatically!
-    Message *decryptedMessage;
-    MimeBody *decryptedMimeBody;
-    
-    NSData * messageBodyData = [(NSString *)@"<h1>Test !!!</h1>" dataUsingEncoding:NSUTF8StringEncoding];
-    
-    decryptedMessage = [[VirgilClassNameResolver resolveClassFromName:@"Message"]
-                            messageWithRFC822Data:messageBodyData sanitizeData:YES];
-    
-    
-    // 2. Set message info from the original encrypted message.
-    //[decryptedMessage setMessageInfoFromMessage:dataContainer.originalMessage];
-    
-    NSLog(@"1 >>> %@", [decryptedMessage subject]);
-    
-    [decryptedMessage setSubject:@"CHANGED SUBJECT !!!"];
-    
-    NSLog(@"2 >>> %@", [decryptedMessage subject]);
-    
-    NSLog(@"3 >>> %@", [dataContainer.originalMessage subject]);
-    
-    decryptedMimeBody = [decryptedMessage messageBody];
-    
-    
-    // 3. Call message body updating flags to set the correct flags for the new message.
-    // This will setup the decrypted message, run through all parts and find signature part.
-    // We'll save the message body for later, since it will be used to do a last
-    // decodeWithContext and the output returned.
-    // Fake the message flags on the decrypted message.
-    // messageBodyUpdatingFlags: calls isMimeEncrypted. Set MimeEncrypted on the message,
-    // so the correct info is returned.
-    //[decryptedMessage setIvar:@"MimeEncrypted" value:@YES];
-    //decryptedMimeBody = [decryptedMessage messageBodyUpdatingFlags:YES];
-    
-    // Top Level part reparses the message. This method doesn't.
-    //MimePart *topPart = [self topPart];
-    // Set the decrypted message here, otherwise we run into a memory problem.
-    //[topPart setDecryptedMessageBody:decryptedMimeBody isEncrypted:self.PGPEncrypted isSigned:self.PGPSigned error:self.PGPError];
-    //self.PGPDecryptedBody = self.decryptedMessageBody;
-    
-    return decryptedMimeBody;
+- (id) attachementByHash:(id)attachHash {
+    if ([self isEmpty]) {
+        NSLog(@"Error: PART NOT PRESENT");
+        return nil;
+    }
+    return [_mailParts	valueForKey:attachHash];
 }
-*/
+
 @end

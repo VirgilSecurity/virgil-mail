@@ -14,8 +14,12 @@
 - (BOOL) isEmpty;
 - (void) setCurrentMailHash:(id)hash;
 - (BOOL) isCurrentMail:(id)someMail;
+
 - (void) addPart:(id)part partHash:(id)partHash;
+- (void) addAttachement:(id)attach attachHash:(id)attachHash;
+
 - (id) partByHash:(id)partHash;
+- (id) attachementByHash:(id)attachHash;
 
 - (NSString *) hashVal:(id)someId;
 - (NSString *) invalidHashVal;

@@ -15,6 +15,9 @@
 #import "VirgilEncryptedContent.h"
 #import "VirgilDecryptedContent.h"
 
+
+#import "MessageStore.h"
+
 @implementation VirgilProcessingManager
 
 + (VirgilProcessingManager *) sharedInstance {
@@ -221,10 +224,19 @@
                                                   htmlBody:htmlBody];
 }
 
+- (NSData *) getEncryptedAttachement:(MimePart *)part {
+    if (![[part disposition] isEqualToString:@"attachment"]) return nil;
+    if (![part.contentTransferEncoding isEqualToString:@"base64"]) return nil;
+    NSData *bodyData = [part bodyData];
+    NSString* strBody = [[NSString alloc] initWithData:bodyData encoding:NSUTF8StringEncoding];
+    return bodyData;
+}
+
 - (BOOL) decryptWholeMessage:(MimePart *)topMimePart {
     MimePart * mainVirgilPart = [self partWithVirgilSignature:topMimePart];
     if (nil == mainVirgilPart) return NO;
     Message * message = [(MimeBody *)[topMimePart mimeBody] message];
+    NSSet * allMimeParts = [self allMimeParts:topMimePart];
     NSString * sender = [message sender];
     NSString * receiver = @"?";
     NSString * publicId = [self getPublicIdForAccount:receiver];
@@ -245,7 +257,18 @@
     [_decryptedMail addPart:decryptedContent.htmlBody
                    partHash:mainVirgilPart];
     
-    // TODO: Iterate throw all part and decrypt attachements
+    for (MimePart * part in allMimeParts) {
+        if (part == mainVirgilPart) continue;
+        NSData * encryptedAttachement = [self getEncryptedAttachement:part];
+        if (nil == encryptedAttachement) continue;
+        NSData * decryptedAttachement = [VirgilCryptoLibWrapper decryptData:encryptedAttachement
+                                                                publicKeyId:publicId
+                                                                 privateKey:privateKey
+                                                         privateKeyPassword:privateKeyPassword];
+        if (nil == decryptedAttachement) continue;
+        [_decryptedMail addAttachement:decryptedAttachement
+                            attachHash:[part attachmentFilename]];
+    }
     return YES;
 }
 
@@ -260,6 +283,7 @@
     }
     
     Message * currentMessage = [(MimeBody *)[mimePart mimeBody] message];
+
     if (![_decryptedMail isCurrentMail:currentMessage]) {
         [self decryptWholeMessage:topMimePart];
     }
@@ -273,6 +297,11 @@
         res = [res parentPart];
     }
     return res;
+}
+
+- (NSData *) decryptedAttachementByName:(NSString *) name {
+    if (nil == name) return nil;
+    return [_decryptedMail attachementByHash:name];
 }
 
 @end

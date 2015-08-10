@@ -11,6 +11,9 @@
 #import <MimeBody.h>
 #import "VirgilClassNameResolver.h"
 
+#import "ParsedMessage.h"
+#import "MCAttachment.h"
+
 @implementation VirgilMimePart
 
 - (BOOL)MAUsesKnownSignatureProtocol {
@@ -21,14 +24,43 @@
 
 - (id)MADecodeWithContext:(id)ctx {
     NSLog(@"MADecodeWithContext");
-    return [self MADecodeWithContext:ctx];
+    
+    id decryptedPart = nil;
+    
+    id nativePart = [self MADecodeWithContext:ctx];
+    NSString *className = NSStringFromClass([nativePart class]);
+    if ([className isEqualToString:@"MCParsedMessage"]) {
+        
+        // Iterate throw all attachements and decrypt
+        for (MCAttachment * attach in [((ParsedMessage *)nativePart).attachmentsByURL allValues]) {
+            // TODO: Check for need to decrypt by attach.originalData
+            NSData * decryptedAttach = [[VirgilProcessingManager sharedInstance]
+                                                      decryptedAttachementByName:attach.filename];
+            if (nil != decryptedAttach) {
+                attach.currentData = decryptedAttach;
+            }
+        }
+        
+        decryptedPart = nativePart;
+        
+    } else {
+        decryptedPart = [[VirgilProcessingManager sharedInstance]
+                         decryptMessagePart:(MimePart *)self];
+    }
+    
+    return (nil != decryptedPart) ?
+            decryptedPart :
+            nativePart;
 }
 
 - (id)MADecodeTextPlainWithContext:(MFMimeDecodeContext *)ctx {
-    //Message *currentMessage = [(MimeBody *)[self mimeBody] message];
-    
     NSLog(@"MADecodeTextPlainWithContext");
-    return [self MADecodeTextPlainWithContext:ctx];
+    id decryptedPart =
+            [[VirgilProcessingManager sharedInstance] decryptMessagePart:(MimePart *)self];
+    
+    return (nil != decryptedPart) ?
+            decryptedPart :
+            [self MADecodeTextPlainWithContext:ctx];
 }
 
 - (id)MADecodeTextHtmlWithContext:(MFMimeDecodeContext *)ctx {
@@ -39,14 +71,6 @@
     return (nil != decryptedPart) ?
                     decryptedPart :
                     [self MADecodeTextHtmlWithContext:ctx];
-}
-
-- (MimePart *) topLevelPart {
-    MimePart * res = (MimePart *)self;
-    while ([res parentPart] != nil) {
-        res = [res parentPart];
-    }
-    return res;
 }
 
 - (id)MADecodeApplicationOctet_streamWithContext:(MFMimeDecodeContext *)ctx {

@@ -14,7 +14,7 @@
 		<string>https://github.com/VirgilSecurity/virgil-mail.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>apple-mail/VirgilSecurityMail.xcodeproj/project.xcworkspace</string>
+	<string>apple-mail/VirgilSecurityMail.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>B61EEFF91CBF844E2F72C143CE779333F41C4094</key>
