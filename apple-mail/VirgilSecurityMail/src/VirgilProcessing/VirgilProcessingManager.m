@@ -347,7 +347,7 @@
 - (NSString * ) getMyAccountFromMessage:(Message *)message {
     if (nil == message) return nil;
     
-    // TODO: Pay attention at Massage::account
+    // TODO: Pay attention to [message account] (MFIMAPAccount)
     
     // Get my accounts
     NSMutableSet * myAccounts = [[NSMutableSet alloc] init];
