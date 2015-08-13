@@ -39,6 +39,15 @@
              @"MessageCriterion": @[
 					 @"_evaluateIsDigitallySignedCriterion:",
 					 @"_evaluateIsEncryptedCriterion:"
+                     ],
+             @"DocumentEditor": @[
+                     @"backEndDidLoadInitialContent:",
+                     @"dealloc",
+                     @"backEnd:didCancelMessageDeliveryForEncryptionError:",
+                     @"backEnd:didCancelMessageDeliveryForError:"
+                     ],
+             @"NSWindow": @[
+                     @"toggleFullScreen:"
                      ]
              };
 }
@@ -156,9 +165,6 @@
     // This methods converts known classes to their counterparts in Mavericks.
     if([@[@"MC", @"MF"] containsObject:[className substringToIndex:2]])
         return [className substringFromIndex:2];
-    
-    if([className isEqualToString:@"DocumentEditor"])
-        return @"MailDocumentEditor";
     
     if([className isEqualToString:@"MessageViewController"])
         return @"MessageContentController";
