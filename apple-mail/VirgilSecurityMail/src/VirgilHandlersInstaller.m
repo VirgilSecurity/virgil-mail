@@ -48,6 +48,20 @@
                      ],
              @"NSWindow": @[
                      @"toggleFullScreen:"
+                     ],
+             @"ComposeBackEnd": @[
+                     @"_makeMessageWithContents:isDraft:shouldSign:shouldEncrypt:shouldSkipSignature:shouldBePlainText:",
+                     @"canEncryptForRecipients:sender:",
+                     @"canSignFromAddress:",
+                     @"recipientsThatHaveNoKeyForEncryption",
+                     @"setEncryptIfPossible:",
+                     @"setSignIfPossible:",
+                     @"_saveThreadShouldCancel",
+                     @"_configureLastDraftInformationFromHeaders:overwrite:",
+                     @"sender",
+                     @"newOutgoingMessageUsingWriter:contents:headers:isDraft:shouldBePlainText:",
+                     @"initCreatingDocumentEditor:",
+                     @"setKnowsCanSign:"
                      ]
              };
 }

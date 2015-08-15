@@ -17,10 +17,15 @@
 #import "VirgilPKIManager.h"
 #import "VirgilClassNameResolver.h"
 
-#import "MessageStore.h"
-#import "MailAccount.h"
-#import "LocalAccount.h"
-#import "MFMessageAddressee.h"
+#import <MessageStore.h>
+#import <MailAccount.h>
+#import <LocalAccount.h>
+#import <MFMessageAddressee.h>
+#import <_OutgoingMessageBody.h>
+#import <MimePart.h>
+#import <Subdata.h>
+#import <MutableMessageHeaders.h>
+#import <MessageWriter.h>
 
 @implementation VirgilProcessingManager
 
@@ -34,11 +39,11 @@
     return singletonObject;
 }
 
-+(id)alloc{
++ (id) alloc{
     return [super alloc];
 }
 
--(id)init{
+- (id) init{
     _decryptedMail = [[VirgilDecryptedMail alloc] init];
     return [super init];
 }
@@ -111,7 +116,7 @@
 }
 
 // Get encrypted data for virgil-info part and for attachements
-- (NSData *) getEncryptedContent : (MimePart *) mimePart {
+- (NSData *) getEncryptedContent : (MimePart *)mimePart {
     NSData *bodyData = [mimePart bodyData];
     NSString* strBody = [[NSString alloc] initWithData:bodyData encoding:NSUTF8StringEncoding];
     NSError *error = nil;
@@ -140,30 +145,30 @@
     return nil;
 }
 
-- (NSString * ) getPrivateKeyForAccount:(NSString *)account {
+- (NSString *) getPrivateKeyForAccount : (NSString *)account {
     // Use constant value for this time
     return @"MIGfAgEAMIGZBgkqhkiG9w0BBwOggYswgYgCAQMxV6NVMFMCAQAwJAYKKoZIhvcNAQwBAzAWBBAMKuoeF3fDHXJ5qAeaK4NTAgIIAAQosVGG15kw52JBtZ07I/QX08Sfb1A3snrkClkR2Y8uYAJU/pKmDv3y2jAqBgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBBvH7Oitl+lSt2Gpg/YQ3/Wsr6q5KhXokHSQQcUyBQ3raTUY5pR7vY/BC534ItgPJygpvVS1Z6yFukzePXordVYvJ748CN+qtCTHmIFx41c64mXgH80XBLBuWiiDpeAwSKuXVjAte9ZtM2cksiRFXzUFm7l3cx3RUG6hC3J2CMDI61bHTc95MqBCrLX6sNi5NVvwCfxaEasUqwVxlPjkfHX1wwXNJbcKVVaubEXw1IoM2ZywjOwkQHm3okBFbfiqWEptv25r5h2pTrvwS/xuRZSeYcGAIVxn5BpEXrX+wKyA1LL0/nn4JHFa1Zsx5mM/PjUisK4SfArJVHRFhpTc8WxMBXV/i0k5FAczP5vF2uBerYxyjdpHF8mTA9aafXOGXJNmrZKCc5EhwfQeYGagzS5HexLprFB6ZGnCllQOrkajg8p45CTNCtuMsjv82TcJniwT7DtFBMhYmVOUHHgzVZpwKBKa52v3w5kpZ3XFCrR7duwHS4kkltFC8kRn6O7WPI=";
 }
 
-- (NSString * ) getPublicIdForAccount:(NSString *)account {
+- (NSString *) getPublicIdForAccount : (NSString *)account {
     VirgilPublicKey * publicKey = [VirgilPKIManager getPublicKey:account];
     if (nil == publicKey) return nil;
     return publicKey.publicKeyID;
 }
 
-- (NSString * ) getPublicKeyForAccount:(NSString *)account {
+- (NSString *) getPublicKeyForAccount : (NSString *)account {
     VirgilPublicKey * publicKey = [VirgilPKIManager getPublicKey:account];
     if (nil == publicKey) return nil;
     return publicKey.publicKey;
 }
 
-- (NSString * ) getPrivateKeyPasswordForAccount:(NSString *)account {
+- (NSString *) getPrivateKeyPasswordForAccount : (NSString *)account {
     // Use constant value for this time
     return @"ram12345";
 }
 
 // Get EmailData and signature
-- (VirgilEncryptedContent *) getMainEncryptedData:(NSData *)data {
+- (VirgilEncryptedContent *) getMainEncryptedData : (NSData *)data {
     // Parse json email body, get EmailData and Signature
     // result in emailDictionary
     NSError *error = nil;
@@ -195,10 +200,10 @@
                                                 andSignature:signatureData];
 }
 
-- (VirgilDecryptedContent *) decryptContent:(VirgilEncryptedContent *) content
-                                publicKeyId:(NSString *) publicKeyId
-                                 privateKey:(NSString *) privateKey
-                         privateKeyPassword:(NSString *) privateKeyPassword {
+- (VirgilDecryptedContent *) decryptContent : (VirgilEncryptedContent *) content
+                                publicKeyId : (NSString *) publicKeyId
+                                 privateKey : (NSString *) privateKey
+                         privateKeyPassword : (NSString *) privateKeyPassword {
     
     NSData * decryptedJsonData = [VirgilCryptoLibWrapper decryptData:content.emailData
                                                          publicKeyId:publicKeyId
@@ -235,7 +240,7 @@
                                                   htmlBody:htmlBody];
 }
 
-- (NSData *) getEncryptedAttachement:(MimePart *)part {
+- (NSData *) getEncryptedAttachement : (MimePart *)part {
     if (![[part disposition] isEqualToString:@"attachment"]) return nil;
     if (![part.contentTransferEncoding isEqualToString:@"base64"]) return nil;
     NSData *bodyData = [part bodyData];
@@ -243,7 +248,7 @@
     return bodyData;
 }
 
-- (NSString *) getSenderFromFullName:(NSString *) name {
+- (NSString *) getSenderFromFullName : (NSString *) name {
     if (nil == name) return nil;
 
     NSRange range = [name rangeOfString:@"<"];
@@ -253,13 +258,12 @@
     return emailPart;
 }
 
-- (BOOL) decryptWholeMessage:(MimePart *)topMimePart {
+- (BOOL) decryptWholeMessage : (MimePart *)topMimePart {
     MimePart * mainVirgilPart = [self partWithVirgilSignature:topMimePart];
     if (nil == mainVirgilPart) return NO;
     Message * message = [(MimeBody *)[topMimePart mimeBody] message];
     NSSet * allMimeParts = [self allMimeParts:topMimePart];
     NSString * sender = [self getSenderFromFullName:[message sender]];
-    NSLog(@"sender : %@", sender);
     NSString * senderPublicKey = [self getPublicKeyForAccount:sender];
     NSString * receiver = [self getMyAccountFromMessage:message];
     NSString * publicId = [self getPublicIdForAccount:receiver];
@@ -318,6 +322,8 @@
     if (nil == mimePart) return nil;
     MimePart * topMimePart = [self topLevelPartByAnyPart:mimePart];
     
+    NSLog(@"%@", topMimePart);
+    
     if (![self isEncryptedByVirgil:topMimePart]) {
         // Current email isn't decripted by Virgil
         return nil;
@@ -332,7 +338,7 @@
     return [_decryptedMail partByHash:mimePart];
 }
 
-- (MimePart *) topLevelPartByAnyPart:(MimePart *)part {
+- (MimePart *) topLevelPartByAnyPart : (MimePart *)part {
     MimePart * res = (MimePart *)part;
     while ([res parentPart] != nil) {
         res = [res parentPart];
@@ -340,12 +346,12 @@
     return res;
 }
 
-- (NSData *) decryptedAttachementByName:(NSString *) name {
+- (NSData *) decryptedAttachementByName : (NSString *) name {
     if (nil == name) return nil;
     return [_decryptedMail attachementByHash:name];
 }
 
-- (NSString * ) getMyAccountFromMessage:(Message *)message {
+- (NSString *) getMyAccountFromMessage : (Message *)message {
     if (nil == message) return nil;
     
     // TODO: Pay attention to [message account] (MFIMAPAccount)
@@ -368,6 +374,224 @@
     }
     
     return nil;
+}
+
+- (BOOL) isNeedToEncrypt {
+    // TODO: Fill this variable correctly
+    return YES;
+}
+
+- (NSString *) baseMailHTML {
+    // TODO: Load from external source
+    return @"<html>\n<body>"
+    "<p>The message has been encrypted with VirgilOutlook Add-In.</p>"
+    "<a href='https://virgilsecurity.com/downloads/' >Download Virgil Outlook Add-In.</a>"
+    "<input id='virgil-info' type='hidden' value='%@' />"
+    "</body></html>";
+}
+
+- (NSString *) baseMailPlain {
+    return @"The message has been encrypted with VirgilOutlook Add-In.\n"
+    "Download Virgil Outlook Add-In. <https://virgilsecurity.com/downloads/>";
+}
+
+- (NSData *) encryptContent : (VirgilDecryptedContent *)content
+                     sender : (NSString *) sender
+                  receivers : (NSArray *) receivers {
+    return nil;
+}
+
+- (NSData *) signEncryptedData : (NSData *)data
+                        sender : (NSString *) sender {
+    return nil;
+}
+
+- (Subdata *) createMailBodyDataWithData : (NSData *)data
+                    plainTextAlternative : (NSString *) plainText
+                            attachements : (NSDictionary *)attachements
+                                 headers : (MutableMessageHeaders *)headers {
+    if (nil == data || nil == headers) {
+        return nil;
+    }
+    
+    Class MimeBody = [VirgilClassNameResolver resolveClassFromName:@"MimeBody"];
+    
+    MimePart * topPart = nil;
+    NSData * topData = nil;
+    
+    MimePart * alternativePart = nil;
+    NSData * alternativeData = nil;
+    
+    MimePart * textPart = nil;
+    NSData * textData = [plainText dataUsingEncoding:NSUTF8StringEncoding];
+    
+    MimePart * htmlPart = nil;
+    NSData * htmlData = data;
+    
+    //TODO: Add attachment parts :NSMutableArray * attachmentParts = [[NSMutableArray alloc] init];
+    
+    Class MimePart = [VirgilClassNameResolver resolveClassFromName:@"MimePart"];
+    
+    // Create top part
+    topPart = [[MimePart alloc] init];
+    [topPart setType : @"multipart"];
+    [topPart setSubtype : @"mixed"];
+    [topPart setBodyParameter : [MimeBody newMimeBoundary]
+                       forKey : @"boundary"];
+    topPart.contentTransferEncoding = @"7bit";
+
+    // Create alternative part
+    alternativePart = [[MimePart alloc] init];
+    [alternativePart setType : @"multipart"];
+    [alternativePart setSubtype : @"alternative"];
+    [alternativePart setBodyParameter : [MimeBody newMimeBoundary]
+                               forKey : @"boundary"];
+    
+    // Create text part
+    textPart = [[MimePart alloc] init];
+    [textPart setType : @"text"];
+    [textPart setSubtype : @"plain"];
+    textPart.contentTransferEncoding = @"7bit";
+    //[textPart setBodyParameter :@"\"us-ascii\""
+    //                   forKey : @"charset"];
+    
+    
+    // Create HTML part
+    htmlPart = [[MimePart alloc] init];
+    [htmlPart setType : @"text"];
+    [htmlPart setSubtype : @"html"];
+    htmlPart.contentTransferEncoding = @"7bit";
+    
+    
+    // TODO: Create attachement parts
+    /*
+    for (NSString * key in [attachements allKeys]) {
+        MimePart * attachPart = [[MimePart alloc] init];
+        [attachPart setType:@"multipart"];
+        [attachPart setSubtype:@"mixed"];
+        [attachPart setBodyParameter:boundary forKey:@"boundary"];
+        attachPart.contentTransferEncoding = @"7bit";
+        attachmentParts
+    }
+     */
+    
+    // Create parts tree
+    [alternativePart addSubpart : textPart];
+    [alternativePart addSubpart : htmlPart];
+    
+    [topPart addSubpart : alternativePart];
+    // TODO: Add text part and attachements parts
+    
+    CFMutableDictionaryRef partBodyMapRef = CFDictionaryCreateMutable(NULL, 0, NULL, NULL);
+    CFDictionaryAddValue(partBodyMapRef, (__bridge const void *)(topPart), (__bridge const void *)(topData));
+    CFDictionaryAddValue(partBodyMapRef, (__bridge const void *)(alternativePart), (__bridge const void *)(alternativeData));
+    CFDictionaryAddValue(partBodyMapRef, (__bridge const void *)(textPart), (__bridge const void *)(textData));
+    CFDictionaryAddValue(partBodyMapRef, (__bridge const void *)(htmlPart), (__bridge const void *)(htmlData));
+    
+    NSMutableDictionary *partBodyMap = (__bridge NSMutableDictionary *)partBodyMapRef;
+    
+    NSMutableData *contentTypeData = [[NSMutableData alloc] initWithLength:0];
+    [contentTypeData appendData : [[NSString stringWithFormat:@"%@/%@;",
+                                  [topPart type],
+                                  [topPart subtype]]
+              dataUsingEncoding : NSASCIIStringEncoding]];
+    
+    for(id key in [topPart bodyParameterKeys]) {
+        [contentTypeData appendData : [[NSString stringWithFormat:@"\n\t%@=\"%@\";",
+                                        key,
+                                        [topPart bodyParameterForKey:key]]
+                  dataUsingEncoding : NSASCIIStringEncoding]];
+    }
+        
+    [headers setHeader : contentTypeData
+                forKey : @"content-type"];
+    [headers setHeader : @"7bit"
+                forKey : @"content-transfer-encoding"];
+    [headers removeHeaderForKey:@"content-disposition"];
+    [headers removeHeaderForKey:@"from "];
+    [headers removeHeaderForKey:@"bcc"];
+    
+    // Create the actualy body data.
+    NSData *headerData = [headers encodedHeadersIncludingFromSpace : NO];
+    NSMutableData *bodyData = [[NSMutableData alloc] init];
+    [bodyData appendData : headerData];
+    MessageWriter *messageWriter =
+            [[[VirgilClassNameResolver resolveClassFromName:@"MessageWriter"] alloc] init];
+    
+    [messageWriter appendDataForMimePart : topPart
+                                  toData : bodyData
+                            withPartData : partBodyMap];
+    
+    CFRelease(partBodyMapRef);
+    
+    NSRange contentRange = NSMakeRange([headerData length],
+                                       ([bodyData length] - [headerData length]));
+    Subdata *contentSubdata =
+            [[[VirgilClassNameResolver resolveClassFromName:@"Subdata"] alloc] initWithParent : bodyData
+                                                                                        range : contentRange];
+    return contentSubdata;
+}
+
+- (NSString *) wrapEncryptedContent : (VirgilEncryptedContent *) content {
+    return @"Test data";
+}
+
+- (BOOL) encryptMessage : (WebComposeMessageContents *)message
+                 result : (OutgoingMessage *)result {
+    NSString * sender = [[NSString alloc] initWithString:[result.headers firstAddressForKey:@"from"]];
+    NSMutableArray * receivers = [[NSMutableArray alloc] init];
+    [receivers addObjectsFromArray : [result.headers addressListForKey:@"to"]];
+    [receivers addObjectsFromArray : [result.headers addressListForKey:@"cc"]];
+    [receivers addObjectsFromArray : [result.headers addressListForKey:@"bcc"]];
+    
+    NSString * subject = [result.headers firstHeaderForKey:@"subject"];
+    if (nil == subject) subject = @"";
+    
+    NSString * body = [message.plainText string];
+    if (nil == body) body = @"";
+    
+    NSString * htmlBody = message.topLevelHtmlString;
+    if (nil == htmlBody) htmlBody = body;
+    
+    VirgilDecryptedContent * decryptedContent =
+            [[VirgilDecryptedContent alloc] initWithSubject : subject
+                                                       body : body
+                                                   htmlBody : htmlBody];
+    
+    NSLog(@"%@", decryptedContent);
+    
+    NSData * encryptedData = [self encryptContent : decryptedContent
+                                           sender : sender
+                                        receivers : receivers];
+    
+    NSData * signature = [self signEncryptedData : encryptedData
+                                          sender : sender];
+    
+    VirgilEncryptedContent * encryptedContent =
+            [[VirgilEncryptedContent alloc] initWithEmailData : encryptedData
+                                                 andSignature : signature];
+    
+    NSString * base64DataStr = [self wrapEncryptedContent : encryptedContent];
+    
+    NSString * mailBodyStr = [[NSString alloc] initWithFormat:[self baseMailHTML], base64DataStr];
+    
+    NSLog(@"mailBodyStr %@", mailBodyStr);
+    
+    // TODO: Encrypt attachements
+    NSMutableArray * attachements = [[NSMutableArray alloc] init];
+    
+    Subdata * newBodyData = [self createMailBodyDataWithData : [mailBodyStr dataUsingEncoding:NSUTF8StringEncoding]
+                                        plainTextAlternative : [self baseMailPlain]
+                                                attachements : [attachements copy]
+                                                     headers : [result headers]];
+    
+    [result setValue:[newBodyData valueForKey:@"_parentData"] forKey:@"_rawData"];
+    return YES;
+}
+
+- (BOOL) inviteMessage : (WebComposeMessageContents *)message
+                result : (OutgoingMessage *)result {
+    return YES;
 }
 
 @end

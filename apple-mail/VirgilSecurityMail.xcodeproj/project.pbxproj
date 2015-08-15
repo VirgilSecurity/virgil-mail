@@ -32,6 +32,7 @@
 		D1CBA8521B7BD8B900217919 /* VirgilNSWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = D1CBA8511B7BD8B900217919 /* VirgilNSWindow.m */; };
 		D1CBA8591B7D098600217919 /* NSBezierPath_KBAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D1CBA8581B7D098600217919 /* NSBezierPath_KBAdditions.m */; };
 		D1CBA85C1B7D0BE500217919 /* NSBezierPath+StrokeExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = D1CBA85B1B7D0BE500217919 /* NSBezierPath+StrokeExtensions.m */; };
+		D1CBA85F1B7D45C200217919 /* VirgilComposeBackEnd.m in Sources */ = {isa = PBXBuildFile; fileRef = D1CBA85E1B7D45C200217919 /* VirgilComposeBackEnd.m */; };
 		D1D0560F1B78FFCC00590197 /* VirgilPublicKey.m in Sources */ = {isa = PBXBuildFile; fileRef = D1D0560E1B78FFCC00590197 /* VirgilPublicKey.m */; };
 		D1E7CAC11B73FC9E00F4EC4F /* VirgilClassNameResolver.m in Sources */ = {isa = PBXBuildFile; fileRef = D1E7CAC01B73FC9E00F4EC4F /* VirgilClassNameResolver.m */; };
 		D1E7CAC71B7688D400F4EC4F /* VirgilDecryptedContent.m in Sources */ = {isa = PBXBuildFile; fileRef = D1E7CAC61B7688D400F4EC4F /* VirgilDecryptedContent.m */; };
@@ -101,6 +102,8 @@
 		D1CBA8581B7D098600217919 /* NSBezierPath_KBAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSBezierPath_KBAdditions.m; path = VirgilSecurityMail/src/Helpers/Gui/NSBezierPath_KBAdditions.m; sourceTree = "<group>"; };
 		D1CBA85A1B7D0BE500217919 /* NSBezierPath+StrokeExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSBezierPath+StrokeExtensions.h"; path = "VirgilSecurityMail/src/Helpers/Gui/NSBezierPath+StrokeExtensions.h"; sourceTree = "<group>"; };
 		D1CBA85B1B7D0BE500217919 /* NSBezierPath+StrokeExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSBezierPath+StrokeExtensions.m"; path = "VirgilSecurityMail/src/Helpers/Gui/NSBezierPath+StrokeExtensions.m"; sourceTree = "<group>"; };
+		D1CBA85D1B7D45C200217919 /* VirgilComposeBackEnd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilComposeBackEnd.h; path = VirgilSecurityMail/src/OutgoingMes/VirgilComposeBackEnd.h; sourceTree = "<group>"; };
+		D1CBA85E1B7D45C200217919 /* VirgilComposeBackEnd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilComposeBackEnd.m; path = VirgilSecurityMail/src/OutgoingMes/VirgilComposeBackEnd.m; sourceTree = "<group>"; };
 		D1D0560D1B78FFCC00590197 /* VirgilPublicKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilPublicKey.h; path = VirgilSecurityMail/src/VirgilProcessing/KeyRing/VirgilPublicKey.h; sourceTree = "<group>"; };
 		D1D0560E1B78FFCC00590197 /* VirgilPublicKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilPublicKey.m; path = VirgilSecurityMail/src/VirgilProcessing/KeyRing/VirgilPublicKey.m; sourceTree = "<group>"; };
 		D1E7CABF1B73FC9E00F4EC4F /* VirgilClassNameResolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilClassNameResolver.h; path = VirgilSecurityMail/src/Helpers/VirgilClassNameResolver.h; sourceTree = "<group>"; };
@@ -285,6 +288,8 @@
 				D1CBA84E1B7BC55300217919 /* VirgilMenu.m */,
 				D1CBA8501B7BD8B900217919 /* VirgilNSWindow.h */,
 				D1CBA8511B7BD8B900217919 /* VirgilNSWindow.m */,
+				D1CBA85D1B7D45C200217919 /* VirgilComposeBackEnd.h */,
+				D1CBA85E1B7D45C200217919 /* VirgilComposeBackEnd.m */,
 			);
 			name = OutgoingMes;
 			sourceTree = "<group>";
@@ -399,6 +404,7 @@
 				D1CBA8591B7D098600217919 /* NSBezierPath_KBAdditions.m in Sources */,
 				D1CBA8521B7BD8B900217919 /* VirgilNSWindow.m in Sources */,
 				D1CBA85C1B7D0BE500217919 /* NSBezierPath+StrokeExtensions.m in Sources */,
+				D1CBA85F1B7D45C200217919 /* VirgilComposeBackEnd.m in Sources */,
 				D1E7CAC71B7688D400F4EC4F /* VirgilDecryptedContent.m in Sources */,
 				D1CBA84C1B7BC43900217919 /* VirgilDocumentEditor.m in Sources */,
 				D15362B41B6C0335000215F9 /* HTMLNode.m in Sources */,

@@ -9,12 +9,23 @@
 #import <Foundation/Foundation.h>
 #import <Message.h>
 #import <MimePart.h>
+#import <WebComposeMessageContents.h>
+#import <OutgoingMessage.h>
 #import "VirgilDecryptedMail.h"
 
 @interface VirgilProcessingManager : NSObject
 
 + (VirgilProcessingManager *) sharedInstance;
 
+// Encryption
+- (BOOL) isNeedToEncrypt;
+- (BOOL) encryptMessage : (WebComposeMessageContents *)message
+                 result : (OutgoingMessage *)result;
+
+- (BOOL) inviteMessage : (WebComposeMessageContents *)message
+                 result : (OutgoingMessage *)result;
+
+// Decryption
 - (id) decryptMessagePart:(MimePart *)mimePart;
 - (NSData *) decryptedAttachementByName:(NSString *) name;
 - (BOOL) isNeedToDecrypt;

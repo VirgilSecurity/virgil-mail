@@ -33,4 +33,15 @@
     return self;
 }
 
+- (NSString *) description {
+    NSMutableString * res = [[NSMutableString alloc] init];
+    [res appendString:@"VirgilDecryptedContent : \n"];
+    [res appendString:@"{ \n"];
+    [res appendFormat:@"subject : %@\n", self.subject];
+    [res appendFormat:@"body : %@\n", self.body];
+    [res appendFormat:@"htmlBody : %@\n", self.htmlBody];
+    [res appendString:@"} \n"];
+    return res;
+}
+
 @end
