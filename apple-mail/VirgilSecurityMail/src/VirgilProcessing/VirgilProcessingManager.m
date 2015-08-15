@@ -272,7 +272,8 @@
         nil == senderPublicKey ||
         nil == receiver ||
         nil == publicId ||
-        nil == privateKey) {
+        nil == privateKey ||
+        nil == encryptedContent) {
         NSLog(@"ERROR : Can't decrypt message !");
         return NO;
     }
