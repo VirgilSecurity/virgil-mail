@@ -18,4 +18,11 @@
                        data : (NSData *) data
                   publicKey : (NSString *) publicKey;
 
++ (NSData *) encryptData : (NSData *) data
+              publicKeys : (NSArray *) publicKeys;
+
++ (NSData *) signatureForData : (NSData *) data
+               withPrivateKey : (NSString *) privateKey
+            privatKeyPassword : (NSString *) privateKeyPassword;
+
 @end

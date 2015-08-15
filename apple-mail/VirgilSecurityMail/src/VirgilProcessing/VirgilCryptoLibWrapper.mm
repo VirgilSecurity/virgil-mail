@@ -10,6 +10,7 @@
 
 #import "VirgilCryptoLibWrapper.h"
 #import "NSData+Base64.h"
+#import "VirgilPublicKey.h"
 
 #include <iostream>
 #include <algorithm>
@@ -116,6 +117,82 @@ using virgil::crypto::foundation::VirgilBase64;
         NSLog(@"decryptData ERROR %s", _error.c_str());
     }
     return NO;
+}
+
++ (NSData *) encryptData : (NSData *) data
+              publicKeys : (NSArray *) publicKeys {
+    
+    try {
+        VirgilCipher cipher;
+        
+        for (VirgilPublicKey * publicKey in publicKeys) {
+            const std::string _publicKeyIdData([publicKey.publicKeyID UTF8String]);
+            VirgilByteArray baPublicKeyId(_publicKeyIdData.begin(), _publicKeyIdData.end());
+            
+            const std::string _publicKeyData([publicKey.publicKey UTF8String]);
+            VirgilByteArray baPublicKey(_publicKeyData.begin(), _publicKeyData.end());
+            
+            cipher.addKeyRecipient(baPublicKeyId, baPublicKey);
+        }
+        
+        VirgilByteArray baData;
+        baData.assign(reinterpret_cast<const unsigned char*>([data bytes]),
+                      reinterpret_cast<const unsigned char*>([data bytes]) + [data length]);
+        
+        const VirgilByteArray _encryptedData(cipher.encrypt(baData, true));
+        
+        return [[NSData alloc] initWithBytes : _encryptedData.data()
+                                      length : _encryptedData.size()];
+        
+    } catch (std::exception& exception) {
+        const std::string _error(exception.what());
+        NSLog(@"encryptData ERROR %s", _error.c_str());
+    }
+    return nil;
+}
+
++ (NSData *) signatureForData : (NSData *) data
+               withPrivateKey : (NSString *) privateKey
+            privatKeyPassword : (NSString *) privateKeyPassword {
+    try {
+        // Prepare data
+        VirgilByteArray baData;
+        baData.assign(reinterpret_cast<const unsigned char*>([data bytes]),
+                      reinterpret_cast<const unsigned char*>([data bytes]) + [data length]);
+        
+        
+        // Prepare private key
+        const std::string _privateKeyData([privateKey UTF8String]);
+        VirgilByteArray baPrivateKey(_privateKeyData.begin(), _privateKeyData.end());
+        
+        // Prepare private key password
+        VirgilByteArray baPrivateKeyPassword;
+        if (nil != privateKeyPassword) {
+            const std::string _privateKeyPasswordData([privateKeyPassword UTF8String]);
+            baPrivateKeyPassword.assign(_privateKeyPasswordData.begin(), _privateKeyPasswordData.end());
+        }
+        
+        // Decrypt private key if need
+        if (!baPrivateKeyPassword.empty()) {
+            VirgilByteArray decryptedKey (
+                                          VirgilCipher().decryptWithPassword(
+                                                                     VirgilBase64::decode(_privateKeyData),
+                                                                     baPrivateKeyPassword
+                                                                     ));
+            baPrivateKey.assign(decryptedKey.begin(), decryptedKey.end());
+        }
+        
+        // Create signature
+        const VirgilByteArray _signature(VirgilSigner().sign(baData, baPrivateKey));
+
+        return [[NSData alloc] initWithBytes : _signature.data()
+                                      length : _signature.size()];
+
+    } catch (std::exception& exception) {
+        const std::string _error(exception.what());
+        NSLog(@"signatureForData ERROR %s", _error.c_str());
+    }
+    return nil;
 }
 
 @end

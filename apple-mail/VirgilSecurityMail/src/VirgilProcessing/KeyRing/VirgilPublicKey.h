@@ -16,9 +16,9 @@
 }
 
 - (id) init;
-- (id) initAccountID:(NSString *)_accountID
-         publicKeyID:(NSString *)_publicKeyID
-           publicKey:(NSString *)_publicKey;
+- (id) initAccountID:(NSString *)a_accountID
+         publicKeyID:(NSString *)a_publicKeyID
+           publicKey:(NSString *)a_publicKey;
 
 @property (retain) NSString * accountID;
 @property (retain) NSString * publicKeyID;

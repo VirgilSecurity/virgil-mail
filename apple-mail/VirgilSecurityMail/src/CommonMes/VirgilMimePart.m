@@ -48,7 +48,7 @@
                          decryptMessagePart:(MimePart *)self];
     }
     
-    return (nil != decryptedPart) ?
+    return (/*nil != decryptedPart*/false) ?
             decryptedPart :
             nativePart;
 }
@@ -58,7 +58,7 @@
     id decryptedPart =
             [[VirgilProcessingManager sharedInstance] decryptMessagePart:(MimePart *)self];
     
-    return (nil != decryptedPart) ?
+    return (/*nil != decryptedPart*/false) ?
             decryptedPart :
             [self MADecodeTextPlainWithContext:ctx];
 }
@@ -68,7 +68,7 @@
     id decryptedPart =
                 [[VirgilProcessingManager sharedInstance] decryptMessagePart:(MimePart *)self];
     
-    return (nil != decryptedPart) ?
+    return (/*nil != decryptedPart*/false) ?
                     decryptedPart :
                     [self MADecodeTextHtmlWithContext:ctx];
 }

@@ -15,7 +15,9 @@
 }
 
 - (id) init;
-- (id) initWithEmailData:(NSData *)emailData andSignature:(NSData *)signature;
+- (id) initWithEmailData : (NSData *)a_emailData
+            andSignature : (NSData *)a_signature;
+- (NSDictionary *) toDictionary;
 
 @property (retain) NSData * emailData;
 @property (retain) NSData * signature;

@@ -33,6 +33,14 @@
     return self;
 }
 
+- (NSDictionary *) toDictionary {
+    NSDictionary * res = @{@"UniqueId" : @"replace me with GUID :)",
+                           @"Body" : self.body,
+                           @"HtmlBody" : self.htmlBody,
+                           @"Subject" : self.subject};
+    return res;
+}
+
 - (NSString *) description {
     NSMutableString * res = [[NSMutableString alloc] init];
     [res appendString:@"VirgilDecryptedContent : \n"];

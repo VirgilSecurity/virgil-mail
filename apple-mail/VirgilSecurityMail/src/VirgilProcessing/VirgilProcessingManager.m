@@ -248,12 +248,14 @@
     return bodyData;
 }
 
-- (NSString *) getSenderFromFullName : (NSString *) name {
+- (NSString *) getEmailFromFullName : (NSString *) name {
     if (nil == name) return nil;
 
     NSRange range = [name rangeOfString:@"<"];
+    if (NSNotFound == range.location) return name;
     NSString * rightPart = [name substringFromIndex : range.location + 1];
     range = [rightPart rangeOfString:@">"];
+    if (NSNotFound == range.location) return name;
     NSString * emailPart = [rightPart substringToIndex:range.location];
     return emailPart;
 }
@@ -263,7 +265,7 @@
     if (nil == mainVirgilPart) return NO;
     Message * message = [(MimeBody *)[topMimePart mimeBody] message];
     NSSet * allMimeParts = [self allMimeParts:topMimePart];
-    NSString * sender = [self getSenderFromFullName:[message sender]];
+    NSString * sender = [self getEmailFromFullName:[message sender]];
     NSString * senderPublicKey = [self getPublicKeyForAccount:sender];
     NSString * receiver = [self getMyAccountFromMessage:message];
     NSString * publicId = [self getPublicIdForAccount:receiver];
@@ -271,13 +273,17 @@
     NSString * privateKeyPassword = [self getPrivateKeyPasswordForAccount:receiver];
     VirgilEncryptedContent * encryptedContent = [self getMainEncryptedData:
                                                  [self getEncryptedContent:mainVirgilPart]];
-    
+
     if (nil == sender ||
         nil == senderPublicKey ||
         nil == receiver ||
         nil == publicId ||
         nil == privateKey ||
         nil == encryptedContent) {
+        NSLog(@"sender : %@", sender);
+        NSLog(@"senderPublicKey : %@", senderPublicKey);
+        NSLog(@"receiver : %@", receiver);
+        NSLog(@"publicId : %@", publicId);
         NSLog(@"ERROR : Can't decrypt message !");
         return NO;
     }
@@ -384,26 +390,76 @@
 - (NSString *) baseMailHTML {
     // TODO: Load from external source
     return @"<html>\n<body>"
-    "<p>The message has been encrypted with VirgilOutlook Add-In.</p>"
-    "<a href='https://virgilsecurity.com/downloads/' >Download Virgil Outlook Add-In.</a>"
+    "<p>The message has been encrypted with Virgil Security Plugin.</p>"
+    "<a href='https://virgilsecurity.com/downloads/' >Download Virgil Security Plugin.</a>"
     "<input id='virgil-info' type='hidden' value='%@' />"
     "</body></html>";
 }
 
 - (NSString *) baseMailPlain {
-    return @"The message has been encrypted with VirgilOutlook Add-In.\n"
-    "Download Virgil Outlook Add-In. <https://virgilsecurity.com/downloads/>";
+    return @"The message has been encrypted with Virgil Security Plugin.\n"
+    "Download Virgil Security Plugin. <https://virgilsecurity.com/downloads/>";
 }
 
-- (NSData *) encryptContent : (VirgilDecryptedContent *)content
+- (NSString *) encryptContent : (VirgilDecryptedContent *)content
+               attachements : (NSDictionary *) attachements
                      sender : (NSString *) sender
                   receivers : (NSArray *) receivers {
-    return nil;
-}
+    
+    
+    
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject : [content toDictionary]
+                                                       options : 0
+                                                         error : &error];
+    
+    NSLog(@"jsonData    =  %@",
+          [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding]);
+    
+    if (!jsonData) {
+        NSLog(@"JSON creation error: %@", error.localizedDescription);
+        return nil;
+    }
+    
+    NSString * fixedSender = [self getEmailFromFullName : sender];
+    
+    // Get all public keys
+    NSMutableArray * publicKeys = [[NSMutableArray alloc] init];
+    for (NSString * receiverEmail in receivers) {
+        NSString * fixedReceiver = [self getEmailFromFullName : receiverEmail];
+        VirgilPublicKey * publicKey = [VirgilPKIManager getPublicKey : fixedReceiver];
+        [publicKeys addObject : publicKey];
+    }
+    
+    VirgilPublicKey * publicKeyForSender = [VirgilPKIManager getPublicKey : fixedSender];
+    [publicKeys addObject : publicKeyForSender];
+    
+    // Encrypt email data
+    NSData * encryptedEmailBody = [VirgilCryptoLibWrapper encryptData : jsonData
+                                                           publicKeys : [publicKeys copy]];
+    
+    // Create signature
+    NSString * privateKey = [self getPrivateKeyForAccount : fixedSender];
+    NSString * privateKeyPassword = [self getPrivateKeyPasswordForAccount: fixedSender];
+    NSData * signature = [VirgilCryptoLibWrapper signatureForData : encryptedEmailBody
+                                                   withPrivateKey : privateKey
+                                                privatKeyPassword : privateKeyPassword];
+    
+    
+    VirgilEncryptedContent * encryptedContent =
+            [[VirgilEncryptedContent alloc] initWithEmailData : encryptedEmailBody
+                                                 andSignature : signature];
 
-- (NSData *) signEncryptedData : (NSData *)data
-                        sender : (NSString *) sender {
-    return nil;
+    // Prepare base64 result data
+    NSData *jsonEncryptedData = [NSJSONSerialization dataWithJSONObject : [encryptedContent toDictionary]
+                                                                options : 0
+                                                                  error : &error];
+    if (!jsonEncryptedData) {
+        NSLog(@"JSON creation error: %@", error.localizedDescription);
+        return nil;
+    }
+
+    return [jsonEncryptedData base64EncodedString];
 }
 
 - (Subdata *) createMailBodyDataWithData : (NSData *)data
@@ -532,10 +588,6 @@
     return contentSubdata;
 }
 
-- (NSString *) wrapEncryptedContent : (VirgilEncryptedContent *) content {
-    return @"Test data";
-}
-
 - (BOOL) encryptMessage : (WebComposeMessageContents *)message
                  result : (OutgoingMessage *)result {
     NSString * sender = [[NSString alloc] initWithString:[result.headers firstAddressForKey:@"from"]];
@@ -560,20 +612,12 @@
     
     NSLog(@"%@", decryptedContent);
     
-    NSData * encryptedData = [self encryptContent : decryptedContent
+    NSString * encryptedData = [self encryptContent : decryptedContent
+                                     attachements : nil
                                            sender : sender
                                         receivers : receivers];
     
-    NSData * signature = [self signEncryptedData : encryptedData
-                                          sender : sender];
-    
-    VirgilEncryptedContent * encryptedContent =
-            [[VirgilEncryptedContent alloc] initWithEmailData : encryptedData
-                                                 andSignature : signature];
-    
-    NSString * base64DataStr = [self wrapEncryptedContent : encryptedContent];
-    
-    NSString * mailBodyStr = [[NSString alloc] initWithFormat:[self baseMailHTML], base64DataStr];
+    NSString * mailBodyStr = [[NSString alloc] initWithFormat:[self baseMailHTML], encryptedData];
     
     NSLog(@"mailBodyStr %@", mailBodyStr);
     

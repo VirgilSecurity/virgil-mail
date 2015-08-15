@@ -19,6 +19,7 @@
 - (id) initWithSubject:(NSString *)asubject
                   body:(NSString *)abody
               htmlBody:(NSString *)ahtmlBody;
+- (NSDictionary *) toDictionary;
 
 @property (retain) NSString * subject;
 @property (retain) NSString * body;

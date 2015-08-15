@@ -23,15 +23,26 @@
     return self;
 }
 
-- (id) initAccountID:(NSString *)_accountID
-         publicKeyID:(NSString *)_publicKeyID
-           publicKey:(NSString *)_publicKey {
+- (id) initAccountID:(NSString *)a_accountID
+         publicKeyID:(NSString *)a_publicKeyID
+           publicKey:(NSString *)a_publicKey {
     if ([super init]) {
-        self.accountID = [[NSString alloc] initWithString:_accountID];
-        self.publicKeyID = [[NSString alloc] initWithString:_publicKeyID];
-        self.publicKey = [[NSString alloc] initWithString:_publicKey];
+        self.accountID = [[NSString alloc] initWithString:a_accountID];
+        self.publicKeyID = [[NSString alloc] initWithString:a_publicKeyID];
+        self.publicKey = [[NSString alloc] initWithString:a_publicKey];
     }
     return self;
+}
+
+- (NSString *) description {
+    NSMutableString * res = [[NSMutableString alloc] init];
+    [res appendString:@"VirgilPublicKey : \n"];
+    [res appendString:@"{ \n"];
+    [res appendFormat:@"accountID : %@\n", self.accountID];
+    [res appendFormat:@"publicKeyID : %@\n", self.publicKeyID];
+    [res appendFormat:@"publicKey : %@\n", self.publicKey];
+    [res appendString:@"} \n"];
+    return res;
 }
 
 @end

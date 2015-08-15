@@ -42,6 +42,7 @@ static const std::string VIRGIL_PKI_APP_TOKEN = "e88c4106cfddb959d62afb14a767c3e
 @implementation VirgilPKIManager
 
 + (VirgilPublicKey *) getPublicKey:(NSString *) account {
+    if (nil == account) return nil;
     try {
         // Search for key in cache
         VirgilPublicKey * res([_publicKeyCache objectForKey:account]);
