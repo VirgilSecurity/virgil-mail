@@ -328,10 +328,8 @@
     if (nil == mimePart) return nil;
     MimePart * topMimePart = [self topLevelPartByAnyPart:mimePart];
     
-    NSLog(@"%@", topMimePart);
-    
     if (![self isEncryptedByVirgil:topMimePart]) {
-        // Current email isn't decripted by Virgil
+        // Current email isn't decrypted by Virgil
         return nil;
     }
     
@@ -376,6 +374,15 @@
             if ([email isEqualTo:addressee.address]) {
                 return email;
             }
+        }
+    }
+    
+    // Check for sender is me
+    NSString * sender = [self getEmailFromFullName:[message sender]];
+    
+    for (NSString * email in myAccounts) {
+        if ([email isEqualTo : sender]) {
+            return email;
         }
     }
     
