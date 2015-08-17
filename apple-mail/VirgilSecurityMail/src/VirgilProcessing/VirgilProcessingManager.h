@@ -20,6 +20,7 @@
 // Encryption
 - (BOOL) isNeedToEncrypt;
 - (BOOL) encryptMessage : (WebComposeMessageContents *)message
+            attachments : (NSArray *)attachments
                  result : (OutgoingMessage *)result;
 
 - (BOOL) inviteMessage : (WebComposeMessageContents *)message

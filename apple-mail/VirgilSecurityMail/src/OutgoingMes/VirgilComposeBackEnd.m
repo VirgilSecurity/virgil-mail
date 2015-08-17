@@ -8,6 +8,7 @@
 
 #import "VirgilComposeBackEnd.h"
 #import "VirgilProcessingManager.h"
+#import <MCAttachment.h>
 
 @implementation VirgilComposeBackEnd
 
@@ -21,7 +22,7 @@
 
     VirgilProcessingManager * _vpm = [VirgilProcessingManager sharedInstance];
     BOOL _needEncryption = [_vpm isNeedToEncrypt];
-
+    
     OutgoingMessage * result = [self MA_makeMessageWithContents : contents
                                                         isDraft : isDraft
                                                      shouldSign : shouldSign
@@ -33,7 +34,26 @@
         return result;
     }
     
+    // Prepare attachments array
+    NSMutableArray * attachments = [[NSMutableArray alloc] init];
+    @try {
+        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            for (MCAttachment * attach in [self attachments]) {
+                [attachments addObject:[attach copy]];
+            }
+            dispatch_semaphore_signal(semaphore);
+        });
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    }
+    @catch (NSException *exception) {
+    }
+    @finally {
+    }
+    
+    NSLog(@"Attach count 2 : %lu", [attachments count]);
     if (YES == [_vpm encryptMessage : contents
+                        attachments : [attachments copy]
                              result : result]) {
         return result;
     }

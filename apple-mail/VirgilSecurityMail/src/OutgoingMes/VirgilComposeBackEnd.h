@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "WebComposeMessageContents.h"
+#import <WebComposeMessageContents.h>
+#import <ComposeBackEnd.h>
 
 @interface VirgilComposeBackEnd : NSObject
 
@@ -37,5 +38,10 @@
 - (id) MAInitCreatingDocumentEditor : (BOOL)createDocumentEditor;
 - (void) MASetKnowsCanSign : (BOOL)knowsCanSign;
 - (BOOL) MA_saveThreadShouldCancel;
-
 @end
+
+@interface VirgilComposeBackEnd (NativeComposeBackEndMethods)
+- (BOOL) containsAttachments;
+- (id) attachments;
+@end
+

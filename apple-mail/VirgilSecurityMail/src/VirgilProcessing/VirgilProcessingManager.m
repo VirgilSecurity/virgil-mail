@@ -26,6 +26,7 @@
 #import <Subdata.h>
 #import <MutableMessageHeaders.h>
 #import <MessageWriter.h>
+#import <MCAttachment.h>
 
 @implementation VirgilProcessingManager
 
@@ -409,7 +410,6 @@
 }
 
 - (NSString *) encryptContent : (VirgilDecryptedContent *)content
-               attachements : (NSDictionary *) attachements
                      sender : (NSString *) sender
                   receivers : (NSArray *) receivers {
     
@@ -469,10 +469,43 @@
     return [jsonEncryptedData base64EncodedString];
 }
 
-- (Subdata *) createMailBodyDataWithData : (NSData *)data
+- (NSArray *) encryptAttachments : (NSArray *) attachments
+                          sender : (NSString *) sender
+                       receivers : (NSArray *) receivers {
+    if (nil == attachments || 0 == [attachments count]) return nil;
+    
+    NSString * fixedSender = [self getEmailFromFullName : sender];
+    
+    // Get all public keys
+    NSMutableArray * publicKeys = [[NSMutableArray alloc] init];
+    for (NSString * receiverEmail in receivers) {
+        NSString * fixedReceiver = [self getEmailFromFullName : receiverEmail];
+        VirgilPublicKey * publicKey = [VirgilPKIManager getPublicKey : fixedReceiver];
+        [publicKeys addObject : publicKey];
+    }
+    
+    VirgilPublicKey * publicKeyForSender = [VirgilPKIManager getPublicKey : fixedSender];
+    [publicKeys addObject : publicKeyForSender];
+    
+    // Encrypt all attachments
+    NSMutableArray * res = [[NSMutableArray alloc] init];
+    for (MCAttachment * attach in attachments) {
+        MCAttachment * encryptedAttach = [attach copy];
+        NSData * encryptedContent = [VirgilCryptoLibWrapper encryptData : encryptedAttach.originalData
+                                                             publicKeys : [publicKeys copy]];
+        if (nil != encryptedContent) {
+            NSString * base64Str = [encryptedContent base64EncodedString];
+            encryptedAttach.originalData = [base64Str dataUsingEncoding : NSUTF8StringEncoding];
+            [res addObject:encryptedAttach];
+        }
+    }
+    return [res copy];
+}
+
+- (Subdata *) createMailBodyDataWithData : (NSData *) data
                     plainTextAlternative : (NSString *) plainText
-                            attachements : (NSDictionary *)attachements
-                                 headers : (MutableMessageHeaders *)headers {
+                             attachments : (NSArray *) attachments
+                                 headers : (MutableMessageHeaders *) headers {
     if (nil == data || nil == headers) {
         return nil;
     }
@@ -490,8 +523,8 @@
     
     MimePart * htmlPart = nil;
     NSData * htmlData = data;
-    
-    //TODO: Add attachment parts :NSMutableArray * attachmentParts = [[NSMutableArray alloc] init];
+
+    MimePart * attachPart = nil;
     
     Class MimePart = [VirgilClassNameResolver resolveClassFromName:@"MimePart"];
     
@@ -526,30 +559,35 @@
     htmlPart.contentTransferEncoding = @"7bit";
     
     
-    // TODO: Create attachement parts
-    /*
-    for (NSString * key in [attachements allKeys]) {
-        MimePart * attachPart = [[MimePart alloc] init];
-        [attachPart setType:@"multipart"];
-        [attachPart setSubtype:@"mixed"];
-        [attachPart setBodyParameter:boundary forKey:@"boundary"];
-        attachPart.contentTransferEncoding = @"7bit";
-        attachmentParts
-    }
-     */
-    
     // Create parts tree
     [alternativePart addSubpart : textPart];
     [alternativePart addSubpart : htmlPart];
     
     [topPart addSubpart : alternativePart];
-    // TODO: Add text part and attachements parts
     
     CFMutableDictionaryRef partBodyMapRef = CFDictionaryCreateMutable(NULL, 0, NULL, NULL);
     CFDictionaryAddValue(partBodyMapRef, (__bridge const void *)(topPart), (__bridge const void *)(topData));
     CFDictionaryAddValue(partBodyMapRef, (__bridge const void *)(alternativePart), (__bridge const void *)(alternativeData));
     CFDictionaryAddValue(partBodyMapRef, (__bridge const void *)(textPart), (__bridge const void *)(textData));
     CFDictionaryAddValue(partBodyMapRef, (__bridge const void *)(htmlPart), (__bridge const void *)(htmlData));
+    
+    
+    // Create and add attachement parts
+    for (MCAttachment * attach in attachments) {
+        attachPart = [[MimePart alloc] init];
+        [attachPart setType:@"text"];
+        [attachPart setSubtype:@"plain"];
+        [attachPart setBodyParameter : attach.filename
+                              forKey : @"name"];
+        attachPart.contentTransferEncoding = @"base64";
+        [attachPart setDisposition : @"attachment"];
+        [attachPart setDispositionParameter:attach.filename forKey:@"filename"];
+        
+        [topPart addSubpart : attachPart];
+        CFDictionaryAddValue(partBodyMapRef,
+                             (__bridge const void *)(attachPart),
+                             (__bridge const void *)(attach.originalData));
+    }
     
     NSMutableDictionary *partBodyMap = (__bridge NSMutableDictionary *)partBodyMapRef;
     
@@ -596,6 +634,7 @@
 }
 
 - (BOOL) encryptMessage : (WebComposeMessageContents *)message
+            attachments : (NSArray *)attachments
                  result : (OutgoingMessage *)result {
     NSString * sender = [[NSString alloc] initWithString:[result.headers firstAddressForKey:@"from"]];
     NSMutableArray * receivers = [[NSMutableArray alloc] init];
@@ -617,23 +656,19 @@
                                                        body : body
                                                    htmlBody : htmlBody];
     
-    NSLog(@"%@", decryptedContent);
-    
     NSString * encryptedData = [self encryptContent : decryptedContent
-                                     attachements : nil
-                                           sender : sender
-                                        receivers : receivers];
+                                             sender : sender
+                                          receivers : receivers];
     
     NSString * mailBodyStr = [[NSString alloc] initWithFormat:[self baseMailHTML], encryptedData];
     
-    NSLog(@"mailBodyStr %@", mailBodyStr);
-    
-    // TODO: Encrypt attachements
-    NSMutableArray * attachements = [[NSMutableArray alloc] init];
+    NSArray * encryptedAttachments = [self encryptAttachments : attachments
+                                                       sender : sender
+                                                    receivers : receivers];
     
     Subdata * newBodyData = [self createMailBodyDataWithData : [mailBodyStr dataUsingEncoding:NSUTF8StringEncoding]
                                         plainTextAlternative : [self baseMailPlain]
-                                                attachements : [attachements copy]
+                                                 attachments : encryptedAttachments
                                                      headers : [result headers]];
     
     [result setValue:[newBodyData valueForKey:@"_parentData"] forKey:@"_rawData"];
