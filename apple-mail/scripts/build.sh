@@ -12,7 +12,7 @@ function prepare() {
 }
 
 function build_project() {
-	xcodebuild -project ${SCRIPT_FOLDER}/libyuv.xcodeproj -arch x86_64 -configuration Debug #Release
+	xcodebuild -project ${SCRIPT_FOLDER}/../VirgilSecurityMail.xcodeproj -arch x86_64 -configuration Release
 	check_errors
 }
 
