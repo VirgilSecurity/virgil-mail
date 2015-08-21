@@ -1,25 +1,20 @@
 #!/bin/bash
 
 function make_dmg() {
-	ARG_DIR="$1"
-	ARG_APP_BUNDLE_NAME="$2"
-	ARG_IMG_FOLDER="$3"
-	ARG_ICON="$4"
-	ARG_BACKGROUND="$5"
-	ARG_APP_FOLDER_ICON="$6"
-	ARG_COORDS="$7"
-	ARG_SIZE="$8"
-	ARG_DMG_NAME="$9"
-	ARG_VOL_NAME="${10}"
+	ARG_DIR="${1}"
+	ARG_SRC_DIR_NAME="${2}"
+	ARG_IMG_FOLDER="${3}"
+	ARG_ICON="${4}"
+	ARG_BACKGROUND="${5}"
+	ARG_DMG_NAME="${6}"
+	ARG_VOL_NAME="${7}"
 	ARG_TMP_DIR="./tmp"
-	ARG_ADD_VERSION="${11}"
-	ARG_CODESIGN_ID="${12}"	
 
-	APP_BUNDLE_NAME="${ARG_APP_BUNDLE_NAME}"
-	echo "APP_BUNDLE_NAME=$APP_BUNDLE_NAME";
+	SRC_DIR_NAME="${ARG_SRC_DIR_NAME}"
+	echo "SRC_DIR_NAME=${SRC_DIR_NAME}";
 	
-	if [ ! -e "${ARG_DIR}"/"${APP_BUNDLE_NAME}" ]; then
-		echo "Error! Bundle \"${APP_BUNDLE_NAME}\" does not exist!"
+	if [ ! -e "${ARG_DIR}"/"${SRC_DIR_NAME}" ]; then
+		echo "Error! Bundle \"${SRC_DIR_NAME}\" does not exist!"
 		exit 1
 	fi
 
@@ -44,7 +39,7 @@ function make_dmg() {
 	echo "VOL_NAME=$VOL_NAME";
 
 	if [ ! "${VOL_NAME}" ]; then
-		VOL_NAME=${APP_BUNDLE_NAME%.*}
+		VOL_NAME=${SRC_DIR_NAME%.*}
 		echo "Defaulting dmg volume name to ${VOL_NAME}"
 	fi
 
@@ -54,31 +49,21 @@ function make_dmg() {
 	VOL_ICON_NAME=${ARG_ICON}
 	echo "VOL_ICON_NAME=$VOL_ICON_NAME";
 
-	if [ "${ARG_ADD_VERSION}" ]; then
-		APP_VERSION=`/usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "${ARG_DIR}"/"${APP_BUNDLE_NAME}/Contents/Info.plist"`
-		APP_BUILD_VERSION=`/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "${ARG_DIR}"/"${APP_BUNDLE_NAME}/Contents/Info.plist"`
-		DMG_NAME_SUFFIX=" ${APP_VERSION}.${APP_BUILD_VERSION}"
-	else
-		APP_VERSION=
-		APP_BUILD_VERSION=
-		DMG_NAME_SUFFIX=
-	fi
-
-	DMG_NAME_TMP="${ARG_DIR}"/"${APP_BUNDLE_NAME%.*}_tmp.dmg"
+	DMG_NAME_TMP="${ARG_DIR}"/"${SRC_DIR_NAME%.*}_tmp.dmg"
 	echo "DMG_NAME_TMP=$DMG_NAME_TMP";
 
 	if [ "${ARG_DMG_NAME}" ]; then
 		DMG_NAME_BASE=${ARG_DMG_NAME}
 	else
-		DMG_NAME_BASE=${APP_BUNDLE_NAME%.*}
+		DMG_NAME_BASE=${SRC_DIR_NAME%.*}
 	fi
 
 	DMG_NAME="${DMG_NAME_BASE}.dmg"
 	echo "DMG_NAME=$DMG_NAME";
 
-	echo -n "*** Copying ${APP_BUNDLE_NAME} to the temporary dir... "
+	echo -n "*** Copying content of ${SRC_DIR_NAME} to the temporary dir... "
 	mkdir "$TMP_DIR"
-	cp -R "${ARG_DIR}"/"${APP_BUNDLE_NAME}" ${TMP_DIR}/
+	cp -R "${ARG_DIR}"/"${SRC_DIR_NAME}/" ${TMP_DIR}/
 	echo "done!"
 
 	echo -n "*** Unmount disk image with same name if present..."
@@ -179,4 +164,6 @@ function make_dmg() {
 	echo "
 	*** Everything done. DMG disk image is ready for distribution.
 	"
+	
+	exit 0
 }
