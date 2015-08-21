@@ -1,0 +1,10 @@
+#!/bin/bash
+
+ps -xo command -u "$USER" | grep -q '/\Mail.app/' || exit 0
+
+echo "Restart Mail.app"
+
+killall Mail
+osascript -e "tell application \"/Applications/Mail.app\" to activate"
+
+exit 0
