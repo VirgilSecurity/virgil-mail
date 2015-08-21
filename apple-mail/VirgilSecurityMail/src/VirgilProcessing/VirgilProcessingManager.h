@@ -35,4 +35,6 @@
 
 @property (readonly) VirgilDecryptedMail * decryptedMail;
 
+@property BOOL useEncryption;
+
 @end

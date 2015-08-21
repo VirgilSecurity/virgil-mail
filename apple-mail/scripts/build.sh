@@ -80,7 +80,7 @@ function create_pkg() {
 
 function create_dmg() {
 	echo -e "\n---------------- Create DMG file --------------------"
-	source ${SCRIPT_FOLDER}/make_dmg.sh
+	source ${SCRIPT_FOLDER}/make-dmg.sh
 
 	echo "Prepare folder for dmg creation ..."
 	rm -rf "${DMG_PREPARE_FOLDER}"

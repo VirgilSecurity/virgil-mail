@@ -1,4 +1,5 @@
 build
+virgil-libs
 xcuserdata/
 .DS_Store
 *.depends

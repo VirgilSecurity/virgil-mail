@@ -46,6 +46,7 @@
 
 - (id) init{
     _decryptedMail = [[VirgilDecryptedMail alloc] init];
+    _useEncryption = YES;
     return [super init];
 }
 
@@ -391,8 +392,7 @@
 }
 
 - (BOOL) isNeedToEncrypt {
-    // TODO: Fill this variable correctly
-    return YES;
+    return _useEncryption;
 }
 
 - (NSString *) baseMailHTML {

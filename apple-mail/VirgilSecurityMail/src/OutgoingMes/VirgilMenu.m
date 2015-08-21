@@ -8,6 +8,7 @@
 
 #import "VirgilMenu.h"
 #import "VirgilNSWindow.h"
+#import "VirgilProcessingManager.h"
 #import "NSBezierPath_KBAdditions.h"
 #import "NSBezierPath+StrokeExtensions.h"
 #import <Cocoa/Cocoa.h>
@@ -162,6 +163,9 @@
         }
     }
 
+    VirgilProcessingManager * vpm = [VirgilProcessingManager sharedInstance];
+    vpm.useEncryption = _useEncryption;
+    
     [self menuDidClose:self.menu];
     [self updateAndCenterLabel];
     [self setNeedsDisplay:YES];

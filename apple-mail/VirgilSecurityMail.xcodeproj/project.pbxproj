@@ -92,7 +92,6 @@
 		D15362C01B6F3555000215F9 /* VirgilCryptoLibWrapper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VirgilCryptoLibWrapper.mm; path = VirgilSecurityMail/src/VirgilProcessing/VirgilCryptoLibWrapper.mm; sourceTree = "<group>"; };
 		D15362C31B6F62E4000215F9 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+Base64.h"; path = "VirgilSecurityMail/src/Helpers/Base64/NSData+Base64.h"; sourceTree = "<group>"; };
 		D15362C41B6F62E4000215F9 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+Base64.m"; path = "VirgilSecurityMail/src/Helpers/Base64/NSData+Base64.m"; sourceTree = "<group>"; };
-		D1C99B4E1B861E4400374AF2 /* libzmq.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzmq.a; path = "../../../../../../Volumes/Macintosh HD 2/usr/local/lib/libzmq.a"; sourceTree = "<group>"; };
 		D1CBA84A1B7BC43900217919 /* VirgilDocumentEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilDocumentEditor.h; path = VirgilSecurityMail/src/OutgoingMes/VirgilDocumentEditor.h; sourceTree = "<group>"; };
 		D1CBA84B1B7BC43900217919 /* VirgilDocumentEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilDocumentEditor.m; path = VirgilSecurityMail/src/OutgoingMes/VirgilDocumentEditor.m; sourceTree = "<group>"; };
 		D1CBA84D1B7BC55300217919 /* VirgilMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilMenu.h; path = VirgilSecurityMail/src/OutgoingMes/VirgilMenu.h; sourceTree = "<group>"; };
@@ -148,7 +147,6 @@
 		D11174351B67FBEE00DD9A39 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D1C99B4E1B861E4400374AF2 /* libzmq.a */,
 				D13F60471B6A3ADD00508C79 /* AppKit.framework */,
 				D11174361B67FBEE00DD9A39 /* CoreFoundation.framework */,
 			);
@@ -379,7 +377,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "################################################\n# Install the bundle in ~/Library/Mail/bundles #\n################################################\n\nrm -fr \"$HOME/Library/Mail/Bundles/$FULL_PRODUCT_NAME\"\n\n# Copy the Bundle\nmkdir -p ~/Library/Mail/Bundles/\ncp -RH \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\" \"$HOME/Library/Mail/Bundles/\"\n";
+			shellScript = "################################################\n# Install the bundle in ~/Library/Mail/bundles #\n################################################\n\nrm -fr \"$HOME/Library/Mail/Bundles/$FULL_PRODUCT_NAME\"\n\n# Copy the Bundle\nmkdir -p ~/Library/Mail/Bundles/\ncp -RH \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\" \"$HOME/Library/Mail/Bundles/\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -533,7 +531,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"VirgilSecurityMail/src/MailHeaders/**",
 					/usr/include/libxml2,
-					"/usr/local/include/**",
+					"virgil-libs/include",
 				);
 				INFOPLIST_FILE = "VirgilSecurityMail/VirgilSecurityMail-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Mail/Bundles";
@@ -545,6 +543,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				"OTHER_LDFLAGS[arch=*]" = (
+					"-Lvirgil-libs/lib",
 					"-lcurl",
 					"-lxml2",
 					"-lvirgil",
@@ -579,7 +578,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"VirgilSecurityMail/src/MailHeaders/**",
 					/usr/include/libxml2,
-					"/usr/local/include/**",
+					"virgil-libs/include",
 				);
 				INFOPLIST_FILE = "VirgilSecurityMail/VirgilSecurityMail-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Mail/Bundles";
@@ -590,6 +589,19 @@
 					2/usr/local/lib,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				"OTHER_LDFLAGS[arch=*]" = (
+					"-Lvirgil-libs/lib",
+					"-lcurl",
+					"-lxml2",
+					"-lvirgil",
+					"-lvirgil_sdk_keys",
+					"-lrestless",
+					"-lmbedtls",
+					"-lssl",
+					"-lcrypto",
+					"-lldap",
+					"-lz",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx10.10;
 				VALID_ARCHS = x86_64;

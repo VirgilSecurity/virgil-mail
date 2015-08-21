@@ -1,0 +1,3 @@
+[submodule "apple-mail/virgil-cpp"]
+	path = apple-mail/virgil-cpp
+	url = https://kutashenko@github.com/VirgilSecurity/virgil-cpp.git

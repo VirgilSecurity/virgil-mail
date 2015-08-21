@@ -35,7 +35,6 @@ using virgil::sdk::keys::client::KeysClient;
 
 //------------ Static variables -------------
 static NSMutableDictionary * _publicKeyCache = [[NSMutableDictionary alloc] init];
-static const std::string VIRGIL_PKI_URL_BASE = "https://pki-stg.virgilsecurity.com/v1/";
 static const std::string VIRGIL_PKI_APP_TOKEN = "e88c4106cfddb959d62afb14a767c3e9";
 //------------ ~Static variables -------------
 
@@ -53,13 +52,9 @@ static const std::string VIRGIL_PKI_APP_TOKEN = "e88c4106cfddb959d62afb14a767c3e
         // Key in cache not present, lets download it
         
         const std::string _account([account UTF8String]);
-        KeysClient keysClient(std::make_shared<Connection>(VIRGIL_PKI_APP_TOKEN, VIRGIL_PKI_URL_BASE));
-        std::vector<PublicKey> publicKeys =
-        keysClient.publicKey().search(_account, UserDataType::emailId);
-        if (publicKeys.empty()) {
-            return nil;
-        }
-        const PublicKey publicKey(publicKeys.front());
+        KeysClient keysClient(VIRGIL_PKI_APP_TOKEN);
+        const PublicKey publicKey(keysClient.publicKey().grab(_account));
+        
         const std::string _key(virgil::crypto::bytes2str(publicKey.key()));
         
         NSString *nsAccountID = [NSString stringWithCString:publicKey.accountId().c_str()
