@@ -5,10 +5,10 @@ xcuserdata/
 *.depends
 *~
 *REMOTE*
-*LOCAL*
 *.BASE*
 *BACKUP*
 *.orig
 *.sqlite
 *.autosave
 Thumbs.db
+
