@@ -14,7 +14,7 @@
 #import "NSData+Base64.h"
 #import "VirgilEncryptedContent.h"
 #import "VirgilDecryptedContent.h"
-#import "VirgilPKIManager.h"
+#import "VirgilKeyManager.h"
 #import "VirgilClassNameResolver.h"
 
 #import <MessageStore.h>
@@ -153,13 +153,13 @@
 }
 
 - (NSString *) getPublicIdForAccount : (NSString *)account {
-    VirgilPublicKey * publicKey = [VirgilPKIManager getPublicKey:account];
+    VirgilPublicKey * publicKey = [VirgilKeyManager getPublicKey:account];
     if (nil == publicKey) return nil;
     return publicKey.publicKeyID;
 }
 
 - (NSString *) getPublicKeyForAccount : (NSString *)account {
-    VirgilPublicKey * publicKey = [VirgilPKIManager getPublicKey:account];
+    VirgilPublicKey * publicKey = [VirgilKeyManager getPublicKey:account];
     if (nil == publicKey) return nil;
     return publicKey.publicKey;
 }
@@ -434,11 +434,11 @@
     NSMutableArray * publicKeys = [[NSMutableArray alloc] init];
     for (NSString * receiverEmail in receivers) {
         NSString * fixedReceiver = [self getEmailFromFullName : receiverEmail];
-        VirgilPublicKey * publicKey = [VirgilPKIManager getPublicKey : fixedReceiver];
+        VirgilPublicKey * publicKey = [VirgilKeyManager getPublicKey : fixedReceiver];
         [publicKeys addObject : publicKey];
     }
     
-    VirgilPublicKey * publicKeyForSender = [VirgilPKIManager getPublicKey : fixedSender];
+    VirgilPublicKey * publicKeyForSender = [VirgilKeyManager getPublicKey : fixedSender];
     [publicKeys addObject : publicKeyForSender];
     
     // Encrypt email data
@@ -480,11 +480,11 @@
     NSMutableArray * publicKeys = [[NSMutableArray alloc] init];
     for (NSString * receiverEmail in receivers) {
         NSString * fixedReceiver = [self getEmailFromFullName : receiverEmail];
-        VirgilPublicKey * publicKey = [VirgilPKIManager getPublicKey : fixedReceiver];
+        VirgilPublicKey * publicKey = [VirgilKeyManager getPublicKey : fixedReceiver];
         [publicKeys addObject : publicKey];
     }
     
-    VirgilPublicKey * publicKeyForSender = [VirgilPKIManager getPublicKey : fixedSender];
+    VirgilPublicKey * publicKeyForSender = [VirgilKeyManager getPublicKey : fixedSender];
     [publicKeys addObject : publicKeyForSender];
     
     // Encrypt all attachments

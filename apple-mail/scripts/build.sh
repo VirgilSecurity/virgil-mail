@@ -89,7 +89,7 @@ function create_dmg() {
 	check_errors $?
 	
 	echo "Move content to dmg folder ..."
-	mv "${BUILD_FOLDER}/${MAIL_BUNDLE_NAME}.pkg" "${DMG_PREPARE_FOLDER}/${DMG_PACK_FOLDER}/Install.pkg"
+	mv "${BUILD_FOLDER}/${MAIL_BUNDLE_NAME}.pkg" "${DMG_PREPARE_FOLDER}/${DMG_PACK_FOLDER}/"
 	cp -rf "${UNINSTALL_APP}" "${DMG_PREPARE_FOLDER}/${DMG_PACK_FOLDER}/"
 	check_errors $?
 	

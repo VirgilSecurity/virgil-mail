@@ -7,20 +7,16 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>0EC658F6-6E11-41AF-9E8B-B0A589756751</string>
 	<key>IDESourceControlProjectName</key>
-	<string>VirgilSecurityMail</string>
+	<string>project</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>9B76F7F7455EC6A07EA1AD0D4AAF24D2E732CD1B</key>
-		<string>https://github.com/Homebrew/homebrew</string>
 		<key>B61EEFF91CBF844E2F72C143CE779333F41C4094</key>
 		<string>https://github.com/VirgilSecurity/virgil-mail.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>apple-mail/VirgilSecurityMail.xcodeproj</string>
+	<string>apple-mail/VirgilSecurityMail.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>9B76F7F7455EC6A07EA1AD0D4AAF24D2E732CD1B</key>
-		<string>../../../../../../../../Volumes/Macintosh%20HD%202/usr/local</string>
 		<key>B61EEFF91CBF844E2F72C143CE779333F41C4094</key>
 		<string>../../..</string>
 	</dict>
@@ -32,14 +28,6 @@
 	<string>B61EEFF91CBF844E2F72C143CE779333F41C4094</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
-		<dict>
-			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
-			<string>public.vcs.git</string>
-			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>9B76F7F7455EC6A07EA1AD0D4AAF24D2E732CD1B</string>
-			<key>IDESourceControlWCCName</key>
-			<string>local</string>
-		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
