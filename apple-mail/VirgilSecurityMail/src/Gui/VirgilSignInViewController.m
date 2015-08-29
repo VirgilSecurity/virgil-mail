@@ -35,20 +35,15 @@
  */
 
 #import "VirgilSignInViewController.h"
-#import "NSAttributedString+Hyperlink.h"
 #import "NSViewController+VirgilView.h"
 #import "VirgilKeyManager.h"
 #import "VirgilErrorViewController.h"
 #import "VirgilValidator.h"
+#import "VirgilKeysGui.h"
 
 @implementation VirgilSignInViewController
 
-static HyperlinkTextField * linkForgotPassword = nil;
-static HyperlinkTextField * linkRegister = nil;
-static VirgilPrivateKey * _privateKey = nil;
-
 - (IBAction)onSignInClicked:(id)sender {
-    _privateKey = nil;
     NSTextField * emailField = [self.view viewWithTag : 2000];
     NSSecureTextField * passwordField = [self.view viewWithTag : 2001];
     
@@ -73,51 +68,34 @@ static VirgilPrivateKey * _privateKey = nil;
     // Get key request
     VirgilPrivateKey * res = [VirgilKeyManager getPrivateKey : email
                                            containerPassword : password];
-    if (nil != res) {
-        _privateKey = res;
-    } else {
+    if (nil == res) {
         [self showErrorView : [VirgilKeyManager lastError]];
+    } else {
+        [self onCloseClicked:nil];
     }
-}
-- (IBAction)onCloseClicked:(id)sender {
-    _privateKey = nil;
-    [[[self view] window] close];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    NSString * resetPasswordLink = @"https://virgilsecurity.com/reset";
     
-    linkForgotPassword = [self.view viewWithTag : 1000];
-    linkRegister = [self.view viewWithTag : 1001];
-    
-    [linkForgotPassword setAttributedStringValue :
-     [NSAttributedString hyperlinkFromString : @"Forgot password"
-                                     withURL : [NSURL URLWithString : resetPasswordLink]]];
-    
-    [linkRegister setAttributedStringValue :
-     [NSAttributedString hyperlinkFromString : @"Sign up for free."
-                                     withURL : nil]];
-    
-    linkRegister.linkDelegate = self;
-}
-
-- (void) setCurrentAccount : (NSString *) account {
-    if (nil == account) return;
     NSTextField * emailField = [self.view viewWithTag : 2000];
     if (!emailField) return;
-    [emailField setStringValue : account];
+    NSString * currentAccount = [VirgilKeysGui currentAccount];
+    if (nil == currentAccount) return;
+    [emailField setStringValue : currentAccount];
 }
 
-- (void) linkClicked:(id)sender {
-    if (linkRegister == (HyperlinkTextField *)sender) {
-        [self changeView : @"viewRegister"];
-    }
+- (IBAction)onCloseClicked:(id)sender {
+    [self closeWindow];
 }
 
-+ (VirgilPrivateKey *) getResult {
-    return _privateKey;
+- (IBAction)onForgotClicked:(id)sender {
+    NSURL *url = [NSURL URLWithString:@"https://virgilsecurity.com/reset"];
+    [[NSWorkspace sharedWorkspace] openURL : url];
+}
+
+- (IBAction)onSignUpClicked:(id)sender {
+    [self changeView : @"viewRegister"];
 }
 
 @end

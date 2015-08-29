@@ -36,11 +36,16 @@
 
 #import "VirgilKeysGui.h"
 #import "VirgilSignInViewController.h"
+#import "VirgilKeyManager.h"
 
 @implementation VirgilKeysGui
 
+NSString * _currentAccount = @"";
+
 + (VirgilPrivateKey *) getPrivateKey : (NSString *) account {
     // Get active mail write window
+    
+     _currentAccount = account;
     
     NSWindow * containerWindow = [[NSApplication sharedApplication] mainWindow];
     if (nil == containerWindow) return nil;
@@ -69,17 +74,11 @@
             
             NSWindow * controllerWindow = [windowControler window];
             if (nil == controllerWindow) return;
-
-            
-            id viewController = [windowControler contentViewController];
-            if ([viewController respondsToSelector:@selector(setCurrentAccount:)]) {
-                [viewController setCurrentAccount : account];
-            }
             
             [containerWindow beginSheet : controllerWindow
-                      completionHandler : nil];
-            
-            dispatch_semaphore_signal(semaphore);
+                      completionHandler : ^(NSModalResponse returnCode) {
+                          dispatch_semaphore_signal(semaphore);
+                      }];
         });
         dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
     }
@@ -88,7 +87,11 @@
     @finally {
     }
     
-    return [VirgilSignInViewController getResult];
+    return [VirgilKeyManager getCachedPrivateKey : account];
+}
+
++ (NSString *) currentAccount {
+    return _currentAccount;
 }
 
 @end

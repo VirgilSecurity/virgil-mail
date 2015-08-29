@@ -670,15 +670,15 @@
                 <userDefaultsController representsSharedInstance="YES" id="UN0-4r-W27"/>
                 <viewController storyboardIdentifier="viewSignIn" id="XfG-lQ-9wD" customClass="VirgilSignInViewController" sceneMemberID="viewController">
                     <view key="view" identifier="viewSignIn" id="m2S-Jp-Qdl">
-                        <rect key="frame" x="0.0" y="0.0" width="334" height="224"/>
+                        <rect key="frame" x="0.0" y="0.0" width="342" height="226"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <textField verticalHuggingPriority="750" tag="2000" translatesAutoresizingMaskIntoConstraints="NO" id="Hmg-M2-tD3">
-                                <rect key="frame" x="20" y="143" width="294" height="22"/>
+                            <textField verticalHuggingPriority="750" misplaced="YES" tag="2000" translatesAutoresizingMaskIntoConstraints="NO" id="Hmg-M2-tD3">
+                                <rect key="frame" x="20" y="145" width="294" height="22"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="220" id="DoP-uD-iRE"/>
                                 </constraints>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Your Email Address" bezelStyle="round" id="rmP-zF-EMv">
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Your Email Address" bezelStyle="round" id="rmP-zF-EMv">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -687,53 +687,16 @@
                                     <outlet property="nextKeyView" destination="Hfh-RP-KHz" id="VMz-gy-0wk"/>
                                 </connections>
                             </textField>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0eX-np-UoA">
-                                <rect key="frame" x="130" y="52" width="83" height="32"/>
-                                <buttonCell key="cell" type="push" title="Sign In" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="zk6-wo-dhG">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                    <connections>
-                                        <action selector="onSignInClicked:" target="XfG-lQ-9wD" id="SP1-0R-cMU"/>
-                                    </connections>
-                                </buttonCell>
-                                <connections>
-                                    <outlet property="nextKeyView" destination="Hmg-M2-tD3" id="yMM-Ik-APu"/>
-                                </connections>
-                            </button>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="qRS-ec-nRi">
-                                <rect key="frame" x="84" y="185" width="176" height="19"/>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qRS-ec-nRi">
+                                <rect key="frame" x="84" y="187" width="176" height="19"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Virgil Security Sign In" id="2Cd-3e-Kyk">
                                     <font key="font" metaFont="systemBold" size="16"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField identifier="linkForgotPassword" horizontalHuggingPriority="251" verticalHuggingPriority="750" tag="1000" translatesAutoresizingMaskIntoConstraints="NO" id="eE8-Yr-NVT" customClass="HyperlinkTextField">
-                                <rect key="frame" x="115" y="88" width="112" height="17"/>
-                                <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="center" tag="1000" title="Forgot password" id="ZWm-UP-f9u" userLabel="linkForgotPassword">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1Ca-Kp-1FI">
-                                <rect key="frame" x="24" y="22" width="157" height="17"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="I'm not a registered user." id="dUV-SA-eSR">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                            <textField identifier="linkRegister" horizontalHuggingPriority="251" verticalHuggingPriority="750" tag="1001" translatesAutoresizingMaskIntoConstraints="NO" id="A8p-e3-CzT" customClass="HyperlinkTextField">
-                                <rect key="frame" x="185" y="22" width="100" height="17"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Sign up for free" id="d3f-Zd-Jjq">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                            <secureTextField verticalHuggingPriority="750" tag="2001" translatesAutoresizingMaskIntoConstraints="NO" id="Hfh-RP-KHz">
-                                <rect key="frame" x="20" y="113" width="294" height="22"/>
+                            <secureTextField verticalHuggingPriority="750" misplaced="YES" tag="2001" translatesAutoresizingMaskIntoConstraints="NO" id="Hfh-RP-KHz">
+                                <rect key="frame" x="20" y="115" width="294" height="22"/>
                                 <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Your Password" usesSingleLineMode="YES" bezelStyle="round" id="146-ky-tbY">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -746,8 +709,8 @@
                                     <outlet property="nextKeyView" destination="0eX-np-UoA" id="kTv-N6-2qq"/>
                                 </connections>
                             </secureTextField>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="JOO-0S-VaA">
-                                <rect key="frame" x="244" y="52" width="76" height="32"/>
+                            <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JOO-0S-VaA">
+                                <rect key="frame" x="244" y="67" width="76" height="32"/>
                                 <buttonCell key="cell" type="push" title="Close" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="0dX-TE-OjF">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -756,34 +719,65 @@
                                     <action selector="onCloseClicked:" target="XfG-lQ-9wD" id="M6j-nt-ZvP"/>
                                 </connections>
                             </button>
+                            <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RdL-V9-hDt">
+                                <rect key="frame" x="40" y="19" width="264" height="19"/>
+                                <buttonCell key="cell" type="recessed" title="I'm not a registered user. Sign up for free" bezelStyle="recessed" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="VqZ-aG-yeo">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
+                                    <font key="font" metaFont="systemBold" size="12"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="onSignUpClicked:" target="XfG-lQ-9wD" id="Bi2-Yb-b7C"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rOq-gJ-Pqi">
+                                <rect key="frame" x="109" y="45" width="117" height="19"/>
+                                <buttonCell key="cell" type="recessed" title="Forgot password" bezelStyle="recessed" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="xaQ-6U-5rc">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
+                                    <font key="font" metaFont="systemBold" size="12"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="onForgotClicked:" target="XfG-lQ-9wD" id="XuT-hu-wch"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0eX-np-UoA">
+                                <rect key="frame" x="131" y="67" width="83" height="32"/>
+                                <buttonCell key="cell" type="push" title="Sign In" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="zk6-wo-dhG">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                    <connections>
+                                        <action selector="onSignInClicked:" target="XfG-lQ-9wD" id="SP1-0R-cMU"/>
+                                    </connections>
+                                </buttonCell>
+                                <connections>
+                                    <outlet property="nextKeyView" destination="Hmg-M2-tD3" id="yMM-Ik-APu"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="A8p-e3-CzT" secondAttribute="bottom" constant="20" symbolic="YES" id="0LM-kP-rIX"/>
-                            <constraint firstAttribute="centerX" secondItem="eE8-Yr-NVT" secondAttribute="centerX" constant="-4" id="3KC-9t-efz"/>
-                            <constraint firstAttribute="centerX" secondItem="0eX-np-UoA" secondAttribute="centerX" constant="-4.5" id="64r-Gb-ric"/>
                             <constraint firstAttribute="trailing" secondItem="JOO-0S-VaA" secondAttribute="trailing" constant="20" symbolic="YES" id="7AV-jF-0T2"/>
                             <constraint firstItem="Hmg-M2-tD3" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" symbolic="YES" id="9gJ-k3-kWB"/>
-                            <constraint firstItem="0eX-np-UoA" firstAttribute="top" secondItem="eE8-Yr-NVT" secondAttribute="bottom" constant="8" symbolic="YES" id="C87-b8-CSu"/>
                             <constraint firstItem="Hmg-M2-tD3" firstAttribute="top" secondItem="qRS-ec-nRi" secondAttribute="bottom" constant="20" id="CJI-GZ-EcC"/>
+                            <constraint firstItem="rOq-gJ-Pqi" firstAttribute="top" secondItem="0eX-np-UoA" secondAttribute="bottom" constant="10" id="DuU-cD-vY6"/>
+                            <constraint firstItem="RdL-V9-hDt" firstAttribute="top" secondItem="rOq-gJ-Pqi" secondAttribute="bottom" constant="10" id="FiN-fk-8L3"/>
                             <constraint firstAttribute="trailing" secondItem="Hfh-RP-KHz" secondAttribute="trailing" constant="20" symbolic="YES" id="Fk8-dJ-B34"/>
-                            <constraint firstItem="1Ca-Kp-1FI" firstAttribute="top" secondItem="0eX-np-UoA" secondAttribute="bottom" constant="20" id="Gx7-o9-WhW"/>
                             <constraint firstItem="Hfh-RP-KHz" firstAttribute="top" secondItem="Hmg-M2-tD3" secondAttribute="bottom" constant="8" symbolic="YES" id="GzW-pa-RKv"/>
-                            <constraint firstItem="A8p-e3-CzT" firstAttribute="top" secondItem="0eX-np-UoA" secondAttribute="bottom" constant="20" id="HmE-uu-7OF"/>
                             <constraint firstAttribute="centerX" secondItem="qRS-ec-nRi" secondAttribute="centerX" constant="-4.5" id="JhL-5c-nBM"/>
-                            <constraint firstAttribute="centerX" secondItem="A8p-e3-CzT" secondAttribute="centerX" constant="-68" id="UO9-2x-R6O"/>
+                            <constraint firstAttribute="centerX" secondItem="0eX-np-UoA" secondAttribute="centerX" constant="-1.5" id="O01-iM-brE"/>
+                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="RdL-V9-hDt" secondAttribute="bottom" constant="20" symbolic="YES" id="PQV-HC-iUO"/>
+                            <constraint firstItem="0eX-np-UoA" firstAttribute="top" secondItem="Hfh-RP-KHz" secondAttribute="bottom" constant="20" symbolic="YES" id="PcQ-oD-hhd"/>
+                            <constraint firstItem="rOq-gJ-Pqi" firstAttribute="top" secondItem="JOO-0S-VaA" secondAttribute="bottom" constant="10" id="Qte-g8-yHU"/>
                             <constraint firstItem="Hfh-RP-KHz" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Hmg-M2-tD3" secondAttribute="bottom" constant="15" id="WcQ-Yr-gp2"/>
-                            <constraint firstItem="A8p-e3-CzT" firstAttribute="leading" secondItem="1Ca-Kp-1FI" secondAttribute="trailing" constant="8" symbolic="YES" id="dZh-pL-5nx"/>
-                            <constraint firstItem="1Ca-Kp-1FI" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" symbolic="YES" id="et0-ch-9ET"/>
-                            <constraint firstItem="A8p-e3-CzT" firstAttribute="top" secondItem="JOO-0S-VaA" secondAttribute="bottom" constant="20" id="j2l-DJ-3vB"/>
+                            <constraint firstAttribute="centerX" secondItem="RdL-V9-hDt" secondAttribute="centerX" constant="-5" id="Zhy-cf-gKY"/>
+                            <constraint firstItem="JOO-0S-VaA" firstAttribute="top" secondItem="Hfh-RP-KHz" secondAttribute="bottom" constant="20" symbolic="YES" id="bPr-Gu-Dkp"/>
+                            <constraint firstAttribute="centerX" secondItem="rOq-gJ-Pqi" secondAttribute="centerX" constant="-0.5" id="i4B-jc-Bjt"/>
                             <constraint firstAttribute="trailing" secondItem="Hmg-M2-tD3" secondAttribute="trailing" constant="20" symbolic="YES" id="lQY-cg-iVn"/>
-                            <constraint firstItem="eE8-Yr-NVT" firstAttribute="top" secondItem="Hfh-RP-KHz" secondAttribute="bottom" constant="8" symbolic="YES" id="nFq-Ut-3zi"/>
                             <constraint firstItem="qRS-ec-nRi" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="20" id="tlr-ud-hhz"/>
                             <constraint firstItem="Hfh-RP-KHz" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" symbolic="YES" id="yIn-UB-1wq"/>
                         </constraints>
                     </view>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="-513" y="464"/>
+            <point key="canvasLocation" x="-517" y="464"/>
         </scene>
         <!--Virgil Error View Controller-->
         <scene sceneID="EXv-C3-fuW">
@@ -827,7 +821,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="220" id="v8h-hZ-fUv"/>
                                 </constraints>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Your Email Address" bezelStyle="round" id="DDe-Ia-Tyt">
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Your Email Address" bezelStyle="round" id="DDe-Ia-Tyt">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>

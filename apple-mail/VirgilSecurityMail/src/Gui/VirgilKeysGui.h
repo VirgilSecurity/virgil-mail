@@ -45,4 +45,6 @@
 
 + (VirgilPrivateKey*) getPrivateKey : (NSString *) account;
 
++ (NSString *) currentAccount;
+
 @end

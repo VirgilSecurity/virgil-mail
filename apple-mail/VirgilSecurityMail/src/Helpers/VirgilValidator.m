@@ -112,4 +112,17 @@
     return YES;
 }
 
+/**
+ * @brief EMail code validator
+ * Simple password validator rulest:
+ * - lenght 6 characters
+ * - latin upper case letters and digits only
+ */
++ (BOOL) emailCode : (NSString *) candidate {
+    if (nil == candidate) return NO;
+    if([candidate length] != 6) return NO;
+    // TODO: Other checks
+    return YES;
+}
+
 @end

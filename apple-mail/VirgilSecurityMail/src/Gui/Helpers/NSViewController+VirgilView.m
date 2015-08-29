@@ -87,4 +87,12 @@
     return YES;
 }
 
+- (void) closeWindow {
+    NSWindow * mainWindow = [[NSApplication sharedApplication] mainWindow];
+    NSWindow * curWindow = [[self view] window];
+    [mainWindow endSheet : curWindow
+              returnCode : NSModalResponseStop];
+    [curWindow close];
+}
+
 @end

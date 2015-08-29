@@ -259,7 +259,10 @@ static VirgilPrivateKeyEndpoints * _endpoints =
     if (nil == account) return nil;
     
     // Search for key in cache
-    VirgilPrivateKey * res([_privateKeyCache objectForKey : account]);
+    
+    NSLog(@"_privateKeyCache [request] : %@", _privateKeyCache);
+    
+    VirgilPrivateKey * res([_privateKeyCache valueForKey : account]);
     if (nil != res) {
         return res;
     }
@@ -286,11 +289,12 @@ static VirgilPrivateKeyEndpoints * _endpoints =
                                     keyPassword : nil
                               containerPassword : containerPassword];
     
+    NSLog(@"%@", res);
     // Add new key to cache
-    [_privateKeyCache setObject : res
-                         forKey : account];
+    [_privateKeyCache setValue : res
+                        forKey : account];
     
-    NSLog(@"Private key : %@", res);
+    NSLog(@"_privateKeyCache [set] : %@", _privateKeyCache);
     
     return res;
 }
@@ -357,6 +361,15 @@ static VirgilPrivateKeyEndpoints * _endpoints =
     if ([VirgilNetRequest post : [_endpoints getKeyPush]
                        headers : headers
                           data : data]) {
+        // Add new key to cache
+        VirgilPrivateKey * res =
+                [[VirgilPrivateKey alloc] initAccount : key.account
+                                        containerType : key.containerType
+                                           privateKey : encryptedKey
+                                          keyPassword : key.keyPassword
+                                    containerPassword : key.containerPassword];
+        [_privateKeyCache setValue : res
+                            forKey : res.account];
         return YES;
     }
     [VirgilPrivateKeyManager setErrorString : [VirgilNetRequest lastError]];

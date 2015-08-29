@@ -37,6 +37,7 @@
 #import "VirgilEmailConfirmViewController.h"
 #import "VirgilKeyManager.h"
 #import "NSViewController+VirgilView.h"
+#import "VirgilValidator.h"
 
 @interface VirgilEmailConfirmViewController ()
 
@@ -45,10 +46,18 @@
 @implementation VirgilEmailConfirmViewController
 
 - (IBAction)onAcceptClicked : (id)sender {
-    NSTextField * emailField = [self.view viewWithTag : 1000];
-    if (!emailField) return;
-    if ([VirgilKeyManager confirmAccountCreationWithCode : [emailField stringValue]]) {
-        [self changeView : @"viewSignIn"];
+    NSTextField * codeField = [self.view viewWithTag : 1000];
+    if (!codeField) return;
+    NSString * code = [codeField stringValue];
+    if (![VirgilValidator emailCode : code]) {
+        [self showCompactErrorView : @"Confirmation code should contains 6 letters and digits."
+                            atView : codeField];
+        return;
+    }
+    if ([VirgilKeyManager confirmAccountCreationWithCode : code]) {
+        [self closeWindow];
+    } else {
+        [self showErrorView : @"Wrong confirmation code. // TODO: resend"];
     }
 }
 

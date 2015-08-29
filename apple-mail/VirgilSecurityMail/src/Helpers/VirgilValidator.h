@@ -65,4 +65,12 @@
  */
 + (BOOL) simplePassword : (NSString *) candidate;
 
+/**
+ * @brief EMail code validator
+ * Simple password validator rulest:
+ * - lenght 6 characters
+ * - latin upper case letters and digits only
+ */
++ (BOOL) emailCode : (NSString *) candidate;
+
 @end

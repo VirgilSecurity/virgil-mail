@@ -99,7 +99,7 @@ struct {
     if (nil == account) return nil;
     try {
         // Search for key in cache
-        VirgilPublicKey * res([_publicKeyCache objectForKey:account]);
+        VirgilPublicKey * res([_publicKeyCache valueForKey : account]);
         if (nil != res) {
             return res;
         }

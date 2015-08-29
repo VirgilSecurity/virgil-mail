@@ -64,4 +64,9 @@
 - (BOOL) showCompactErrorView : (NSString *) errorText
                        atView : (NSView *) atView;
 
+/**
+ * @brief Close window (not view only) and send return code
+ */
+- (void) closeWindow;
+
 @end

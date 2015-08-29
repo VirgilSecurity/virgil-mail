@@ -154,6 +154,9 @@
     if (nil == privateKey) {
         privateKey = [VirgilKeysGui getPrivateKey : account];
     }
+    
+    NSLog(@"privateKey = %@", privateKey);
+    
     return privateKey;
 }
 
@@ -211,6 +214,8 @@
                                                          publicKeyId:publicKeyId
                                                           privateKey:privateKey
                                                   privateKeyPassword:privateKeyPassword];
+    
+    if (nil == decryptedJsonData) return nil;
     
     // Parse json data
     // result in emailDictionary
@@ -661,6 +666,8 @@
     NSString * encryptedData = [self encryptContent : decryptedContent
                                              sender : sender
                                           receivers : receivers];
+    
+    if (nil == encryptedData) return NO;
     
     NSString * mailBodyStr = [[NSString alloc] initWithFormat:[self baseMailHTML], encryptedData];
     
