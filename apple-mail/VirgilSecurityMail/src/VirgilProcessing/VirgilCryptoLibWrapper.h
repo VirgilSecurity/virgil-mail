@@ -42,6 +42,9 @@
               privateKey : (NSString *) privateKey
       privateKeyPassword : (NSString *) privateKeyPassword;
 
++ (NSData *) decryptData : (NSData *) data
+            withPassword : (NSString *) password;
+
 + (BOOL) isSignatureCorrect : (NSData *) signature
                        data : (NSData *) data
                   publicKey : (NSString *) publicKey;

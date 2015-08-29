@@ -91,22 +91,35 @@ using virgil::crypto::foundation::VirgilBase64;
         baData.assign(reinterpret_cast<const unsigned char*>([data bytes]),
                       reinterpret_cast<const unsigned char*>([data bytes]) + [data length]);
         
-        
-        
-        // Decrypt private key if need
-        if (!baPrivateKeyPassword.empty()) {
-            VirgilByteArray decryptedKey (
-                                          cipher.decryptWithPassword(
-                                                                     VirgilBase64::decode(_privateKeyData),
-                                                                     baPrivateKeyPassword
-                                                                     ));
-            baPrivateKey.assign(decryptedKey.begin(), decryptedKey.end());
-        }
-        
         // Decrypt
         const VirgilByteArray _readyData(cipher.decryptWithKey(baData,
                                                                baPublicKeyId,
                                                                baPrivateKey));
+        return [[NSData alloc] initWithBytes:_readyData.data() length:_readyData.size()];
+        
+    } catch (std::exception& exception) {
+        const std::string _error(exception.what());
+        NSLog(@"decryptData ERROR %s", _error.c_str());
+    }
+    return nil;
+}
+
++ (NSData *) decryptData : (NSData *) data
+            withPassword : (NSString *) password {
+    if (nil == data || nil == password) return nil;
+    
+    try {
+        // Prepare data
+        VirgilByteArray baData;
+        baData.assign(reinterpret_cast<const unsigned char*>([data bytes]),
+                      reinterpret_cast<const unsigned char*>([data bytes]) + [data length]);
+        
+        // Prepare private key password
+        const std::string _passwordData([password UTF8String]);
+        VirgilByteArray baPassword(_passwordData.begin(), _passwordData.end());
+        
+        VirgilByteArray _readyData(VirgilCipher().decryptWithPassword(baData, baPassword));
+        
         return [[NSData alloc] initWithBytes:_readyData.data() length:_readyData.size()];
         
     } catch (std::exception& exception) {

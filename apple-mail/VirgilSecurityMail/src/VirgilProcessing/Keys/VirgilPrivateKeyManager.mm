@@ -283,12 +283,15 @@ static VirgilPrivateKeyEndpoints * _endpoints =
     // TODO: get container type
     VirgilContainerType containerType = VirgilContainerEasy;
     
-    res = [[VirgilPrivateKey alloc] initAccount : account
+    VirgilPrivateKey * encryptedKey =
+          [[VirgilPrivateKey alloc] initAccount : account
                                   containerType : containerType
                                      privateKey : privateKey
                                     keyPassword : nil
                               containerPassword : containerPassword];
     
+    res = [VirgilPrivateKeyManager decryptKey : encryptedKey];
+    if (nil == res) return nil;
     NSLog(@"%@", res);
     // Add new key to cache
     [_privateKeyCache setValue : res
@@ -297,6 +300,32 @@ static VirgilPrivateKeyEndpoints * _endpoints =
     NSLog(@"_privateKeyCache [set] : %@", _privateKeyCache);
     
     return res;
+}
+
+/**
+ * @brief [Internal use] Decrypt key from Private Key Service.
+ * @param key - VirgilPrivateKey instance
+ * @return Decrypted key | nil - error occured, get error with [VirgilPrivateKeyManager lastError]
+ */
++ (VirgilPrivateKey *) decryptKey : (VirgilPrivateKey *) encryptedKey {
+    if (VirgilContainerEasy == encryptedKey.containerType) {
+        
+        NSData * encryptedKeyData = [NSData dataFromBase64String : encryptedKey.key];
+        NSData * decryptedKeyData = [VirgilCryptoLibWrapper decryptData : encryptedKeyData
+                                                           withPassword : encryptedKey.containerPassword];
+        if (nil == decryptedKeyData) return nil;
+        
+        return [[VirgilPrivateKey alloc] initAccount : encryptedKey.account
+                                       containerType : encryptedKey.containerType
+                                          privateKey : [[NSString alloc] initWithData : decryptedKeyData
+                                                                             encoding : NSUTF8StringEncoding]
+                                         keyPassword : encryptedKey.keyPassword
+                                   containerPassword : encryptedKey.containerPassword];
+    } else {
+        // TODO: support "normal" container type
+        [VirgilPrivateKeyManager setErrorString : @"try to decrypt not supported container type"];
+    }
+    return nil;
 }
 
 /**
@@ -362,14 +391,8 @@ static VirgilPrivateKeyEndpoints * _endpoints =
                        headers : headers
                           data : data]) {
         // Add new key to cache
-        VirgilPrivateKey * res =
-                [[VirgilPrivateKey alloc] initAccount : key.account
-                                        containerType : key.containerType
-                                           privateKey : encryptedKey
-                                          keyPassword : key.keyPassword
-                                    containerPassword : key.containerPassword];
-        [_privateKeyCache setValue : res
-                            forKey : res.account];
+        [_privateKeyCache setValue : key
+                            forKey : key.account];
         return YES;
     }
     [VirgilPrivateKeyManager setErrorString : [VirgilNetRequest lastError]];
