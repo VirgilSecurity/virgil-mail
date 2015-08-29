@@ -16,6 +16,8 @@
 #import "VirgilDecryptedContent.h"
 #import "VirgilKeyManager.h"
 #import "VirgilClassNameResolver.h"
+#import "VirgilPrivateKey.h"
+#import "VirgilKeysGui.h"
 
 #import <MessageStore.h>
 #import <MailAccount.h>
@@ -147,9 +149,12 @@
     return nil;
 }
 
-- (NSString *) getPrivateKeyForAccount : (NSString *)account {
-    // Use constant value for this time
-    return @"MIGfAgEAMIGZBgkqhkiG9w0BBwOggYswgYgCAQMxV6NVMFMCAQAwJAYKKoZIhvcNAQwBAzAWBBAMKuoeF3fDHXJ5qAeaK4NTAgIIAAQosVGG15kw52JBtZ07I/QX08Sfb1A3snrkClkR2Y8uYAJU/pKmDv3y2jAqBgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBBvH7Oitl+lSt2Gpg/YQ3/Wsr6q5KhXokHSQQcUyBQ3raTUY5pR7vY/BC534ItgPJygpvVS1Z6yFukzePXordVYvJ748CN+qtCTHmIFx41c64mXgH80XBLBuWiiDpeAwSKuXVjAte9ZtM2cksiRFXzUFm7l3cx3RUG6hC3J2CMDI61bHTc95MqBCrLX6sNi5NVvwCfxaEasUqwVxlPjkfHX1wwXNJbcKVVaubEXw1IoM2ZywjOwkQHm3okBFbfiqWEptv25r5h2pTrvwS/xuRZSeYcGAIVxn5BpEXrX+wKyA1LL0/nn4JHFa1Zsx5mM/PjUisK4SfArJVHRFhpTc8WxMBXV/i0k5FAczP5vF2uBerYxyjdpHF8mTA9aafXOGXJNmrZKCc5EhwfQeYGagzS5HexLprFB6ZGnCllQOrkajg8p45CTNCtuMsjv82TcJniwT7DtFBMhYmVOUHHgzVZpwKBKa52v3w5kpZ3XFCrR7duwHS4kkltFC8kRn6O7WPI=";
+- (VirgilPrivateKey *) getPrivateKeyForAccount : (NSString *)account {
+    VirgilPrivateKey * privateKey = [VirgilKeyManager getCachedPrivateKey : account];
+    if (nil == privateKey) {
+        privateKey = [VirgilKeysGui getPrivateKey : account];
+    }
+    return privateKey;
 }
 
 - (NSString *) getPublicIdForAccount : (NSString *)account {
@@ -162,11 +167,6 @@
     VirgilPublicKey * publicKey = [VirgilKeyManager getPublicKey:account];
     if (nil == publicKey) return nil;
     return publicKey.publicKey;
-}
-
-- (NSString *) getPrivateKeyPasswordForAccount : (NSString *)account {
-    // Use constant value for this time
-    return @"ram12345";
 }
 
 // Get EmailData and signature
@@ -271,8 +271,7 @@
     NSString * senderPublicKey = [self getPublicKeyForAccount:sender];
     NSString * receiver = [self getMyAccountFromMessage:message];
     NSString * publicId = [self getPublicIdForAccount:receiver];
-    NSString * privateKey = [self getPrivateKeyForAccount:receiver];
-    NSString * privateKeyPassword = [self getPrivateKeyPasswordForAccount:receiver];
+    VirgilPrivateKey * privateKey = [self getPrivateKeyForAccount : receiver];
     VirgilEncryptedContent * encryptedContent = [self getMainEncryptedData:
                                                  [self getEncryptedContent:mainVirgilPart]];
 
@@ -299,9 +298,8 @@
     
     VirgilDecryptedContent * decryptedContent = [self decryptContent:encryptedContent
                                                          publicKeyId:publicId
-                                                          privateKey:privateKey
-                                                  privateKeyPassword:privateKeyPassword];
-    
+                                                          privateKey:privateKey.key
+                                                  privateKeyPassword:privateKey.keyPassword];
     
     // Prepare decrypted mail data
     // and set decrypted mail part
@@ -316,8 +314,8 @@
         if (nil == encryptedAttachement) continue;
         NSData * decryptedAttachement = [VirgilCryptoLibWrapper decryptData:encryptedAttachement
                                                                 publicKeyId:publicId
-                                                                 privateKey:privateKey
-                                                         privateKeyPassword:privateKeyPassword];
+                                                                 privateKey:privateKey.key
+                                                         privateKeyPassword:privateKey.keyPassword];
         if (nil == decryptedAttachement) continue;
         [_decryptedMail addAttachement:decryptedAttachement
                             attachHash:[part attachmentFilename]];
@@ -412,14 +410,10 @@
 - (NSString *) encryptContent : (VirgilDecryptedContent *)content
                      sender : (NSString *) sender
                   receivers : (NSArray *) receivers {
-    
-    
-    
     NSError *error;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject : [content toDictionary]
                                                        options : 0
                                                          error : &error];
-    
     NSLog(@"jsonData    =  %@",
           [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding]);
     
@@ -429,28 +423,36 @@
     }
     
     NSString * fixedSender = [self getEmailFromFullName : sender];
+    VirgilPrivateKey * privateKey = [self getPrivateKeyForAccount:fixedSender];
+    if (nil == privateKey) return nil;
     
     // Get all public keys
     NSMutableArray * publicKeys = [[NSMutableArray alloc] init];
+    
+    VirgilPublicKey * publicKeyForSender = [VirgilKeyManager getPublicKey : fixedSender];
+    if (nil == publicKeyForSender) return nil;
+    [publicKeys addObject : publicKeyForSender];
+    
+    NSLog(@"sender : %@", sender);
+    NSLog(@"receivers : %@", receivers);
+    
     for (NSString * receiverEmail in receivers) {
         NSString * fixedReceiver = [self getEmailFromFullName : receiverEmail];
         VirgilPublicKey * publicKey = [VirgilKeyManager getPublicKey : fixedReceiver];
-        [publicKeys addObject : publicKey];
+        if (nil != publicKey) {
+            [publicKeys addObject : publicKey];
+        }
     }
-    
-    VirgilPublicKey * publicKeyForSender = [VirgilKeyManager getPublicKey : fixedSender];
-    [publicKeys addObject : publicKeyForSender];
     
     // Encrypt email data
     NSData * encryptedEmailBody = [VirgilCryptoLibWrapper encryptData : jsonData
                                                            publicKeys : [publicKeys copy]];
     
     // Create signature
-    NSString * privateKey = [self getPrivateKeyForAccount : fixedSender];
-    NSString * privateKeyPassword = [self getPrivateKeyPasswordForAccount: fixedSender];
+    if (nil == privateKey) return nil;
     NSData * signature = [VirgilCryptoLibWrapper signatureForData : encryptedEmailBody
-                                                   withPrivateKey : privateKey
-                                                privatKeyPassword : privateKeyPassword];
+                                                   withPrivateKey : privateKey.key
+                                                privatKeyPassword : privateKey.keyPassword];
     
     
     VirgilEncryptedContent * encryptedContent =

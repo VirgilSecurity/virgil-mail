@@ -34,21 +34,37 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "VirgilEmailConfirmViewController.h"
-#import "VirgilKeyManager.h"
-#import "NSViewController+VirgilView.h"
+#import "VirgilReplaceAnimator.h"
 
-@interface VirgilEmailConfirmViewController ()
+@implementation VirgilReplaceAnimator
 
-@end
+#define kPushAnimationDuration 0.3f
 
-@implementation VirgilEmailConfirmViewController
+- (void)animatePresentationOfViewController : (NSViewController *)viewController
+                         fromViewController : (NSViewController *)fromViewController {
+    NSWindow * window = fromViewController.view.window;
+    if (nil != window) {
+        [NSAnimationContext runAnimationGroup : ^(NSAnimationContext *context) {
+            fromViewController.view.animator.alphaValue = 0;
+        } completionHandler:^{
+            viewController.view.alphaValue = 0;
+            window.contentViewController = viewController;
+            viewController.view.animator.alphaValue = 1.0;
+        }];
+    }
+}
 
-- (IBAction)onAcceptClicked : (id)sender {
-    NSTextField * emailField = [self.view viewWithTag : 1000];
-    if (!emailField) return;
-    if ([VirgilKeyManager confirmAccountCreationWithCode : [emailField stringValue]]) {
-        [self changeView : @"viewSignIn"];
+- (void)animateDismissalOfViewController : (NSViewController *)viewController
+                      fromViewController : (NSViewController *)fromViewController {
+    NSWindow * window = fromViewController.view.window;
+    if (nil != window) {
+        [NSAnimationContext runAnimationGroup : ^(NSAnimationContext *context) {
+            viewController.view.animator.alphaValue = 0;
+        } completionHandler:^{
+            fromViewController.view.alphaValue = 0;
+            window.contentViewController = fromViewController;
+            fromViewController.view.animator.alphaValue = 1.0;
+        }];
     }
 }
 

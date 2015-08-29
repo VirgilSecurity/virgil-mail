@@ -34,22 +34,50 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "VirgilEmailConfirmViewController.h"
-#import "VirgilKeyManager.h"
-#import "NSViewController+VirgilView.h"
+#import "VirgilPrivateKey.h"
 
-@interface VirgilEmailConfirmViewController ()
-
-@end
-
-@implementation VirgilEmailConfirmViewController
-
-- (IBAction)onAcceptClicked : (id)sender {
-    NSTextField * emailField = [self.view viewWithTag : 1000];
-    if (!emailField) return;
-    if ([VirgilKeyManager confirmAccountCreationWithCode : [emailField stringValue]]) {
-        [self changeView : @"viewSignIn"];
-    }
+@implementation VirgilPrivateKey
++ (id) alloc {
+    return [super alloc];
 }
 
+- (id) init {
+    if ([super init]) {
+        self.account = @"";
+        self.containerType = VirgilContainerUnknown;
+        self.key = @"";
+        self.keyPassword = @"";
+        self.containerPassword = @"";
+    }
+    return self;
+}
+
+- (id) initAccount : (NSString *)a_account
+     containerType : (VirgilContainerType)a_containerType
+        privateKey : (NSString *)a_key
+       keyPassword : (NSString *)a_keyPassword
+ containerPassword : (NSString *)a_containerPassword {
+    if ([super init]) {
+        self.account = [[NSString alloc] initWithString : a_account];
+        self.containerType = a_containerType;
+        self.key = [[NSString alloc] initWithString : a_key];
+        self.keyPassword = (nil == a_keyPassword) ? nil : [[NSString alloc] initWithString : a_keyPassword];
+        self.containerPassword = [[NSString alloc] initWithString : a_containerPassword];
+    }
+    return self;
+}
+
+// TODO: Remove it !
+- (NSString *) description {
+    NSMutableString * res = [[NSMutableString alloc] init];
+    [res appendString:@"VirgilPrivateKey : \n"];
+    [res appendString:@"{ \n"];
+    [res appendFormat:@"account : %@\n", self.account];
+    [res appendFormat:@"containerType : %ld\n", (long)self.containerType];
+    [res appendFormat:@"keyPassword : %@\n", self.keyPassword];
+    [res appendFormat:@"containerPassword : %@\n", self.containerPassword];
+    [res appendFormat:@"key : %@\n", self.key];
+    [res appendString:@"} \n"];
+    return res;
+}
 @end

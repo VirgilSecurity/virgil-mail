@@ -1,15 +1,45 @@
-//
-//  VirgilSignInViewController.m
-//  TestGUI
-//
-//  Created by Роман Куташенко on 22.08.15.
-//  Copyright (c) 2015 Virgil Security. All rights reserved.
-//
+/**
+ * Copyright (C) 2015 Virgil Security Inc.
+ *
+ * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
+ *
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ *
+ *     (1) Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *
+ *     (2) Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in
+ *     the documentation and/or other materials provided with the
+ *     distribution.
+ *
+ *     (3) Neither the name of the copyright holder nor the names of its
+ *     contributors may be used to endorse or promote products derived from
+ *     this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
 
 #import "VirgilSignInViewController.h"
 #import "NSAttributedString+Hyperlink.h"
-#import "VirgilReplaceAnimator.h"
+#import "NSViewController+VirgilView.h"
 #import "VirgilKeyManager.h"
+#import "VirgilErrorViewController.h"
+#import "VirgilValidator.h"
 
 @implementation VirgilSignInViewController
 
@@ -17,10 +47,35 @@ HyperlinkTextField * linkForgotPassword = nil;
 HyperlinkTextField * linkRegister = nil;
 
 - (IBAction)onSignInClicked:(id)sender {
-    VirgilPrivateKey * res = [VirgilKeyManager getPrivateKey : @"test-1914@yandex.ru"//@"kutashenko@gmail.com"
-                                                    password : @"ram12345"];
-    NSLog(@"VirgilPrivateKey = %@", res);
-    return;
+    NSTextField * emailField = [self.view viewWithTag : 2000];
+    NSSecureTextField * passwordField = [self.view viewWithTag : 2001];
+    
+    if (!emailField || !passwordField) return;
+    
+    NSString * email = [emailField stringValue];
+    NSString * password = [passwordField stringValue];
+    
+    // Verify input data
+    if (NO == [VirgilValidator email : email]) {
+        [self showCompactErrorView : @"Check email address input please."
+                            atView : emailField];
+        return;
+    }
+    
+    if (NO == [VirgilValidator simplePassword : password]) {
+        [self showCompactErrorView : @"Password can't be empty, can't contains not latin letters."
+                            atView : passwordField];
+        return;
+    }
+    
+    // Get key request
+    VirgilPrivateKey * res = [VirgilKeyManager getPrivateKey : email
+                                           containerPassword : password];
+    if (nil != res) {
+        //TODO: pass data to logics
+    } else {
+        [self showErrorView : [VirgilKeyManager lastError]];
+    }
 }
 
 - (void)viewDidLoad {
@@ -42,29 +97,10 @@ HyperlinkTextField * linkRegister = nil;
     linkRegister.linkDelegate = self;
 }
 
-- (void)setRepresentedObject:(id)representedObject {
-    [super setRepresentedObject:representedObject];
-}
-
 - (void) linkClicked:(id)sender {
     if (linkRegister == (HyperlinkTextField *)sender) {
         [self changeView : @"viewRegister"];
     }
-}
-
-- (BOOL) changeView : (NSString *) newViewName {
-    NSStoryboard * storyboard = [self storyboard];
-    
-    if (nil == storyboard) return NO;
-    NSViewController * controller =
-    (NSViewController*)[storyboard instantiateControllerWithIdentifier : newViewName];
-    
-    if (nil == controller) return NO;
-    
-    [self presentViewController : controller
-                       animator : [[VirgilReplaceAnimator alloc] init]];
-    
-    return YES;
 }
 
 @end

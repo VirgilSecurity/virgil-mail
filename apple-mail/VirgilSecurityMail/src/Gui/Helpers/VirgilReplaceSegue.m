@@ -34,21 +34,21 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "VirgilEmailConfirmViewController.h"
-#import "VirgilKeyManager.h"
-#import "NSViewController+VirgilView.h"
+#import "VirgilReplaceSegue.h"
+#import "VirgilReplaceAnimator.h"
 
-@interface VirgilEmailConfirmViewController ()
+@implementation VirgilReplaceSegue
 
-@end
-
-@implementation VirgilEmailConfirmViewController
-
-- (IBAction)onAcceptClicked : (id)sender {
-    NSTextField * emailField = [self.view viewWithTag : 1000];
-    if (!emailField) return;
-    if ([VirgilKeyManager confirmAccountCreationWithCode : [emailField stringValue]]) {
-        [self changeView : @"viewSignIn"];
+/**
+ * @brief Do view replacement
+ */
+- (void) perform {
+    NSViewController * fromViewController = self.sourceController;
+    NSViewController * toViewController = self.destinationController;
+    
+    if (nil != fromViewController && nil != toViewController) {
+        [fromViewController presentViewController : toViewController
+                                         animator : [[VirgilReplaceAnimator alloc] init]];
     }
 }
 

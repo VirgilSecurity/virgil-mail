@@ -34,22 +34,35 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "VirgilEmailConfirmViewController.h"
-#import "VirgilKeyManager.h"
-#import "NSViewController+VirgilView.h"
+#import <Foundation/Foundation.h>
 
-@interface VirgilEmailConfirmViewController ()
+/**
+ * @brief Collection of different validators
+ */
+@interface VirgilValidator : NSObject
 
-@end
+/**
+ * @brief Email validator.
+ */
++ (BOOL) email : (NSString *) candidate;
 
-@implementation VirgilEmailConfirmViewController
+/**
+ * @brief Password validator
+ * Password validator rulest:
+ * - charactes count >= 10
+ * - more then one lowercase letter
+ * - more then upper lowercase letter
+ * - more then one digit
+ * - more then one special character
+ */
++ (BOOL) password : (NSString *) candidate;
 
-- (IBAction)onAcceptClicked : (id)sender {
-    NSTextField * emailField = [self.view viewWithTag : 1000];
-    if (!emailField) return;
-    if ([VirgilKeyManager confirmAccountCreationWithCode : [emailField stringValue]]) {
-        [self changeView : @"viewSignIn"];
-    }
-}
+/**
+ * @brief Simple password validator
+ * Simple password validator rulest:
+ * - not empty
+ * - letters should be latin only
+ */
++ (BOOL) simplePassword : (NSString *) candidate;
 
 @end

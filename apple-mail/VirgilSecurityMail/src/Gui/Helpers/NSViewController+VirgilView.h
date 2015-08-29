@@ -33,23 +33,35 @@
  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+#import <Cocoa/Cocoa.h>
 
-#import "VirgilEmailConfirmViewController.h"
-#import "VirgilKeyManager.h"
-#import "NSViewController+VirgilView.h"
+/**
+ * @category Category to extend NSViewController for add ViewControllers change, error show and etc.
+ */
 
-@interface VirgilEmailConfirmViewController ()
+@interface NSViewController (VirgilView)
 
-@end
+/**
+ * @brief Replace current view by newViewName using VirgilReplaceAnimator
+ * @param newViewName - view name to show
+ * @return YES - success | NO - can't show need view
+ */
+- (BOOL) changeView : (NSString *) newViewName;
 
-@implementation VirgilEmailConfirmViewController
+/**
+ * @brief Show error message in sheet view
+ * @param errorText - text to show
+ * @return YES - success | NO - can't show need view
+ */
+- (BOOL) showErrorView : (NSString *) errorText;
 
-- (IBAction)onAcceptClicked : (id)sender {
-    NSTextField * emailField = [self.view viewWithTag : 1000];
-    if (!emailField) return;
-    if ([VirgilKeyManager confirmAccountCreationWithCode : [emailField stringValue]]) {
-        [self changeView : @"viewSignIn"];
-    }
-}
+/**
+ * @brief Show error message in popover view at right edge of neew view element
+ * @param errorText - text to show
+ * @param atView - NSView instance near which popover will be shown
+ * @return YES - success | NO - can't show need view
+ */
+- (BOOL) showCompactErrorView : (NSString *) errorText
+                       atView : (NSView *) atView;
 
 @end

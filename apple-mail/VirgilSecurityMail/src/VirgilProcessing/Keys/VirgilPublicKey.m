@@ -34,22 +34,43 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "VirgilEmailConfirmViewController.h"
-#import "VirgilKeyManager.h"
-#import "NSViewController+VirgilView.h"
+#import "VirgilPublicKey.h"
 
-@interface VirgilEmailConfirmViewController ()
+@implementation VirgilPublicKey : NSObject
 
-@end
++ (id) alloc {
+    return [super alloc];
+}
 
-@implementation VirgilEmailConfirmViewController
-
-- (IBAction)onAcceptClicked : (id)sender {
-    NSTextField * emailField = [self.view viewWithTag : 1000];
-    if (!emailField) return;
-    if ([VirgilKeyManager confirmAccountCreationWithCode : [emailField stringValue]]) {
-        [self changeView : @"viewSignIn"];
+- (id) init {
+    if ([super init]) {
+        self.accountID = @"";
+        self.publicKeyID = @"";
+        self.publicKey = @"";
     }
+    return self;
+}
+
+- (id) initAccountID:(NSString *)a_accountID
+         publicKeyID:(NSString *)a_publicKeyID
+           publicKey:(NSString *)a_publicKey {
+    if ([super init]) {
+        self.accountID = [[NSString alloc] initWithString:a_accountID];
+        self.publicKeyID = [[NSString alloc] initWithString:a_publicKeyID];
+        self.publicKey = [[NSString alloc] initWithString:a_publicKey];
+    }
+    return self;
+}
+
+- (NSString *) description {
+    NSMutableString * res = [[NSMutableString alloc] init];
+    [res appendString:@"VirgilPublicKey : \n"];
+    [res appendString:@"{ \n"];
+    [res appendFormat:@"accountID : %@\n", self.accountID];
+    [res appendFormat:@"publicKeyID : %@\n", self.publicKeyID];
+    [res appendFormat:@"publicKey : %@\n", self.publicKey];
+    [res appendString:@"} \n"];
+    return res;
 }
 
 @end

@@ -34,22 +34,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "VirgilEmailConfirmViewController.h"
-#import "VirgilKeyManager.h"
-#import "NSViewController+VirgilView.h"
+#import <Foundation/Foundation.h>
 
-@interface VirgilEmailConfirmViewController ()
-
-@end
-
-@implementation VirgilEmailConfirmViewController
-
-- (IBAction)onAcceptClicked : (id)sender {
-    NSTextField * emailField = [self.view viewWithTag : 1000];
-    if (!emailField) return;
-    if ([VirgilKeyManager confirmAccountCreationWithCode : [emailField stringValue]]) {
-        [self changeView : @"viewSignIn"];
-    }
+@interface VirgilPublicKey : NSObject {
+@public
+    NSString * accountID;
+    NSString * publicKeyID;
+    NSString * publicKey;
 }
+
+- (id) init;
+- (id) initAccountID:(NSString *)a_accountID
+         publicKeyID:(NSString *)a_publicKeyID
+           publicKey:(NSString *)a_publicKey;
+
+@property (retain) NSString * accountID;
+@property (retain) NSString * publicKeyID;
+@property (retain) NSString * publicKey;
 
 @end

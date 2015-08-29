@@ -34,22 +34,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "VirgilEmailConfirmViewController.h"
-#import "VirgilKeyManager.h"
-#import "NSViewController+VirgilView.h"
+#import <Cocoa/Cocoa.h>
 
-@interface VirgilEmailConfirmViewController ()
+/**
+ * @brief View controller for complex errors showing
+ */
 
-@end
+@interface VirgilErrorViewController : NSViewController
 
-@implementation VirgilEmailConfirmViewController
-
-- (IBAction)onAcceptClicked : (id)sender {
-    NSTextField * emailField = [self.view viewWithTag : 1000];
-    if (!emailField) return;
-    if ([VirgilKeyManager confirmAccountCreationWithCode : [emailField stringValue]]) {
-        [self changeView : @"viewSignIn"];
-    }
-}
+/**
+ * @brief Place error text to view
+ */
+- (void) setErrorText : (NSString *) errorText;
 
 @end
+

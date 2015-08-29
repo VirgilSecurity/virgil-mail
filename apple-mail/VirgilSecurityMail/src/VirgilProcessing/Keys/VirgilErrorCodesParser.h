@@ -34,22 +34,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "VirgilEmailConfirmViewController.h"
-#import "VirgilKeyManager.h"
-#import "NSViewController+VirgilView.h"
+#import <Foundation/Foundation.h>
 
-@interface VirgilEmailConfirmViewController ()
+@interface VirgilErrorCodesParser : NSObject
 
-@end
-
-@implementation VirgilEmailConfirmViewController
-
-- (IBAction)onAcceptClicked : (id)sender {
-    NSTextField * emailField = [self.view viewWithTag : 1000];
-    if (!emailField) return;
-    if ([VirgilKeyManager confirmAccountCreationWithCode : [emailField stringValue]]) {
-        [self changeView : @"viewSignIn"];
-    }
-}
++ (NSString *) readableErrorFromJSON : (NSData *) jsonData;
 
 @end

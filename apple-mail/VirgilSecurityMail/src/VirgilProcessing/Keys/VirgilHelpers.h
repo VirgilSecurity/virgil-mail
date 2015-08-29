@@ -34,22 +34,54 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "VirgilEmailConfirmViewController.h"
-#import "VirgilKeyManager.h"
-#import "NSViewController+VirgilView.h"
+#import <Foundation/Foundation.h>
 
-@interface VirgilEmailConfirmViewController ()
+#include <string>
 
-@end
+/**
+ * @class Helpers class
+ */
 
-@implementation VirgilEmailConfirmViewController
+@interface VirgilHelpers : NSObject
 
-- (IBAction)onAcceptClicked : (id)sender {
-    NSTextField * emailField = [self.view viewWithTag : 1000];
-    if (!emailField) return;
-    if ([VirgilKeyManager confirmAccountCreationWithCode : [emailField stringValue]]) {
-        [self changeView : @"viewSignIn"];
-    }
-}
+/**
+ * @brief Convert NSString to std::string
+ */
++ (std::string) _strNS2Std : (NSString *)string;
+
+/**
+ * @brief Convert std::string to NSString
+ */
++ (NSString *) _strStd2NS : (std::string)string;
+
+/**
+ * @brief Get new uuid as std::string
+ */
++ (std::string) _uuid;
+
+/**
+ * @brief Get new uuid as NSString
+ */
++ (NSString *) _nsuuid;
+
+/**
+ * @brief Get application token
+ */
++ (NSString *) applicationToken;
+
+/**
+ * @brief Get url for Keys Service
+ */
++ (NSString *) keysURLBase;
+
+/**
+ * @brief Get url for Private Keys Service
+ */
++ (NSString *) privateKeysURLBase;
+
+/**
+ * @brief Get url password reset
+ */
++ (NSString *) resetPasswordURL;
 
 @end

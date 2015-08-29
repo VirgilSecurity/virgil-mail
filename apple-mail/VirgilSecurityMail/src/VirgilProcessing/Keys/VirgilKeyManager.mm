@@ -1,10 +1,38 @@
-//
-//  VirgilKeyManager.m
-//  VirgilSecurityMail
-//
-//  Created by Роман Куташенко on 01.08.15.
-//  Copyright (c) 2015 Virgil Security. All rights reserved.
-//
+/**
+ * Copyright (C) 2015 Virgil Security Inc.
+ *
+ * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
+ *
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ *
+ *     (1) Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *
+ *     (2) Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in
+ *     the documentation and/or other materials provided with the
+ *     distribution.
+ *
+ *     (3) Neither the name of the copyright holder nor the names of its
+ *     contributors may be used to endorse or promote products derived from
+ *     this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
 
 #import "VirgilKeyManager.h"
 #import "VirgilPrivateKeyManager.h"
@@ -45,20 +73,29 @@ using virgil::sdk::keys::client::Credentials;
 #include <virgil/sdk/keys/model/UserData.h>
 using virgil::sdk::keys::model::UserData;
 
-//------------ Static variables -------------
+@implementation VirgilKeyManager : NSObject
+
+//! _lastError - contains user friendly error string
+static NSString * _lastError = nil;
+
+//! _publicKeyCache - cache for public keys
 static NSMutableDictionary * _publicKeyCache = [[NSMutableDictionary alloc] init];
 
+//! newAccountInfo - holder of data for account creation
 struct {
     VirgilPublicKey * publicKeyInfo;
     VirgilPrivateKey * privateKeyInfo;
     PublicKey keyWithUserData;
 } newAccountInfo;
 
-//------------ ~Static variables -------------
-
-@implementation VirgilKeyManager : NSObject 
-
+/**
+ * @brief Get public key by account (email)
+ * @param account - email
+ * @return VirgilPublicKey - instance | nil - error occured, get error with [VirgilKeyManager lastError]
+ */
 + (VirgilPublicKey *) getPublicKey:(NSString *) account {
+    _lastError = nil;
+    
     if (nil == account) return nil;
     try {
         // Search for key in cache
@@ -92,35 +129,54 @@ struct {
         return res;
     } catch (std::exception& exception) {
         const std::string _error(exception.what());
-        NSLog(@"getPublicKey ERROR %s", _error.c_str());
+        [VirgilKeyManager setErrorString : [NSString stringWithFormat:@"getPublicKey : %s", _error.c_str()]];
     }
     return nil;
 }
 
+/**
+ * @brief Create key pair, register at Key service
+ * @param account - email
+ * @param keyPassword - password for keys encryption
+ * @param containerType - container type {easy, normal, paranoic}
+ * @param containerPassword - Container's password
+ * @return YES - success | NO - error occured, get error with [VirgilKeyManager lastError]
+ */
 + (BOOL) createAccount : (NSString *) account
-          withPassword : (NSString *) password {
+           keyPassword : (NSString *) keyPassword
+         containerType : (VirgilContainerType) containerType
+     containerPassword : (NSString *) containerPassword {
+    _lastError = nil;
     newAccountInfo.publicKeyInfo = nil;
-    if (nil == account || nil == password) return NO;
+    if (nil == account) {
+        [VirgilKeyManager setErrorString : @"wrong params for account creation"];
+        return NO;
+    }
     
     // Prepare account
     const std::string _accountData([VirgilHelpers _strNS2Std : account]);
     VirgilByteArray baAccount(_accountData.begin(), _accountData.end());
     
     // Prepare password
-    const std::string _passwordData(/*[password UTF8String]*/"");
+    std::string _passwordData;
+    if (nil != keyPassword) {
+        _passwordData = std::string([keyPassword UTF8String]);
+    }
     VirgilByteArray baPassword(_passwordData.begin(), _passwordData.end());
     
     try {
         // Generate keys
-        const VirgilKeyPair _keyPair;//(/*baPassword*/);
+        const VirgilKeyPair _keyPair(baPassword);
         const VirgilByteArray _publicKey(_keyPair.publicKey());
         const VirgilByteArray _privateKey(_keyPair.privateKey());
         
         NSString * nsPrivateKey = [VirgilHelpers _strStd2NS : virgil::crypto::bytes2str(_privateKey)];
         newAccountInfo.privateKeyInfo =
-            [[VirgilPrivateKey alloc] initAccount : account
-                                         password : password
-                                       privateKey : nsPrivateKey];
+        [[VirgilPrivateKey alloc] initAccount : account
+                                containerType : containerType
+                                   privateKey : nsPrivateKey
+                                  keyPassword : keyPassword
+                            containerPassword : containerPassword];
         
         // Register user
         Credentials credentials(_privateKey, _passwordData);
@@ -128,7 +184,7 @@ struct {
         KeysClient keysClient(
                               [VirgilHelpers _strNS2Std : [VirgilHelpers applicationToken]],
                               [VirgilHelpers _strNS2Std : [VirgilHelpers keysURLBase]]
-                               );
+                              );
         const UserData userData = UserData::email(_accountData);
         PublicKey publicKey = keysClient.publicKey().add(_publicKey, {userData}, credentials, uuid);
         newAccountInfo.keyWithUserData = publicKey;
@@ -136,22 +192,31 @@ struct {
         const std::string _key(virgil::crypto::bytes2str(publicKey.key()));
         
         newAccountInfo.publicKeyInfo =
-            [[VirgilPublicKey alloc] initAccountID : [VirgilHelpers _strStd2NS : publicKey.accountId()]
-                                       publicKeyID : [VirgilHelpers _strStd2NS : publicKey.publicKeyId()]
-                                         publicKey : [VirgilHelpers _strStd2NS : _key]];
+        [[VirgilPublicKey alloc] initAccountID : [VirgilHelpers _strStd2NS : publicKey.accountId()]
+                                   publicKeyID : [VirgilHelpers _strStd2NS : publicKey.publicKeyId()]
+                                     publicKey : [VirgilHelpers _strStd2NS : _key]];
         return YES;
     } catch (std::exception& exception) {
         const std::string _error(exception.what());
-        NSLog(@"getPublicKey ERROR %s", _error.c_str());
+        [VirgilKeyManager setErrorString : [NSString stringWithFormat:@"getPublicKey : %s", _error.c_str()]];
     }
-        
+    
     return NO;
 }
 
+/**
+ * @brief Confirm account creation with received (by email) code
+ * @param code - code from email
+ * @return YES - success | NO - error occured, get error with [VirgilKeyManager lastError]
+ */
 + (BOOL) confirmAccountCreationWithCode : (NSString *) code {
+    _lastError = nil;
     if (nil == code ||
         nil == newAccountInfo.publicKeyInfo ||
-        newAccountInfo.keyWithUserData.userData().empty()) return NO;
+        newAccountInfo.keyWithUserData.userData().empty()) {
+        [VirgilKeyManager setErrorString : @"wrong params for account confirmation"];
+        return NO;
+    }
     try {
         const std::string userDataId(newAccountInfo.keyWithUserData.userData().front().userDataId());
         const std::string confirmationCode([VirgilHelpers _strNS2Std : code]);
@@ -162,23 +227,70 @@ struct {
                               );
         keysClient.userData().confirm(userDataId, confirmationCode);
         
-        return [VirgilPrivateKeyManager pushPrivateKey : newAccountInfo.privateKeyInfo];
+        if (![VirgilPrivateKeyManager pushPrivateKey : newAccountInfo.privateKeyInfo
+                                     withPublicKeyID : newAccountInfo.publicKeyInfo.publicKeyID]) {
+            [VirgilKeyManager setErrorString : [VirgilPrivateKeyManager lastError]];
+            return NO;
+        }
+        return YES;
+        
     } catch (std::exception& exception) {
         const std::string _error(exception.what());
-        NSLog(@"confirmAccountCreation ERROR %s", _error.c_str());
+        [VirgilKeyManager setErrorString : [NSString stringWithFormat:@"confirmAccountCreation : %s", _error.c_str()]];
     }
     return NO;
 }
 
+/**
+ * @brief Get private key by account (email) from cache
+ * @param account - email
+ * @return VirgilPrivateKey - instance | nil - error occured, get error with [VirgilKeyManager lastError]
+ */
++ (VirgilPrivateKey *) getCachedPrivateKey : (NSString *) account {
+    _lastError = nil;
+    if (nil == account) return nil;
+    return  [VirgilPrivateKeyManager getPrivateKey : account
+                                 containerPassword : nil
+                                       publicKeyID : nil];
+}
+
+/**
+ * @brief Get private key by account (email) and container password from Private Keys Service
+ * @param account - email
+ * @param containerPassword - password to Private Keys Service' container
+ * @return VirgilPrivateKey - instance | nil - error occured, get error with [VirgilKeyManager lastError]
+ */
 + (VirgilPrivateKey *) getPrivateKey : (NSString *) account
-                            password : (NSString *) password {
+                   containerPassword : (NSString *) containerPassword {
+    _lastError = nil;
+    
     VirgilPublicKey * publicKey = [VirgilKeyManager getPublicKey : account];
     
     if (nil == publicKey) return nil;
     
-    return [VirgilPrivateKeyManager getPrivateKey : account
-                                         password : password
-                                      publicKeyID : publicKey.publicKeyID];
+    VirgilPrivateKey * privateKey =
+    [VirgilPrivateKeyManager getPrivateKey : account
+                         containerPassword : containerPassword
+                               publicKeyID : publicKey.publicKeyID];
+    if (nil == privateKey) {
+        [VirgilKeyManager setErrorString : [VirgilPrivateKeyManager lastError]];
+    }
+    return privateKey;
+}
+
+/**
+ * @brief Get last error user friendly string
+ */
++ (NSString *) lastError {
+    return _lastError;
+}
+
+/**
+ * @brief [Internal use] Set last error string
+ * @param errorStr - error description
+ */
++ (void) setErrorString : (NSString *) errorStr {
+    _lastError = [[NSString alloc] initWithFormat : @"VirgilKeyManager error : %@", errorStr];
 }
 
 #if 0

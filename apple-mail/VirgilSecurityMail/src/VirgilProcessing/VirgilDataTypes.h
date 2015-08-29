@@ -34,22 +34,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "VirgilEmailConfirmViewController.h"
-#import "VirgilKeyManager.h"
-#import "NSViewController+VirgilView.h"
+#ifndef TestGUI_VirgilDataTypes_h
+#define TestGUI_VirgilDataTypes_h
 
-@interface VirgilEmailConfirmViewController ()
+/**
+ *  Virgil container types.
+ */
+typedef NS_ENUM(NSInteger, VirgilContainerType) {
+    VirgilContainerUnknown = -1,
+    
+    VirgilContainerEasy = 0,
+    VirgilContainerNormal,
+    VirgilContainerParanoic
+};
 
-@end
-
-@implementation VirgilEmailConfirmViewController
-
-- (IBAction)onAcceptClicked : (id)sender {
-    NSTextField * emailField = [self.view viewWithTag : 1000];
-    if (!emailField) return;
-    if ([VirgilKeyManager confirmAccountCreationWithCode : [emailField stringValue]]) {
-        [self changeView : @"viewSignIn"];
-    }
-}
-
-@end
+#endif

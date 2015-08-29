@@ -14,24 +14,6 @@
 - (void) MADealloc;
 - (void) addMenu;
 - (void) didExitFullScreen : (NSNotification *)notification;
-//- (void) updateSecurityMethodHighlight;
 - (void) hideMenu;
-
-
-/**
- Setup the security method accessory view and add it to the theme frame.
- */
-//- (void)setupSecurityMethodHintAccessoryView;
-
-/**
- Called from NSWindow toggleFullScreen: to hide the accessory view.
- */
-//- (void)hideSecurityMethodAccessoryView;
-
-/**
- Delegate method which is used by the security method accessory view to inform
- the delegate that the user changed the security method.
- */
-//- (void)securityMethodAccessoryView:(GMSecurityMethodAccessoryView *)accessoryView didChangeSecurityMethod:(GPGMAIL_SECURITY_METHOD)securityMethod;
 
 @end

@@ -34,22 +34,40 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "VirgilEmailConfirmViewController.h"
-#import "VirgilKeyManager.h"
-#import "NSViewController+VirgilView.h"
+#import <Foundation/Foundation.h>
+#import "VirgilPrivateKey.h"
+#import "VirgilDataTypes.h"
 
-@interface VirgilEmailConfirmViewController ()
+/**
+ * @class Class for working with Private Keys Service
+ */
 
-@end
+@interface VirgilPrivateKeyManager : NSObject
 
-@implementation VirgilEmailConfirmViewController
+/**
+ * @brief Get private key (paranoic mode not supported yet)
+ * @param account - email
+ * @param password - Container's password
+ * @param publicKeyID - public key ID for request verification
+ * @return VirgilPrivateKey instance | nil - error occured, get error with [VirgilPrivateKeyManager lastError]
+ */
++ (VirgilPrivateKey *) getPrivateKey : (NSString *) account
+                   containerPassword : (NSString *) containerPassword
+                         publicKeyID : (NSString *) publicKeyID;
 
-- (IBAction)onAcceptClicked : (id)sender {
-    NSTextField * emailField = [self.view viewWithTag : 1000];
-    if (!emailField) return;
-    if ([VirgilKeyManager confirmAccountCreationWithCode : [emailField stringValue]]) {
-        [self changeView : @"viewSignIn"];
-    }
-}
+/**
+ * @brief Push private key (paranoic mode not supported yet)
+ * @param key - VirgilPrivateKey instance
+ * @param publicKeyID - public key ID for request verification
+ * @return YES - success | nil - error occured, get error with [VirgilPrivateKeyManager lastError]
+ */
++ (BOOL) pushPrivateKey : (VirgilPrivateKey *) key
+        withPublicKeyID : (NSString * ) publicKeyID;
+
+
+/**
+ * @brief Get last error user friendly string
+ */
++ (NSString *) lastError;
 
 @end

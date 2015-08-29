@@ -11,7 +11,6 @@
 		D11174461B6805D400DD9A39 /* VirgilMain.m in Sources */ = {isa = PBXBuildFile; fileRef = D11174451B6805D400DD9A39 /* VirgilMain.m */; };
 		D111744C1B68078D00DD9A39 /* VirgilSecurityMail.mailbundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = D11174331B67FBEE00DD9A39 /* VirgilSecurityMail.mailbundle */; };
 		D13F602F1B6A1A9600508C79 /* JRLPSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = D13F602C1B6A1A9600508C79 /* JRLPSwizzle.m */; };
-		D13F60301B6A1A9600508C79 /* VirgilDynamicVariables.m in Sources */ = {isa = PBXBuildFile; fileRef = D13F602E1B6A1A9600508C79 /* VirgilDynamicVariables.m */; };
 		D13F603D1B6A1C9A00508C79 /* VirgilMessageContentController.m in Sources */ = {isa = PBXBuildFile; fileRef = D13F603C1B6A1C9A00508C79 /* VirgilMessageContentController.m */; };
 		D13F60401B6A1D0600508C79 /* VirgilMessageRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = D13F603F1B6A1D0600508C79 /* VirgilMessageRouter.m */; };
 		D13F60431B6A1D1300508C79 /* VirgilHandlersInstaller.m in Sources */ = {isa = PBXBuildFile; fileRef = D13F60421B6A1D1300508C79 /* VirgilHandlersInstaller.m */; };
@@ -24,18 +23,34 @@
 		D15362B41B6C0335000215F9 /* HTMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = D15362B11B6C0335000215F9 /* HTMLNode.m */; };
 		D15362B51B6C0335000215F9 /* HTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D15362B31B6C0335000215F9 /* HTMLParser.m */; };
 		D15362BA1B6C48EB000215F9 /* VirgilEncryptedContent.m in Sources */ = {isa = PBXBuildFile; fileRef = D15362B91B6C48EB000215F9 /* VirgilEncryptedContent.m */; };
-		D15362BE1B6C52DB000215F9 /* VirgilKeyManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = D15362BD1B6C52DB000215F9 /* VirgilKeyManager.mm */; };
 		D15362C11B6F3555000215F9 /* VirgilCryptoLibWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = D15362C01B6F3555000215F9 /* VirgilCryptoLibWrapper.mm */; };
 		D15362C51B6F62E4000215F9 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = D15362C41B6F62E4000215F9 /* NSData+Base64.m */; };
-		D1C99B521B87BCAE00374AF2 /* VirgilMainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1C99B511B87BCAE00374AF2 /* VirgilMainWindow.xib */; };
-		D1C99B541B87C04F00374AF2 /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D1C99B531B87C04F00374AF2 /* Storyboard.storyboard */; };
 		D1CBA84C1B7BC43900217919 /* VirgilDocumentEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = D1CBA84B1B7BC43900217919 /* VirgilDocumentEditor.m */; };
 		D1CBA84F1B7BC55300217919 /* VirgilMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = D1CBA84E1B7BC55300217919 /* VirgilMenu.m */; };
 		D1CBA8521B7BD8B900217919 /* VirgilNSWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = D1CBA8511B7BD8B900217919 /* VirgilNSWindow.m */; };
-		D1CBA8591B7D098600217919 /* NSBezierPath_KBAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D1CBA8581B7D098600217919 /* NSBezierPath_KBAdditions.m */; };
-		D1CBA85C1B7D0BE500217919 /* NSBezierPath+StrokeExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = D1CBA85B1B7D0BE500217919 /* NSBezierPath+StrokeExtensions.m */; };
 		D1CBA85F1B7D45C200217919 /* VirgilComposeBackEnd.m in Sources */ = {isa = PBXBuildFile; fileRef = D1CBA85E1B7D45C200217919 /* VirgilComposeBackEnd.m */; };
-		D1D0560F1B78FFCC00590197 /* VirgilPublicKey.m in Sources */ = {isa = PBXBuildFile; fileRef = D1D0560E1B78FFCC00590197 /* VirgilPublicKey.m */; };
+		D1DDA9001B91A34100002A2F /* VirgilHelpers.mm in Sources */ = {isa = PBXBuildFile; fileRef = D1DDA8F51B91A34100002A2F /* VirgilHelpers.mm */; };
+		D1DDA9011B91A34100002A2F /* VirgilKeyManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = D1DDA8F71B91A34100002A2F /* VirgilKeyManager.mm */; };
+		D1DDA9021B91A34100002A2F /* VirgilPrivateKey.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DDA8F91B91A34100002A2F /* VirgilPrivateKey.m */; };
+		D1DDA9031B91A34100002A2F /* VirgilPrivateKeyEndpoints.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DDA8FB1B91A34100002A2F /* VirgilPrivateKeyEndpoints.m */; };
+		D1DDA9041B91A34100002A2F /* VirgilPrivateKeyManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = D1DDA8FD1B91A34100002A2F /* VirgilPrivateKeyManager.mm */; };
+		D1DDA9051B91A34100002A2F /* VirgilPublicKey.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DDA8FF1B91A34100002A2F /* VirgilPublicKey.m */; };
+		D1DDA9081B91B05300002A2F /* VirgilErrorCodesParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DDA9071B91B05300002A2F /* VirgilErrorCodesParser.m */; };
+		D1DDA90B1B91B1EA00002A2F /* VirgilValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DDA90A1B91B1EA00002A2F /* VirgilValidator.m */; };
+		D1DDA9151B91B21700002A2F /* VirgilEmailConfirmViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DDA90E1B91B21700002A2F /* VirgilEmailConfirmViewController.m */; };
+		D1DDA9161B91B21700002A2F /* VirgilErrorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DDA9101B91B21700002A2F /* VirgilErrorViewController.m */; };
+		D1DDA9171B91B21700002A2F /* VirgilRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DDA9121B91B21700002A2F /* VirgilRegisterViewController.m */; };
+		D1DDA9181B91B21700002A2F /* VirgilSignInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DDA9141B91B21700002A2F /* VirgilSignInViewController.m */; };
+		D1DDA9241B91B22F00002A2F /* NSBezierPath_KBAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DDA91C1B91B22F00002A2F /* NSBezierPath_KBAdditions.m */; };
+		D1DDA9251B91B22F00002A2F /* NSBezierPath+StrokeExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DDA91E1B91B22F00002A2F /* NSBezierPath+StrokeExtensions.m */; };
+		D1DDA9261B91B22F00002A2F /* VirgilReplaceAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DDA9201B91B22F00002A2F /* VirgilReplaceAnimator.m */; };
+		D1DDA9271B91B22F00002A2F /* VirgilReplaceSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DDA9221B91B22F00002A2F /* VirgilReplaceSegue.m */; };
+		D1DDA92A1B91B2B000002A2F /* NSViewController+VirgilView.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DDA9291B91B2B000002A2F /* NSViewController+VirgilView.m */; };
+		D1DDA92D1B91B32600002A2F /* VirgilNetRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DDA92C1B91B32600002A2F /* VirgilNetRequest.m */; };
+		D1DDA9331B91B3F300002A2F /* HyperlinkTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DDA9301B91B3F300002A2F /* HyperlinkTextField.m */; };
+		D1DDA9341B91B3F300002A2F /* NSAttributedString+Hyperlink.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DDA9321B91B3F300002A2F /* NSAttributedString+Hyperlink.m */; };
+		D1DDA9361B91B4B300002A2F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D1DDA9351B91B4B300002A2F /* Main.storyboard */; };
+		D1DDA9391B91BAF600002A2F /* VirgilKeysGui.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DDA9381B91BAF600002A2F /* VirgilKeysGui.m */; };
 		D1E7CAC11B73FC9E00F4EC4F /* VirgilClassNameResolver.m in Sources */ = {isa = PBXBuildFile; fileRef = D1E7CAC01B73FC9E00F4EC4F /* VirgilClassNameResolver.m */; };
 		D1E7CAC71B7688D400F4EC4F /* VirgilDecryptedContent.m in Sources */ = {isa = PBXBuildFile; fileRef = D1E7CAC61B7688D400F4EC4F /* VirgilDecryptedContent.m */; };
 		D1F720811B73E892007C8955 /* VirgilDecryptedMail.m in Sources */ = {isa = PBXBuildFile; fileRef = D1F720801B73E892007C8955 /* VirgilDecryptedMail.m */; };
@@ -64,8 +79,6 @@
 		D11174451B6805D400DD9A39 /* VirgilMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilMain.m; path = VirgilSecurityMail/src/VirgilMain.m; sourceTree = "<group>"; };
 		D13F602B1B6A1A9600508C79 /* JRLPSwizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JRLPSwizzle.h; path = VirgilSecurityMail/src/Helpers/JRLPSwizzle.h; sourceTree = "<group>"; };
 		D13F602C1B6A1A9600508C79 /* JRLPSwizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JRLPSwizzle.m; path = VirgilSecurityMail/src/Helpers/JRLPSwizzle.m; sourceTree = "<group>"; };
-		D13F602D1B6A1A9600508C79 /* VirgilDynamicVariables.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilDynamicVariables.h; path = VirgilSecurityMail/src/Helpers/VirgilDynamicVariables.h; sourceTree = "<group>"; };
-		D13F602E1B6A1A9600508C79 /* VirgilDynamicVariables.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilDynamicVariables.m; path = VirgilSecurityMail/src/Helpers/VirgilDynamicVariables.m; sourceTree = "<group>"; };
 		D13F603B1B6A1C9A00508C79 /* VirgilMessageContentController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilMessageContentController.h; path = VirgilSecurityMail/src/IncommingMes/VirgilMessageContentController.h; sourceTree = "<group>"; };
 		D13F603C1B6A1C9A00508C79 /* VirgilMessageContentController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilMessageContentController.m; path = VirgilSecurityMail/src/IncommingMes/VirgilMessageContentController.m; sourceTree = "<group>"; };
 		D13F603E1B6A1D0600508C79 /* VirgilMessageRouter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilMessageRouter.h; path = VirgilSecurityMail/src/IncommingMes/VirgilMessageRouter.h; sourceTree = "<group>"; };
@@ -88,28 +101,61 @@
 		D15362B31B6C0335000215F9 /* HTMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTMLParser.m; path = VirgilSecurityMail/src/Helpers/HTMLParser/HTMLParser.m; sourceTree = "<group>"; };
 		D15362B61B6C43AD000215F9 /* VirgilEncryptedContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilEncryptedContent.h; path = VirgilSecurityMail/src/VirgilProcessing/VirgilEncryptedContent.h; sourceTree = "<group>"; };
 		D15362B91B6C48EB000215F9 /* VirgilEncryptedContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilEncryptedContent.m; path = VirgilSecurityMail/src/VirgilProcessing/VirgilEncryptedContent.m; sourceTree = "<group>"; };
-		D15362BC1B6C52DB000215F9 /* VirgilKeyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilKeyManager.h; path = VirgilSecurityMail/src/VirgilProcessing/KeyRing/VirgilKeyManager.h; sourceTree = "<group>"; };
-		D15362BD1B6C52DB000215F9 /* VirgilKeyManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VirgilKeyManager.mm; path = VirgilSecurityMail/src/VirgilProcessing/KeyRing/VirgilKeyManager.mm; sourceTree = "<group>"; };
 		D15362BF1B6F3555000215F9 /* VirgilCryptoLibWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilCryptoLibWrapper.h; path = VirgilSecurityMail/src/VirgilProcessing/VirgilCryptoLibWrapper.h; sourceTree = "<group>"; };
 		D15362C01B6F3555000215F9 /* VirgilCryptoLibWrapper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VirgilCryptoLibWrapper.mm; path = VirgilSecurityMail/src/VirgilProcessing/VirgilCryptoLibWrapper.mm; sourceTree = "<group>"; };
 		D15362C31B6F62E4000215F9 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+Base64.h"; path = "VirgilSecurityMail/src/Helpers/Base64/NSData+Base64.h"; sourceTree = "<group>"; };
 		D15362C41B6F62E4000215F9 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+Base64.m"; path = "VirgilSecurityMail/src/Helpers/Base64/NSData+Base64.m"; sourceTree = "<group>"; };
-		D1C99B511B87BCAE00374AF2 /* VirgilMainWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VirgilMainWindow.xib; path = VirgilSecurityMail/src/VirgilProcessing/KeyRing/Gui/VirgilMainWindow.xib; sourceTree = "<group>"; };
-		D1C99B531B87C04F00374AF2 /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Storyboard.storyboard; path = VirgilSecurityMail/src/VirgilProcessing/KeyRing/Gui/Storyboard.storyboard; sourceTree = "<group>"; };
 		D1CBA84A1B7BC43900217919 /* VirgilDocumentEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilDocumentEditor.h; path = VirgilSecurityMail/src/OutgoingMes/VirgilDocumentEditor.h; sourceTree = "<group>"; };
 		D1CBA84B1B7BC43900217919 /* VirgilDocumentEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilDocumentEditor.m; path = VirgilSecurityMail/src/OutgoingMes/VirgilDocumentEditor.m; sourceTree = "<group>"; };
 		D1CBA84D1B7BC55300217919 /* VirgilMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilMenu.h; path = VirgilSecurityMail/src/OutgoingMes/VirgilMenu.h; sourceTree = "<group>"; };
 		D1CBA84E1B7BC55300217919 /* VirgilMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilMenu.m; path = VirgilSecurityMail/src/OutgoingMes/VirgilMenu.m; sourceTree = "<group>"; };
 		D1CBA8501B7BD8B900217919 /* VirgilNSWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilNSWindow.h; path = VirgilSecurityMail/src/OutgoingMes/VirgilNSWindow.h; sourceTree = "<group>"; };
 		D1CBA8511B7BD8B900217919 /* VirgilNSWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilNSWindow.m; path = VirgilSecurityMail/src/OutgoingMes/VirgilNSWindow.m; sourceTree = "<group>"; };
-		D1CBA8571B7D098600217919 /* NSBezierPath_KBAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSBezierPath_KBAdditions.h; path = VirgilSecurityMail/src/Helpers/Gui/NSBezierPath_KBAdditions.h; sourceTree = "<group>"; };
-		D1CBA8581B7D098600217919 /* NSBezierPath_KBAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSBezierPath_KBAdditions.m; path = VirgilSecurityMail/src/Helpers/Gui/NSBezierPath_KBAdditions.m; sourceTree = "<group>"; };
-		D1CBA85A1B7D0BE500217919 /* NSBezierPath+StrokeExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSBezierPath+StrokeExtensions.h"; path = "VirgilSecurityMail/src/Helpers/Gui/NSBezierPath+StrokeExtensions.h"; sourceTree = "<group>"; };
-		D1CBA85B1B7D0BE500217919 /* NSBezierPath+StrokeExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSBezierPath+StrokeExtensions.m"; path = "VirgilSecurityMail/src/Helpers/Gui/NSBezierPath+StrokeExtensions.m"; sourceTree = "<group>"; };
 		D1CBA85D1B7D45C200217919 /* VirgilComposeBackEnd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilComposeBackEnd.h; path = VirgilSecurityMail/src/OutgoingMes/VirgilComposeBackEnd.h; sourceTree = "<group>"; };
 		D1CBA85E1B7D45C200217919 /* VirgilComposeBackEnd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilComposeBackEnd.m; path = VirgilSecurityMail/src/OutgoingMes/VirgilComposeBackEnd.m; sourceTree = "<group>"; };
-		D1D0560D1B78FFCC00590197 /* VirgilPublicKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilPublicKey.h; path = VirgilSecurityMail/src/VirgilProcessing/KeyRing/VirgilPublicKey.h; sourceTree = "<group>"; };
-		D1D0560E1B78FFCC00590197 /* VirgilPublicKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilPublicKey.m; path = VirgilSecurityMail/src/VirgilProcessing/KeyRing/VirgilPublicKey.m; sourceTree = "<group>"; };
+		D1DDA8F41B91A34000002A2F /* VirgilHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilHelpers.h; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilHelpers.h; sourceTree = "<group>"; };
+		D1DDA8F51B91A34100002A2F /* VirgilHelpers.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VirgilHelpers.mm; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilHelpers.mm; sourceTree = "<group>"; };
+		D1DDA8F61B91A34100002A2F /* VirgilKeyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilKeyManager.h; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilKeyManager.h; sourceTree = "<group>"; };
+		D1DDA8F71B91A34100002A2F /* VirgilKeyManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VirgilKeyManager.mm; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilKeyManager.mm; sourceTree = "<group>"; };
+		D1DDA8F81B91A34100002A2F /* VirgilPrivateKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilPrivateKey.h; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilPrivateKey.h; sourceTree = "<group>"; };
+		D1DDA8F91B91A34100002A2F /* VirgilPrivateKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilPrivateKey.m; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilPrivateKey.m; sourceTree = "<group>"; };
+		D1DDA8FA1B91A34100002A2F /* VirgilPrivateKeyEndpoints.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilPrivateKeyEndpoints.h; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilPrivateKeyEndpoints.h; sourceTree = "<group>"; };
+		D1DDA8FB1B91A34100002A2F /* VirgilPrivateKeyEndpoints.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilPrivateKeyEndpoints.m; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilPrivateKeyEndpoints.m; sourceTree = "<group>"; };
+		D1DDA8FC1B91A34100002A2F /* VirgilPrivateKeyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilPrivateKeyManager.h; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilPrivateKeyManager.h; sourceTree = "<group>"; };
+		D1DDA8FD1B91A34100002A2F /* VirgilPrivateKeyManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VirgilPrivateKeyManager.mm; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilPrivateKeyManager.mm; sourceTree = "<group>"; };
+		D1DDA8FE1B91A34100002A2F /* VirgilPublicKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilPublicKey.h; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilPublicKey.h; sourceTree = "<group>"; };
+		D1DDA8FF1B91A34100002A2F /* VirgilPublicKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilPublicKey.m; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilPublicKey.m; sourceTree = "<group>"; };
+		D1DDA9061B91B05300002A2F /* VirgilErrorCodesParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilErrorCodesParser.h; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilErrorCodesParser.h; sourceTree = "<group>"; };
+		D1DDA9071B91B05300002A2F /* VirgilErrorCodesParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilErrorCodesParser.m; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilErrorCodesParser.m; sourceTree = "<group>"; };
+		D1DDA9091B91B1EA00002A2F /* VirgilValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilValidator.h; path = VirgilSecurityMail/src/Helpers/VirgilValidator.h; sourceTree = "<group>"; };
+		D1DDA90A1B91B1EA00002A2F /* VirgilValidator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilValidator.m; path = VirgilSecurityMail/src/Helpers/VirgilValidator.m; sourceTree = "<group>"; };
+		D1DDA90D1B91B21700002A2F /* VirgilEmailConfirmViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilEmailConfirmViewController.h; path = VirgilSecurityMail/src/Gui/VirgilEmailConfirmViewController.h; sourceTree = "<group>"; };
+		D1DDA90E1B91B21700002A2F /* VirgilEmailConfirmViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilEmailConfirmViewController.m; path = VirgilSecurityMail/src/Gui/VirgilEmailConfirmViewController.m; sourceTree = "<group>"; };
+		D1DDA90F1B91B21700002A2F /* VirgilErrorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilErrorViewController.h; path = VirgilSecurityMail/src/Gui/VirgilErrorViewController.h; sourceTree = "<group>"; };
+		D1DDA9101B91B21700002A2F /* VirgilErrorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilErrorViewController.m; path = VirgilSecurityMail/src/Gui/VirgilErrorViewController.m; sourceTree = "<group>"; };
+		D1DDA9111B91B21700002A2F /* VirgilRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilRegisterViewController.h; path = VirgilSecurityMail/src/Gui/VirgilRegisterViewController.h; sourceTree = "<group>"; };
+		D1DDA9121B91B21700002A2F /* VirgilRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilRegisterViewController.m; path = VirgilSecurityMail/src/Gui/VirgilRegisterViewController.m; sourceTree = "<group>"; };
+		D1DDA9131B91B21700002A2F /* VirgilSignInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilSignInViewController.h; path = VirgilSecurityMail/src/Gui/VirgilSignInViewController.h; sourceTree = "<group>"; };
+		D1DDA9141B91B21700002A2F /* VirgilSignInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilSignInViewController.m; path = VirgilSecurityMail/src/Gui/VirgilSignInViewController.m; sourceTree = "<group>"; };
+		D1DDA91B1B91B22F00002A2F /* NSBezierPath_KBAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSBezierPath_KBAdditions.h; path = VirgilSecurityMail/src/Gui/Helpers/NSBezierPath_KBAdditions.h; sourceTree = "<group>"; };
+		D1DDA91C1B91B22F00002A2F /* NSBezierPath_KBAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSBezierPath_KBAdditions.m; path = VirgilSecurityMail/src/Gui/Helpers/NSBezierPath_KBAdditions.m; sourceTree = "<group>"; };
+		D1DDA91D1B91B22F00002A2F /* NSBezierPath+StrokeExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSBezierPath+StrokeExtensions.h"; path = "VirgilSecurityMail/src/Gui/Helpers/NSBezierPath+StrokeExtensions.h"; sourceTree = "<group>"; };
+		D1DDA91E1B91B22F00002A2F /* NSBezierPath+StrokeExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSBezierPath+StrokeExtensions.m"; path = "VirgilSecurityMail/src/Gui/Helpers/NSBezierPath+StrokeExtensions.m"; sourceTree = "<group>"; };
+		D1DDA91F1B91B22F00002A2F /* VirgilReplaceAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilReplaceAnimator.h; path = VirgilSecurityMail/src/Gui/Helpers/VirgilReplaceAnimator.h; sourceTree = "<group>"; };
+		D1DDA9201B91B22F00002A2F /* VirgilReplaceAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilReplaceAnimator.m; path = VirgilSecurityMail/src/Gui/Helpers/VirgilReplaceAnimator.m; sourceTree = "<group>"; };
+		D1DDA9211B91B22F00002A2F /* VirgilReplaceSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilReplaceSegue.h; path = VirgilSecurityMail/src/Gui/Helpers/VirgilReplaceSegue.h; sourceTree = "<group>"; };
+		D1DDA9221B91B22F00002A2F /* VirgilReplaceSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilReplaceSegue.m; path = VirgilSecurityMail/src/Gui/Helpers/VirgilReplaceSegue.m; sourceTree = "<group>"; };
+		D1DDA9281B91B2B000002A2F /* NSViewController+VirgilView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSViewController+VirgilView.h"; path = "VirgilSecurityMail/src/Gui/Helpers/NSViewController+VirgilView.h"; sourceTree = "<group>"; };
+		D1DDA9291B91B2B000002A2F /* NSViewController+VirgilView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSViewController+VirgilView.m"; path = "VirgilSecurityMail/src/Gui/Helpers/NSViewController+VirgilView.m"; sourceTree = "<group>"; };
+		D1DDA92B1B91B32600002A2F /* VirgilNetRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilNetRequest.h; path = VirgilSecurityMail/src/Helpers/VirgilNetRequest.h; sourceTree = "<group>"; };
+		D1DDA92C1B91B32600002A2F /* VirgilNetRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilNetRequest.m; path = VirgilSecurityMail/src/Helpers/VirgilNetRequest.m; sourceTree = "<group>"; };
+		D1DDA92F1B91B3F300002A2F /* HyperlinkTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HyperlinkTextField.h; path = "VirgilSecurityMail/src/Gui/Helpers/NSAttributedString+Hyperlink/HyperlinkTextField.h"; sourceTree = "<group>"; };
+		D1DDA9301B91B3F300002A2F /* HyperlinkTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HyperlinkTextField.m; path = "VirgilSecurityMail/src/Gui/Helpers/NSAttributedString+Hyperlink/HyperlinkTextField.m"; sourceTree = "<group>"; };
+		D1DDA9311B91B3F300002A2F /* NSAttributedString+Hyperlink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSAttributedString+Hyperlink.h"; path = "VirgilSecurityMail/src/Gui/Helpers/NSAttributedString+Hyperlink/NSAttributedString+Hyperlink.h"; sourceTree = "<group>"; };
+		D1DDA9321B91B3F300002A2F /* NSAttributedString+Hyperlink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSAttributedString+Hyperlink.m"; path = "VirgilSecurityMail/src/Gui/Helpers/NSAttributedString+Hyperlink/NSAttributedString+Hyperlink.m"; sourceTree = "<group>"; };
+		D1DDA9351B91B4B300002A2F /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = VirgilSecurityMail/src/Gui/Main.storyboard; sourceTree = "<group>"; };
+		D1DDA9371B91BAF600002A2F /* VirgilKeysGui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilKeysGui.h; path = VirgilSecurityMail/src/Gui/VirgilKeysGui.h; sourceTree = "<group>"; };
+		D1DDA9381B91BAF600002A2F /* VirgilKeysGui.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilKeysGui.m; path = VirgilSecurityMail/src/Gui/VirgilKeysGui.m; sourceTree = "<group>"; };
 		D1E7CABF1B73FC9E00F4EC4F /* VirgilClassNameResolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilClassNameResolver.h; path = VirgilSecurityMail/src/Helpers/VirgilClassNameResolver.h; sourceTree = "<group>"; };
 		D1E7CAC01B73FC9E00F4EC4F /* VirgilClassNameResolver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilClassNameResolver.m; path = VirgilSecurityMail/src/Helpers/VirgilClassNameResolver.m; sourceTree = "<group>"; };
 		D1E7CAC51B7688D400F4EC4F /* VirgilDecryptedContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilDecryptedContent.h; path = VirgilSecurityMail/src/VirgilProcessing/VirgilDecryptedContent.h; sourceTree = "<group>"; };
@@ -179,6 +225,7 @@
 		D11174471B6805DD00DD9A39 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				D1DDA90C1B91B1FF00002A2F /* Gui */,
 				D1CBA8491B7BC3F300217919 /* OutgoingMes */,
 				D13F60531B6B6CB600508C79 /* VirgilProcessing */,
 				D13F60491B6AB36400508C79 /* CommonMes */,
@@ -197,15 +244,16 @@
 		D13F602A1B6A1A5E00508C79 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				D1CBA8561B7D096700217919 /* Gui */,
 				D15362C21B6F62CC000215F9 /* Base64 */,
 				D15362AF1B6C02D2000215F9 /* HTMLParser */,
 				D13F602B1B6A1A9600508C79 /* JRLPSwizzle.h */,
 				D13F602C1B6A1A9600508C79 /* JRLPSwizzle.m */,
-				D13F602D1B6A1A9600508C79 /* VirgilDynamicVariables.h */,
-				D13F602E1B6A1A9600508C79 /* VirgilDynamicVariables.m */,
 				D1E7CABF1B73FC9E00F4EC4F /* VirgilClassNameResolver.h */,
 				D1E7CAC01B73FC9E00F4EC4F /* VirgilClassNameResolver.m */,
+				D1DDA9091B91B1EA00002A2F /* VirgilValidator.h */,
+				D1DDA90A1B91B1EA00002A2F /* VirgilValidator.m */,
+				D1DDA92B1B91B32600002A2F /* VirgilNetRequest.h */,
+				D1DDA92C1B91B32600002A2F /* VirgilNetRequest.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -237,7 +285,7 @@
 		D13F60531B6B6CB600508C79 /* VirgilProcessing */ = {
 			isa = PBXGroup;
 			children = (
-				D15362BB1B6C52BE000215F9 /* KeyRing */,
+				D15362BB1B6C52BE000215F9 /* Keys */,
 				D13F605A1B6B6D6200508C79 /* VirgilProcessingManager.h */,
 				D13F605B1B6B6D6200508C79 /* VirgilProcessingManager.m */,
 				D15362B61B6C43AD000215F9 /* VirgilEncryptedContent.h */,
@@ -263,16 +311,25 @@
 			name = HTMLParser;
 			sourceTree = "<group>";
 		};
-		D15362BB1B6C52BE000215F9 /* KeyRing */ = {
+		D15362BB1B6C52BE000215F9 /* Keys */ = {
 			isa = PBXGroup;
 			children = (
-				D1C99B501B87BC7300374AF2 /* Gui */,
-				D15362BC1B6C52DB000215F9 /* VirgilKeyManager.h */,
-				D15362BD1B6C52DB000215F9 /* VirgilKeyManager.mm */,
-				D1D0560D1B78FFCC00590197 /* VirgilPublicKey.h */,
-				D1D0560E1B78FFCC00590197 /* VirgilPublicKey.m */,
+				D1DDA9061B91B05300002A2F /* VirgilErrorCodesParser.h */,
+				D1DDA9071B91B05300002A2F /* VirgilErrorCodesParser.m */,
+				D1DDA8F41B91A34000002A2F /* VirgilHelpers.h */,
+				D1DDA8F51B91A34100002A2F /* VirgilHelpers.mm */,
+				D1DDA8F61B91A34100002A2F /* VirgilKeyManager.h */,
+				D1DDA8F71B91A34100002A2F /* VirgilKeyManager.mm */,
+				D1DDA8F81B91A34100002A2F /* VirgilPrivateKey.h */,
+				D1DDA8F91B91A34100002A2F /* VirgilPrivateKey.m */,
+				D1DDA8FA1B91A34100002A2F /* VirgilPrivateKeyEndpoints.h */,
+				D1DDA8FB1B91A34100002A2F /* VirgilPrivateKeyEndpoints.m */,
+				D1DDA8FC1B91A34100002A2F /* VirgilPrivateKeyManager.h */,
+				D1DDA8FD1B91A34100002A2F /* VirgilPrivateKeyManager.mm */,
+				D1DDA8FE1B91A34100002A2F /* VirgilPublicKey.h */,
+				D1DDA8FF1B91A34100002A2F /* VirgilPublicKey.m */,
 			);
-			name = KeyRing;
+			name = Keys;
 			sourceTree = "<group>";
 		};
 		D15362C21B6F62CC000215F9 /* Base64 */ = {
@@ -282,15 +339,6 @@
 				D15362C41B6F62E4000215F9 /* NSData+Base64.m */,
 			);
 			name = Base64;
-			sourceTree = "<group>";
-		};
-		D1C99B501B87BC7300374AF2 /* Gui */ = {
-			isa = PBXGroup;
-			children = (
-				D1C99B511B87BCAE00374AF2 /* VirgilMainWindow.xib */,
-				D1C99B531B87C04F00374AF2 /* Storyboard.storyboard */,
-			);
-			name = Gui;
 			sourceTree = "<group>";
 		};
 		D1CBA8491B7BC3F300217919 /* OutgoingMes */ = {
@@ -308,15 +356,52 @@
 			name = OutgoingMes;
 			sourceTree = "<group>";
 		};
-		D1CBA8561B7D096700217919 /* Gui */ = {
+		D1DDA90C1B91B1FF00002A2F /* Gui */ = {
 			isa = PBXGroup;
 			children = (
-				D1CBA85A1B7D0BE500217919 /* NSBezierPath+StrokeExtensions.h */,
-				D1CBA85B1B7D0BE500217919 /* NSBezierPath+StrokeExtensions.m */,
-				D1CBA8571B7D098600217919 /* NSBezierPath_KBAdditions.h */,
-				D1CBA8581B7D098600217919 /* NSBezierPath_KBAdditions.m */,
+				D1DDA9351B91B4B300002A2F /* Main.storyboard */,
+				D1DDA9191B91B21E00002A2F /* Helpers */,
+				D1DDA90D1B91B21700002A2F /* VirgilEmailConfirmViewController.h */,
+				D1DDA90E1B91B21700002A2F /* VirgilEmailConfirmViewController.m */,
+				D1DDA90F1B91B21700002A2F /* VirgilErrorViewController.h */,
+				D1DDA9101B91B21700002A2F /* VirgilErrorViewController.m */,
+				D1DDA9111B91B21700002A2F /* VirgilRegisterViewController.h */,
+				D1DDA9121B91B21700002A2F /* VirgilRegisterViewController.m */,
+				D1DDA9131B91B21700002A2F /* VirgilSignInViewController.h */,
+				D1DDA9141B91B21700002A2F /* VirgilSignInViewController.m */,
+				D1DDA9371B91BAF600002A2F /* VirgilKeysGui.h */,
+				D1DDA9381B91BAF600002A2F /* VirgilKeysGui.m */,
 			);
 			name = Gui;
+			sourceTree = "<group>";
+		};
+		D1DDA9191B91B21E00002A2F /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				D1DDA92E1B91B3CD00002A2F /* HyperLink */,
+				D1DDA9281B91B2B000002A2F /* NSViewController+VirgilView.h */,
+				D1DDA9291B91B2B000002A2F /* NSViewController+VirgilView.m */,
+				D1DDA91B1B91B22F00002A2F /* NSBezierPath_KBAdditions.h */,
+				D1DDA91C1B91B22F00002A2F /* NSBezierPath_KBAdditions.m */,
+				D1DDA91D1B91B22F00002A2F /* NSBezierPath+StrokeExtensions.h */,
+				D1DDA91E1B91B22F00002A2F /* NSBezierPath+StrokeExtensions.m */,
+				D1DDA91F1B91B22F00002A2F /* VirgilReplaceAnimator.h */,
+				D1DDA9201B91B22F00002A2F /* VirgilReplaceAnimator.m */,
+				D1DDA9211B91B22F00002A2F /* VirgilReplaceSegue.h */,
+				D1DDA9221B91B22F00002A2F /* VirgilReplaceSegue.m */,
+			);
+			name = Helpers;
+			sourceTree = "<group>";
+		};
+		D1DDA92E1B91B3CD00002A2F /* HyperLink */ = {
+			isa = PBXGroup;
+			children = (
+				D1DDA92F1B91B3F300002A2F /* HyperlinkTextField.h */,
+				D1DDA9301B91B3F300002A2F /* HyperlinkTextField.m */,
+				D1DDA9311B91B3F300002A2F /* NSAttributedString+Hyperlink.h */,
+				D1DDA9321B91B3F300002A2F /* NSAttributedString+Hyperlink.m */,
+			);
+			name = HyperLink;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -374,8 +459,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D13F60461B6A33AC00508C79 /* MailHeaders in Resources */,
-				D1C99B521B87BCAE00374AF2 /* VirgilMainWindow.xib in Resources */,
-				D1C99B541B87C04F00374AF2 /* Storyboard.storyboard in Resources */,
+				D1DDA9361B91B4B300002A2F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -404,30 +488,46 @@
 			files = (
 				D11174461B6805D400DD9A39 /* VirgilMain.m in Sources */,
 				D13F60401B6A1D0600508C79 /* VirgilMessageRouter.m in Sources */,
+				D1DDA90B1B91B1EA00002A2F /* VirgilValidator.m in Sources */,
+				D1DDA9041B91A34100002A2F /* VirgilPrivateKeyManager.mm in Sources */,
 				D1E7CAC11B73FC9E00F4EC4F /* VirgilClassNameResolver.m in Sources */,
-				D15362BE1B6C52DB000215F9 /* VirgilKeyManager.mm in Sources */,
+				D1DDA9241B91B22F00002A2F /* NSBezierPath_KBAdditions.m in Sources */,
 				D13F60431B6A1D1300508C79 /* VirgilHandlersInstaller.m in Sources */,
+				D1DDA92D1B91B32600002A2F /* VirgilNetRequest.m in Sources */,
 				D15362C11B6F3555000215F9 /* VirgilCryptoLibWrapper.mm in Sources */,
 				D15362C51B6F62E4000215F9 /* NSData+Base64.m in Sources */,
 				D13F605C1B6B6D6200508C79 /* VirgilProcessingManager.m in Sources */,
+				D1DDA9261B91B22F00002A2F /* VirgilReplaceAnimator.m in Sources */,
+				D1DDA9021B91A34100002A2F /* VirgilPrivateKey.m in Sources */,
+				D1DDA9341B91B3F300002A2F /* NSAttributedString+Hyperlink.m in Sources */,
+				D1DDA9171B91B21700002A2F /* VirgilRegisterViewController.m in Sources */,
+				D1DDA9001B91A34100002A2F /* VirgilHelpers.mm in Sources */,
 				D15362BA1B6C48EB000215F9 /* VirgilEncryptedContent.m in Sources */,
 				D15362B51B6C0335000215F9 /* HTMLParser.m in Sources */,
 				D13F603D1B6A1C9A00508C79 /* VirgilMessageContentController.m in Sources */,
+				D1DDA9181B91B21700002A2F /* VirgilSignInViewController.m in Sources */,
+				D1DDA9271B91B22F00002A2F /* VirgilReplaceSegue.m in Sources */,
+				D1DDA9251B91B22F00002A2F /* NSBezierPath+StrokeExtensions.m in Sources */,
 				D13F604F1B6ABC4B00508C79 /* VirgilMessageCriterion.m in Sources */,
+				D1DDA9081B91B05300002A2F /* VirgilErrorCodesParser.m in Sources */,
 				D13F604C1B6AB38200508C79 /* VirgilMimeBody.m in Sources */,
-				D1D0560F1B78FFCC00590197 /* VirgilPublicKey.m in Sources */,
+				D1DDA92A1B91B2B000002A2F /* NSViewController+VirgilView.m in Sources */,
+				D1DDA9161B91B21700002A2F /* VirgilErrorViewController.m in Sources */,
 				D13F60521B6B50F300508C79 /* VirgilMimePart.m in Sources */,
-				D1CBA8591B7D098600217919 /* NSBezierPath_KBAdditions.m in Sources */,
 				D1CBA8521B7BD8B900217919 /* VirgilNSWindow.m in Sources */,
-				D1CBA85C1B7D0BE500217919 /* NSBezierPath+StrokeExtensions.m in Sources */,
 				D1CBA85F1B7D45C200217919 /* VirgilComposeBackEnd.m in Sources */,
 				D1E7CAC71B7688D400F4EC4F /* VirgilDecryptedContent.m in Sources */,
 				D1CBA84C1B7BC43900217919 /* VirgilDocumentEditor.m in Sources */,
 				D15362B41B6C0335000215F9 /* HTMLNode.m in Sources */,
+				D1DDA9051B91A34100002A2F /* VirgilPublicKey.m in Sources */,
 				D1F720811B73E892007C8955 /* VirgilDecryptedMail.m in Sources */,
+				D1DDA9031B91A34100002A2F /* VirgilPrivateKeyEndpoints.m in Sources */,
+				D1DDA9391B91BAF600002A2F /* VirgilKeysGui.m in Sources */,
 				D1CBA84F1B7BC55300217919 /* VirgilMenu.m in Sources */,
 				D13F602F1B6A1A9600508C79 /* JRLPSwizzle.m in Sources */,
-				D13F60301B6A1A9600508C79 /* VirgilDynamicVariables.m in Sources */,
+				D1DDA9011B91A34100002A2F /* VirgilKeyManager.mm in Sources */,
+				D1DDA9331B91B3F300002A2F /* HyperlinkTextField.m in Sources */,
+				D1DDA9151B91B21700002A2F /* VirgilEmailConfirmViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
