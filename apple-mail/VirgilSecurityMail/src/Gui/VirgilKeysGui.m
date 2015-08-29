@@ -39,7 +39,7 @@
 
 @implementation VirgilKeysGui
 
-+ (VirgilPrivateKey*) getPrivateKey : (NSString *) account {
++ (VirgilPrivateKey *) getPrivateKey : (NSString *) account {
     // Get active mail write window
     
     NSWindow * containerWindow = [[NSApplication sharedApplication] mainWindow];
@@ -64,15 +64,21 @@
                                       bundle : bundle];
             if (nil == storyBoard) return;
             
-            NSWindowController * signInViewControler = [storyBoard instantiateInitialController];
-            if (nil == signInViewControler) return;
+            NSWindowController * windowControler = [storyBoard instantiateInitialController];
+            if (nil == windowControler) return;
             
-            NSWindow * controllerWindow = [signInViewControler window];
+            NSWindow * controllerWindow = [windowControler window];
             if (nil == controllerWindow) return;
 
+            
+            id viewController = [windowControler contentViewController];
+            if ([viewController respondsToSelector:@selector(setCurrentAccount:)]) {
+                [viewController setCurrentAccount : account];
+            }
+            
             [containerWindow beginSheet : controllerWindow
-                      completionHandler : ^(NSModalResponse returnCode) {
-                      }];
+                      completionHandler : nil];
+            
             dispatch_semaphore_signal(semaphore);
         });
         dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
@@ -82,19 +88,7 @@
     @finally {
     }
     
-    return nil;
-}
-
-+ (void) addMailWriteWindow : (NSWindow *) window {
-    if (nil == _mailWriteWindows) {
-        _mailWriteWindows = [[NSMutableArray alloc] init];
-    }
-    [_mailWriteWindows addObject : window];
-    NSLog(@"                addMailWriteWindow : %@", window.title);
-}
-
-+ (void) removeMailWriteWindow : (NSWindow *) window {
-    
+    return [VirgilSignInViewController getResult];
 }
 
 @end

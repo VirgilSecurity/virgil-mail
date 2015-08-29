@@ -43,10 +43,12 @@
 
 @implementation VirgilSignInViewController
 
-HyperlinkTextField * linkForgotPassword = nil;
-HyperlinkTextField * linkRegister = nil;
+static HyperlinkTextField * linkForgotPassword = nil;
+static HyperlinkTextField * linkRegister = nil;
+static VirgilPrivateKey * _privateKey = nil;
 
 - (IBAction)onSignInClicked:(id)sender {
+    _privateKey = nil;
     NSTextField * emailField = [self.view viewWithTag : 2000];
     NSSecureTextField * passwordField = [self.view viewWithTag : 2001];
     
@@ -72,10 +74,14 @@ HyperlinkTextField * linkRegister = nil;
     VirgilPrivateKey * res = [VirgilKeyManager getPrivateKey : email
                                            containerPassword : password];
     if (nil != res) {
-        //TODO: pass data to logics
+        _privateKey = res;
     } else {
         [self showErrorView : [VirgilKeyManager lastError]];
     }
+}
+- (IBAction)onCloseClicked:(id)sender {
+    _privateKey = nil;
+    [[[self view] window] close];
 }
 
 - (void)viewDidLoad {
@@ -97,10 +103,21 @@ HyperlinkTextField * linkRegister = nil;
     linkRegister.linkDelegate = self;
 }
 
+- (void) setCurrentAccount : (NSString *) account {
+    if (nil == account) return;
+    NSTextField * emailField = [self.view viewWithTag : 2000];
+    if (!emailField) return;
+    [emailField setStringValue : account];
+}
+
 - (void) linkClicked:(id)sender {
     if (linkRegister == (HyperlinkTextField *)sender) {
         [self changeView : @"viewRegister"];
     }
+}
+
++ (VirgilPrivateKey *) getResult {
+    return _privateKey;
 }
 
 @end

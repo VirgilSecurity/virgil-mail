@@ -36,10 +36,15 @@
 
 #import <Cocoa/Cocoa.h>
 #import "HyperlinkTextField.h"
+#import "VirgilPrivateKey.h"
 
 /**
  * @class View class for users sign in
  */
 @interface VirgilSignInViewController : NSViewController <HyperlinkTextFieldDelegate>
+
+- (void) setCurrentAccount : (NSString *) account;
+
++ (VirgilPrivateKey *) getResult;
 
 @end
