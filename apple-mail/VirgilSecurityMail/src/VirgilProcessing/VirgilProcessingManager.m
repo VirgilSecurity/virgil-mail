@@ -413,7 +413,6 @@ static BOOL _decryptionStart = YES;
     for (LocalAccount * account in [[VirgilClassNameResolver resolveClassFromName:@"MailAccount"] mailAccounts]) {
         for (NSString * email in account.emailAddresses) {
             [set addObject : email];
-            [self getPrivateKeyForAccount : email];
         }
     }
     
