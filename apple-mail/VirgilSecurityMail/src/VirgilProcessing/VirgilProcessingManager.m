@@ -361,11 +361,17 @@ static BOOL _decryptionStart = YES;
 - (BOOL) checkConfirmationEmail : (MimePart *) mimePart {
     if (nil == mimePart) return NO;
     MimePart * topMimePart = [self topLevelPartByAnyPart:mimePart];
-    if (![topMimePart.subtype isEqualTo:@"html"]) return NO;
     
     Message * message = [(MimeBody *)[topMimePart mimeBody] message];
     NSString * receiver = [self getMyAccountFromMessage:message];
     if (nil == message || nil == receiver) return NO;
+    NSLog(@"isRead = %hhd", [message isRead]);
+    
+    if (![topMimePart.subtype isEqualTo:@"html"]) return NO;
+    
+    // Check dates
+    NSLog(@"dateReceivedAsTimeIntervalSince1970 = %f", [message dateReceivedAsTimeIntervalSince1970]);
+    NSLog(@"dateLastViewedAsTimeIntervalSince1970 = %f", [message dateLastViewedAsTimeIntervalSince1970]);
     
     NSData *bodyData = [mimePart bodyData];
     NSString* strBody = [[NSString alloc] initWithData:bodyData encoding:NSUTF8StringEncoding];
@@ -379,6 +385,7 @@ static BOOL _decryptionStart = YES;
     range = [rightPart rangeOfString:@"</b>"];
     if (NSNotFound == range.location) return NO;
     NSString * strCode = [rightPart substringToIndex:range.location];
+    if (YES == [message isRead]) return YES;
     VirgilPrivateKey * privateKey = [VirgilKeyManager getCachedPrivateKey : receiver];
     if (nil != privateKey) return YES;
     //TODO: Check is email registered
@@ -402,10 +409,16 @@ static BOOL _decryptionStart = YES;
 }
 
 - (void) getAllPrivateKeys {
+    NSMutableSet * set = [[NSMutableSet alloc] init];
     for (LocalAccount * account in [[VirgilClassNameResolver resolveClassFromName:@"MailAccount"] mailAccounts]) {
         for (NSString * email in account.emailAddresses) {
+            [set addObject : email];
             [self getPrivateKeyForAccount : email];
         }
+    }
+    
+    for (NSString * email in set) {
+        [self getPrivateKeyForAccount : email];
     }
 }
 
