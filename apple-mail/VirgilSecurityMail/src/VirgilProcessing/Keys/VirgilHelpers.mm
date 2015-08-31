@@ -40,7 +40,8 @@
 #include <random>
 
 @implementation VirgilHelpers
-NSString * VIRGIL_APPLICATION_TOKEN = @"1fab311f9ae38a416e84980256cd5878";
+//NSString * VIRGIL_APPLICATION_TOKEN = @"1fab311f9ae38a416e84980256cd5878";
+NSString * VIRGIL_APPLICATION_TOKEN = @"926965d4c716d28b41ed420da20546b9";
 NSString * VIRGIL_KEYS_URL_BASE = @"https://keys-stg.virgilsecurity.com/";
 NSString * VIRGIL_KEYS_PRIVATE_URL_BASE = @"https://keyring-stg.virgilsecurity.com/";
 NSString * VIRGIL_RESET_PASSWORD_URL = @"https://virgilsecurity.com/reset";
