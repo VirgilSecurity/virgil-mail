@@ -30,7 +30,7 @@ NSString *VirgilMailMethodPrefix = @"MA";
 
     VirgilMain * instance = [VirgilMain sharedInstance];
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC),
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 4 * NSEC_PER_SEC),
                    dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         [[VirgilProcessingManager sharedInstance] getAllPrivateKeys];
     });

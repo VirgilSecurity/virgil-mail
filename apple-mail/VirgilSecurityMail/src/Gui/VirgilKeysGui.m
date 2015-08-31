@@ -71,6 +71,7 @@ BOOL _waitConfirmation = NO;
     
     // Check for need confirmation
     if (YES == _waitConfirmation) {
+        _waitConfirmation = NO;
         return [VirgilKeysGui getPrivateKeyAfterActivation : _confirmationCode];
     }
     
@@ -151,7 +152,6 @@ BOOL _waitConfirmation = NO;
     @finally {
     }
     
-    _waitConfirmation = NO;
     return [VirgilKeyManager getCachedPrivateKey : _currentAccount];
 }
 
