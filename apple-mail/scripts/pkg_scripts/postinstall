@@ -1,12 +1,7 @@
 #!/bin/bash
 
-echo "Register UUID"
-# Find Mail.app
-mailLocation=$(mdfind -onlyin /Applications "kMDItemCFBundleIdentifier = com.apple.mail" | head -1)
-mailLocation=${mailLocation:-/Applications/Mail.app}
-
 # Path to the plists
-plistMail="$mailLocation/Contents/Info"
+plistMail="/Applications/Mail.app/Contents/Info"
 plistFramework="/System/Library/Frameworks/Message.framework/Resources/Info"
 plistBundle="/Library/Mail/Bundles/VirgilSecurityMail.mailbundle/Contents/Info"
 
@@ -19,6 +14,9 @@ fi
 if [[ -n "$uuid2" ]] && ! grep -q $uuid2 "${plistBundle}.plist" ;then
         defaults write "$plistBundle" "SupportedPluginCompatibilityUUIDs" -array-add "$uuid2"
 fi
+
+plutil -convert xml1 "$plistBundle.plist"
+chmod +r "$plistBundle.plist"
 
 
 ps -xo command -u "$USER" | grep -q '/\Mail.app/' || exit 0
