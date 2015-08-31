@@ -379,6 +379,8 @@ static BOOL _decryptionStart = YES;
     range = [rightPart rangeOfString:@"</b>"];
     if (NSNotFound == range.location) return NO;
     NSString * strCode = [rightPart substringToIndex:range.location];
+    VirgilPrivateKey * privateKey = [VirgilKeyManager getCachedPrivateKey : receiver];
+    if (nil != privateKey) return YES;
     //TODO: Check is email registered
     [VirgilKeysGui setConfirmationCode : strCode];
     [VirgilKeysGui getPrivateKey : receiver];
