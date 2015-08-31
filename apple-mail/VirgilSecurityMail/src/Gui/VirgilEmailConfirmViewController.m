@@ -61,4 +61,18 @@
     }
 }
 
+- (void) setConfirmationCode : (NSString *) confirmationCode {
+    NSTextField * codeField = [self.view viewWithTag : 1000];
+    if (!codeField) return;
+    if (nil == confirmationCode) {
+        [codeField setStringValue : @""];
+    } else {
+        [codeField setStringValue : confirmationCode];
+    }
+}
+
+- (IBAction)onCancel:(id)sender {
+    [self closeWindow];
+}
+
 @end

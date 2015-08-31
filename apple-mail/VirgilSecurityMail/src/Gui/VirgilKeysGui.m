@@ -36,20 +36,25 @@
 
 #import "VirgilKeysGui.h"
 #import "VirgilSignInViewController.h"
+#import "VirgilEmailConfirmViewController.h"
 #import "VirgilKeyManager.h"
 
 @implementation VirgilKeysGui
 
 NSString * _currentAccount = @"";
+NSString * _confirmationCode = @"";
+BOOL _waitConfirmation = NO;
 
-+ (VirgilPrivateKey *) getPrivateKey : (NSString *) account {
-    // Get active mail write window
-    
-     _currentAccount = account;
-    
-    NSWindow * containerWindow = [[NSApplication sharedApplication] mainWindow];
-    if (nil == containerWindow) return nil;
-    
++ (void) setConfirmationCode : (NSString *) confirmationCode {
+    _waitConfirmation = YES;
+    if (nil == confirmationCode) {
+        _confirmationCode = @"";
+    } else {
+        _confirmationCode = confirmationCode;
+    }
+}
+
++ (NSBundle *) getVirgilBundle {
     NSBundle * bundle = nil;
     for (NSBundle * b in [NSBundle allBundles]) {
         if ([b isLoaded] &&
@@ -58,7 +63,21 @@ NSString * _currentAccount = @"";
             break;
         }
     }
+    return bundle;
+}
 
++ (VirgilPrivateKey *) getPrivateKey : (NSString *) account {
+    _currentAccount = account;
+    
+    // Check for need confirmation
+    if (YES == _waitConfirmation) {
+        return [VirgilKeysGui getPrivateKeyAfterActivation : _confirmationCode];
+    }
+    
+    NSWindow * containerWindow = [[NSApplication sharedApplication] mainWindow];
+    if (nil == containerWindow) return nil;
+    
+    NSBundle * bundle = [VirgilKeysGui getVirgilBundle];
     if (nil == bundle) return nil;
     
     @try {
@@ -88,6 +107,52 @@ NSString * _currentAccount = @"";
     }
     
     return [VirgilKeyManager getCachedPrivateKey : account];
+}
+
++ (VirgilPrivateKey*) getPrivateKeyAfterActivation : (NSString *) confirmationCode {
+    NSWindow * containerWindow = [[NSApplication sharedApplication] mainWindow];
+    if (nil == containerWindow) return nil;
+    
+    NSBundle * bundle = [VirgilKeysGui getVirgilBundle];
+    if (nil == bundle) return nil;
+    
+    @try {
+        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSStoryboard * storyBoard =
+            [NSStoryboard storyboardWithName : @"Main"
+                                      bundle : bundle];
+            if (nil == storyBoard) return;
+            
+            NSWindowController * windowControler = [storyBoard instantiateInitialController];
+            if (nil == windowControler) return;
+            
+            VirgilEmailConfirmViewController * controller =
+                (VirgilEmailConfirmViewController*)[storyBoard instantiateControllerWithIdentifier : @"viewEmailConfirm"];
+            
+            [windowControler setContentViewController:controller];
+            
+            if (nil == controller) return;
+            [controller setConfirmationCode : confirmationCode];
+            
+            NSWindow * controllerWindow = [windowControler window];
+            
+            if (nil == controllerWindow) return;
+            
+            [containerWindow beginSheet : controllerWindow
+                      completionHandler : ^(NSModalResponse returnCode) {
+                          dispatch_semaphore_signal(semaphore);
+                      }];
+        });
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    }
+    @catch (NSException *exception) {
+    }
+    @finally {
+    }
+    
+    _waitConfirmation = NO;
+    return [VirgilKeyManager getCachedPrivateKey : _currentAccount];
 }
 
 + (NSString *) currentAccount {

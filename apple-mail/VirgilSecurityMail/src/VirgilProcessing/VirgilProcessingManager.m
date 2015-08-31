@@ -32,6 +32,8 @@
 
 @implementation VirgilProcessingManager
 
+static BOOL _decryptionStart = YES;
+
 + (VirgilProcessingManager *) sharedInstance {
     static VirgilProcessingManager * singletonObject = nil;
     static dispatch_once_t onceToken;
@@ -57,6 +59,10 @@
     //      2. Check for open purpose. Decrypt on reading only.
     //      3. Check for preview disabled.
     return YES;
+}
+
+- (BOOL) resetDecryption {
+    return _decryptionStart = YES;
 }
 
 - (BOOL) isEncryptedByVirgil : (MimePart *)topMimePart {
@@ -160,6 +166,10 @@
     return privateKey;
 }
 
+- (void) setCurrentConfirmationCode : (NSString *) confirmationCode {
+    [VirgilKeysGui setConfirmationCode : confirmationCode];
+}
+
 - (NSString *) getPublicIdForAccount : (NSString *)account {
     VirgilPublicKey * publicKey = [VirgilKeyManager getPublicKey:account];
     if (nil == publicKey) return nil;
@@ -251,7 +261,7 @@
     if (![[part disposition] isEqualToString:@"attachment"]) return nil;
     if (![part.contentTransferEncoding isEqualToString:@"base64"]) return nil;
     NSData *bodyData = [part bodyData];
-    NSString* strBody = [[NSString alloc] initWithData:bodyData encoding:NSUTF8StringEncoding];
+    //NSString* strBody = [[NSString alloc] initWithData:bodyData encoding:NSUTF8StringEncoding];
     return bodyData;
 }
 
@@ -340,11 +350,40 @@
     
     Message * currentMessage = [(MimeBody *)[mimePart mimeBody] message];
 
-    if (![_decryptedMail isCurrentMail:currentMessage]) {
+    if (YES == _decryptionStart && ![_decryptedMail isCurrentMail:currentMessage]) {
         [self decryptWholeMessage:topMimePart];
+        _decryptionStart = NO;
     }
     
     return [_decryptedMail partByHash:mimePart];
+}
+
+- (BOOL) checkConfirmationEmail : (MimePart *) mimePart {
+    if (nil == mimePart) return NO;
+    MimePart * topMimePart = [self topLevelPartByAnyPart:mimePart];
+    if (![topMimePart.subtype isEqualTo:@"html"]) return NO;
+    
+    Message * message = [(MimeBody *)[topMimePart mimeBody] message];
+    NSString * receiver = [self getMyAccountFromMessage:message];
+    if (nil == message || nil == receiver) return NO;
+    
+    NSData *bodyData = [mimePart bodyData];
+    NSString* strBody = [[NSString alloc] initWithData:bodyData encoding:NSUTF8StringEncoding];
+    
+    if (nil == strBody) return NO;
+    if (![strBody containsString : @"confirmation code is"]) return NO;
+    
+    NSRange range = [strBody rangeOfString:@"font-weight: bold;\">"];
+    if (NSNotFound == range.location) return NO;
+    NSString * rightPart = [strBody substringFromIndex : range.location + 20];
+    range = [rightPart rangeOfString:@"</b>"];
+    if (NSNotFound == range.location) return NO;
+    NSString * strCode = [rightPart substringToIndex:range.location];
+    //TODO: Check is email registered
+    [VirgilKeysGui setConfirmationCode : strCode];
+    [VirgilKeysGui getPrivateKey : receiver];
+    
+    return YES;
 }
 
 - (MimePart *) topLevelPartByAnyPart : (MimePart *)part {

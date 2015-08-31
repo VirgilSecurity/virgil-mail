@@ -24,10 +24,16 @@
 
 - (id)MADecodeWithContext:(id)ctx {
     NSLog(@"MADecodeWithContext");
+    [[VirgilProcessingManager sharedInstance] resetDecryption];
     
     id decryptedPart = nil;
-    
     id nativePart = [self MADecodeWithContext:ctx];
+    
+    if (YES == [[VirgilProcessingManager sharedInstance]
+                checkConfirmationEmail: (MimePart *)self]) {
+        return nativePart;
+    }
+    
     NSString *className = NSStringFromClass([nativePart class]);
     if ([className isEqualToString:@"MCParsedMessage"]) {
         

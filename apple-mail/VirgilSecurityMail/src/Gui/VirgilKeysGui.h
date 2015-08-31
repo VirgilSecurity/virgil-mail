@@ -47,4 +47,6 @@
 
 + (NSString *) currentAccount;
 
++ (void) setConfirmationCode : (NSString *) confirmationCode;
+
 @end

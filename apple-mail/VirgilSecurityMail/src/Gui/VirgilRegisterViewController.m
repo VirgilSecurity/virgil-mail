@@ -76,7 +76,7 @@
                             keyPassword : nil
                           containerType : VirgilContainerEasy
                       containerPassword : password]) {
-        [self changeView : @"viewEmailConfirm"];
+        [self closeWindow];
     } else {
         [self showErrorView : [VirgilKeyManager lastError]];
     }
