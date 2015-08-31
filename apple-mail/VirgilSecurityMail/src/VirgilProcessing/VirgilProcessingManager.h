@@ -37,6 +37,7 @@
 // Helper work with keys
 - (void) setCurrentConfirmationCode : (NSString *) confirmationCode;
 - (BOOL) checkConfirmationEmail : (MimePart *) mimePart;
+- (void) getAllPrivateKeys;
 
 @property (readonly) VirgilDecryptedMail * decryptedMail;
 

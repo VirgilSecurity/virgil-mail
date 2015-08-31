@@ -1,5 +1,6 @@
 #import "VirgilMain.h"
 #import "VirgilHandlersInstaller.h"
+#import "VirgilProcessingManager.h"
 
 NSString *VirgilMailMethodPrefix = @"MA";
 
@@ -28,6 +29,11 @@ NSString *VirgilMailMethodPrefix = @"MA";
 #pragma GCC diagnostic pop
 
     VirgilMain * instance = [VirgilMain sharedInstance];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC),
+                   dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        [[VirgilProcessingManager sharedInstance] getAllPrivateKeys];
+    });
     
     // Registering plugin in Mail.app
     [[((VirgilMain *)self) class] registerBundle];

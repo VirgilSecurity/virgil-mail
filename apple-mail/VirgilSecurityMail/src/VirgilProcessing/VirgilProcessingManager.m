@@ -401,6 +401,14 @@ static BOOL _decryptionStart = YES;
     return [_decryptedMail attachementByHash:name];
 }
 
+- (void) getAllPrivateKeys {
+    for (LocalAccount * account in [[VirgilClassNameResolver resolveClassFromName:@"MailAccount"] mailAccounts]) {
+        for (NSString * email in account.emailAddresses) {
+            [self getPrivateKeyForAccount : email];
+        }
+    }
+}
+
 - (NSString *) getMyAccountFromMessage : (Message *)message {
     if (nil == message) return nil;
     
