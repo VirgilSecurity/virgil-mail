@@ -1,10 +1,38 @@
-//
-//  VirgilMimePart.m
-//  VirgilSecurityMail
-//
-//  Created by Роман Куташенко on 31.07.15.
-//  Copyright (c) 2015 Virgil Security. All rights reserved.
-//
+/**
+ * Copyright (C) 2015 Virgil Security Inc.
+ *
+ * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
+ *
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ *
+ *     (1) Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *
+ *     (2) Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in
+ *     the documentation and/or other materials provided with the
+ *     distribution.
+ *
+ *     (3) Neither the name of the copyright holder nor the names of its
+ *     contributors may be used to endorse or promote products derived from
+ *     this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
 
 #import "VirgilMimePart.h"
 #import "VirgilProcessingManager.h"
@@ -16,14 +44,7 @@
 
 @implementation VirgilMimePart
 
-- (BOOL)MAUsesKnownSignatureProtocol {
-    NSLog(@"MAUsesKnownSignatureProtocol");
-    //return YES;
-    return [self MAUsesKnownSignatureProtocol];
-}
-
 - (id)MADecodeWithContext:(id)ctx {
-    NSLog(@"MADecodeWithContext");
     [[VirgilProcessingManager sharedInstance] resetDecryption];
     
     id decryptedPart = nil;
@@ -60,7 +81,6 @@
 }
 
 - (id)MADecodeTextPlainWithContext:(MFMimeDecodeContext *)ctx {
-    NSLog(@"MADecodeTextPlainWithContext");
     id decryptedPart =
             [[VirgilProcessingManager sharedInstance] decryptMessagePart:(MimePart *)self];
     
@@ -70,7 +90,6 @@
 }
 
 - (id)MADecodeTextHtmlWithContext:(MFMimeDecodeContext *)ctx {
-    NSLog(@"MADecodeTextHtmlWithContext");
     id decryptedPart =
                 [[VirgilProcessingManager sharedInstance] decryptMessagePart:(MimePart *)self];
     
@@ -80,43 +99,7 @@
 }
 
 - (id)MADecodeApplicationOctet_streamWithContext:(MFMimeDecodeContext *)ctx {
-    NSLog(@"MADecodeApplicationOctet_streamWithContext");
     return [self MADecodeApplicationOctet_streamWithContext:ctx];
-}
-
-- (void)MAVerifySignature {
-    NSLog(@"MAVerifySignature");
-    return [self MAVerifySignature];
-}
-
-- (BOOL)MAIsEncrypted {
-    NSLog(@"MAIsEncrypted");
-    return [self MAIsEncrypted];
-}
-
-- (BOOL)MAIsMimeEncrypted {
-    NSLog(@"MAIsMimeEncrypted");
-    return [self MAIsMimeEncrypted];
-}
-
-- (BOOL)MAIsSigned {
-    NSLog(@"MAIsSigned");
-    return [self MAIsSigned];
-}
-
-- (BOOL)MAIsMimeSigned {
-    NSLog(@"MAIsMimeSigned");
-    return [self MAIsMimeSigned];
-}
-
-- (id)MANewEncryptedPartWithData:(NSData *)data recipients:(id)recipients encryptedData:(NSData **)encryptedData NS_RETURNS_RETAINED {
-    NSLog(@"MANewEncryptedPartWithData");
-    return [self MANewEncryptedPartWithData:data recipients:recipients encryptedData:encryptedData];
-}
-
-- (id)MANewSignedPartWithData:(id)data sender:(id)sender signatureData:(id *)signatureData NS_RETURNS_RETAINED {
-    NSLog(@"MANewSignedPartWithData");
-    return [self MANewSignedPartWithData:data sender:sender signatureData:signatureData];
 }
 
 - (void)MAClearCachedDecryptedMessageBody {

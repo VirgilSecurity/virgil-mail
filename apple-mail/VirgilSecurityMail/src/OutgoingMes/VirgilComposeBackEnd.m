@@ -1,10 +1,38 @@
-//
-//  VirgilComposeBackEnd.m
-//  VirgilSecurityMail
-//
-//  Created by Роман Куташенко on 14.08.15.
-//  Copyright (c) 2015 Virgil Security. All rights reserved.
-//
+/**
+ * Copyright (C) 2015 Virgil Security Inc.
+ *
+ * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
+ *
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ *
+ *     (1) Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *
+ *     (2) Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in
+ *     the documentation and/or other materials provided with the
+ *     distribution.
+ *
+ *     (3) Neither the name of the copyright holder nor the names of its
+ *     contributors may be used to endorse or promote products derived from
+ *     this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
 
 #import "VirgilComposeBackEnd.h"
 #import "VirgilProcessingManager.h"
@@ -67,71 +95,5 @@
     return result;
 }
 
-- (BOOL) MACanEncryptForRecipients : (NSArray *)recipients
-                            sender : (NSString *)sender {
-    NSLog(@"MACanEncryptForRecipients");
-    return [self MACanEncryptForRecipients : recipients
-                                    sender : sender];
-}
-
-- (BOOL) MACanSignFromAddress : (NSString *)address {
-    NSLog(@"MACanSignFromAddress");
-    return [self MACanSignFromAddress : address];
-}
-
-- (id) MARecipientsThatHaveNoKeyForEncryption {
-    NSLog(@"MARecipientsThatHaveNoKeyForEncryption");
-    return [self MARecipientsThatHaveNoKeyForEncryption];
-}
-
-- (void) MASetEncryptIfPossible : (BOOL)encryptIfPossible {
-    NSLog(@"MASetEncryptIfPossible");
-    [self MASetEncryptIfPossible : encryptIfPossible];
-}
-
-- (void) MASetSignIfPossible : (BOOL)signIfPossible {
-    NSLog(@"MASetSignIfPossible");
-    [self MASetSignIfPossible : signIfPossible];
-}
-
-- (void) MA_configureLastDraftInformationFromHeaders : (id)headers
-                                           overwrite : (BOOL)overwrite {
-    NSLog(@"MA_configureLastDraftInformationFromHeaders");
-    [self MA_configureLastDraftInformationFromHeaders : headers
-                                            overwrite : overwrite];
-}
-
-- (id) MANewOutgoingMessageUsingWriter : (id)writer
-                              contents : (id)contents
-                               headers : (id)headers
-                               isDraft : (BOOL)isDraft
-                     shouldBePlainText : (BOOL)shouldBePlainText {
-    NSLog(@"MANewOutgoingMessageUsingWriter");
-    return [self MANewOutgoingMessageUsingWriter : writer
-                                        contents : contents
-                                         headers : headers
-                                         isDraft : isDraft
-                               shouldBePlainText : shouldBePlainText];
-}
-
-- (id) MASender {
-    NSLog(@"MASender");
-    return [self MASender];
-}
-
-- (id) MAInitCreatingDocumentEditor : (BOOL)createDocumentEditor {
-    NSLog(@"MAInitCreatingDocumentEditor");
-    return [self MAInitCreatingDocumentEditor : createDocumentEditor];
-}
-
-- (void) MASetKnowsCanSign : (BOOL)knowsCanSign {
-    NSLog(@"MASetKnowsCanSign");
-    [self MASetKnowsCanSign : knowsCanSign];
-}
-
-- (BOOL) MA_saveThreadShouldCancel {
-    NSLog(@"MA_saveThreadShouldCancel");
-    return [self MA_saveThreadShouldCancel];
-}
 
 @end

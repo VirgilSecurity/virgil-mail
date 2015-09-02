@@ -16,8 +16,6 @@
 		D13F60431B6A1D1300508C79 /* VirgilHandlersInstaller.m in Sources */ = {isa = PBXBuildFile; fileRef = D13F60421B6A1D1300508C79 /* VirgilHandlersInstaller.m */; };
 		D13F60461B6A33AC00508C79 /* MailHeaders in Resources */ = {isa = PBXBuildFile; fileRef = D13F60451B6A33AC00508C79 /* MailHeaders */; };
 		D13F60481B6A3ADD00508C79 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D13F60471B6A3ADD00508C79 /* AppKit.framework */; };
-		D13F604C1B6AB38200508C79 /* VirgilMimeBody.m in Sources */ = {isa = PBXBuildFile; fileRef = D13F604B1B6AB38200508C79 /* VirgilMimeBody.m */; };
-		D13F604F1B6ABC4B00508C79 /* VirgilMessageCriterion.m in Sources */ = {isa = PBXBuildFile; fileRef = D13F604E1B6ABC4B00508C79 /* VirgilMessageCriterion.m */; };
 		D13F60521B6B50F300508C79 /* VirgilMimePart.m in Sources */ = {isa = PBXBuildFile; fileRef = D13F60511B6B50F300508C79 /* VirgilMimePart.m */; };
 		D13F605C1B6B6D6200508C79 /* VirgilProcessingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D13F605B1B6B6D6200508C79 /* VirgilProcessingManager.m */; };
 		D15362B41B6C0335000215F9 /* HTMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = D15362B11B6C0335000215F9 /* HTMLNode.m */; };
@@ -85,10 +83,6 @@
 		D13F60421B6A1D1300508C79 /* VirgilHandlersInstaller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilHandlersInstaller.m; path = VirgilSecurityMail/src/VirgilHandlersInstaller.m; sourceTree = "<group>"; };
 		D13F60451B6A33AC00508C79 /* MailHeaders */ = {isa = PBXFileReference; lastKnownFileType = folder; name = MailHeaders; path = VirgilSecurityMail/src/MailHeaders; sourceTree = "<group>"; };
 		D13F60471B6A3ADD00508C79 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		D13F604A1B6AB38200508C79 /* VirgilMimeBody.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilMimeBody.h; path = VirgilSecurityMail/src/CommonMes/VirgilMimeBody.h; sourceTree = "<group>"; };
-		D13F604B1B6AB38200508C79 /* VirgilMimeBody.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilMimeBody.m; path = VirgilSecurityMail/src/CommonMes/VirgilMimeBody.m; sourceTree = "<group>"; };
-		D13F604D1B6ABC4B00508C79 /* VirgilMessageCriterion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilMessageCriterion.h; path = VirgilSecurityMail/src/CommonMes/VirgilMessageCriterion.h; sourceTree = "<group>"; };
-		D13F604E1B6ABC4B00508C79 /* VirgilMessageCriterion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilMessageCriterion.m; path = VirgilSecurityMail/src/CommonMes/VirgilMessageCriterion.m; sourceTree = "<group>"; };
 		D13F60501B6B50F300508C79 /* VirgilMimePart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilMimePart.h; path = VirgilSecurityMail/src/CommonMes/VirgilMimePart.h; sourceTree = "<group>"; };
 		D13F60511B6B50F300508C79 /* VirgilMimePart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilMimePart.m; path = VirgilSecurityMail/src/CommonMes/VirgilMimePart.m; sourceTree = "<group>"; };
 		D13F605A1B6B6D6200508C79 /* VirgilProcessingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilProcessingManager.h; path = VirgilSecurityMail/src/VirgilProcessing/VirgilProcessingManager.h; sourceTree = "<group>"; };
@@ -266,10 +260,6 @@
 		D13F60491B6AB36400508C79 /* CommonMes */ = {
 			isa = PBXGroup;
 			children = (
-				D13F604A1B6AB38200508C79 /* VirgilMimeBody.h */,
-				D13F604B1B6AB38200508C79 /* VirgilMimeBody.m */,
-				D13F604D1B6ABC4B00508C79 /* VirgilMessageCriterion.h */,
-				D13F604E1B6ABC4B00508C79 /* VirgilMessageCriterion.m */,
 				D13F60501B6B50F300508C79 /* VirgilMimePart.h */,
 				D13F60511B6B50F300508C79 /* VirgilMimePart.m */,
 			);
@@ -489,9 +479,7 @@
 				D1DDA9181B91B21700002A2F /* VirgilSignInViewController.m in Sources */,
 				D1DDA9271B91B22F00002A2F /* VirgilReplaceSegue.m in Sources */,
 				D1DDA9251B91B22F00002A2F /* NSBezierPath+StrokeExtensions.m in Sources */,
-				D13F604F1B6ABC4B00508C79 /* VirgilMessageCriterion.m in Sources */,
 				D1DDA9081B91B05300002A2F /* VirgilErrorCodesParser.m in Sources */,
-				D13F604C1B6AB38200508C79 /* VirgilMimeBody.m in Sources */,
 				D1DDA92A1B91B2B000002A2F /* NSViewController+VirgilView.m in Sources */,
 				D1DDA9161B91B21700002A2F /* VirgilErrorViewController.m in Sources */,
 				D13F60521B6B50F300508C79 /* VirgilMimePart.m in Sources */,
