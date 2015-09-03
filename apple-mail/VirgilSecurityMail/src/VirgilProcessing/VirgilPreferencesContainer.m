@@ -33,74 +33,36 @@
  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+#import "VirgilPreferencesContainer.h"
+#import "VirgilPreferencesHelper.h"
 
-#import "VirgilMain.h"
-#import "VirgilHandlersInstaller.h"
-#import "VirgilProcessingManager.h"
-#import "VirgilPreferences.h"
+@implementation VirgilPreferencesContainer
 
-NSString *VirgilMailMethodPrefix = @"MA";
+static NSString * _NeedAskToDecrypt = @"_NeedAskToDecrypt";
+static NSString * _UseEncryption = @"_UseEncryption";
 
-@interface VirgilMain (VirgilNoImplementation)
-+ (void)registerBundle;
-@end
-
-@implementation VirgilMain
-
-+ (void)initialize {
-    if(self != [VirgilMain class])
-        return;
-    
-    Class mvMailBundleClass = NSClassFromString(@"MVMailBundle");
-    /// If this class is not available that means Mail.app
-    /// doesn't allow bundles anymore.
-    
-    if (!mvMailBundleClass) {
-        NSLog(@"Mail.app doesn't support bundles anymore. Exit.");
-        return;
++ (BOOL) isNeedAskToDecrypt {
+    if (NO == [VirgilPreferencesHelper isKeyPresent : _NeedAskToDecrypt]) {
+        return YES;
     }
-    
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated"
-    class_setSuperclass([self class], mvMailBundleClass);
-#pragma GCC diagnostic pop
-
-    VirgilMain * instance = [VirgilMain sharedInstance];
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 4 * NSEC_PER_SEC),
-                   dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-        [[VirgilProcessingManager sharedInstance] getAllPrivateKeys];
-    });
-    
-    // Registering plugin in Mail.app
-    [[((VirgilMain *)self) class] registerBundle];
+    return [VirgilPreferencesHelper getBoolForKey : _NeedAskToDecrypt];
 }
 
-- (id)init {
-	if (self = [super init]) {
-		NSLog(@"Virgil Security Mail Plugin successfully Loaded");
-
-        // Install handlers
-        [VirgilHandlersInstaller installHandlerByPrefix:VirgilMailMethodPrefix];
-	}
-    
-	return self;
++ (void) setNeedAskToDecrypt : (BOOL)needAsk {
+    [VirgilPreferencesHelper setBoolForKey : needAsk
+                                       key : _NeedAskToDecrypt];
 }
 
-- (void)dealloc {
++ (BOOL) isUseEncryption {
+    if (NO == [VirgilPreferencesHelper isKeyPresent : _UseEncryption]) {
+        return YES;
+    }
+    return [VirgilPreferencesHelper getBoolForKey : _UseEncryption];
 }
 
-+ (BOOL)hasPreferencesPanel {
-    return YES;
++ (void) setUseEncryption : (BOOL)use {
+    [VirgilPreferencesHelper setBoolForKey : use
+                                       key : _UseEncryption];
 }
-
-+ (NSString *)preferencesOwnerClassName {
-    return NSStringFromClass([VirgilPreferences class]);
-}
-
-+ (NSString *)preferencesPanelName {
-    return @"Virgil Preferences";
-}
-
 
 @end

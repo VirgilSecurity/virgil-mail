@@ -42,9 +42,6 @@
 
 + (NSDictionary *) commonHandlers {
 	return @{
-             @"MessageContentController": @[
-					 @"setMessageToDisplay:"
-                     ],
              @"MimePart": @[
 					 @"decodeWithContext:",
 					 @"decodeTextPlainWithContext:",
@@ -63,6 +60,12 @@
                      ],
              @"ComposeBackEnd": @[
                      @"_makeMessageWithContents:isDraft:shouldSign:shouldEncrypt:shouldSkipSignature:shouldBePlainText:",
+                     ],
+             @"NSPreferences": @[
+                     @"sharedPreferences",
+                     @"windowWillResize:toSize:",
+                     @"toolbarItemClicked:",
+                     @"showPreferencesPanelForOwner:"
                      ]
              };
 }
