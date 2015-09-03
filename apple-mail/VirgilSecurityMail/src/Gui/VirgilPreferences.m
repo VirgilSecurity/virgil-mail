@@ -43,12 +43,25 @@
 -(id)init {
 	self = [super init];
 	if (self) {
-//		NSDictionary *defaults = [[NSDictionary alloc] initWithContentsOfFile:[[GPGMailBundle bundle] pathForResource:@"SparkleDefaults" ofType:@"plist"]];
-//		GPGOptions *options = [GPGOptions sharedOptions];
-//		[options registerDefaults:defaults];
+        NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+        [center addObserver : self
+                   selector : @selector(defaultsChanged:)
+                       name : NSUserDefaultsDidChangeNotification
+                     object : nil];
 	}
 	
 	return self;
+}
+
+- (void) dealloc {
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center removeObserver : self
+                      name : NSUserDefaultsDidChangeNotification
+                    object : nil];
+}
+
+- (void)defaultsChanged : (NSNotification *)notification {
+    [self updateGuiElements];
 }
 
 - (IBAction)onOptionChanged:(id)sender {
@@ -81,20 +94,20 @@
 - (IBAction)onCheckNowClick:(id)sender {
 }
 
-- (void)willBeDisplayed {
+- (void) updateGuiElements {
     // 1000 - Ask before decrypt
     // 1001 - Use encryption
     // 1002 - Auto check updates
     // 1003 - Install automaticaly
     
     [self loadStateForTag : 1000
-                    state :
-                    [VirgilPreferencesContainer isNeedAskToDecrypt] ? NSOnState :
-                                                                      NSOffState];
+                    state : [VirgilPreferencesContainer isNeedAskToDecrypt] ? NSOnState : NSOffState];
     [self loadStateForTag : 1001
-                    state :
-                    [VirgilPreferencesContainer isUseEncryption] ? NSOnState :
-                                                                   NSOffState];
+                    state : [VirgilPreferencesContainer isUseEncryption] ? NSOnState : NSOffState];
+}
+
+- (void)willBeDisplayed {
+    [self updateGuiElements];
 }
 
 - (void) loadStateForTag : (NSInteger) tag

@@ -37,6 +37,7 @@
 #import "VirgilMenu.h"
 #import "VirgilNSWindow.h"
 #import "VirgilProcessingManager.h"
+#import "VirgilPreferencesContainer.h"
 #import "NSBezierPath_KBAdditions.h"
 #import "NSBezierPath+StrokeExtensions.h"
 #import <Cocoa/Cocoa.h>
@@ -60,21 +61,37 @@
 
 @end
 
-
 @implementation VirgilMenu
 
-- (id)init {
+- (id) init {
     self = [super initWithFrame:NSMakeRect(0.0f, 0.0f, MENU_DEFAULT_WIDTH, MENU_DEFAULT_HEIGHT)];
     if(self) {
         self.autoresizingMask = NSViewMinYMargin | NSViewMinXMargin;
         _attributedTitlesCache = [NSMapTable mapTableWithStrongToStrongObjects];
         _available = YES;
-        _useEncryption = YES;
         _radioItems = [[NSMutableArray alloc] init];
         _itemTitles = [[NSMutableArray alloc] init];
+        NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+        [center addObserver : self
+                   selector : @selector(defaultsChanged:)
+                       name : NSUserDefaultsDidChangeNotification
+                     object : nil];
         [self createMenu];
     }
     return self;
+}
+
+- (void) dealloc {
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center removeObserver : self
+                      name : NSUserDefaultsDidChangeNotification
+                    object : nil];
+}
+
+- (void) defaultsChanged : (NSNotification *)notification {
+    [self setNeedsDisplay : YES];
+    [self updateAndCenterLabel];
+    [self updateMenuState];
 }
 
 - (void) createMenu {
@@ -105,15 +122,6 @@
                       isCheckable:YES
                    actionSelector:@selector(elementSelected:)];
     
-    [self appendMenuSeparatorForParent:menu];
-    
-    [self appendMenuItemForParent:menu
-                        withTitle:@"Preferences"
-                              tag:(int)menuEl_preferences
-                      isCheckable:YES
-                   actionSelector:@selector(elementSelected:)];
-    
-    
     // Add the initial label.
     NSTextField *label = [[NSTextField alloc] initWithFrame:NSMakeRect(0.0f, 0.0f, self.frame.size.width, self.frame.size.height)];
     label.backgroundColor = [NSColor clearColor];
@@ -130,6 +138,15 @@
     self.popup = popup;
     
     [self updateAndCenterLabel];
+    [self updateMenuState];
+}
+
+- (void) updateMenuState {
+    if (YES == [VirgilPreferencesContainer isUseEncryption]) {
+        [_popup selectItemWithTag:menuEl_active];
+    } else {
+        [_popup selectItemWithTag:menuEl_inactive];
+    }
 }
 
 - (void) appendMenuSeparatorForParent:(NSMenu *) parent {
@@ -159,44 +176,9 @@
 }
 
 - (void) elementSelected : (id)sender {
-    NSLog(@"           elementSelected : %lu", [sender tag]);
-    switch ([sender tag]) {
-        case menuEl_active: {
-            _useEncryption = YES;
-        }
-            break;
-            
-        case menuEl_inactive: {
-            _useEncryption = NO;
-        }
-            break;
-            
-        case menuEl_preferences: {
-            // Select previous radio item
-            if (YES == _useEncryption) {
-                [_popup selectItemWithTag:menuEl_active];
-            } else {
-                [_popup selectItemWithTag:menuEl_inactive];
-            }
-            
-            NSAlert* msgBox = [[NSAlert alloc] init];
-            [msgBox setMessageText: @"Show preferences ..."];
-            [msgBox addButtonWithTitle: @"OK"];
-            [msgBox runModal];
-        }
-            break;
-            
-        default:{
-            
-        }
-    }
-
-    VirgilProcessingManager * vpm = [VirgilProcessingManager sharedInstance];
-    vpm.useEncryption = _useEncryption;
-    
+    BOOL isActive = menuEl_active == [sender tag];
+    [VirgilPreferencesContainer setUseEncryption : isActive];
     [self menuDidClose:self.menu];
-    [self updateAndCenterLabel];
-    [self setNeedsDisplay:YES];
 }
 
 - (void) prepareForFullScreen : (NSWindow *)window {
@@ -234,14 +216,6 @@
     [window addMenu:self];
 }
 
-- (void) setAvailable : (BOOL)available {
-    
-}
-
-- (void) setUseEncryption : (BOOL)useEncryption {
-    
-}
-
 - (void)updateAndCenterLabel {
     [self.label setStringValue:@"Virgil"];
     [self.label sizeToFit];
@@ -265,7 +239,7 @@
     NSColor *strokeColor = nil;
     
     if (self.available) {
-        if(YES == _useEncryption) {
+        if(YES == [VirgilPreferencesContainer isUseEncryption]) {
             gradient = [self gradientUseEncryptionColor:&strokeColor];
         } else {
             gradient = [self gradientDontUseEncryptionColor:&strokeColor];

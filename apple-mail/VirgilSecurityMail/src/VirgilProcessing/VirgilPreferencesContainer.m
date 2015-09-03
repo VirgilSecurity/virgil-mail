@@ -43,7 +43,7 @@ static NSString * _UseEncryption = @"_UseEncryption";
 
 + (BOOL) isNeedAskToDecrypt {
     if (NO == [VirgilPreferencesHelper isKeyPresent : _NeedAskToDecrypt]) {
-        return YES;
+        return NO;
     }
     return [VirgilPreferencesHelper getBoolForKey : _NeedAskToDecrypt];
 }

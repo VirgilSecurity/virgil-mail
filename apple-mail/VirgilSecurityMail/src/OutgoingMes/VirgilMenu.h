@@ -39,8 +39,7 @@
 enum MenuElement {
     menuEl_unknown = -1,
     menuEl_active,
-    menuEl_inactive,
-    menuEl_preferences
+    menuEl_inactive
 };
 
 @class VirgilMenu;
@@ -53,7 +52,6 @@ enum MenuElement {
 
 @interface VirgilMenu : NSView <NSMenuDelegate> {
     BOOL _fullscreen;
-    BOOL _useEncryption;
     BOOL _available;
     
     id <VirgilMenuViewDelegate> __weak _delegate;
@@ -68,17 +66,14 @@ enum MenuElement {
     NSMutableArray *_itemTitles;
 }
 
-@property (nonatomic, assign) BOOL useEncryption;
 @property (nonatomic, assign) BOOL available;
 @property (nonatomic, weak) id <VirgilMenuViewDelegate> delegate;
 
-- (id)init;
+- (id) init;
 - (void) configureMenu : (NSArray *)elements;
 - (void) elementSelected : (id)sender;
 - (void) prepareForFullScreen : (NSWindow *)window;
 - (void) prepareForNormalView : (NSWindow *)window;
-- (void) setAvailable : (BOOL)available;
-- (void) setUseEncryption : (BOOL)useEncryption;
 - (void) updateAndCenterLabel;
 
 @end

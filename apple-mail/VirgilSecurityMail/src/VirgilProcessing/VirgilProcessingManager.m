@@ -46,6 +46,7 @@
 #import "VirgilClassNameResolver.h"
 #import "VirgilPrivateKey.h"
 #import "VirgilKeysGui.h"
+#import "VirgilPreferencesContainer.h"
 
 #import <MessageStore.h>
 #import <MailAccount.h>
@@ -78,7 +79,6 @@ static BOOL _decryptionStart = YES;
 
 - (id) init{
     _decryptedMail = [[VirgilDecryptedMail alloc] init];
-    _useEncryption = YES;
     return [super init];
 }
 
@@ -484,7 +484,7 @@ static BOOL _decryptionStart = YES;
 }
 
 - (BOOL) isNeedToEncrypt {
-    return _useEncryption;
+    return [VirgilPreferencesContainer isUseEncryption];
 }
 
 - (NSString *) baseMailHTML {
