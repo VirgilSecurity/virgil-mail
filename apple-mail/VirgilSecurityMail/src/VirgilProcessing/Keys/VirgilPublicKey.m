@@ -36,6 +36,10 @@
 
 #import "VirgilPublicKey.h"
 
+#define kAccountID      @"AccountID"
+#define kPublicKeyID    @"PublicKeyID"
+#define kPublicKey      @"PublicKey"
+
 @implementation VirgilPublicKey : NSObject
 
 + (id) alloc {
@@ -60,6 +64,21 @@
         self.publicKey = [[NSString alloc] initWithString:a_publicKey];
     }
     return self;
+}
+
+- (void) encodeWithCoder:(NSCoder *)encoder {
+    [encoder encodeObject : self.accountID forKey : kAccountID];
+    [encoder encodeObject : self.publicKeyID forKey : kPublicKeyID];
+    [encoder encodeObject : self.publicKey forKey : kPublicKey];
+}
+
+- (id)initWithCoder:(NSCoder *)decoder {
+    NSString * a_accountID = [decoder decodeObjectForKey : kAccountID];
+    NSString * a_publicKeyID = [decoder decodeObjectForKey : kPublicKeyID];
+    NSString * a_publicKey = [decoder decodeObjectForKey : kPublicKey];
+    return [self initAccountID : a_accountID
+                   publicKeyID : a_publicKeyID
+                     publicKey : a_publicKey];
 }
 
 - (NSString *) description {

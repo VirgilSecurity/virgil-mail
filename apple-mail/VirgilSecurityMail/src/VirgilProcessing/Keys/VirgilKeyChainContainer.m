@@ -34,25 +34,54 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <Foundation/Foundation.h>
-#import "VirgilDataTypes.h"
+#import "VirgilKeyChainContainer.h"
 
-@interface VirgilPrivateKey : NSObject <NSCoding>
-- (id) init;
-- (id) initAccount : (NSString *)a_account
-     containerType : (VirgilContainerType)a_containerType
-        privateKey : (NSString *)a_key
-       keyPassword : (NSString *)a_keyPassword
- containerPassword : (NSString *)a_containerPassword;
+#define kPrivateKey     @"PrivateKey"
+#define kPublicKey      @"PublicKey"
 
-// NSCoder
-- (void) encodeWithCoder : (NSCoder *)encoder;
-- (id) initWithCoder : (NSCoder *)decoder;
-// ~NSCoder
 
-@property (retain) NSString * account;
-@property VirgilContainerType containerType;
-@property (retain) NSString * key;
-@property (retain) NSString * keyPassword;
-@property (retain) NSString * containerPassword;
+@implementation VirgilKeyChainContainer
+
++ (id) alloc {
+    return [super alloc];
+}
+
+- (id) init {
+    if ([super init]) {
+        _privateKey = nil;
+        _publicKey = nil;
+    }
+    return self;
+}
+
+- (id) initWithPrivateKey : (VirgilPrivateKey *)a_privateKey
+             andPublicKey : (VirgilPublicKey *)a_publicKey {
+    if ([super init]) {
+        _privateKey = a_privateKey;
+        _publicKey = a_publicKey;    }
+    return self;
+}
+
+- (void) encodeWithCoder:(NSCoder *)encoder {
+    [encoder encodeObject : _privateKey forKey : kPrivateKey];
+    [encoder encodeObject : _publicKey forKey : kPublicKey];
+}
+
+- (id)initWithCoder:(NSCoder *)decoder {
+    VirgilPrivateKey * privateKey = [decoder decodeObjectForKey : kPrivateKey];
+    VirgilPublicKey * publicKey = [decoder decodeObjectForKey : kPublicKey];
+    return [self initWithPrivateKey : privateKey
+                       andPublicKey : publicKey];
+}
+
+- (NSString *) description {
+    NSMutableString * res = [[NSMutableString alloc] init];
+    [res appendString:@"VirgilKeyChainContainer : \n"];
+    [res appendString:@"{ \n"];
+    [res appendFormat:@"privateKey : %@\n", [_privateKey description]];
+    [res appendFormat:@"publicKey : %@\n", [_publicKey description]];
+    [res appendString:@"} \n"];
+    return res;
+}
+
 @end

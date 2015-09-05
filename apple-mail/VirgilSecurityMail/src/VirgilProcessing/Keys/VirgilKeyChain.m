@@ -34,25 +34,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <Foundation/Foundation.h>
-#import "VirgilDataTypes.h"
+#import "VirgilKeyChain.h"
+#import "VirgilKeychainWrapper.h"
 
-@interface VirgilPrivateKey : NSObject <NSCoding>
-- (id) init;
-- (id) initAccount : (NSString *)a_account
-     containerType : (VirgilContainerType)a_containerType
-        privateKey : (NSString *)a_key
-       keyPassword : (NSString *)a_keyPassword
- containerPassword : (NSString *)a_containerPassword;
+#define kVirgilService  @"VirgilSecurityMail"
 
-// NSCoder
-- (void) encodeWithCoder : (NSCoder *)encoder;
-- (id) initWithCoder : (NSCoder *)decoder;
-// ~NSCoder
+@implementation VirgilKeyChain
 
-@property (retain) NSString * account;
-@property VirgilContainerType containerType;
-@property (retain) NSString * key;
-@property (retain) NSString * keyPassword;
-@property (retain) NSString * containerPassword;
++ (VirgilKeyChainContainer *) loadContainer : (NSString *) account {
+    VirgilKeyChainContainer * res =
+        (VirgilKeyChainContainer *)[VirgilKeychainWrapper load : kVirgilService
+                                                       account : account];
+    
+    if (nil != res) {
+        NSLog(@"VirgilKeyChainContainer : %@", res);
+        return res;
+    }
+    
+    NSLog(@"VirgilKeyChainContainer : error");
+    return nil;
+}
+
++ (BOOL) saveContainer : (VirgilKeyChainContainer *) container
+            forAccount : (NSString *) account {
+    if (nil == account || nil == container) return NO;
+    [VirgilKeychainWrapper save : kVirgilService
+                        account : account
+                           data : container];
+    return YES;
+}
+
 @end

@@ -49,4 +49,6 @@
 
 + (void) setConfirmationCode : (NSString *) confirmationCode;
 
++ (void) setUserActivityPrivateKey : (VirgilPrivateKey *) privateKey;
+
 @end

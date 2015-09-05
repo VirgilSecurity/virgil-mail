@@ -47,9 +47,6 @@
 //! _lastError - contains user friendly error string
 static NSString * _lastError = nil;
 
-//! _privateKeyCache - cache for private keys. Dictianary with pairs "email" : "VirgilPrivateKey instance"
-static NSMutableDictionary * _privateKeyCache = [[NSMutableDictionary alloc] init];
-
 //! _endpoints - helper object for getting endpoints strings
 static VirgilPrivateKeyEndpoints * _endpoints =
 [[VirgilPrivateKeyEndpoints alloc] initWithBaseURL : [VirgilHelpers privateKeysURLBase]];
@@ -258,18 +255,7 @@ static VirgilPrivateKeyEndpoints * _endpoints =
     
     if (nil == account) return nil;
     
-    // Search for key in cache
-    
-    NSLog(@"_privateKeyCache [request] : %@", _privateKeyCache);
-    
-    VirgilPrivateKey * res([_privateKeyCache valueForKey : account]);
-    if (nil != res) {
-        return res;
-    }
-    
     if (nil == containerPassword || nil == publicKeyID) return nil;
-    
-    // Key in cache not present, lets download it
     
     // Get auth token
     NSString * authToken = [VirgilPrivateKeyManager createSession:account
@@ -290,14 +276,8 @@ static VirgilPrivateKeyEndpoints * _endpoints =
                                     keyPassword : nil
                               containerPassword : containerPassword];
     
-    res = [VirgilPrivateKeyManager decryptKey : encryptedKey];
+    VirgilPrivateKey * res = [VirgilPrivateKeyManager decryptKey : encryptedKey];
     if (nil == res) return nil;
-    NSLog(@"%@", res);
-    // Add new key to cache
-    [_privateKeyCache setValue : res
-                        forKey : account];
-    
-    NSLog(@"_privateKeyCache [set] : %@", _privateKeyCache);
     
     return res;
 }
@@ -390,9 +370,6 @@ static VirgilPrivateKeyEndpoints * _endpoints =
     if ([VirgilNetRequest post : [_endpoints getKeyPush]
                        headers : headers
                           data : data]) {
-        // Add new key to cache
-        [_privateKeyCache setValue : key
-                            forKey : key.account];
         return YES;
     }
     [VirgilPrivateKeyManager setErrorString : [VirgilNetRequest lastError]];

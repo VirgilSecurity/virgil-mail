@@ -39,6 +39,8 @@
 #import "VirgilEmailConfirmViewController.h"
 #import "VirgilKeyManager.h"
 
+static VirgilPrivateKey * _userActivityKey = nil;
+
 @implementation VirgilKeysGui
 
 NSString * _currentAccount = @"";
@@ -68,6 +70,7 @@ BOOL _waitConfirmation = NO;
 
 + (VirgilPrivateKey *) getPrivateKey : (NSString *) account {
     _currentAccount = account;
+    _userActivityKey = nil;
     
     // Check for need confirmation
     if (YES == _waitConfirmation) {
@@ -107,10 +110,12 @@ BOOL _waitConfirmation = NO;
     @finally {
     }
     
-    return [VirgilKeyManager getCachedPrivateKey : account];
+    return _userActivityKey;
 }
 
 + (VirgilPrivateKey*) getPrivateKeyAfterActivation : (NSString *) confirmationCode {
+    _userActivityKey = nil;
+    
     NSWindow * containerWindow = [[NSApplication sharedApplication] mainWindow];
     if (nil == containerWindow) return nil;
     
@@ -152,11 +157,15 @@ BOOL _waitConfirmation = NO;
     @finally {
     }
     
-    return [VirgilKeyManager getCachedPrivateKey : _currentAccount];
+    return _userActivityKey;
 }
 
 + (NSString *) currentAccount {
     return _currentAccount;
+}
+
++ (void) setUserActivityPrivateKey : (VirgilPrivateKey *) privateKey {
+    _userActivityKey = privateKey;
 }
 
 @end

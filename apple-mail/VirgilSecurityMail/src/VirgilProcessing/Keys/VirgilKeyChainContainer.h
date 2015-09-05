@@ -35,24 +35,20 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "VirgilDataTypes.h"
+#import "VirgilPrivateKey.h"
+#import "VirgilPublicKey.h"
 
-@interface VirgilPrivateKey : NSObject <NSCoding>
+@interface VirgilKeyChainContainer : NSObject <NSCoding>
+
 - (id) init;
-- (id) initAccount : (NSString *)a_account
-     containerType : (VirgilContainerType)a_containerType
-        privateKey : (NSString *)a_key
-       keyPassword : (NSString *)a_keyPassword
- containerPassword : (NSString *)a_containerPassword;
+- (id) initWithPrivateKey : (VirgilPrivateKey *)a_privateKey
+             andPublicKey : (VirgilPublicKey *)a_publicKey;
+
+@property (retain, readonly) VirgilPrivateKey * privateKey;
+@property (retain, readonly) VirgilPublicKey * publicKey;
 
 // NSCoder
 - (void) encodeWithCoder : (NSCoder *)encoder;
 - (id) initWithCoder : (NSCoder *)decoder;
-// ~NSCoder
 
-@property (retain) NSString * account;
-@property VirgilContainerType containerType;
-@property (retain) NSString * key;
-@property (retain) NSString * keyPassword;
-@property (retain) NSString * containerPassword;
 @end

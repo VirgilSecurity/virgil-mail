@@ -55,6 +55,10 @@
 		D1ECEE851B98221100711F55 /* VirgilPreferencesWorker.m in Sources */ = {isa = PBXBuildFile; fileRef = D1ECEE841B98221100711F55 /* VirgilPreferencesWorker.m */; };
 		D1F720811B73E892007C8955 /* VirgilDecryptedMail.m in Sources */ = {isa = PBXBuildFile; fileRef = D1F720801B73E892007C8955 /* VirgilDecryptedMail.m */; };
 		D1F8982D1B985B630062633B /* VirgilPreferencesContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = D1F8982C1B985B630062633B /* VirgilPreferencesContainer.m */; };
+		D1FA26261B98E6E2003335BB /* VirgilKeychainWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = D1FA26251B98E6E2003335BB /* VirgilKeychainWrapper.m */; };
+		D1FA26281B9993BE003335BB /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1FA26271B9993BE003335BB /* Security.framework */; };
+		D1FA262B1B999B0F003335BB /* VirgilKeyChain.m in Sources */ = {isa = PBXBuildFile; fileRef = D1FA262A1B999B0F003335BB /* VirgilKeyChain.m */; };
+		D1FA262E1B999D33003335BB /* VirgilKeyChainContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = D1FA262D1B999D33003335BB /* VirgilKeyChainContainer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -165,6 +169,13 @@
 		D1F720801B73E892007C8955 /* VirgilDecryptedMail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilDecryptedMail.m; path = VirgilSecurityMail/src/VirgilProcessing/VirgilDecryptedMail.m; sourceTree = "<group>"; };
 		D1F8982B1B985B630062633B /* VirgilPreferencesContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilPreferencesContainer.h; path = VirgilSecurityMail/src/VirgilProcessing/VirgilPreferencesContainer.h; sourceTree = "<group>"; };
 		D1F8982C1B985B630062633B /* VirgilPreferencesContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilPreferencesContainer.m; path = VirgilSecurityMail/src/VirgilProcessing/VirgilPreferencesContainer.m; sourceTree = "<group>"; };
+		D1FA26241B98E6E2003335BB /* VirgilKeychainWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilKeychainWrapper.h; path = VirgilSecurityMail/src/Helpers/VirgilKeychainWrapper.h; sourceTree = "<group>"; };
+		D1FA26251B98E6E2003335BB /* VirgilKeychainWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilKeychainWrapper.m; path = VirgilSecurityMail/src/Helpers/VirgilKeychainWrapper.m; sourceTree = "<group>"; };
+		D1FA26271B9993BE003335BB /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		D1FA26291B999B0F003335BB /* VirgilKeyChain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilKeyChain.h; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilKeyChain.h; sourceTree = "<group>"; };
+		D1FA262A1B999B0F003335BB /* VirgilKeyChain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilKeyChain.m; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilKeyChain.m; sourceTree = "<group>"; };
+		D1FA262C1B999D33003335BB /* VirgilKeyChainContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilKeyChainContainer.h; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilKeyChainContainer.h; sourceTree = "<group>"; };
+		D1FA262D1B999D33003335BB /* VirgilKeyChainContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilKeyChainContainer.m; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilKeyChainContainer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,6 +183,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D1FA26281B9993BE003335BB /* Security.framework in Frameworks */,
 				D13F60481B6A3ADD00508C79 /* AppKit.framework in Frameworks */,
 				D11174371B67FBEE00DD9A39 /* CoreFoundation.framework in Frameworks */,
 			);
@@ -200,6 +212,7 @@
 		D11174351B67FBEE00DD9A39 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D1FA26271B9993BE003335BB /* Security.framework */,
 				D14ACD9F1B97702500A8E164 /* WebKit.framework */,
 				D13F60471B6A3ADD00508C79 /* AppKit.framework */,
 				D11174361B67FBEE00DD9A39 /* CoreFoundation.framework */,
@@ -260,6 +273,8 @@
 				D1DDA92C1B91B32600002A2F /* VirgilNetRequest.m */,
 				D14ACD911B974AE700A8E164 /* VirgilPreferencesHelper.h */,
 				D14ACD921B974AE700A8E164 /* VirgilPreferencesHelper.m */,
+				D1FA26241B98E6E2003335BB /* VirgilKeychainWrapper.h */,
+				D1FA26251B98E6E2003335BB /* VirgilKeychainWrapper.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -332,6 +347,10 @@
 				D1DDA8FD1B91A34100002A2F /* VirgilPrivateKeyManager.mm */,
 				D1DDA8FE1B91A34100002A2F /* VirgilPublicKey.h */,
 				D1DDA8FF1B91A34100002A2F /* VirgilPublicKey.m */,
+				D1FA26291B999B0F003335BB /* VirgilKeyChain.h */,
+				D1FA262A1B999B0F003335BB /* VirgilKeyChain.m */,
+				D1FA262C1B999D33003335BB /* VirgilKeyChainContainer.h */,
+				D1FA262D1B999D33003335BB /* VirgilKeyChainContainer.m */,
 			);
 			name = Keys;
 			sourceTree = "<group>";
@@ -487,6 +506,7 @@
 				D11174461B6805D400DD9A39 /* VirgilMain.m in Sources */,
 				D13F60401B6A1D0600508C79 /* VirgilMessageRouter.m in Sources */,
 				D1DDA90B1B91B1EA00002A2F /* VirgilValidator.m in Sources */,
+				D1FA262E1B999D33003335BB /* VirgilKeyChainContainer.m in Sources */,
 				D1DDA9041B91A34100002A2F /* VirgilPrivateKeyManager.mm in Sources */,
 				D14ACD9E1B976BA100A8E164 /* VirgilPreferences.m in Sources */,
 				D1E7CAC11B73FC9E00F4EC4F /* VirgilClassNameResolver.m in Sources */,
@@ -516,6 +536,7 @@
 				D1CBA85F1B7D45C200217919 /* VirgilComposeBackEnd.m in Sources */,
 				D1E7CAC71B7688D400F4EC4F /* VirgilDecryptedContent.m in Sources */,
 				D1F8982D1B985B630062633B /* VirgilPreferencesContainer.m in Sources */,
+				D1FA262B1B999B0F003335BB /* VirgilKeyChain.m in Sources */,
 				D1CBA84C1B7BC43900217919 /* VirgilDocumentEditor.m in Sources */,
 				D15362B41B6C0335000215F9 /* HTMLNode.m in Sources */,
 				D1DDA9051B91A34100002A2F /* VirgilPublicKey.m in Sources */,
@@ -525,6 +546,7 @@
 				D1CBA84F1B7BC55300217919 /* VirgilMenu.m in Sources */,
 				D13F602F1B6A1A9600508C79 /* JRLPSwizzle.m in Sources */,
 				D1DDA9011B91A34100002A2F /* VirgilKeyManager.mm in Sources */,
+				D1FA26261B98E6E2003335BB /* VirgilKeychainWrapper.m in Sources */,
 				D1DDA9151B91B21700002A2F /* VirgilEmailConfirmViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

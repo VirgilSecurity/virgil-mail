@@ -82,15 +82,11 @@
                    containerPassword : (NSString *) containerPassword;
 
 /**
- * @brief Get private key by account (email) from cache
- * @param account - email
- * @return VirgilPrivateKey - instance | nil - error occured, get error with [VirgilKeyManager lastError]
- */
-+ (VirgilPrivateKey *) getCachedPrivateKey : (NSString *) account;
-
-/**
  * @brief Get last error user friendly string
  */
 + (NSString *) lastError;
+
+//TODO: Remove this
++ (VirgilPrivateKey *) newAccountPrivateKey;
 
 @end

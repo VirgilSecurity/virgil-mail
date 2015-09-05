@@ -71,6 +71,7 @@
     if (nil == res) {
         [self showErrorView : [VirgilKeyManager lastError]];
     } else {
+        [VirgilKeysGui setUserActivityPrivateKey : res];
         [self onCloseClicked:nil];
     }
 }

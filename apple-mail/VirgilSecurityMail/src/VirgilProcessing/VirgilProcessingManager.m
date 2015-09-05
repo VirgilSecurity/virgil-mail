@@ -47,6 +47,8 @@
 #import "VirgilPrivateKey.h"
 #import "VirgilKeysGui.h"
 #import "VirgilPreferencesContainer.h"
+#import "VirgilKeyChainContainer.h"
+#import "VirgilKeyChain.h"
 
 #import <MessageStore.h>
 #import <MailAccount.h>
@@ -183,31 +185,8 @@ static BOOL _decryptionStart = YES;
     return nil;
 }
 
-- (VirgilPrivateKey *) getPrivateKeyForAccount : (NSString *)account {
-    VirgilPrivateKey * privateKey = [VirgilKeyManager getCachedPrivateKey : account];
-    if (nil == privateKey) {
-        privateKey = [VirgilKeysGui getPrivateKey : account];
-    }
-    
-    NSLog(@"privateKey = %@", privateKey);
-    
-    return privateKey;
-}
-
 - (void) setCurrentConfirmationCode : (NSString *) confirmationCode {
     [VirgilKeysGui setConfirmationCode : confirmationCode];
-}
-
-- (NSString *) getPublicIdForAccount : (NSString *)account {
-    VirgilPublicKey * publicKey = [VirgilKeyManager getPublicKey:account];
-    if (nil == publicKey) return nil;
-    return publicKey.publicKeyID;
-}
-
-- (NSString *) getPublicKeyForAccount : (NSString *)account {
-    VirgilPublicKey * publicKey = [VirgilKeyManager getPublicKey:account];
-    if (nil == publicKey) return nil;
-    return publicKey.publicKey;
 }
 
 // Get EmailData and signature
@@ -310,14 +289,27 @@ static BOOL _decryptionStart = YES;
     if (nil == mainVirgilPart) return NO;
     Message * message = [(MimeBody *)[topMimePart mimeBody] message];
     NSSet * allMimeParts = [self allMimeParts:topMimePart];
+    
+    // Get sender info
     NSString * sender = [self getEmailFromFullName:[message sender]];
-    NSString * senderPublicKey = [self getPublicKeyForAccount:sender];
-    NSString * receiver = [self getMyAccountFromMessage:message];
-    NSString * publicId = [self getPublicIdForAccount:receiver];
-    VirgilPrivateKey * privateKey = [self getPrivateKeyForAccount : receiver];
+    VirgilKeyChainContainer * senderContainer = [self getKeysContainer : sender
+                                                    forcePrivateKeyGet : NO];
+    if (nil == senderContainer || nil == senderContainer.publicKey) return NO;
+    NSString * senderPublicKey = senderContainer.publicKey.publicKey;
+    
+    // Get receiver (me) info
+    NSString * receiver = [self getMyAccountFromMessage : message];
+    VirgilKeyChainContainer * receiverContainer = [self getKeysContainer : receiver
+                                                      forcePrivateKeyGet : YES];
+    if (nil == receiverContainer ||
+        nil == receiverContainer.privateKey ||
+        nil == receiverContainer.publicKey) {
+        return NO;
+    }
+    NSString * publicId = receiverContainer.publicKey.publicKeyID;
+    VirgilPrivateKey * privateKey = receiverContainer.privateKey;
     VirgilEncryptedContent * encryptedContent = [self getMainEncryptedData:
                                                  [self getEncryptedContent:mainVirgilPart]];
-
     if (nil == sender ||
         nil == senderPublicKey ||
         nil == receiver ||
@@ -414,7 +406,12 @@ static BOOL _decryptionStart = YES;
     if (NSNotFound == range.location) return NO;
     NSString * strCode = [rightPart substringToIndex:range.location];
     if (YES == [message isRead]) return YES;
-    VirgilPrivateKey * privateKey = [VirgilKeyManager getCachedPrivateKey : receiver];
+    
+    VirgilKeyChainContainer * receiverContainer = [self getKeysContainer : receiver
+                                                      forcePrivateKeyGet : YES];
+    if (nil == receiverContainer) return NO;
+    
+    VirgilPrivateKey * privateKey = receiverContainer.privateKey;
     if (nil != privateKey) return YES;
     //TODO: Check is email registered
     [VirgilKeysGui setConfirmationCode : strCode];
@@ -445,7 +442,9 @@ static BOOL _decryptionStart = YES;
     }
     
     for (NSString * email in set) {
-        [self getPrivateKeyForAccount : email];
+        NSLog(@"                        getAllPrivateKeys");
+        [self getKeysContainer : email
+            forcePrivateKeyGet : YES];
     }
 }
 
@@ -501,9 +500,43 @@ static BOOL _decryptionStart = YES;
     "Download Virgil Security Plugin. <https://virgilsecurity.com/downloads/>";
 }
 
+- (VirgilKeyChainContainer *) getKeysContainer : (NSString *) account
+                            forcePrivateKeyGet : (BOOL) forcePrivateKey {
+    NSLog(@"                        getKeysContainer  account : %@  forcePrivateKey : %hhd", account, forcePrivateKey);
+    if (nil == account) return nil;
+    VirgilKeyChainContainer * container = [VirgilKeyChain loadContainer : account];
+    
+    if (nil != container && nil != container.publicKey && nil != container.privateKey) {
+        return container;
+    }
+    
+    VirgilPrivateKey * privateKey = container.privateKey;
+    if ((nil == container || nil == privateKey) && forcePrivateKey) {
+        privateKey = [VirgilKeysGui getPrivateKey : account];
+    }
+    
+    VirgilPublicKey * publicKey = container.publicKey;
+    if (nil == container || nil == publicKey) {
+        publicKey = [VirgilKeyManager getPublicKey : account];
+    }
+    
+    if (nil == publicKey) return nil;
+    if (nil == publicKey && YES == forcePrivateKey) return nil;
+    
+    container =
+        [[VirgilKeyChainContainer alloc] initWithPrivateKey : privateKey
+                                               andPublicKey : publicKey];
+    
+    NSLog(@"                         saveContainer %@", container);
+    [VirgilKeyChain saveContainer : container
+                       forAccount : account];
+    
+    return container;
+}
+
 - (NSString *) encryptContent : (VirgilDecryptedContent *)content
-                     sender : (NSString *) sender
-                  receivers : (NSArray *) receivers {
+                       sender : (NSString *) sender
+                    receivers : (NSArray *) receivers {
     NSError *error;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject : [content toDictionary]
                                                        options : 0
@@ -517,9 +550,10 @@ static BOOL _decryptionStart = YES;
     }
     
     NSString * fixedSender = [self getEmailFromFullName : sender];
-    VirgilPrivateKey * privateKey = [self getPrivateKeyForAccount:fixedSender];
-    if (nil == privateKey) return nil;
-    
+    VirgilKeyChainContainer * container = [self getKeysContainer : fixedSender
+                                              forcePrivateKeyGet : YES];
+    if (nil == container || nil == container.privateKey) return nil;
+
     // Get all public keys
     NSMutableArray * publicKeys = [[NSMutableArray alloc] init];
     
@@ -543,10 +577,9 @@ static BOOL _decryptionStart = YES;
                                                            publicKeys : [publicKeys copy]];
     
     // Create signature
-    if (nil == privateKey) return nil;
     NSData * signature = [VirgilCryptoLibWrapper signatureForData : encryptedEmailBody
-                                                   withPrivateKey : privateKey.key
-                                                privatKeyPassword : privateKey.keyPassword];
+                                                   withPrivateKey : container.privateKey.key
+                                                privatKeyPassword : container.privateKey.keyPassword];
     
     
     VirgilEncryptedContent * encryptedContent =

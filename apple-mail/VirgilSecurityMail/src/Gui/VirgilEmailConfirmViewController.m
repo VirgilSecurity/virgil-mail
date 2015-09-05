@@ -38,6 +38,7 @@
 #import "VirgilKeyManager.h"
 #import "NSViewController+VirgilView.h"
 #import "VirgilValidator.h"
+#import "VirgilKeysGui.h"
 
 @interface VirgilEmailConfirmViewController ()
 
@@ -55,6 +56,7 @@
         return;
     }
     if ([VirgilKeyManager confirmAccountCreationWithCode : code]) {
+        [VirgilKeysGui setUserActivityPrivateKey : [VirgilKeyManager newAccountPrivateKey]];
         [self closeWindow];
     } else {
         [self showErrorView : @"Wrong confirmation code. // TODO: resend"];

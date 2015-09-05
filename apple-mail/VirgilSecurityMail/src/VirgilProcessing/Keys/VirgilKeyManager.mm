@@ -78,9 +78,6 @@ using virgil::sdk::keys::model::UserData;
 //! _lastError - contains user friendly error string
 static NSString * _lastError = nil;
 
-//! _publicKeyCache - cache for public keys
-static NSMutableDictionary * _publicKeyCache = [[NSMutableDictionary alloc] init];
-
 //! newAccountInfo - holder of data for account creation
 struct {
     VirgilPublicKey * publicKeyInfo;
@@ -98,13 +95,6 @@ struct {
     
     if (nil == account) return nil;
     try {
-        // Search for key in cache
-        VirgilPublicKey * res([_publicKeyCache valueForKey : account]);
-        if (nil != res) {
-            return res;
-        }
-        
-        // Key in cache not present, lets download it
         
         const std::string _account([VirgilHelpers _strNS2Std : account]);
         KeysClient keysClient([VirgilHelpers _strNS2Std : [VirgilHelpers applicationToken]],
@@ -120,12 +110,9 @@ struct {
         NSString *nsKeyID = [NSString stringWithCString:publicKey.publicKeyId().c_str()
                                                encoding:NSUTF8StringEncoding];
         
-        res = [[VirgilPublicKey alloc] initAccountID:nsAccountID
+        VirgilPublicKey * res = [[VirgilPublicKey alloc] initAccountID:nsAccountID
                                          publicKeyID:nsKeyID
                                            publicKey:nsKey];
-        // Add new key to cache
-        [_publicKeyCache setValue:res
-                           forKey:account];
         return res;
     } catch (std::exception& exception) {
         const std::string _error(exception.what());
@@ -242,19 +229,6 @@ struct {
 }
 
 /**
- * @brief Get private key by account (email) from cache
- * @param account - email
- * @return VirgilPrivateKey - instance | nil - error occured, get error with [VirgilKeyManager lastError]
- */
-+ (VirgilPrivateKey *) getCachedPrivateKey : (NSString *) account {
-    _lastError = nil;
-    if (nil == account) return nil;
-    return  [VirgilPrivateKeyManager getPrivateKey : account
-                                 containerPassword : nil
-                                       publicKeyID : nil];
-}
-
-/**
  * @brief Get private key by account (email) and container password from Private Keys Service
  * @param account - email
  * @param containerPassword - password to Private Keys Service' container
@@ -291,6 +265,10 @@ struct {
  */
 + (void) setErrorString : (NSString *) errorStr {
     _lastError = [[NSString alloc] initWithFormat : @"VirgilKeyManager error : %@", errorStr];
+}
+
++ (VirgilPrivateKey *) newAccountPrivateKey {
+    return newAccountInfo.privateKeyInfo;
 }
 
 #if 0

@@ -36,6 +36,12 @@
 
 #import "VirgilPrivateKey.h"
 
+#define kAccount            @"Account"
+#define kContainerType      @"ContainerType"
+#define kKey                @"Key"
+#define kKeyPassword        @"KeyPassword"
+#define kContainerPassword  @"ContainerPassword"
+
 @implementation VirgilPrivateKey
 + (id) alloc {
     return [super alloc];
@@ -65,6 +71,27 @@
         self.containerPassword = [[NSString alloc] initWithString : a_containerPassword];
     }
     return self;
+}
+
+- (void) encodeWithCoder:(NSCoder *)encoder {
+    [encoder encodeObject : self.account forKey:kAccount];
+    [encoder encodeInt : (int)self.containerType forKey : kContainerType];
+    [encoder encodeObject : self.key forKey : kKey];
+    [encoder encodeObject : self.keyPassword forKey : kKeyPassword];
+    [encoder encodeObject : self.containerPassword forKey : kContainerPassword];
+}
+
+- (id)initWithCoder:(NSCoder *)decoder {
+    NSString * a_account = [decoder decodeObjectForKey : kAccount];
+    VirgilContainerType a_containerType = (VirgilContainerType)[decoder decodeIntForKey : kContainerType];
+    NSString * a_key = [decoder decodeObjectForKey : kKey];
+    NSString * a_keyPassword = [decoder decodeObjectForKey : kKeyPassword];
+    NSString * a_containerPassword = [decoder decodeObjectForKey : kContainerPassword];
+    return [self initAccount : a_account
+               containerType : a_containerType
+                  privateKey : a_key
+                 keyPassword : a_keyPassword
+           containerPassword : a_containerPassword];
 }
 
 // TODO: Remove it !

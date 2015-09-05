@@ -36,7 +36,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface VirgilPublicKey : NSObject {
+@interface VirgilPublicKey : NSObject <NSCoding> {
 @public
     NSString * accountID;
     NSString * publicKeyID;
@@ -47,6 +47,11 @@
 - (id) initAccountID:(NSString *)a_accountID
          publicKeyID:(NSString *)a_publicKeyID
            publicKey:(NSString *)a_publicKey;
+
+// NSCoder
+- (void) encodeWithCoder : (NSCoder *)encoder;
+- (id) initWithCoder : (NSCoder *)decoder;
+// ~NSCoder
 
 @property (retain) NSString * accountID;
 @property (retain) NSString * publicKeyID;
