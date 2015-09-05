@@ -7,6 +7,15 @@ function check_errors() {
         fi
 }
 
+function sign_files() {
+	pushd "$1"
+		find * -type f | while read j; do
+			echo "$j"
+			codesign -f -v -s "$codesign_cetificate" "$j"
+		done
+	popd
+};
+
 function prepare() {
 	MAIL_BUNDLE_NAME="VirgilSecurityMail"
 	MAIL_BUNDLE="${MAIL_BUNDLE_NAME}.mailbundle"
@@ -32,6 +41,10 @@ function prepare() {
 	INSTALL_PATH="Library/Mail/Bundles/"
 	
 	UNINSTALL_APP="${SCRIPT_FOLDER}/Uninstall.app"
+
+	# App certificates
+	codesign_cetificate="3rd Party Mac Developer Application: Virgil Security, Inc. (JWNLQ3HC5A)"
+	codesign_cetificate_installer="3rd Party Mac Developer Installer: Virgil Security, Inc. (JWNLQ3HC5A)"
 }
 
 function build_project() {
@@ -74,6 +87,10 @@ function create_pkg() {
 			
 			#--version "$VERSION"					\
 			check_errors $?
+			
+			productsign –sign "${codesign_cetificate_installer}" 					\
+				${MAIL_BUNDLE_NAME}.pkg												\
+				${MAIL_BUNDLE_NAME}-1.pkg
 		popd
 	popd
 }
