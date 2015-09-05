@@ -88,9 +88,12 @@ function create_pkg() {
 			#--version "$VERSION"					\
 			check_errors $?
 			
-			JENKINS_KEYCHAIN="/Users/romankutasenko/Library/Keychains/jenkins.keychain"
-			security list-keychains -s "${JENKINS_KEYCHAIN}"
-			security unlock-keychain -p qweASD123 "${JENKINS_KEYCHAIN}"
+			echo "KeyChain -> ${KEYCHAIN_PATH}"
+			echo "Password -> ${KEYCHAIN_PASSWORD}"
+			echo "CodeSign -> ${CODE_SIGNING_IDENTITY}"
+			
+			security list-keychains -s "${KEYCHAIN_PATH}"
+			security unlock-keychain -p ${KEYCHAIN_PASSWORD} "${KEYCHAIN_PATH}"
 			productsign --sign "${codesign_cetificate_installer}" 	\
 				${MAIL_BUNDLE_NAME}-1.pkg							\
 				${MAIL_BUNDLE_NAME}.pkg
