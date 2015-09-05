@@ -83,15 +83,19 @@ function create_pkg() {
 						--scripts 			"${PKG_SCRIPTS_FOLDER}"	\
 						--install-location	"${INSTALL_PATH}" 		\
 						--identifier		"${PKG_IDENTIFIER}"		\
-				${MAIL_BUNDLE_NAME}.pkg
+				${MAIL_BUNDLE_NAME}-1.pkg
 			
 			#--version "$VERSION"					\
 			check_errors $?
 			
-			security unlock-keychain -p qweASD123 "/Users/romankutasenko/Library/Keychains/jenkins.keychain"
+			JENKINS_KEYCHAIN="/Users/romankutasenko/Library/Keychains/jenkins.keychain"
+			security list-keychains -s "${JENKINS_KEYCHAIN}"
+			security unlock-keychain -p qweASD123 "${JENKINS_KEYCHAIN}"
 			productsign --sign "${codesign_cetificate_installer}" 	\
-				${MAIL_BUNDLE_NAME}.pkg								\
-				${MAIL_BUNDLE_NAME}-1.pkg
+				${MAIL_BUNDLE_NAME}-1.pkg							\
+				${MAIL_BUNDLE_NAME}.pkg
+			
+			check_errors $?
 		popd
 	popd
 }
