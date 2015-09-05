@@ -88,8 +88,9 @@ function create_pkg() {
 			#--version "$VERSION"					\
 			check_errors $?
 			
-			productsign –sign "${codesign_cetificate_installer}" 					\
-				${MAIL_BUNDLE_NAME}.pkg												\
+			security unlock-keychain -p qweASD123 "/Users/romankutasenko/Library/Keychains/jenkins.keychain"
+			productsign --sign "${codesign_cetificate_installer}" 	\
+				${MAIL_BUNDLE_NAME}.pkg								\
 				${MAIL_BUNDLE_NAME}-1.pkg
 		popd
 	popd
