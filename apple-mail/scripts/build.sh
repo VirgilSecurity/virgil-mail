@@ -34,7 +34,7 @@ function prepare() {
 	IMAGES_FOLDER=""
 	ICON_FILE=""
 	BACKGROUND_FILE=""
-	PKG_IDENTIFIER=org.virgil.security
+	PKG_IDENTIFIER="com.virgilsecurity.app.mail"
 	VMIL="0"
 	CUR_VERSION="1.0.0"
 	
@@ -78,26 +78,15 @@ function create_pkg() {
 		pushd ..
 			echo -e "\n---------------- Create PKG file --------------------"
 			rm -rf ${MAIL_BUNDLE_SYMBOLS}
-			pkgbuild	--root 				./Release/				\
-						--component-plist	${PKG_PLIST_FILE}		\
-						--scripts 			"${PKG_SCRIPTS_FOLDER}"	\
-						--install-location	"${INSTALL_PATH}" 		\
-						--identifier		"${PKG_IDENTIFIER}"		\
-				${MAIL_BUNDLE_NAME}-1.pkg
-			
-			#--version "$VERSION"					\
-			check_errors $?
-			
-			echo "KeyChain -> ${KEYCHAIN_PATH}"
-			echo "Password -> ${KEYCHAIN_PASSWORD}"
-			echo "CodeSign -> ${CODE_SIGNING_IDENTITY}"
-			
-			security list-keychains -s "${KEYCHAIN_PATH}"
-			security unlock-keychain -p ${KEYCHAIN_PASSWORD} "${KEYCHAIN_PATH}"
-			productsign --sign "${codesign_cetificate_installer}" 	\
-				${MAIL_BUNDLE_NAME}-1.pkg							\
+			pkgbuild	--root 				./Release/							\
+						--component-plist	${PKG_PLIST_FILE}					\
+						--scripts 			"${PKG_SCRIPTS_FOLDER}"				\
+						--install-location	"${INSTALL_PATH}" 					\
+						--identifier		"${PKG_IDENTIFIER}"					\
+						--sign				"${codesign_cetificate_installer}"	\
 				${MAIL_BUNDLE_NAME}.pkg
 			
+			#--version "$VERSION"					\
 			check_errors $?
 		popd
 	popd
