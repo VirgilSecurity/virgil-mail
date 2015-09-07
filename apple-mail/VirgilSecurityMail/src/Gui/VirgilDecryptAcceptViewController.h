@@ -34,38 +34,21 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <Foundation/Foundation.h>
-#import <Message.h>
-#import <MimePart.h>
-#import <WebComposeMessageContents.h>
-#import <OutgoingMessage.h>
-#import "VirgilDecryptedMail.h"
+#import <Cocoa/Cocoa.h>
+#import "VirgilPrivateKey.h"
 
-@interface VirgilProcessingManager : NSObject
+typedef NS_ENUM(NSInteger, UserAcceptResult) {
+    userUnknown,
+    
+    userAccept,
+    userDecline
+};
 
-+ (VirgilProcessingManager *) sharedInstance;
+/**
+ * @class View class for ask users to accept email decryption
+ */
+@interface VirgilDecryptAcceptViewController : NSViewController
 
-// Encryption
-- (BOOL) isNeedToEncrypt;
-- (BOOL) encryptMessage : (WebComposeMessageContents *)message
-            attachments : (NSArray *)attachments
-                 result : (OutgoingMessage *)result;
-
-- (BOOL) inviteMessage : (WebComposeMessageContents *)message
-                 result : (OutgoingMessage *)result;
-
-// Decryption
-- (id) decryptMessagePart:(MimePart *)mimePart;
-- (NSData *) decryptedAttachementByName:(NSString *) name;
-- (BOOL) isEncryptedByVirgil : (MimePart *)topMimePart;
-- (MimePart *) topLevelPartByAnyPart:(MimePart *)part;
-- (BOOL) resetDecryption;
-
-// Helper work with keys
-- (void) setCurrentConfirmationCode : (NSString *) confirmationCode;
-- (BOOL) checkConfirmationEmail : (MimePart *) mimePart;
-- (void) getAllPrivateKeys;
-
-@property (readonly) VirgilDecryptedMail * decryptedMail;
++ (UserAcceptResult) getLastResult;
 
 @end

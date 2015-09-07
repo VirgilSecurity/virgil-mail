@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14B25" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
     </dependencies>
@@ -807,6 +807,58 @@
                 <customObject id="xGL-0b-R15" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-567.5" y="663"/>
+        </scene>
+        <!--Virgil Decrypt Accept View Controller-->
+        <scene sceneID="Kdt-Dy-dHB">
+            <objects>
+                <viewController storyboardIdentifier="viewDecryptAccept" id="0GW-x7-Rv4" customClass="VirgilDecryptAcceptViewController" sceneMemberID="viewController">
+                    <view key="view" id="BcR-bP-tXu">
+                        <rect key="frame" x="0.0" y="0.0" width="350" height="111"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <textField horizontalHuggingPriority="10" verticalHuggingPriority="10" horizontalCompressionResistancePriority="250" misplaced="YES" tag="1000" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0f9-zZ-kEG">
+                                <rect key="frame" x="18" y="67" width="314" height="24"/>
+                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Virgil Security Decrypt confirmation" id="vU5-6C-EmJ">
+                                    <font key="font" metaFont="systemBold" size="16"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xgO-bq-RlL">
+                                <rect key="frame" x="14" y="13" width="84" height="32"/>
+                                <buttonCell key="cell" type="push" title="Accept" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Hdt-v4-BH7">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="onAcceptClick:" target="0GW-x7-Rv4" id="jOJ-Se-7F6"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bQv-ab-9dY">
+                                <rect key="frame" x="250" y="13" width="86" height="32"/>
+                                <buttonCell key="cell" type="push" title="Decline" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Q8Z-ZR-KtN">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="onDeclineClick:" target="0GW-x7-Rv4" id="Yuz-bh-UU4"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="bQv-ab-9dY" secondAttribute="bottom" constant="20" symbolic="YES" id="0gx-mA-WBf"/>
+                            <constraint firstItem="0f9-zZ-kEG" firstAttribute="top" secondItem="BcR-bP-tXu" secondAttribute="top" constant="20" symbolic="YES" id="3Fi-nR-OOA"/>
+                            <constraint firstAttribute="bottom" secondItem="xgO-bq-RlL" secondAttribute="bottom" constant="20" symbolic="YES" id="AAo-pv-Epv"/>
+                            <constraint firstAttribute="centerX" secondItem="0f9-zZ-kEG" secondAttribute="centerX" id="JCj-kd-kxv"/>
+                            <constraint firstAttribute="trailing" secondItem="bQv-ab-9dY" secondAttribute="trailing" constant="20" symbolic="YES" id="Q05-Yu-iaD"/>
+                            <constraint firstItem="bQv-ab-9dY" firstAttribute="top" relation="greaterThanOrEqual" secondItem="0f9-zZ-kEG" secondAttribute="bottom" constant="8" symbolic="YES" id="Q7F-qE-Nyd"/>
+                            <constraint firstItem="xgO-bq-RlL" firstAttribute="leading" secondItem="BcR-bP-tXu" secondAttribute="leading" constant="20" symbolic="YES" id="T5s-cp-fIE"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <customObject id="LoE-6M-wNG" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-513" y="802.5"/>
         </scene>
         <!--Virgil Register View Controller-->
         <scene sceneID="67o-Rz-Nb0">

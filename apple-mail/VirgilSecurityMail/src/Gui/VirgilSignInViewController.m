@@ -39,7 +39,7 @@
 #import "VirgilKeyManager.h"
 #import "VirgilErrorViewController.h"
 #import "VirgilValidator.h"
-#import "VirgilKeysGui.h"
+#import "VirgilGui.h"
 
 @implementation VirgilSignInViewController
 
@@ -71,7 +71,7 @@
     if (nil == res) {
         [self showErrorView : [VirgilKeyManager lastError]];
     } else {
-        [VirgilKeysGui setUserActivityPrivateKey : res];
+        [VirgilGui setUserActivityPrivateKey : res];
         [self onCloseClicked:nil];
     }
 }
@@ -81,7 +81,7 @@
     
     NSTextField * emailField = [self.view viewWithTag : 2000];
     if (!emailField) return;
-    NSString * currentAccount = [VirgilKeysGui currentAccount];
+    NSString * currentAccount = [VirgilGui currentAccount];
     if (nil == currentAccount) return;
     [emailField setStringValue : currentAccount];
 }

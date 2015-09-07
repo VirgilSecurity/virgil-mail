@@ -38,7 +38,7 @@
 #import "VirgilKeyManager.h"
 #import "NSViewController+VirgilView.h"
 #import "VirgilValidator.h"
-#import "VirgilKeysGui.h"
+#import "VirgilGui.h"
 #import "VirgilKeyChain.h"
 
 @implementation VirgilRegisterViewController
@@ -93,7 +93,7 @@
     [super viewDidLoad];
     NSTextField * emailField = [self.view viewWithTag : 1000];
     if (!emailField) return;
-    NSString * currentAccount = [VirgilKeysGui currentAccount];
+    NSString * currentAccount = [VirgilGui currentAccount];
     if (nil == currentAccount) return;
     [emailField setStringValue : currentAccount];
 }

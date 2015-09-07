@@ -45,7 +45,7 @@
 #import "VirgilKeyManager.h"
 #import "VirgilClassNameResolver.h"
 #import "VirgilPrivateKey.h"
-#import "VirgilKeysGui.h"
+#import "VirgilGui.h"
 #import "VirgilPreferencesContainer.h"
 #import "VirgilKeyChainContainer.h"
 #import "VirgilKeyChain.h"
@@ -82,13 +82,6 @@ static BOOL _decryptionStart = YES;
 - (id) init{
     _decryptedMail = [[VirgilDecryptedMail alloc] init];
     return [super init];
-}
-
-- (BOOL) isNeedToDecrypt {
-    //TODO: 1. Check for manual selection
-    //      2. Check for open purpose. Decrypt on reading only.
-    //      3. Check for preview disabled.
-    return YES;
 }
 
 - (BOOL) resetDecryption {
@@ -186,7 +179,7 @@ static BOOL _decryptionStart = YES;
 }
 
 - (void) setCurrentConfirmationCode : (NSString *) confirmationCode {
-    [VirgilKeysGui setConfirmationCode : confirmationCode];
+    [VirgilGui setConfirmationCode : confirmationCode];
 }
 
 // Get EmailData and signature
@@ -284,7 +277,17 @@ static BOOL _decryptionStart = YES;
     return emailPart;
 }
 
+- (BOOL) canDecrypt {
+    if ([VirgilPreferencesContainer isNeedAskToDecrypt]) {
+        return [VirgilGui askForCanDecrypt];
+    }
+    
+    return YES;
+}
+
 - (BOOL) decryptWholeMessage : (MimePart *)topMimePart {
+    if (NO == [self canDecrypt]) return NO;
+    
     MimePart * mainVirgilPart = [self partWithVirgilSignature:topMimePart];
     if (nil == mainVirgilPart) return NO;
     Message * message = [(MimeBody *)[topMimePart mimeBody] message];
@@ -411,8 +414,8 @@ static BOOL _decryptionStart = YES;
     if (nil == privateKey) return NO;
     if (YES == receiverContainer.isActive) return YES;
     //TODO: Check is email registered
-    [VirgilKeysGui setConfirmationCode : strCode];
-    [VirgilKeysGui getPrivateKey : receiver];
+    [VirgilGui setConfirmationCode : strCode];
+    [VirgilGui getPrivateKey : receiver];
     
     return YES;
 }
@@ -509,7 +512,7 @@ static BOOL _decryptionStart = YES;
     
     VirgilPrivateKey * privateKey = container.privateKey;
     if ((nil == container || nil == privateKey) && forcePrivateKey) {
-        privateKey = [VirgilKeysGui getPrivateKey : account];
+        privateKey = [VirgilGui getPrivateKey : account];
     }
     
     VirgilPublicKey * publicKey = container.publicKey;

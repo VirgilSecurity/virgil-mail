@@ -41,7 +41,7 @@
  * @class Class for interaction with user
  */
 
-@interface VirgilKeysGui : NSObject
+@interface VirgilGui : NSObject
 
 + (VirgilPrivateKey*) getPrivateKey : (NSString *) account;
 
@@ -50,5 +50,7 @@
 + (void) setConfirmationCode : (NSString *) confirmationCode;
 
 + (void) setUserActivityPrivateKey : (VirgilPrivateKey *) privateKey;
+
++ (BOOL) askForCanDecrypt;
 
 @end

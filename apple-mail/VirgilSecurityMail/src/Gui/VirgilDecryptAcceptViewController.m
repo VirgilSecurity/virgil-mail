@@ -34,38 +34,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <Foundation/Foundation.h>
-#import <Message.h>
-#import <MimePart.h>
-#import <WebComposeMessageContents.h>
-#import <OutgoingMessage.h>
-#import "VirgilDecryptedMail.h"
+#import "VirgilDecryptAcceptViewController.h"
+#include "NSViewController+VirgilView.h"
 
-@interface VirgilProcessingManager : NSObject
+static UserAcceptResult _result = userUnknown;
 
-+ (VirgilProcessingManager *) sharedInstance;
+@implementation VirgilDecryptAcceptViewController
 
-// Encryption
-- (BOOL) isNeedToEncrypt;
-- (BOOL) encryptMessage : (WebComposeMessageContents *)message
-            attachments : (NSArray *)attachments
-                 result : (OutgoingMessage *)result;
++ (UserAcceptResult) getLastResult {
+    return _result;
+}
 
-- (BOOL) inviteMessage : (WebComposeMessageContents *)message
-                 result : (OutgoingMessage *)result;
+- (IBAction)onAcceptClick:(id)sender {
+    _result = userAccept;
+    [self closeWindow];
+}
 
-// Decryption
-- (id) decryptMessagePart:(MimePart *)mimePart;
-- (NSData *) decryptedAttachementByName:(NSString *) name;
-- (BOOL) isEncryptedByVirgil : (MimePart *)topMimePart;
-- (MimePart *) topLevelPartByAnyPart:(MimePart *)part;
-- (BOOL) resetDecryption;
-
-// Helper work with keys
-- (void) setCurrentConfirmationCode : (NSString *) confirmationCode;
-- (BOOL) checkConfirmationEmail : (MimePart *) mimePart;
-- (void) getAllPrivateKeys;
-
-@property (readonly) VirgilDecryptedMail * decryptedMail;
+- (IBAction)onDeclineClick:(id)sender {
+    _result = userDecline;
+    [self closeWindow];
+}
 
 @end

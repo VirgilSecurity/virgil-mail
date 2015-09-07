@@ -34,14 +34,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "VirgilKeysGui.h"
+#import "VirgilGui.h"
 #import "VirgilSignInViewController.h"
 #import "VirgilEmailConfirmViewController.h"
 #import "VirgilKeyManager.h"
+#import "VirgilDecryptAcceptViewController.h"
 
 static VirgilPrivateKey * _userActivityKey = nil;
 
-@implementation VirgilKeysGui
+@implementation VirgilGui
 
 NSString * _currentAccount = @"";
 NSString * _confirmationCode = @"";
@@ -75,13 +76,13 @@ BOOL _waitConfirmation = NO;
     // Check for need confirmation
     if (YES == _waitConfirmation) {
         _waitConfirmation = NO;
-        return [VirgilKeysGui getPrivateKeyAfterActivation : _confirmationCode];
+        return [VirgilGui getPrivateKeyAfterActivation : _confirmationCode];
     }
     
     NSWindow * containerWindow = [[NSApplication sharedApplication] mainWindow];
     if (nil == containerWindow) return nil;
     
-    NSBundle * bundle = [VirgilKeysGui getVirgilBundle];
+    NSBundle * bundle = [VirgilGui getVirgilBundle];
     if (nil == bundle) return nil;
     
     @try {
@@ -119,7 +120,7 @@ BOOL _waitConfirmation = NO;
     NSWindow * containerWindow = [[NSApplication sharedApplication] mainWindow];
     if (nil == containerWindow) return nil;
     
-    NSBundle * bundle = [VirgilKeysGui getVirgilBundle];
+    NSBundle * bundle = [VirgilGui getVirgilBundle];
     if (nil == bundle) return nil;
     
     @try {
@@ -158,6 +159,50 @@ BOOL _waitConfirmation = NO;
     }
     
     return _userActivityKey;
+}
+
++ (BOOL) askForCanDecrypt {
+    NSWindow * containerWindow = [[NSApplication sharedApplication] mainWindow];
+    if (nil == containerWindow) return nil;
+    
+    NSBundle * bundle = [VirgilGui getVirgilBundle];
+    if (nil == bundle) return nil;
+    
+    @try {
+        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSStoryboard * storyBoard =
+            [NSStoryboard storyboardWithName : @"Main"
+                                      bundle : bundle];
+            if (nil == storyBoard) return;
+            
+            NSWindowController * windowControler = [storyBoard instantiateInitialController];
+            if (nil == windowControler) return;
+            
+            VirgilDecryptAcceptViewController * controller =
+            (VirgilDecryptAcceptViewController*)[storyBoard instantiateControllerWithIdentifier : @"viewDecryptAccept"];
+            
+            [windowControler setContentViewController:controller];
+            
+            if (nil == controller) return;
+            
+            NSWindow * controllerWindow = [windowControler window];
+            
+            if (nil == controllerWindow) return;
+            
+            [containerWindow beginSheet : controllerWindow
+                      completionHandler : ^(NSModalResponse returnCode) {
+                          dispatch_semaphore_signal(semaphore);
+                      }];
+        });
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    }
+    @catch (NSException *exception) {
+    }
+    @finally {
+    }
+    
+    return userAccept == [VirgilDecryptAcceptViewController getLastResult];
 }
 
 + (NSString *) currentAccount {
