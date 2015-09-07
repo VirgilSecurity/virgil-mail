@@ -83,9 +83,9 @@ function create_pkg() {
 						--scripts 			"${PKG_SCRIPTS_FOLDER}"				\
 						--install-location	"${INSTALL_PATH}" 					\
 						--identifier		"${PKG_IDENTIFIER}"					\
-						--sign				"${codesign_cetificate_installer}"	\
 				${MAIL_BUNDLE_NAME}.pkg
 			
+			#--sign				"${codesign_cetificate_installer}"	\
 			#--version "$VERSION"					\
 			check_errors $?
 		popd
