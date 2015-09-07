@@ -42,10 +42,12 @@
 
 - (id) init;
 - (id) initWithPrivateKey : (VirgilPrivateKey *)a_privateKey
-             andPublicKey : (VirgilPublicKey *)a_publicKey;
+             andPublicKey : (VirgilPublicKey *)a_publicKey
+                 isActive : (BOOL)a_isActive;
 
 @property (retain, readonly) VirgilPrivateKey * privateKey;
 @property (retain, readonly) VirgilPublicKey * publicKey;
+@property (readonly) BOOL isActive;
 
 // NSCoder
 - (void) encodeWithCoder : (NSCoder *)encoder;

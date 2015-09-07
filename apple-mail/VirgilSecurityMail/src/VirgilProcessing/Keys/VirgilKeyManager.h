@@ -88,5 +88,6 @@
 
 //TODO: Remove this
 + (VirgilPrivateKey *) newAccountPrivateKey;
++ (VirgilPublicKey *) newAccountPublicKey;
 
 @end

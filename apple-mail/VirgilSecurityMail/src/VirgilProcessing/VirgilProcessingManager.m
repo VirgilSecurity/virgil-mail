@@ -389,10 +389,6 @@ static BOOL _decryptionStart = YES;
     
     if (![topMimePart.subtype isEqualTo:@"html"]) return NO;
     
-    // Check dates
-    NSLog(@"dateReceivedAsTimeIntervalSince1970 = %f", [message dateReceivedAsTimeIntervalSince1970]);
-    NSLog(@"dateLastViewedAsTimeIntervalSince1970 = %f", [message dateLastViewedAsTimeIntervalSince1970]);
-    
     NSData *bodyData = [mimePart bodyData];
     NSString* strBody = [[NSString alloc] initWithData:bodyData encoding:NSUTF8StringEncoding];
     
@@ -412,7 +408,8 @@ static BOOL _decryptionStart = YES;
     if (nil == receiverContainer) return NO;
     
     VirgilPrivateKey * privateKey = receiverContainer.privateKey;
-    if (nil != privateKey) return YES;
+    if (nil == privateKey) return NO;
+    if (YES == receiverContainer.isActive) return YES;
     //TODO: Check is email registered
     [VirgilKeysGui setConfirmationCode : strCode];
     [VirgilKeysGui getPrivateKey : receiver];
@@ -523,9 +520,11 @@ static BOOL _decryptionStart = YES;
     if (nil == publicKey) return nil;
     if (nil == publicKey && YES == forcePrivateKey) return nil;
     
+    BOOL isActive = (nil == container) ? NO : container.isActive;
     container =
         [[VirgilKeyChainContainer alloc] initWithPrivateKey : privateKey
-                                               andPublicKey : publicKey];
+                                               andPublicKey : publicKey
+                                                   isActive : isActive];
     
     NSLog(@"                         saveContainer %@", container);
     [VirgilKeyChain saveContainer : container

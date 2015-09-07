@@ -38,7 +38,7 @@
 
 #define kPrivateKey     @"PrivateKey"
 #define kPublicKey      @"PublicKey"
-
+#define kIsActive       @"IsActive"
 
 @implementation VirgilKeyChainContainer
 
@@ -50,28 +50,35 @@
     if ([super init]) {
         _privateKey = nil;
         _publicKey = nil;
+        _isActive = YES;
     }
     return self;
 }
 
 - (id) initWithPrivateKey : (VirgilPrivateKey *)a_privateKey
-             andPublicKey : (VirgilPublicKey *)a_publicKey {
+             andPublicKey : (VirgilPublicKey *)a_publicKey
+                 isActive : (BOOL)a_isActive {
     if ([super init]) {
         _privateKey = a_privateKey;
-        _publicKey = a_publicKey;    }
+        _publicKey = a_publicKey;
+        _isActive = a_isActive;
+    }
     return self;
 }
 
 - (void) encodeWithCoder:(NSCoder *)encoder {
     [encoder encodeObject : _privateKey forKey : kPrivateKey];
     [encoder encodeObject : _publicKey forKey : kPublicKey];
+    [encoder encodeBool : _isActive forKey : kIsActive];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {
     VirgilPrivateKey * privateKey = [decoder decodeObjectForKey : kPrivateKey];
     VirgilPublicKey * publicKey = [decoder decodeObjectForKey : kPublicKey];
+    BOOL active = [decoder decodeBoolForKey : kIsActive];
     return [self initWithPrivateKey : privateKey
-                       andPublicKey : publicKey];
+                       andPublicKey : publicKey
+                           isActive : active];
 }
 
 - (NSString *) description {
@@ -80,6 +87,7 @@
     [res appendString:@"{ \n"];
     [res appendFormat:@"privateKey : %@\n", [_privateKey description]];
     [res appendFormat:@"publicKey : %@\n", [_publicKey description]];
+    [res appendFormat:@"isActive : %hhd\n", _isActive];
     [res appendString:@"} \n"];
     return res;
 }

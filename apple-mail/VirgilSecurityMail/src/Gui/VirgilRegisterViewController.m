@@ -39,6 +39,7 @@
 #import "NSViewController+VirgilView.h"
 #import "VirgilValidator.h"
 #import "VirgilKeysGui.h"
+#import "VirgilKeyChain.h"
 
 @implementation VirgilRegisterViewController
 
@@ -76,6 +77,12 @@
                             keyPassword : nil
                           containerType : VirgilContainerEasy
                       containerPassword : password]) {
+        VirgilKeyChainContainer * container =
+            [[VirgilKeyChainContainer alloc] initWithPrivateKey : [VirgilKeyManager newAccountPrivateKey]
+                                                   andPublicKey : [VirgilKeyManager newAccountPublicKey]
+                                                       isActive : NO];
+        [VirgilKeyChain saveContainer : container
+                           forAccount : email];
         [self closeWindow];
     } else {
         [self showErrorView : [VirgilKeyManager lastError]];

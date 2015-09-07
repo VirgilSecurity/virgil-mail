@@ -271,6 +271,10 @@ struct {
     return newAccountInfo.privateKeyInfo;
 }
 
++ (VirgilPublicKey *) newAccountPublicKey {
+    return newAccountInfo.publicKeyInfo;
+}
+
 #if 0
 + (BOOL) deletePublicKey : (NSString *) account
                 password : (NSString *) password {

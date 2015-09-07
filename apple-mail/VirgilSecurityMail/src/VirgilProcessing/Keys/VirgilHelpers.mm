@@ -39,11 +39,27 @@
 #include <chrono>
 #include <random>
 
+#if defined(VIRGIL_STAGING)
+//#define VIRGIL_STAGING
+#endif
+
 @implementation VirgilHelpers
+
+#if defined (VIRGIL_STAGING)
 NSString * VIRGIL_APPLICATION_TOKEN = @"926965d4c716d28b41ed420da20546b9";
 NSString * VIRGIL_KEYS_URL_BASE = @"https://keys-stg.virgilsecurity.com/";
 NSString * VIRGIL_KEYS_PRIVATE_URL_BASE = @"https://keyring-stg.virgilsecurity.com/";
+
+#else
+NSString * VIRGIL_APPLICATION_TOKEN = @"72ec86432dc166106289d0b51a879371";
+NSString * VIRGIL_KEYS_URL_BASE = @"https://keys.virgilsecurity.com/";
+NSString * VIRGIL_KEYS_PRIVATE_URL_BASE = @"https://keyring.virgilsecurity.com/";
+
+#endif
+
 NSString * VIRGIL_RESET_PASSWORD_URL = @"https://virgilsecurity.com/reset";
+
+
 
 + (std::string) _strNS2Std : (NSString *)string {
     if (!string) return std::string();
