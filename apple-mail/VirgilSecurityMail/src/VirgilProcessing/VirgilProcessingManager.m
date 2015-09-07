@@ -778,7 +778,10 @@ static BOOL _decryptionStart = YES;
     if (nil == body) body = @"";
     
     NSString * htmlBody = message.topLevelHtmlString;
-    if (nil == htmlBody) htmlBody = body;
+    if (nil == htmlBody) {
+        htmlBody = [body stringByReplacingOccurrencesOfString : @"\n"
+                                                   withString : @"</br>"];
+    }
     
     VirgilDecryptedContent * decryptedContent =
             [[VirgilDecryptedContent alloc] initWithSubject : subject
