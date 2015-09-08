@@ -18,7 +18,7 @@ function sign_files() {
 
 function prepare() {
 	MAIL_BUNDLE_NAME="VirgilSecurityMail"
-	MAIL_BUNDLE="${MAIL_BUNDLE_NAME}.mailbundle"
+	export MAIL_BUNDLE="${MAIL_BUNDLE_NAME}.mailbundle"
 	MAIL_BUNDLE_SYMBOLS="${MAIL_BUNDLE}.dSYM"
 
 	SCRIPT_FOLDER="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -30,7 +30,7 @@ function prepare() {
 	
 	DMG_PREPARE_FOLDER="${BUILD_FOLDER}/DMG"
 	
-	CUR_VERSION="1.0.0.${BUILDS_ALL_TIME}"
+	CUR_VERSION="1.0.0.${BUILD_NUMBER}"
 	
 	DMG_PACK_FOLDER="${MAIL_BUNDLE_NAME}"
 	

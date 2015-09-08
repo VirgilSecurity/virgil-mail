@@ -59,6 +59,7 @@
 		D1FA26281B9993BE003335BB /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1FA26271B9993BE003335BB /* Security.framework */; };
 		D1FA262B1B999B0F003335BB /* VirgilKeyChain.m in Sources */ = {isa = PBXBuildFile; fileRef = D1FA262A1B999B0F003335BB /* VirgilKeyChain.m */; };
 		D1FA262E1B999D33003335BB /* VirgilKeyChainContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = D1FA262D1B999D33003335BB /* VirgilKeyChainContainer.m */; };
+		D1FAE6DB1B9E848700B530A3 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1FAE6DA1B9E848700B530A3 /* Sparkle.framework */; };
 		D1FFD1591B9DCC370033F639 /* VirgilDecryptAcceptViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1FFD1581B9DCC370033F639 /* VirgilDecryptAcceptViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -177,6 +178,7 @@
 		D1FA262A1B999B0F003335BB /* VirgilKeyChain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilKeyChain.m; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilKeyChain.m; sourceTree = "<group>"; };
 		D1FA262C1B999D33003335BB /* VirgilKeyChainContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilKeyChainContainer.h; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilKeyChainContainer.h; sourceTree = "<group>"; };
 		D1FA262D1B999D33003335BB /* VirgilKeyChainContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilKeyChainContainer.m; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilKeyChainContainer.m; sourceTree = "<group>"; };
+		D1FAE6DA1B9E848700B530A3 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		D1FFD1571B9DCC370033F639 /* VirgilDecryptAcceptViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilDecryptAcceptViewController.h; path = VirgilSecurityMail/src/Gui/VirgilDecryptAcceptViewController.h; sourceTree = "<group>"; };
 		D1FFD1581B9DCC370033F639 /* VirgilDecryptAcceptViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilDecryptAcceptViewController.m; path = VirgilSecurityMail/src/Gui/VirgilDecryptAcceptViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -189,6 +191,7 @@
 				D1FA26281B9993BE003335BB /* Security.framework in Frameworks */,
 				D13F60481B6A3ADD00508C79 /* AppKit.framework in Frameworks */,
 				D11174371B67FBEE00DD9A39 /* CoreFoundation.framework in Frameworks */,
+				D1FAE6DB1B9E848700B530A3 /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -215,6 +218,7 @@
 		D11174351B67FBEE00DD9A39 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D1FAE6DA1B9E848700B530A3 /* Sparkle.framework */,
 				D1FA26271B9993BE003335BB /* Security.framework */,
 				D14ACD9F1B97702500A8E164 /* WebKit.framework */,
 				D13F60471B6A3ADD00508C79 /* AppKit.framework */,
@@ -668,7 +672,10 @@
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1.0.0;
-				FRAMEWORK_SEARCH_PATHS = "\"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks\"";
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks\"",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "VirgilSecurityMail/VirgilSecurityMail-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -716,7 +723,10 @@
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1.0.0;
-				FRAMEWORK_SEARCH_PATHS = "\"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks\"";
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks\"",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "VirgilSecurityMail/VirgilSecurityMail-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
