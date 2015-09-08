@@ -39,6 +39,8 @@
 #import "VirgilEmailConfirmViewController.h"
 #import "VirgilKeyManager.h"
 #import "VirgilDecryptAcceptViewController.h"
+#import "VirgilKeyChainContainer.h"
+#import "VirgilKeyChain.h"
 
 static VirgilPrivateKey * _userActivityKey = nil;
 
@@ -156,6 +158,15 @@ BOOL _waitConfirmation = NO;
     @catch (NSException *exception) {
     }
     @finally {
+    }
+    
+    if (nil != _userActivityKey) {
+        VirgilKeyChainContainer * container =
+            [[VirgilKeyChainContainer alloc] initWithPrivateKey : _userActivityKey
+                                                   andPublicKey : [VirgilKeyManager newAccountPublicKey]
+                                                       isActive : YES];
+            [VirgilKeyChain saveContainer : container
+                               forAccount : _userActivityKey.account];
     }
     
     return _userActivityKey;
