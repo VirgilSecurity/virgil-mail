@@ -9,12 +9,10 @@
 /* Begin PBXBuildFile section */
 		D11174371B67FBEE00DD9A39 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D11174361B67FBEE00DD9A39 /* CoreFoundation.framework */; };
 		D11174461B6805D400DD9A39 /* VirgilMain.m in Sources */ = {isa = PBXBuildFile; fileRef = D11174451B6805D400DD9A39 /* VirgilMain.m */; };
-		D111744C1B68078D00DD9A39 /* VirgilSecurityMail.mailbundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = D11174331B67FBEE00DD9A39 /* VirgilSecurityMail.mailbundle */; };
 		D13F602F1B6A1A9600508C79 /* JRLPSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = D13F602C1B6A1A9600508C79 /* JRLPSwizzle.m */; };
 		D13F603D1B6A1C9A00508C79 /* VirgilMessageContentController.m in Sources */ = {isa = PBXBuildFile; fileRef = D13F603C1B6A1C9A00508C79 /* VirgilMessageContentController.m */; };
 		D13F60401B6A1D0600508C79 /* VirgilMessageRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = D13F603F1B6A1D0600508C79 /* VirgilMessageRouter.m */; };
 		D13F60431B6A1D1300508C79 /* VirgilHandlersInstaller.m in Sources */ = {isa = PBXBuildFile; fileRef = D13F60421B6A1D1300508C79 /* VirgilHandlersInstaller.m */; };
-		D13F60461B6A33AC00508C79 /* MailHeaders in Resources */ = {isa = PBXBuildFile; fileRef = D13F60451B6A33AC00508C79 /* MailHeaders */; };
 		D13F60481B6A3ADD00508C79 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D13F60471B6A3ADD00508C79 /* AppKit.framework */; };
 		D13F60521B6B50F300508C79 /* VirgilMimePart.m in Sources */ = {isa = PBXBuildFile; fileRef = D13F60511B6B50F300508C79 /* VirgilMimePart.m */; };
 		D13F605C1B6B6D6200508C79 /* VirgilProcessingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D13F605B1B6B6D6200508C79 /* VirgilProcessingManager.m */; };
@@ -60,19 +58,21 @@
 		D1FA262B1B999B0F003335BB /* VirgilKeyChain.m in Sources */ = {isa = PBXBuildFile; fileRef = D1FA262A1B999B0F003335BB /* VirgilKeyChain.m */; };
 		D1FA262E1B999D33003335BB /* VirgilKeyChainContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = D1FA262D1B999D33003335BB /* VirgilKeyChainContainer.m */; };
 		D1FAE6DB1B9E848700B530A3 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1FAE6DA1B9E848700B530A3 /* Sparkle.framework */; };
+		D1FAE6DF1B9EF4C100B530A3 /* MailHeaders in Resources */ = {isa = PBXBuildFile; fileRef = D13F60451B6A33AC00508C79 /* MailHeaders */; };
+		D1FAE6E01B9EF51700B530A3 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D1FAE6DA1B9E848700B530A3 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D1FFD1591B9DCC370033F639 /* VirgilDecryptAcceptViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1FFD1581B9DCC370033F639 /* VirgilDecryptAcceptViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		D111744B1B68076400DD9A39 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 8;
-			dstPath = "~/Library/Mail/Bundles";
-			dstSubfolderSpec = 0;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 10;
 			files = (
-				D111744C1B68078D00DD9A39 /* VirgilSecurityMail.mailbundle in CopyFiles */,
+				D1FAE6E01B9EF51700B530A3 /* Sparkle.framework in CopyFiles */,
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -483,7 +483,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D13F60461B6A33AC00508C79 /* MailHeaders in Resources */,
+				D1FAE6DF1B9EF4C100B530A3 /* MailHeaders in Resources */,
 				D1ECEE821B98187700711F55 /* VirgilPreferences.xib in Resources */,
 				D1DDA9361B91B4B300002A2F /* Main.storyboard in Resources */,
 			);
@@ -607,7 +607,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				ONLY_ACTIVE_ARCH = YES;
 				"OTHER_LDFLAGS[arch=*]" = (
 					"-lxml2",
@@ -646,7 +646,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				ONLY_ACTIVE_ARCH = YES;
 				"OTHER_LDFLAGS[arch=*]" = (
 					"-lcurl",
@@ -706,6 +706,7 @@
 					"-lcrypto",
 					"-lldap",
 					"-lz",
+					"-Wl,-rpath,@loader_path/../Frameworks",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx10.10;
@@ -757,6 +758,7 @@
 					"-lcrypto",
 					"-lldap",
 					"-lz",
+					"-Wl,-rpath,@loader_path/../Frameworks",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx10.10;
