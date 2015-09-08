@@ -17,7 +17,7 @@ function sign_files() {
 };
 
 function prepare() {
-	MAIL_BUNDLE_NAME="VirgilSecurityMail"
+	export MAIL_BUNDLE_NAME="VirgilSecurityMail"
 	MAIL_BUNDLE="${MAIL_BUNDLE_NAME}.mailbundle"
 	MAIL_BUNDLE_SYMBOLS="${MAIL_BUNDLE}.dSYM"
 
@@ -35,8 +35,7 @@ function prepare() {
 	ICON_FILE=""
 	BACKGROUND_FILE=""
 	PKG_IDENTIFIER="com.virgilsecurity.app.mail"
-	VMIL="0"
-	CUR_VERSION="1.0.0"
+	export CUR_VERSION="1.0.0.${BUILDS_ALL_TIME}"
 	
 	INSTALL_PATH="Library/Mail/Bundles/"
 	
@@ -83,10 +82,10 @@ function create_pkg() {
 						--scripts 			"${PKG_SCRIPTS_FOLDER}"				\
 						--install-location	"${INSTALL_PATH}" 					\
 						--identifier		"${PKG_IDENTIFIER}"					\
-				${MAIL_BUNDLE_NAME}.pkg
+						--version			"${CUR_VERSION}"					\
+				"${MAIL_BUNDLE_NAME}-${CUR_VERSION}.pkg"
 			
 			#--sign				"${codesign_cetificate_installer}"	\
-			#--version "$VERSION"					\
 			check_errors $?
 		popd
 	popd
