@@ -206,13 +206,21 @@ static BOOL _decryptionStart = YES;
     }
     
     // Prepare NSData for EmailData
-    NSData * emailData = [NSData dataFromBase64String:[emailDictionary objectForKey:@"EmailData"]];
-    
+    NSData * emailData =
+            [NSData dataFromBase64String:[emailDictionary objectForKey : kEmailData]];
     // Prepare NSData for signature
-    NSData * signatureData = [NSData dataFromBase64String:[emailDictionary objectForKey:@"Sign"]];
-
-    return [[VirgilEncryptedContent alloc] initWithEmailData:emailData
-                                                andSignature:signatureData];
+    NSData * signatureData =
+            [NSData dataFromBase64String:[emailDictionary objectForKey : kEmailSignature]];
+    // Prepare Sender info
+    NSString * sender = [emailDictionary objectForKey : kEmailSender];
+    
+    // Prepare Version
+    NSString * version = [emailDictionary objectForKey : kEmailVersion];
+    
+    return [[VirgilEncryptedContent alloc] initWithEmailData : emailData
+                                                   signature : signatureData
+                                                      sender : sender
+                                                     version : version];
 }
 
 - (VirgilDecryptedContent *) decryptContent : (VirgilEncryptedContent *) content
@@ -293,8 +301,17 @@ static BOOL _decryptionStart = YES;
     Message * message = [(MimeBody *)[topMimePart mimeBody] message];
     NSSet * allMimeParts = [self allMimeParts:topMimePart];
     
+    VirgilEncryptedContent * encryptedContent = [self getMainEncryptedData:
+                                                 [self getEncryptedContent:mainVirgilPart]];
+    NSLog(@"encryptedContent : %@", encryptedContent);
     // Get sender info
-    NSString * sender = [self getEmailFromFullName:[message sender]];
+    NSString * sender = nil;
+    if (nil != encryptedContent.sender) {
+        sender = encryptedContent.sender;
+    } else {
+        sender = [self getEmailFromFullName:[message sender]];
+    }
+
     VirgilKeyChainContainer * senderContainer = [self getKeysContainer : sender
                                                     forcePrivateKeyGet : NO];
     if (nil == senderContainer || nil == senderContainer.publicKey) return NO;
@@ -311,8 +328,7 @@ static BOOL _decryptionStart = YES;
     }
     NSString * publicId = receiverContainer.publicKey.publicKeyID;
     VirgilPrivateKey * privateKey = receiverContainer.privateKey;
-    VirgilEncryptedContent * encryptedContent = [self getMainEncryptedData:
-                                                 [self getEncryptedContent:mainVirgilPart]];
+    
     if (nil == sender ||
         nil == senderPublicKey ||
         nil == receiver ||
@@ -586,7 +602,9 @@ static BOOL _decryptionStart = YES;
     
     VirgilEncryptedContent * encryptedContent =
             [[VirgilEncryptedContent alloc] initWithEmailData : encryptedEmailBody
-                                                 andSignature : signature];
+                                                    signature : signature
+                                                       sender : fixedSender
+                                                      version : @"stub_ver"];
 
     // Prepare base64 result data
     NSData *jsonEncryptedData = [NSJSONSerialization dataWithJSONObject : [encryptedContent toDictionary]

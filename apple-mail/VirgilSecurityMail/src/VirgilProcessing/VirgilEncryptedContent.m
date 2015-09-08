@@ -47,22 +47,29 @@
     if ([super init]) {
         self.emailData = [[NSData alloc] init];
         self.signature = [[NSData alloc] init];
+        self.sender = nil;
     }
     return self;
 }
 
 - (id) initWithEmailData : (NSData *)a_emailData
-            andSignature : (NSData *)a_signature {
+               signature : (NSData *)a_signature
+                  sender : (NSString *) a_sender
+                 version : (NSString *) a_version {
     if ([super init]) {
         self.emailData = [[NSData alloc] initWithData:a_emailData];
         self.signature = [[NSData alloc] initWithData:a_signature];
+        self.sender = a_sender;
+        self.version = a_version;
     }
     return self;
 }
 
 - (NSDictionary *) toDictionary {
-    NSDictionary * res = @{@"EmailData" : [self.emailData base64EncodedString],
-                           @"Sign" : [self.signature base64EncodedString]};
+    NSDictionary * res = @{kEmailData : [self.emailData base64EncodedString],
+                           kEmailSignature : [self.signature base64EncodedString],
+                           kEmailSender : self.sender,
+                           kEmailVersion : self.version};
     return res;
 }
 
@@ -72,6 +79,8 @@
     [res appendString:@"{ \n"];
     [res appendFormat:@"EmailData : %@\n", [self.emailData base64EncodedString]];
     [res appendFormat:@"Sign : %@\n", [self.signature base64EncodedString]];
+    [res appendFormat:@"Sender : %@\n", self.sender];
+    [res appendFormat:@"Version : %@\n", self.version];
     [res appendString:@"} \n"];
     return res;
 }

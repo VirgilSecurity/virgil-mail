@@ -36,12 +36,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface VirgilDecryptedContent : NSObject {
-@public
-    NSString * subject;
-    NSString * body;
-    NSString * htmlBody;
-}
+@interface VirgilDecryptedContent : NSObject
 
 - (id) init;
 - (id) initWithSubject:(NSString *)asubject

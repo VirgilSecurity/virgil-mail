@@ -36,18 +36,24 @@
 
 #import <Foundation/Foundation.h>
 
-@interface VirgilEncryptedContent : NSObject {
-@public
-    NSData * emailData;
-    NSData * signature;
-}
+#define kEmailData      @"EmailData"
+#define kEmailSignature @"Sign"
+#define kEmailSender    @"Sender"
+#define kEmailVersion   @"Version"
+
+@interface VirgilEncryptedContent : NSObject
 
 - (id) init;
 - (id) initWithEmailData : (NSData *)a_emailData
-            andSignature : (NSData *)a_signature;
+               signature : (NSData *)a_signature
+                  sender : (NSString *) a_sender
+                 version : (NSString *) a_version;
+
 - (NSDictionary *) toDictionary;
 
 @property (retain) NSData * emailData;
 @property (retain) NSData * signature;
+@property (retain) NSString * version;
+@property (retain) NSString * sender;
 
 @end
