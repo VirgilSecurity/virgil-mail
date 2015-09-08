@@ -17,7 +17,7 @@ function sign_files() {
 };
 
 function prepare() {
-	export MAIL_BUNDLE_NAME="VirgilSecurityMail"
+	MAIL_BUNDLE_NAME="VirgilSecurityMail"
 	MAIL_BUNDLE="${MAIL_BUNDLE_NAME}.mailbundle"
 	MAIL_BUNDLE_SYMBOLS="${MAIL_BUNDLE}.dSYM"
 
@@ -29,13 +29,15 @@ function prepare() {
 	PKG_SCRIPTS_FOLDER="${SCRIPT_FOLDER}/pkg_scripts"
 	
 	DMG_PREPARE_FOLDER="${BUILD_FOLDER}/DMG"
+	
+	CUR_VERSION="1.0.0.${BUILDS_ALL_TIME}"
+	
 	DMG_PACK_FOLDER="${MAIL_BUNDLE_NAME}"
 	
 	IMAGES_FOLDER=""
 	ICON_FILE=""
 	BACKGROUND_FILE=""
 	PKG_IDENTIFIER="com.virgilsecurity.app.mail"
-	export CUR_VERSION="1.0.0.${BUILDS_ALL_TIME}"
 	
 	INSTALL_PATH="Library/Mail/Bundles/"
 	
@@ -83,7 +85,7 @@ function create_pkg() {
 						--install-location	"${INSTALL_PATH}" 					\
 						--identifier		"${PKG_IDENTIFIER}"					\
 						--version			"${CUR_VERSION}"					\
-				"${MAIL_BUNDLE_NAME}-${CUR_VERSION}.pkg"
+				${MAIL_BUNDLE_NAME}.pkg
 			
 			#--sign				"${codesign_cetificate_installer}"	\
 			check_errors $?
@@ -117,7 +119,7 @@ function create_dmg() {
 #	ARG_VOL_NAME="${7}"
 #	ARG_TMP_DIR="./tmp"
 	
-	DMG_RESULT="$DMG_PREPARE_FOLDER/${MAIL_BUNDLE_NAME}"
+	DMG_RESULT="$DMG_PREPARE_FOLDER/${MAIL_BUNDLE_NAME}-${CUR_VERSION}"
 	make_dmg 	"${DMG_PREPARE_FOLDER}"				\
 				"${DMG_PACK_FOLDER}" 				\
 				"${IMAGES_FOLDER}" 					\
