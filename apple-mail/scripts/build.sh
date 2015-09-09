@@ -66,7 +66,7 @@ function create_pkg_info_file() {
 };
 
 function create_entitlements_info_file() {
-	echo '  <?xml version="1.0" encoding="UTF-8"?>' >> "${entitlements}"
+	echo '  <?xml version="1.0" encoding="UTF-8"?>' > "${entitlements}"
 	echo '  <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' >> "${entitlements}"
 	echo '  <plist version="1.0">' >> "${entitlements}"
 	echo '  	<dict>' >> "${entitlements}"
@@ -115,7 +115,8 @@ function create_dmg() {
 	create_entitlements_info_file;
 	UNINSTALL_APP_PATH="${DMG_PREPARE_FOLDER}/${DMG_PACK_FOLDER}/${UNINSTALL_APP_NAME}"
 	codesign -f -v -s "$codesign_cetificate" "${UNINSTALL_APP_PATH}/Contents/MacOS/uninstall.sh"
-	codesign --deep -f -v --entitlements "${entitlements}" -s "$codesign_cetificate" "${UNINSTALL_APP_PATH}"
+	check_errors $?
+	codesign -f -v -s "$codesign_cetificate" "${UNINSTALL_APP_PATH}"
 	check_errors $?
 	
 	echo "Make dmg ..."
