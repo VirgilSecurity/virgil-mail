@@ -86,7 +86,7 @@ function create_pkg() {
 						--identifier		"${PKG_IDENTIFIER}"					\
 						--version			"${CUR_VERSION}"					\
 						--sign				"${codesign_cetificate_installer}"	\
-						--timestamp=none										\
+						--timestamp												\
 				${MAIL_BUNDLE_NAME}.pkg
 			
 			check_errors $?
