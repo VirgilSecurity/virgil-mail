@@ -62,7 +62,7 @@ NSString * VIRGIL_RESET_PASSWORD_URL = @"https://virgilsecurity.com/reset";
 
 
 + (std::string) _strNS2Std : (NSString *)string {
-    if (!string) return std::string();
+    if (nil == string || [string isEqual:[NSNull null]]) return std::string();
     return [string UTF8String];
 }
 
