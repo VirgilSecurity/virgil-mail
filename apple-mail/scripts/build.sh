@@ -7,15 +7,6 @@ function check_errors() {
         fi
 }
 
-function sign_files() {
-	pushd "$1"
-		find * -type f | while read j; do
-			echo "$j"
-			codesign -f -v -s "$codesign_cetificate" "$j"
-		done
-	popd
-};
-
 function prepare() {
 	MAIL_BUNDLE_NAME="VirgilSecurityMail"
 	export MAIL_BUNDLE="${MAIL_BUNDLE_NAME}.mailbundle"
@@ -41,7 +32,8 @@ function prepare() {
 	
 	INSTALL_PATH="Library/Mail/Bundles/"
 	
-	UNINSTALL_APP="${SCRIPT_FOLDER}/Uninstall.app"
+	UNINSTALL_APP_NAME="Uninstall.app"
+	UNINSTALL_APP="${SCRIPT_FOLDER}/${UNINSTALL_APP_NAME}"
 
 	# App certificates
 	codesign_cetificate="Developer ID Application: Virgil Security, Inc. (JWNLQ3HC5A)"
@@ -108,6 +100,8 @@ function create_dmg() {
 	mv "${BUILD_FOLDER}/${MAIL_BUNDLE_NAME}.pkg" "${DMG_PREPARE_FOLDER}/${DMG_PACK_FOLDER}/"
 	cp -rf "${UNINSTALL_APP}" "${DMG_PREPARE_FOLDER}/${DMG_PACK_FOLDER}/"
 	check_errors $?
+	
+	codesign -f --deep -v -s "$codesign_cetificate" "${DMG_PREPARE_FOLDER}/${DMG_PACK_FOLDER}/${UNINSTALL_APP_NAME}"
 	
 	echo "Make dmg ..."
 	
