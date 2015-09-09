@@ -38,6 +38,7 @@ function prepare() {
 	# App certificates
 	codesign_cetificate="Developer ID Application: Virgil Security, Inc. (JWNLQ3HC5A)"
 	codesign_cetificate_installer="Developer ID Installer: Virgil Security, Inc. (JWNLQ3HC5A)"
+	entitlements="/tmp/MacSandbox-Entitlements.plist"
 }
 
 function build_project() {
@@ -62,6 +63,16 @@ function create_pkg_info_file() {
 	echo '        </dict>' >>"${PKG_PLIST_FILE}"
 	echo '</array>' >>"${PKG_PLIST_FILE}"
 	echo '</plist>' >>"${PKG_PLIST_FILE}"
+};
+
+function create_entitlements_info_file() {
+	echo '  <?xml version="1.0" encoding="UTF-8"?>' >> "${entitlements}"
+	echo '  <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' >> "${entitlements}"
+	echo '  <plist version="1.0">' >> "${entitlements}"
+	echo '  	<dict>' >> "${entitlements}"
+	echo '  		<key>com.apple.security.app-sandbox</key>   <false/>' >> "${entitlements}"
+	echo '  	</dict>' >> "${entitlements}"
+	echo '  </plist>' >> "${entitlements}"
 };
 
 function create_pkg() {
@@ -100,8 +111,10 @@ function create_dmg() {
 	mv "${BUILD_FOLDER}/${MAIL_BUNDLE_NAME}.pkg" "${DMG_PREPARE_FOLDER}/${DMG_PACK_FOLDER}/"
 	cp -rf "${UNINSTALL_APP}" "${DMG_PREPARE_FOLDER}/${DMG_PACK_FOLDER}/"
 	check_errors $?
-	
-	codesign -f --deep -v -s "$codesign_cetificate" "${DMG_PREPARE_FOLDER}/${DMG_PACK_FOLDER}/${UNINSTALL_APP_NAME}"
+
+	create_entitlements_info_file;
+	codesign --deep -f -v --entitlements "${entitlements}" -s "$codesign_cetificate" "${DMG_PREPARE_FOLDER}/${DMG_PACK_FOLDER}/${UNINSTALL_APP_NAME}"
+	check_errors $?
 	
 	echo "Make dmg ..."
 	
