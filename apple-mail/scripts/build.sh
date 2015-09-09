@@ -44,8 +44,8 @@ function prepare() {
 	UNINSTALL_APP="${SCRIPT_FOLDER}/Uninstall.app"
 
 	# App certificates
-	codesign_cetificate="Developer ID Application: Virgil Security, Inc. (JWNLQ3HC5A)"
-	codesign_cetificate_installer="Developer ID Installer: Virgil Security, Inc. (JWNLQ3HC5A)"
+	codesign_cetificate="3rd Party Mac Developer Application: Virgil Security, Inc. (JWNLQ3HC5A)"
+	codesign_cetificate_installer="3rd Party Mac Developer Installer: Virgil Security, Inc. (JWNLQ3HC5A)"
 }
 
 function build_project() {
@@ -85,9 +85,9 @@ function create_pkg() {
 						--install-location	"${INSTALL_PATH}" 					\
 						--identifier		"${PKG_IDENTIFIER}"					\
 						--version			"${CUR_VERSION}"					\
-						--sign				"${codesign_cetificate_installer}"	\
 				${MAIL_BUNDLE_NAME}.pkg
 			
+			#--sign				"${codesign_cetificate_installer}"	\
 			check_errors $?
 		popd
 	popd
