@@ -42,6 +42,14 @@
 	<string></string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2015 Virgil Security. All rights reserved.</string>
+	<key>SUEnableAutomaticChecks</key>
+	<true/>
+	<key>SUFeedURL</key>
+	<string>https://downloads.virgilsecurity.com/updates/apple-mail/virgilmailcast.xml</string>
+	<key>SUPublicDSAKey</key>
+	<string>/Library/Mail/Bundles/VirgilSecurityMail.mailbundle/Contents/Frameworks/dsa_pub.pem</string>
+	<key>SUScheduledCheckInterval</key>
+	<integer>60</integer>
 	<key>SupportedPluginCompatibilityUUIDs</key>
 	<array>
 		<string>60D52D22-7491-4CA7-95BA-88215BD88F8E</string>

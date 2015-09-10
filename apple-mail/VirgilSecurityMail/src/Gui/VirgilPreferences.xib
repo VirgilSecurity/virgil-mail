@@ -231,7 +231,7 @@
 												<reference key="NSWindow"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSButtonCell" key="NSCell" id="491452844">
-													<int key="NSCellFlags">603979776</int>
+													<int key="NSCellFlags">67108864</int>
 													<int key="NSCellFlags2">134217728</int>
 													<string key="NSContents">Check Now</string>
 													<reference key="NSSupport" ref="706304668"/>
@@ -349,11 +349,11 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
-						<string key="label">onCheckNowClick:</string>
+						<string key="label">onCheckUpdates:</string>
 						<reference key="source" ref="359798784"/>
 						<reference key="destination" ref="163650447"/>
 					</object>
-					<string key="id">oX1-bV-nAA</string>
+					<string key="id">jRh-dQ-PJ4</string>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -516,7 +516,7 @@
 				<string key="781.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<dictionary class="NSMutableDictionary" key="9.IBAttributePlaceholdersKey"/>
 				<reference key="9.IBNSViewMetadataGestureRecognizers" ref="0"/>
-				<string key="9.IBPersistedLastKnownCanvasPosition">{459.5, 356}</string>
+				<string key="9.IBPersistedLastKnownCanvasPosition">{-7.5, 323}</string>
 				<string key="9.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<reference key="9.IBUserGuides" ref="0"/>
 				<string key="VxY-Gt-nbh.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>

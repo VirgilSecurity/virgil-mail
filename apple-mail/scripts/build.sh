@@ -114,8 +114,6 @@ function create_dmg() {
 
 	create_entitlements_info_file;
 	UNINSTALL_APP_PATH="${DMG_PREPARE_FOLDER}/${DMG_PACK_FOLDER}/${UNINSTALL_APP_NAME}"
-	#codesign -f -v -s "$codesign_cetificate" "${UNINSTALL_APP_PATH}/Contents/MacOS/uninstall.sh"
-	#check_errors $?
 	codesign --deep -f -v --entitlements "${entitlements}" -s "$codesign_cetificate" "${UNINSTALL_APP_PATH}"
 	check_errors $?
 	

@@ -37,6 +37,7 @@
 #import "VirgilPreferences.h"
 #import "VirgilPreferencesContainer.h"
 #import "VirgilPreferencesWorker.h"
+#import "VirgilUpdater.h"
 
 @implementation VirgilPreferences
 
@@ -91,7 +92,7 @@
 
 }
 
-- (IBAction)onCheckNowClick:(id)sender {
+- (IBAction)onCheckNowClick:(id __unused)sender {
 }
 
 - (void) updateGuiElements {
@@ -104,6 +105,10 @@
                     state : [VirgilPreferencesContainer isNeedAskToDecrypt] ? NSOnState : NSOffState];
     [self loadStateForTag : 1001
                     state : [VirgilPreferencesContainer isUseEncryption] ? NSOnState : NSOffState];
+}
+
+- (IBAction)onCheckUpdates:(id __unused)sender {
+    [VirgilUpdater checkUpdate];
 }
 
 - (void)willBeDisplayed {
