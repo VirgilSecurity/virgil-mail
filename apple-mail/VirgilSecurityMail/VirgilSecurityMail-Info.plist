@@ -46,7 +46,7 @@
 	<true/>
 	<key>SUFeedURL</key>
 	<string>https://downloads.virgilsecurity.com/updates/apple-mail/virgilmailcast.xml</string>
-	<key>SUPublicDSAKey</key>
+	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
 	<key>SUScheduledCheckInterval</key>
 	<integer>60</integer>
