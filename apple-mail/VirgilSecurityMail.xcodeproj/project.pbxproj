@@ -520,7 +520,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "################################################\n# Install the bundle in ~/Library/Mail/bundles #\n################################################\n\nrm -fr \"$HOME/Library/Mail/Bundles/$FULL_PRODUCT_NAME\"\n\n# Copy the Bundle\nmkdir -p ~/Library/Mail/Bundles/\ncp -RH \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\" \"$HOME/Library/Mail/Bundles/\"";
+			shellScript = "################################################\n#       Codesign sparkle Autoapdate.app        #\n################################################\n\ncodesign_cetificate=\"Developer ID Application: Virgil Security, Inc. (JWNLQ3HC5A)\"\n\nautoupdate_app=\"${TARGET_BUILD_DIR}/${FULL_PRODUCT_NAME}/Contents/Frameworks/Sparkle.framework/Resources/Autoupdate.app\"\n\ncodesign --deep -f -v -s \"$codesign_cetificate\" \"${autoupdate_app}\"\n\n################################################\n# Install the bundle in ~/Library/Mail/bundles #\n################################################\n\nrm -fr \"$HOME/Library/Mail/Bundles/$FULL_PRODUCT_NAME\"\n\n# Copy the Bundle\nmkdir -p ~/Library/Mail/Bundles/\ncp -RH \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\" \"$HOME/Library/Mail/Bundles/\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
