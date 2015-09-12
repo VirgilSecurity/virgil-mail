@@ -61,7 +61,7 @@ function prepare_update() {
 		echo "			</description>" 																		>> "${APPCAST_FILE}"
 		echo "			<pubDate>$(date "+%a, %d %b %Y %H:%M:%S %Z")</pubDate>" 								>> "${APPCAST_FILE}"
 		echo "			<enclosure url=\"${DOWNLOAD_LINK}\"" 													>> "${APPCAST_FILE}"
-		echo "			sparkle:version=\"${CUR_VERSION}\" length=\"${ZIP_SIZE}\" type=\"application/octet-stream\"" >> "${APPCAST_FILE}"
+		echo "			sparkle:version=\"2.0\" length=\"${ZIP_SIZE}\" type=\"application/octet-stream\"" 		>> "${APPCAST_FILE}"
 		echo "			sparkle:dsaSignature=\"${SIGNATURE}\"/>" 												>> "${APPCAST_FILE}"
 		echo "		</item>" 																					>> "${APPCAST_FILE}"
 		echo "	</channel>" 																					>> "${APPCAST_FILE}"
