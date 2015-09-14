@@ -34,6 +34,17 @@ esac
 defaults write "/Library/Preferences/com.apple.mail" EnableBundles -bool YES
 defaults write "/Library/Preferences/com.apple.mail" BundleCompatibilityVersion -int $bundleCompVer
 
+# Add updater job
+UPDATER_PLIST="/Library/LaunchAgents/org.virgilsecurity.mail.update.plist"
+if [ -f "${UPDATER_PLIST}" ]; then
+    launchctl unload "${UPDATER_PLIST}"
+    sleep 3
+fi
+
+rm "${UPDATER_PLIST}"
+cp "/Library/Mail/Bundles/VirgilSecurityMail.mailbundle/Contents/Resources/org.virgilsecurity.mail.update.plist" "${UPDATER_PLIST}"
+
+launchctl load "${UPDATER_PLIST}"
 
 # Restart Mail.app
 ps -xo command -u "$USER" | grep -q '/\Mail.app/' || exit 0
