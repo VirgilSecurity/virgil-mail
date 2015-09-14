@@ -48,7 +48,7 @@
     updater.delegate = self;
     NSArray *arguments = [[NSProcessInfo processInfo] arguments];
     
-    if (![arguments containsObject:@"--gui"]) {
+    if ([arguments containsObject:@"--gui"]) {
         [updater checkForUpdates : nil];
     } else {
         [updater checkForUpdatesInBackground];
@@ -74,24 +74,7 @@
 }
 
 - (void) raiseApp {
-    updater = [SUUpdater sharedUpdater];
-    
-    NSProcessInfo *processInfo = [NSProcessInfo processInfo];
-    int processID = [processInfo processIdentifier];
-    
-    NSLog(@"raiseApp %d", processID);
-    
-    NSTask *osascript = [[NSTask alloc] init];
-    [osascript setLaunchPath:@"/usr/bin/osascript"];
-    NSString * argBase = @"'tell application \"System Events\"\n set theprocs to every process whose unix id is %d\n repeat with proc in theprocs\n set the frontmost of proc to true\n end repeat\nend tell'";
-    NSString * arg = [NSString stringWithFormat : argBase, processID];
-    
-    [osascript setArguments : [NSArray arrayWithObject : @[@"-e", arg]]];
-    
-    [osascript launch];
-    [osascript waitUntilExit];
-    
-    NSLog(@"raiseApp %@", arg);
+    [NSApp activateIgnoringOtherApps:YES];
 }
 
 - (void) terminateIfIdle {
