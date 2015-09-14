@@ -37,7 +37,6 @@
 #import "VirgilPreferences.h"
 #import "VirgilPreferencesContainer.h"
 #import "VirgilPreferencesWorker.h"
-#import "VirgilUpdater.h"
 
 @implementation VirgilPreferences
 
@@ -107,10 +106,6 @@
                     state : [VirgilPreferencesContainer isUseEncryption] ? NSOnState : NSOffState];
 }
 
-- (IBAction)onCheckUpdates:(id __unused)sender {
-    [VirgilUpdater checkUpdate];
-}
-
 - (void)willBeDisplayed {
     [self updateGuiElements];
 }
@@ -130,11 +125,5 @@
 	return NO;
 }
 
-
-
-- (void)checkForUpdates:(id)sender {
-	// NSString *updaterPath = @"/Library/Application Support/GPGTools/GPGMail_Updater.app/Contents/MacOS/GPGMail_Updater";
-	// [GPGTask launchGeneralTask:updaterPath withArguments:@[@"checkNow"]];
-}
 
 @end

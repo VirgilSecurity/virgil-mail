@@ -34,17 +34,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "VirgilUpdater.h"
-#import <Sparkle/Sparkle.h>
+#import <Cocoa/Cocoa.h>
 
-@implementation VirgilUpdater
-
-+ (void) checkUpdate {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        SUUpdater * updater = [SUUpdater updaterForBundle:[NSBundle bundleForClass:[self class]]];
-        if (nil == updater) return;
-        [updater checkForUpdates : nil];
-    });
+int main(int argc, const char * argv[]) {
+    return NSApplicationMain(argc, argv);
 }
-
-@end

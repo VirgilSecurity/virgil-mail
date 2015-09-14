@@ -303,7 +303,7 @@ static BOOL _decryptionStart = YES;
     
     VirgilEncryptedContent * encryptedContent = [self getMainEncryptedData:
                                                  [self getEncryptedContent:mainVirgilPart]];
-    NSLog(@"encryptedContent : %@", encryptedContent);
+    //NSLog(@"encryptedContent : %@", encryptedContent);
     // Get sender info
     NSString * sender = nil;
     if (nil != encryptedContent.sender) {

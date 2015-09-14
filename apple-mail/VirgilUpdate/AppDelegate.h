@@ -34,10 +34,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
+#import <Sparkle/Sparkle.h>
 
-@interface VirgilUpdater : NSObject
-
-+ (void) checkUpdate;
+@interface AppDelegate : NSObject <NSApplicationDelegate, SUUpdaterDelegate> {
+    SUUpdater *updater;
+}
 
 @end
+
