@@ -85,8 +85,8 @@ function update_version() {
 
 function create_pkg() {
 	pushd ${RESULT_FOLDER}
-		update_versions	"./Release/VirgilSecurityMail.mailbundle/Contents/Info.plist"
-		update_versions	"./Release/VirgilSecurityMail.mailbundle/Contents/Resources/VirgilUpdate.app/Contents/Info.plist"
+		update_version	"./Release/VirgilSecurityMail.mailbundle/Contents/Info.plist"
+		update_version	"./Release/VirgilSecurityMail.mailbundle/Contents/Resources/VirgilUpdate.app/Contents/Info.plist"
 		create_pkg_info_file
 		rm -rf ${MAIL_BUNDLE_SYMBOLS}
 		pushd ..
