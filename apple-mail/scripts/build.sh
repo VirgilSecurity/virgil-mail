@@ -77,7 +77,7 @@ function create_entitlements_info_file() {
 
 function update_version() {
 	/usr/libexec/PlistBuddy									\
-	  -c "Set CFBundleVersion '1'"							\
+	  -c "Set CFBundleVersion '${CUR_VERSION}'"				\
 	  -c "Set CFBundleShortVersionString '${CUR_VERSION}'"	\
 	  "${1}"
 	check_errors $?
