@@ -21,7 +21,10 @@ function prepare() {
 	
 	DMG_PREPARE_FOLDER="${BUILD_FOLDER}/DMG"
 	
-	CUR_VERSION="1.0.0.${BUILD_NUMBER}"
+	export BUNDLE_SHORT_VERSION="1.0.0"
+	export BUNDLE_VERSION="${BUNDLE_SHORT_VERSION}.${BUILD_NUMBER}"
+	
+	CUR_VERSION="${BUNDLE_VERSION}
 	
 	DMG_PACK_FOLDER="${MAIL_BUNDLE_NAME}"
 	
@@ -85,8 +88,8 @@ function update_version() {
 
 function create_pkg() {
 	pushd ${RESULT_FOLDER}
-		update_version	"./VirgilSecurityMail.mailbundle/Contents/Info.plist"
-		update_version	"./VirgilSecurityMail.mailbundle/Contents/Resources/VirgilUpdate.app/Contents/Info.plist"
+		#update_version	"./VirgilSecurityMail.mailbundle/Contents/Info.plist"
+		#update_version	"./VirgilSecurityMail.mailbundle/Contents/Resources/VirgilUpdate.app/Contents/Info.plist"
 		create_pkg_info_file
 		rm -rf ${MAIL_BUNDLE_SYMBOLS}
 		pushd ..
