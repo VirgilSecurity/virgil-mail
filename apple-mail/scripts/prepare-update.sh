@@ -16,11 +16,28 @@ function prepare() {
 	CUR_VERSION="1.0.0.${BUILD_NUMBER}"
 	
 	DMG_PACK_FOLDER="${MAIL_BUNDLE_NAME}"
-	ZIP_FILE="${MAIL_BUNDLE_NAME}-${CUR_VERSION}.zip"
-	BASE_LINK="https://downloads.virgilsecurity.com/updates/apple-mail"
-	DOWNLOAD_LINK="${BASE_LINK}/${ZIP_FILE}"
-	APPCAST_FILE="virgilmailcast.xml"
+	
+	if [ "$RELEASE_TYPE" == "night_build" ]; then
+		# TODO: Add night builds
+		BASE_LINK="https://downloads.virgilsecurity.com/updates/apple-mail"
+		APPCAST_FILE="virgilmailcast.xml"
+		RELEASE_NOTES_FILE="release-notes.html"
+		ZIP_FILE="${MAIL_BUNDLE_NAME}-${CUR_VERSION}.zip"
+	else
+		BASE_LINK="https://downloads.virgilsecurity.com/updates/apple-mail"
+		APPCAST_FILE="virgilmailcast.xml"
+		RELEASE_NOTES_FILE="release-notes.html"
+		ZIP_FILE="${MAIL_BUNDLE_NAME}-${CUR_VERSION}.zip"
+	fi
+	
+	SPARKLE_ICON_FILE="icon_128x128.png"
+	
 	APPCAST_LINK="${BASE_LINK}/${APPCAST_FILE}"
+	RELEASE_NOTES_LINK="${BASE_LINK}/${APPCAST_FILE}"
+	DOWNLOAD_LINK="${BASE_LINK}/${ZIP_FILE}"
+	SPARKLE_ICON_LINK="${BASE_LINK}/${RELEASE_NOTES_FILE}"
+	RELEASE_NOTES_SRC="${DMG_PREPARE_FOLDER}/../../VirgilSecurityMail/Resources/${RELEASE_NOTES_FILE}"
+	SPARKLE_ICON_SRC="${DMG_PREPARE_FOLDER}/../../VirgilSecurityMail/Resources/${SPARKLE_ICON_FILE}"
 	
 	PRIVATE_KEY="/updater_keys/dsa_priv.pem"
 	OPENSSL="/usr/bin/openssl"
@@ -40,6 +57,16 @@ function prepare_update() {
 		
 		ZIP_SIZE=$(wc -c ${ZIP_FILE} | awk '{print $1}')
 		
+		echo -e "\n-------------- Copy release notes -------------------"
+		echo "-> ${RELEASE_NOTES_FILE}"
+		cp "${RELEASE_NOTES_SRC}" "${RELEASE_NOTES_FILE}"
+		check_errors $?
+		
+		echo -e "\n----------- Copy sparkle image file -----------------"
+		echo "-> ${SPARKLE_ICON_FILE}"
+		cp "${SPARKLE_ICON_SRC}" "${SPARKLE_ICON_FILE}"
+		check_errors $?
+		
 		echo -e "\n---------------- Create Appcast ---------------------"
 		
 		echo "<rss xmlns:sparkle=\"http://www.andymatuschak.org/xml-namespaces/sparkle\"" 						> "${APPCAST_FILE}"
@@ -49,16 +76,19 @@ function prepare_update() {
 		echo "		<link>" 																					>> "${APPCAST_FILE}"
 		echo "			${APPCAST_LINK}" 																		>> "${APPCAST_FILE}"
 		echo "		</link>" 																					>> "${APPCAST_FILE}"
-		echo "		<description>Most recent changes with links to updates.</description>" 						>> "${APPCAST_FILE}"
+		echo "		<description>Release Notes for the latest versions of</description>" 						>> "${APPCAST_FILE}"
 		echo "		<language>en</language>" 																	>> "${APPCAST_FILE}"
+		echo "		<image>"																					>> "${APPCAST_FILE}"
+		echo "			<url>"																					>> "${APPCAST_FILE}"
+		echo "				${SPARKLE_ICON_LINK}"																>> "${APPCAST_FILE}"
+		echo "			</url>"																					>> "${APPCAST_FILE}"
+		echo "		</image>"																					>> "${APPCAST_FILE}"
 		echo "		<item>" 																					>> "${APPCAST_FILE}"
-		echo "			<title>Version ${CUR_VERSION}</title>" 													>> "${APPCAST_FILE}"
-		echo "			<description>" 																			>> "${APPCAST_FILE}"
-		echo "				<![CDATA[" 																			>> "${APPCAST_FILE}"
-		echo "					<ul> <li>Bugfixes.</li>" 														>> "${APPCAST_FILE}"
-		echo "					</ul>" 																			>> "${APPCAST_FILE}"
-		echo "				]]>" 																				>> "${APPCAST_FILE}"
-		echo "			</description>" 																		>> "${APPCAST_FILE}"
+		echo "			<title>Virgil Security Mail ${CUR_VERSION}</title>" 									>> "${APPCAST_FILE}"
+		echo "			<sparkle:releaseNotesLink>"																>> "${APPCAST_FILE}"
+		echo "				${RELEASE_NOTES_LINK}"																>> "${APPCAST_FILE}"
+		echo "			</sparkle:releaseNotesLink>"															>> "${APPCAST_FILE}"
+		echo "			<sparkle:minimumSystemVersion>10.10</sparkle:minimumSystemVersion>"						>> "${APPCAST_FILE}"
 		echo "			<pubDate>$(date "+%a, %d %b %Y %H:%M:%S %Z")</pubDate>" 								>> "${APPCAST_FILE}"
 		echo "			<enclosure url=\"${DOWNLOAD_LINK}\"" 													>> "${APPCAST_FILE}"
 		echo "			sparkle:version=\"${CUR_VERSION}\" length=\"${ZIP_SIZE}\" type=\"application/octet-stream\"" >> "${APPCAST_FILE}"
