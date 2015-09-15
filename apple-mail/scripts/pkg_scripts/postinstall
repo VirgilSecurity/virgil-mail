@@ -36,9 +36,11 @@ defaults write "/Library/Preferences/com.apple.mail" BundleCompatibilityVersion 
 
 # Add updater job
 UPDATER_PLIST="/Library/LaunchAgents/org.virgilsecurity.mail.update.plist"
+UPDATER_JOB_LABEL="org.virgilsecurity.mail.update"
 if [ -f "${UPDATER_PLIST}" ]; then
-    launchctl unload "${UPDATER_PLIST}"
+    launchctl unload -w "${UPDATER_PLIST}"
     sleep 3
+	launchctl remove "${UPDATER_JOB_LABEL}"
 fi
 
 rm "${UPDATER_PLIST}"
