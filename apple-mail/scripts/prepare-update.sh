@@ -15,6 +15,9 @@ function prepare() {
 	
 	CUR_VERSION="1.0.0.${BUILD_NUMBER}"
 	
+	#TODO: Try to remove it
+	BUNDLE_VERSION="1.0.0"
+	
 	DMG_PACK_FOLDER="${MAIL_BUNDLE_NAME}"
 	
 	if [ "$RELEASE_TYPE" == "night_build" ]; then
@@ -91,7 +94,10 @@ function prepare_update() {
 		echo "			<sparkle:minimumSystemVersion>10.10</sparkle:minimumSystemVersion>"						>> "${APPCAST_FILE}"
 		echo "			<pubDate>$(date "+%a, %d %b %Y %H:%M:%S %Z")</pubDate>" 								>> "${APPCAST_FILE}"
 		echo "			<enclosure url=\"${DOWNLOAD_LINK}\"" 													>> "${APPCAST_FILE}"
-		echo "			sparkle:version=\"${CUR_VERSION}\" length=\"${ZIP_SIZE}\" type=\"application/octet-stream\"" >> "${APPCAST_FILE}"
+		echo "			sparkle:version=\"${BUNDLE_VERSION}\""													>> "${APPCAST_FILE}"
+		echo "			sparkle:shortVersionString=\"${CUR_VERSION}\"" 											>> "${APPCAST_FILE}"
+		echo "			length=\"${ZIP_SIZE}\""																	>> "${APPCAST_FILE}"
+		echo "			type=\"application/octet-stream\""														>> "${APPCAST_FILE}"
 		echo "			sparkle:dsaSignature=\"${SIGNATURE}\"/>" 												>> "${APPCAST_FILE}"
 		echo "		</item>" 																					>> "${APPCAST_FILE}"
 		echo "	</channel>" 																					>> "${APPCAST_FILE}"
