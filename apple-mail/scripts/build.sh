@@ -21,10 +21,10 @@ function prepare() {
 	
 	DMG_PREPARE_FOLDER="${BUILD_FOLDER}/DMG"
 	
-	export BUNDLE_SHORT_VERSION="1.0.0"
-	export BUNDLE_VERSION="${BUNDLE_SHORT_VERSION}.${BUILD_NUMBER}"
+	export BUNDLE_VERSION="1.0.0"
+	export BUNDLE_SHORT_VERSION="${BUNDLE_VERSION}.${BUILD_NUMBER}"
 	
-	CUR_VERSION="${BUNDLE_VERSION}"
+	CUR_VERSION="${BUNDLE_SHORT_VERSION}"
 	
 	DMG_PACK_FOLDER="${MAIL_BUNDLE_NAME}"
 	
@@ -78,18 +78,8 @@ function create_entitlements_info_file() {
 	echo '  </plist>' >> "${entitlements}"
 };
 
-function update_version() {
-	/usr/libexec/PlistBuddy									\
-	  -c "Set CFBundleVersion '${CUR_VERSION}'"				\
-	  -c "Set CFBundleShortVersionString '${CUR_VERSION}'"	\
-	  "${1}"
-	check_errors $?
-}
-
 function create_pkg() {
 	pushd ${RESULT_FOLDER}
-		#update_version	"./VirgilSecurityMail.mailbundle/Contents/Info.plist"
-		#update_version	"./VirgilSecurityMail.mailbundle/Contents/Resources/VirgilUpdate.app/Contents/Info.plist"
 		create_pkg_info_file
 		rm -rf ${MAIL_BUNDLE_SYMBOLS}
 		pushd ..
