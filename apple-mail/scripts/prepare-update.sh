@@ -13,10 +13,10 @@ function prepare() {
 	SCRIPT_FOLDER="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 	DMG_PREPARE_FOLDER="${SCRIPT_FOLDER}/../build/DMG"
 	
-	CUR_VERSION="1.0.0.${BUILD_NUMBER}"
-	
 	#TODO: Try to remove it
-	BUNDLE_VERSION="1.0.0"
+	BUNDLE_SHORT_VERSION="1.0.0"
+	
+	CUR_VERSION="${BUNDLE_SHORT_VERSION]}.${BUILD_NUMBER}"
 	
 	DMG_PACK_FOLDER="${MAIL_BUNDLE_NAME}"
 	
@@ -94,8 +94,8 @@ function prepare_update() {
 		echo "			<sparkle:minimumSystemVersion>10.10</sparkle:minimumSystemVersion>"						>> "${APPCAST_FILE}"
 		echo "			<pubDate>$(date "+%a, %d %b %Y %H:%M:%S %Z")</pubDate>" 								>> "${APPCAST_FILE}"
 		echo "			<enclosure url=\"${DOWNLOAD_LINK}\"" 													>> "${APPCAST_FILE}"
-		echo "			sparkle:version=\"${BUNDLE_VERSION}\""													>> "${APPCAST_FILE}"
-		echo "			sparkle:shortVersionString=\"${CUR_VERSION}\"" 											>> "${APPCAST_FILE}"
+		echo "			sparkle:version=\"${CUR_VERSION}\""														>> "${APPCAST_FILE}"
+		echo "			sparkle:shortVersionString=\"${BUNDLE_SHORT_VERSION}\"" 								>> "${APPCAST_FILE}"
 		echo "			length=\"${ZIP_SIZE}\""																	>> "${APPCAST_FILE}"
 		echo "			type=\"application/octet-stream\""														>> "${APPCAST_FILE}"
 		echo "			sparkle:dsaSignature=\"${SIGNATURE}\"/>" 												>> "${APPCAST_FILE}"

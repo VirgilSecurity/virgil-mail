@@ -73,6 +73,9 @@
     return @"/Applications/Mail.app";
 }
 
+//- (void)updater:(SUUpdater *)updater didFinishLoadingAppcast:(SUAppcast *)appcast;
+//- (SUAppcastItem *)bestValidUpdateInAppcast:(SUAppcast *)appcast forUpdater:(SUUpdater *)updater;
+
 - (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)item {
     [NSTimer scheduledTimerWithTimeInterval : 5
                                      target : self
