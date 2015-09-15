@@ -44,6 +44,7 @@
 @implementation AppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+    [self printBundleVersion];
     updater = [SUUpdater sharedUpdater];
     updater.delegate = self;
     NSArray *arguments = [[NSProcessInfo processInfo] arguments];
@@ -59,6 +60,13 @@
                                    selector : @selector(terminateIfIdle)
                                    userInfo : nil
                                     repeats : YES];
+}
+
+- (void) printBundleVersion {
+    NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
+    NSString *app = [info objectForKey:@"CFBundleName"];
+    NSString *version = [info objectForKey:@"CFBundleShortVersionString"];
+    NSLog(@"%@ : %@", app, version);
 }
 
 - (NSString *) pathToRelaunchForUpdater : (SUUpdater *)updater {

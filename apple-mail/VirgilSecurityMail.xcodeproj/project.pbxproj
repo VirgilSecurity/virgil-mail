@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D10400AD1BA84DB3003FC484 /* VirgilMail.icns in Resources */ = {isa = PBXBuildFile; fileRef = D10400AC1BA84DB3003FC484 /* VirgilMail.icns */; };
 		D11174371B67FBEE00DD9A39 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D11174361B67FBEE00DD9A39 /* CoreFoundation.framework */; };
 		D11174461B6805D400DD9A39 /* VirgilMain.m in Sources */ = {isa = PBXBuildFile; fileRef = D11174451B6805D400DD9A39 /* VirgilMain.m */; };
 		D12263451BA6DF820053B132 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = D14D647F1BA3A41000B47D22 /* MainMenu.xib */; };
@@ -104,6 +105,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D10400AC1BA84DB3003FC484 /* VirgilMail.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = VirgilMail.icns; path = Resources/VirgilMail.icns; sourceTree = "<group>"; };
+		D10400B11BA85578003FC484 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		D11174331B67FBEE00DD9A39 /* VirgilSecurityMail.mailbundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VirgilSecurityMail.mailbundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		D11174361B67FBEE00DD9A39 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		D111743A1B67FBEE00DD9A39 /* VirgilSecurityMail-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "VirgilSecurityMail-Info.plist"; sourceTree = "<group>"; };
@@ -111,7 +114,6 @@
 		D111743E1B67FBEE00DD9A39 /* VirgilSecurityMail-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VirgilSecurityMail-Prefix.pch"; sourceTree = "<group>"; };
 		D11174441B6805D400DD9A39 /* VirgilMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilMain.h; path = VirgilSecurityMail/src/VirgilMain.h; sourceTree = "<group>"; };
 		D11174451B6805D400DD9A39 /* VirgilMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilMain.m; path = VirgilSecurityMail/src/VirgilMain.m; sourceTree = "<group>"; };
-		D122634B1BA6E2ED0053B132 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		D12263521BA6E87E0053B132 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/VirgilPreferences.xib; sourceTree = "<group>"; };
 		D122635C1BA7061A0053B132 /* org.virgilsecurity.mail.update.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = org.virgilsecurity.mail.update.plist; path = Resources/org.virgilsecurity.mail.update.plist; sourceTree = "<group>"; };
 		D13F602B1B6A1A9600508C79 /* JRLPSwizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JRLPSwizzle.h; path = VirgilSecurityMail/src/Helpers/JRLPSwizzle.h; sourceTree = "<group>"; };
@@ -399,6 +401,7 @@
 		D14D649E1BA3A88700B47D22 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D10400AC1BA84DB3003FC484 /* VirgilMail.icns */,
 				D14D649F1BA3A89A00B47D22 /* dsa_pub.pem */,
 			);
 			name = Resources;
@@ -519,6 +522,7 @@
 				D11174311B67FBEE00DD9A39 /* Resources */,
 				D194C9731BA6558A00483413 /* CopyFiles */,
 				D13F60441B6A2C9E00508C79 /* ShellScript */,
+				D10400B21BA855FB003FC484 /* Fix version info */,
 			);
 			buildRules = (
 			);
@@ -538,6 +542,7 @@
 				D14D64711BA3A41000B47D22 /* Frameworks */,
 				D14D64721BA3A41000B47D22 /* Resources */,
 				D14D649C1BA3A74E00B47D22 /* Copy Files */,
+				D10400AF1BA85309003FC484 /* Fix version info */,
 			);
 			buildRules = (
 			);
@@ -606,6 +611,7 @@
 			files = (
 				D14D647E1BA3A41000B47D22 /* Images.xcassets in Resources */,
 				D14D64A01BA3A89A00B47D22 /* dsa_pub.pem in Resources */,
+				D10400AD1BA84DB3003FC484 /* VirgilMail.icns in Resources */,
 				D12263451BA6DF820053B132 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -613,6 +619,34 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		D10400AF1BA85309003FC484 /* Fix version info */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Fix version info";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [[ \"$CONFIGURATION\" == \"Release\" ]]; then\n/usr/libexec/PlistBuddy\t\t\t\t\t\t\t\t\t\\\n-c \"Set CFBundleVersion '${BUNDLE_VERSION}'\"\t\t\t\t\\\n-c \"Set CFBundleShortVersionString '${BUNDLE_SHORT_VERSION}'\"\t\\\n\"$BUILT_PRODUCTS_DIR/$INFOPLIST_PATH\"\nfi";
+		};
+		D10400B21BA855FB003FC484 /* Fix version info */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Fix version info";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [[ \"$CONFIGURATION\" == \"Release\" ]]; then\n/usr/libexec/PlistBuddy\t\t\t\t\t\t\t\t\t\\\n-c \"Set CFBundleVersion '${BUNDLE_VERSION}'\"\t\t\t\t\\\n-c \"Set CFBundleShortVersionString '${BUNDLE_SHORT_VERSION}'\"\t\\\n\"$BUILT_PRODUCTS_DIR/$INFOPLIST_PATH\"\nfi";
+		};
 		D13F60441B6A2C9E00508C79 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -722,7 +756,7 @@
 		D14D647F1BA3A41000B47D22 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				D122634B1BA6E2ED0053B132 /* en */,
+				D10400B11BA85578003FC484 /* Base */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
