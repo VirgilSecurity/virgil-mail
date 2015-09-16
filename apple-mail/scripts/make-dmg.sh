@@ -95,7 +95,10 @@ function make_dmg() {
 		mkdir "${BG_FOLDER}"
 		IMG_TO_COPY="${ARG_IMG_FOLDER}"/"${BG_IMG_NAME}"
 		cp "${IMG_TO_COPY}" "${BG_FOLDER}/"
-
+		
+		DS_STORE="${ARG_IMG_FOLDER}"/_DS_Store
+		perl -pe "s/1.0.0.101/${CUR_VERSION}/g" < "${DS_STORE}" > "/Volumes/${VOL_NAME}/.DS_Store"
+		
 		echo "done!"
 		NO_BG=
 	else
@@ -122,12 +125,6 @@ function make_dmg() {
 		VOL_ICON_NAME="${ARG_IMG_FOLDER}"/volume.icns
 		ICON_FOLDER="/Volumes/${VOL_NAME}"
 		cp "${VOL_ICON_NAME}" "${ICON_FOLDER}/.VolumeIcon.icns"
-
-		DS_STORE="${ARG_IMG_FOLDER}"/_DS_Store
-		#cp "${DS_STORE}" "${ICON_FOLDER}/.DS_Store"
-		perl -pe "s/1.2.2/${CUR_VERSION}/g" < "${DS_STORE}" > "${ICON_FOLDER}/.DS_Store"
-
-		ln -s "/Applications/" "/Volumes/${VOL_NAME}/Applications"
 
 		echo "done!"
 
