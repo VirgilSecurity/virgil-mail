@@ -51,7 +51,8 @@ function prepare_update() {
 	pushd "${DMG_PREPARE_FOLDER}"
 		echo -e "\n----------------- Compress PKG ----------------------"
 		ls
-		zip -r "${ZIP_FILE}" "${MAIL_BUNDLE_NAME}/${MAIL_BUNDLE_NAME}.pkg"
+		PKG_NAME="Install Virgil Mail.pkg"
+		zip -r "${ZIP_FILE}" "${MAIL_BUNDLE_NAME}/${PKG_NAME}"
 		check_errors $?
 		
 		echo -e "\n------------------- Sign PKG ------------------------"
