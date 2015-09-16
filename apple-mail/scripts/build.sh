@@ -34,10 +34,14 @@ function prepare() {
 	
 	DMG_PACK_FOLDER="${MAIL_BUNDLE_NAME}"
 	
-	IMAGES_FOLDER="${SCRIPT_FOLDER}/pictures"
+	IMAGES_FOLDER="${SCRIPT_FOLDER}/pkg_resources"
 	ICON_FILE=""
 	BACKGROUND_FILE="Installer-Background.png"
 	PKG_IDENTIFIER="com.virgilsecurity.app.mail"
+	DISTRIBUTION_XML="/tmp/distribution.xml"
+	PKG_BACKGROUND_FILE="background.png"
+	PKG_WELCOME_FILE="welcome.html"
+	PKG_LICENSE_FILE="license.html"
 	
 	INSTALL_PATH="Library/Mail/Bundles/"
 	
@@ -76,6 +80,29 @@ function create_pkg_info_file() {
 
 function create_distribution_xml() {
 	echo -e "\n------------ Create distribution.xml ----------------"
+	echo '<?xml version="1.0" encoding="utf-8" standalone="yes"?>'  							> "${DISTRIBUTION_XML}"
+	echo '<installer-gui-script minSpecVersion="1">'  											>> "${DISTRIBUTION_XML}"
+	echo '    <title>Virgil Security Mail</title>'  											>> "${DISTRIBUTION_XML}"
+	echo '    <organization>'${PKG_IDENTIFIER}'</organization>'  								>> "${DISTRIBUTION_XML}"
+	echo '    <domains enable_localSystem="true"/>'  											>> "${DISTRIBUTION_XML}"
+	echo '    <options customize="never" require-scripts="false" rootVolumeOnly="true" />'		>> "${DISTRIBUTION_XML}"
+	echo '	<allowed-os-versions>'  															>> "${DISTRIBUTION_XML}"
+	echo '	    <os-version min="10.10" />'  													>> "${DISTRIBUTION_XML}"
+	echo '	</allowed-os-versions>'  															>> "${DISTRIBUTION_XML}"
+	echo '	<choices-outline>'  																>> "${DISTRIBUTION_XML}"
+	echo '    <line choice="default">'  														>> "${DISTRIBUTION_XML}"
+	echo '      <line choice="'${PKG_IDENTIFIER}'"/>'  											>> "${DISTRIBUTION_XML}"
+	echo '    </line>'  																		>> "${DISTRIBUTION_XML}"
+	echo '  </choices-outline>'  																>> "${DISTRIBUTION_XML}"
+    echo '  <choice id="default"/>'																>> "${DISTRIBUTION_XML}"
+    echo '  <choice id="'${PKG_IDENTIFIER}'" visible="false">'									>> "${DISTRIBUTION_XML}"
+    echo '      <pkg-ref id="'${PKG_IDENTIFIER}'"/>'											>> "${DISTRIBUTION_XML}"
+    echo '  </choice>'																			>> "${DISTRIBUTION_XML}"
+	echo '	<background file="'${PKG_BACKGROUND_FILE}'" scaling="none" alignment="bottomleft"/>'>> "${DISTRIBUTION_XML}"
+	echo '    <welcome    file="'${PKG_WELCOME_FILE}'"    mime-type="text/html" />'  			>> "${DISTRIBUTION_XML}"
+	echo '    <license    file="'${PKG_LICENSE_FILE}'"    mime-type="text/html" />'  			>> "${DISTRIBUTION_XML}"
+	echo '    <pkg-ref id="'${PKG_IDENTIFIER}'" version="'${CUR_VERSION}'"  onConclusion="none">tmp-Install%20Virgil%20Mail.pkg</pkg-ref>'	>> "${DISTRIBUTION_XML}"
+	echo '</installer-gui-script>'  															>> "${DISTRIBUTION_XML}"
 };
 
 function create_entitlements_info_file() {
@@ -107,13 +134,26 @@ function create_pkg() {
 						--version			"${CUR_VERSION}"					\
 						--sign				"${codesign_cetificate_installer}"	\
 						--timestamp												\
-				"${PKG_NAME}"
-			
-			hideExtention "${PKG_NAME}"
+				"tmp-${PKG_NAME}"
 			
 			check_errors $?
 			
 			create_distribution_xml;
+			
+			#productbuild --synthesize --package "tmp-${PKG_NAME}" "${HOME}/distribution.xml"
+			
+			productbuild --distribution "${DISTRIBUTION_XML}"	\
+			--resources "${IMAGES_FOLDER}" 						\
+			--package-path .									\
+			--version "${CUR_VERSION}" 							\
+			--sign "${codesign_cetificate_installer}" 			\
+			"${PKG_NAME}"
+			
+			check_errors $?
+			
+			hideExtention "${PKG_NAME}"
+			
+			rm "tmp-${PKG_NAME}"
 			
 		popd
 	popd
