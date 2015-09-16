@@ -25,13 +25,13 @@ function prepare() {
 	export BUNDLE_SHORT_VERSION="1.0.0"
 	export BUNDLE_VERSION="${BUNDLE_SHORT_VERSION}.${BUILD_NUMBER}"
 	
-	CUR_VERSION="${BUNDLE_VERSION}"
+	export CUR_VERSION="${BUNDLE_VERSION}"
 	
 	DMG_PACK_FOLDER="${MAIL_BUNDLE_NAME}"
 	
-	IMAGES_FOLDER=""
+	IMAGES_FOLDER="${SCRIPT_FOLDER}/pictures"
 	ICON_FILE=""
-	BACKGROUND_FILE=""
+	BACKGROUND_FILE="Installer-Background.png"
 	PKG_IDENTIFIER="com.virgilsecurity.app.mail"
 	
 	INSTALL_PATH="Library/Mail/Bundles/"
