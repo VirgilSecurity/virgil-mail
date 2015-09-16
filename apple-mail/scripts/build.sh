@@ -94,7 +94,7 @@ function create_pkg() {
 						--version			"${CUR_VERSION}"					\
 						--sign				"${codesign_cetificate_installer}"	\
 						--timestamp												\
-				${PKG_NAME}
+				"${PKG_NAME}"
 			
 			check_errors $?
 		popd
