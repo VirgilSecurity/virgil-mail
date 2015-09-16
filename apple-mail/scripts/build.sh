@@ -18,6 +18,7 @@ function prepare() {
 	RESULT_FOLDER="${BUILD_FOLDER}/Release"
 	PKG_PLIST_FILE="${RESULT_FOLDER}/PkgInfo.plist"
 	PKG_SCRIPTS_FOLDER="${SCRIPT_FOLDER}/pkg_scripts"
+	PKG_NAME="Install Virgil Mail.pkg"
 	
 	DMG_PREPARE_FOLDER="${BUILD_FOLDER}/DMG"
 	
@@ -35,7 +36,7 @@ function prepare() {
 	
 	INSTALL_PATH="Library/Mail/Bundles/"
 	
-	UNINSTALL_APP_NAME="Uninstall\ Virgil\ Mail.app"
+	UNINSTALL_APP_NAME="Uninstall Virgil Mail.app"
 	UNINSTALL_APP="${SCRIPT_FOLDER}/${UNINSTALL_APP_NAME}"
 
 	# App certificates
@@ -93,7 +94,7 @@ function create_pkg() {
 						--version			"${CUR_VERSION}"					\
 						--sign				"${codesign_cetificate_installer}"	\
 						--timestamp												\
-				${MAIL_BUNDLE_NAME}.pkg
+				${PKG_NAME}
 			
 			check_errors $?
 		popd
@@ -111,7 +112,7 @@ function create_dmg() {
 	check_errors $?
 	
 	echo "Move content to dmg folder ..."
-	mv "${BUILD_FOLDER}/${MAIL_BUNDLE_NAME}.pkg" "${DMG_PREPARE_FOLDER}/${DMG_PACK_FOLDER}/"
+	mv "${BUILD_FOLDER}/${PKG_NAME}" "${DMG_PREPARE_FOLDER}/${DMG_PACK_FOLDER}/"
 	cp -rf "${UNINSTALL_APP}" "${DMG_PREPARE_FOLDER}/${DMG_PACK_FOLDER}/"
 	check_errors $?
 
