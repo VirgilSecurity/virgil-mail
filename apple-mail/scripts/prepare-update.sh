@@ -12,6 +12,9 @@ function prepare() {
 
 	SCRIPT_FOLDER="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 	DMG_PREPARE_FOLDER="${SCRIPT_FOLDER}/../build/DMG"
+	ZIP_PREPARE_FOLDER="${SCRIPT_FOLDER}/../build/ZIP"
+	
+	mkdir "${ZIP_PREPARE_FOLDER}"
 	
 	#TODO: Try to remove it
 	BUNDLE_SHORT_VERSION="1.0.0"
@@ -27,7 +30,7 @@ function prepare() {
 		RELEASE_NOTES_FILE="release-notes.html"
 		ZIP_FILE="${MAIL_BUNDLE_NAME}-${CUR_VERSION}.zip"
 	else
-		BASE_LINK="https://downloads.virgilsecurity.com/updates/apple-mail"
+		BASE_LINK="https://downloads.virgilsecurity.com/public/apps/virgil-mail/apple-mail/updates"
 		APPCAST_FILE="virgilmailcast.xml"
 		RELEASE_NOTES_FILE="release-notes.html"
 		ZIP_FILE="${MAIL_BUNDLE_NAME}-${CUR_VERSION}.zip"
@@ -60,15 +63,16 @@ function prepare_update() {
 		echo "SIGNATURE = ${SIGNATURE}"
 		
 		ZIP_SIZE=$(wc -c ${ZIP_FILE} | awk '{print $1}')
+		mv "${ZIP_FILE}" "${ZIP_PREPARE_FOLDER}/"
 		
 		echo -e "\n-------------- Copy release notes -------------------"
 		echo "-> ${RELEASE_NOTES_FILE}"
-		cp "${RELEASE_NOTES_SRC}" "${RELEASE_NOTES_FILE}"
+		cp "${RELEASE_NOTES_SRC}" "${ZIP_PREPARE_FOLDER}/${RELEASE_NOTES_FILE}"
 		check_errors $?
 		
 		echo -e "\n----------- Copy sparkle image file -----------------"
 		echo "-> ${SPARKLE_ICON_FILE}"
-		cp "${SPARKLE_ICON_SRC}" "${SPARKLE_ICON_FILE}"
+		cp "${SPARKLE_ICON_SRC}" "${ZIP_PREPARE_FOLDER}/${SPARKLE_ICON_FILE}"
 		check_errors $?
 		
 		echo -e "\n---------------- Create Appcast ---------------------"
@@ -105,9 +109,13 @@ function prepare_update() {
 		echo "</rss>" 																							>> "${APPCAST_FILE}"
 		
 		cat "${APPCAST_FILE}"
+		mv "${APPCAST_FILE}" "${ZIP_PREPARE_FOLDER}/"
 		
 		echo -e "\n-------------- Remove tmp folder --------------------"
 		rm -rf "${MAIL_BUNDLE_NAME}"
+		rm -rf "../Release"
+		rm -rf "../${MAIL_BUNDLE_NAME}.build"
+		rm "../.DS_Store"
 	popd
 	
 }
