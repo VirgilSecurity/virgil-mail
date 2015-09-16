@@ -35,7 +35,7 @@ function prepare() {
 	
 	INSTALL_PATH="Library/Mail/Bundles/"
 	
-	UNINSTALL_APP_NAME="Uninstall Virgil Mail.app"
+	UNINSTALL_APP_NAME="Uninstall\ Virgil\ Mail.app"
 	UNINSTALL_APP="${SCRIPT_FOLDER}/${UNINSTALL_APP_NAME}"
 
 	# App certificates
