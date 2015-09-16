@@ -8,6 +8,7 @@ function make_dmg() {
 	ARG_BACKGROUND="${5}"
 	ARG_DMG_NAME="${6}"
 	ARG_VOL_NAME="${7}"
+	ARG_VERSION="${8}"
 	ARG_TMP_DIR="./tmp"
 
 	SRC_DIR_NAME="${ARG_SRC_DIR_NAME}"
@@ -97,7 +98,7 @@ function make_dmg() {
 		cp "${IMG_TO_COPY}" "${BG_FOLDER}/"
 		
 		DS_STORE="${ARG_IMG_FOLDER}"/_DS_Store
-		perl -pe "s/1.0.0.101/${CUR_VERSION}/g" < "${DS_STORE}" > "/Volumes/${VOL_NAME}/.DS_Store"
+		perl -pe "s/1.0.0.101/${ARG_VERSION}/g" < "${DS_STORE}" > "/Volumes/${VOL_NAME}/.DS_Store"
 		
 		echo "done!"
 		NO_BG=

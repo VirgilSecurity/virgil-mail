@@ -15,6 +15,11 @@ function prepare() {
 	SCRIPT_FOLDER="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 	ROOT_FOLDER="${SCRIPT_FOLDER}/.."
 	BUILD_FOLDER="${ROOT_FOLDER}/build"
+	
+	if [ -d "${BUILD_FOLDER}" ]; then
+		rm -rf "${BUILD_FOLDER}"
+	fi
+	
 	RESULT_FOLDER="${BUILD_FOLDER}/Release"
 	PKG_PLIST_FILE="${RESULT_FOLDER}/PkgInfo.plist"
 	PKG_SCRIPTS_FOLDER="${SCRIPT_FOLDER}/pkg_scripts"
@@ -69,6 +74,10 @@ function create_pkg_info_file() {
 	echo '</plist>' >>"${PKG_PLIST_FILE}"
 };
 
+function create_distribution_xml() {
+	echo -e "\n------------ Create distribution.xml ----------------"
+};
+
 function create_entitlements_info_file() {
 	echo '  <?xml version="1.0" encoding="UTF-8"?>' > "${entitlements}"
 	echo '  <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' >> "${entitlements}"
@@ -78,6 +87,10 @@ function create_entitlements_info_file() {
 	echo '  	</dict>' >> "${entitlements}"
 	echo '  </plist>' >> "${entitlements}"
 };
+
+function hideExtention() {
+	SetFile -a E "${1}"
+}
 
 function create_pkg() {
 	pushd ${RESULT_FOLDER}
@@ -96,7 +109,12 @@ function create_pkg() {
 						--timestamp												\
 				"${PKG_NAME}"
 			
+			hideExtention "${PKG_NAME}"
+			
 			check_errors $?
+			
+			create_distribution_xml;
+			
 		popd
 	popd
 }
@@ -132,6 +150,7 @@ function create_dmg() {
 #	ARG_BACKGROUND="${5}"
 #	ARG_DMG_NAME="${6}"
 #	ARG_VOL_NAME="${7}"
+#	ARG_VERSION="${8}"
 #	ARG_TMP_DIR="./tmp"
 	
 	DMG_RESULT="$DMG_PREPARE_FOLDER/${MAIL_BUNDLE_NAME}-${CUR_VERSION}"
@@ -141,7 +160,8 @@ function create_dmg() {
 				"${ICON_FILE}" 						\
 				"${BACKGROUND_FILE}" 				\
 				"${DMG_RESULT}" 					\
-				"${MAIL_BUNDLE_NAME} $CUR_VERSION"
+				"${MAIL_BUNDLE_NAME} $CUR_VERSION"	\
+				"$CUR_VERSION"
 	check_errors $?
 };
 
