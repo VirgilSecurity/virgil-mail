@@ -53,8 +53,8 @@ function prepare_update() {
 	prepare
 	pushd "${DMG_PREPARE_FOLDER}"
 		echo -e "\n----------------- Compress PKG ----------------------"
-		ls
-		PKG_NAME="Install Virgil Mail.pkg"
+
+		PKG_NAME="InstallVirgilMail.pkg"
 		DST_PKG_NAME="/tmp/VirgilUpdate.pkg"
 		if [ -f "${DST_PKG_NAME}" ]; then
 			rm "${DST_PKG_NAME}"

@@ -23,7 +23,7 @@ function prepare() {
 	RESULT_FOLDER="${BUILD_FOLDER}/Release"
 	PKG_PLIST_FILE="${RESULT_FOLDER}/PkgInfo.plist"
 	PKG_SCRIPTS_FOLDER="${SCRIPT_FOLDER}/pkg_scripts"
-	PKG_NAME="Install Virgil Mail.pkg"
+	PKG_NAME="InstallVirgilMail.pkg"
 	
 	DMG_PREPARE_FOLDER="${BUILD_FOLDER}/DMG"
 	
