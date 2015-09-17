@@ -86,7 +86,7 @@ function create_distribution_xml() {
 	echo '    <title>Virgil Security Mail</title>'  											>> "${DISTRIBUTION_XML}"
 	echo '    <organization>'${PKG_IDENTIFIER}'</organization>'  								>> "${DISTRIBUTION_XML}"
 	echo '    <domains enable_localSystem="true"/>'  											>> "${DISTRIBUTION_XML}"
-	echo '    <options customize="never" require-scripts="true" rootVolumeOnly="true" />'		>> "${DISTRIBUTION_XML}"
+	echo '    <options customize="never" require-scripts="false" rootVolumeOnly="true" />'		>> "${DISTRIBUTION_XML}"
 	echo '	<allowed-os-versions>'  															>> "${DISTRIBUTION_XML}"
 	echo '	    <os-version min="10.10" />'  													>> "${DISTRIBUTION_XML}"
 	echo '	</allowed-os-versions>'  															>> "${DISTRIBUTION_XML}"
