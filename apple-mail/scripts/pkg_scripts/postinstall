@@ -46,7 +46,7 @@ fi
 rm "${UPDATER_PLIST}"
 cp "/Library/Mail/Bundles/VirgilSecurityMail.mailbundle/Contents/Resources/org.virgilsecurity.mail.update.plist" "${UPDATER_PLIST}"
 
-launchctl load "${UPDATER_PLIST}"
+launchctl load -w "${UPDATER_PLIST}"
 
 # Restart Mail.app
 ps -xo command -u "$USER" | grep -q '/\Mail.app/' || exit 0
