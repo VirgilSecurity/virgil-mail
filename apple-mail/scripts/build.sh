@@ -42,6 +42,7 @@ function prepare() {
 	PKG_BACKGROUND_FILE="background.png"
 	PKG_WELCOME_FILE="welcome.html"
 	PKG_LICENSE_FILE="license.html"
+	PKG_ICON="Install.png"
 	
 	INSTALL_PATH="Library/Mail/Bundles/"
 	
@@ -119,6 +120,29 @@ function hideExtention() {
 	SetFile -a E "${1}"
 }
 
+function setIcon() {
+	local ICON_FOLDER="${1}"
+	local ICON_FILE="${2}"
+	local FILE_TO_APPLY="${3}"
+	
+	pushd "${ICON_FOLDER}"
+		local TMP_RESOURCE="tmpicns.rsrc"
+		
+		sips -i "${ICON_FILE}"
+		
+		# Extract the icon to its own resource file:
+		DeRez -only icns "${ICON_FILE}" > "${TMP_RESOURCE}"
+
+		# append this resource to the file you want to icon-ize.
+		Rez -append "${TMP_RESOURCE}" -o "${FILE_TO_APPLY}"
+
+		# Use the resource to set the icon.
+		SetFile -a C "${FILE_TO_APPLY}"
+
+		rm "${TMP_RESOURCE}"
+	popd
+}
+
 function create_pkg() {
 	pushd ${RESULT_FOLDER}
 		create_pkg_info_file
@@ -140,7 +164,7 @@ function create_pkg() {
 			
 			create_distribution_xml;
 			
-			#productbuild --synthesize --package "tmp-${PKG_NAME}" "${HOME}/distribution.xml"
+			echo -e "\n-------------- Build pruduct file -------------------"
 			
 			productbuild --distribution "${DISTRIBUTION_XML}"	\
 			--resources "${IMAGES_FOLDER}" 						\
@@ -152,6 +176,9 @@ function create_pkg() {
 			check_errors $?
 			
 			hideExtention "${PKG_NAME}"
+			setIcon "${IMAGES_FOLDER}" "${PKG_ICON}" "${RESULT_FOLDER}/../${PKG_NAME}"
+			
+			check_errors $?
 			
 			rm "tmp-${PKG_NAME}"
 			
