@@ -24,6 +24,16 @@ fi
 echo "Remove Virgil Security plugin ..."
 rm -rf /Library/Mail/Bundles/VirgilSecurityMail.mailbundle
 
+# Remove updater job
+UPDATER_PLIST="/Library/LaunchAgents/org.virgilsecurity.mail.update.plist"
+UPDATER_JOB_LABEL="org.virgilsecurity.mail.update"
+if [ -f "${UPDATER_PLIST}" ]; then
+    launchctl unload -w "${UPDATER_PLIST}"
+    sleep 3
+	launchctl remove "${UPDATER_JOB_LABEL}"
+fi
+rm "${UPDATER_PLIST}" 
+
 ps -xo command -u "$USER" | grep -q '/\Mail.app/' || exit 0
 
 echo "Restart Mail.app ..."
