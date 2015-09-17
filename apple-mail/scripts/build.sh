@@ -158,8 +158,7 @@ function create_pkg() {
 						--version			"${CUR_VERSION}"					\
 						--sign				"${codesign_cetificate_installer}"	\
 						--timestamp												\
-					"${PKG_NAME}"
-			#	"tmp-${PKG_NAME}"
+				"tmp-${PKG_NAME}"
 			
 			check_errors $?
 			
@@ -167,21 +166,21 @@ function create_pkg() {
 			
 			echo -e "\n-------------- Build product file -------------------"
 			
-			#productbuild --distribution "${DISTRIBUTION_XML}"	\
-			#--resources "${IMAGES_FOLDER}" 						\
-			#--package-path .									\
-			#--version "${CUR_VERSION}" 							\
-			#--sign "${codesign_cetificate_installer}" 			\
-			#"${PKG_NAME}"
+			productbuild --distribution "${DISTRIBUTION_XML}"	\
+			--resources "${IMAGES_FOLDER}" 						\
+			--package-path .									\
+			--version "${CUR_VERSION}" 							\
+			--sign "${codesign_cetificate_installer}" 			\
+			"${PKG_NAME}"
 			
-			#check_errors $?
+			check_errors $?
 			
 			hideExtention "${PKG_NAME}"
 			setIcon "${IMAGES_FOLDER}" "${PKG_ICON}" "${BUILD_FOLDER}/${PKG_NAME}"
 			
 			check_errors $?
 			
-			#rm "tmp-${PKG_NAME}"
+			rm "tmp-${PKG_NAME}"
 			
 		popd
 	popd
