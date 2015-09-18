@@ -28,9 +28,13 @@ rm -rf /Library/Mail/Bundles/VirgilSecurityMail.mailbundle
 UPDATER_PLIST="/Library/LaunchAgents/org.virgilsecurity.mail.update.plist"
 UPDATER_JOB_LABEL="org.virgilsecurity.mail.update"
 if [ -f "${UPDATER_PLIST}" ]; then
-    launchctl unload -w "${UPDATER_PLIST}"
-    sleep 3
-	launchctl remove "${UPDATER_JOB_LABEL}"
+	sudo -u "${USER}" launchctl unload -w "${UPDATER_PLIST}" 2>/dev/null
+	launchctl unload -w "${UPDATER_PLIST}" 2>/dev/null
+	
+	sleep 3
+	
+	sudo -u "$USER" launchctl remove "${UPDATER_JOB_LABEL}" 2>/dev/null
+	sudo launchctl remove "${UPDATER_JOB_LABEL}" 2>/dev/null
 fi
 rm "${UPDATER_PLIST}" 
 

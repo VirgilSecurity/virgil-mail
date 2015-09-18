@@ -13,8 +13,6 @@
 		<key>org.virgilsecurity.mail.update_Mach</key>
 		<true/>
 	</dict>
-	<key>UserName</key>
-	<string>${USER}</string>
 	<key>ProgramArguments</key>
 	<array>
 		<string>/Library/Mail/Bundles/VirgilSecurityMail.mailbundle/Contents/Resources/VirgilUpdate.app/Contents/MacOS/VirgilUpdate</string>

@@ -35,19 +35,28 @@ defaults write "/Library/Preferences/com.apple.mail" EnableBundles -bool YES
 defaults write "/Library/Preferences/com.apple.mail" BundleCompatibilityVersion -int $bundleCompVer
 
 # Add updater job
+
+
+rm -f "$HOME"/Library/LaunchAgents/org.gpgtools.Libmacgpg.xpc.plist
+sudo -u "$USER" launchctl load /Library/LaunchAgents/org.gpgtools.Libmacgpg.xpc.plist
+
+
 UPDATER_PLIST="/Library/LaunchAgents/org.virgilsecurity.mail.update.plist"
 UPDATER_JOB_LABEL="org.virgilsecurity.mail.update"
 if [ -f "${UPDATER_PLIST}" ]; then
-    su "$USER" launchctl unload -w "${UPDATER_PLIST}"
-	launchctl unload -w "${UPDATER_PLIST}"
-    sleep 3
-	launchctl remove "${UPDATER_JOB_LABEL}"
+	sudo -u "${USER}" launchctl unload -w "${UPDATER_PLIST}" 2>/dev/null
+	launchctl unload -w "${UPDATER_PLIST}" 2>/dev/null
+	
+	sleep 3
+	
+	sudo -u "$USER" launchctl remove "${UPDATER_JOB_LABEL}" 2>/dev/null
+	sudo launchctl remove "${UPDATER_JOB_LABEL}" 2>/dev/null
 fi
 
 rm "${UPDATER_PLIST}"
 cp "/Library/Mail/Bundles/VirgilSecurityMail.mailbundle/Contents/Resources/org.virgilsecurity.mail.update.plist" "${UPDATER_PLIST}"
 
-su "$USER" launchctl load -w "${UPDATER_PLIST}"
+sudo -u "${USER}" launchctl load -w "${UPDATER_PLIST}"
 
 # Restart Mail.app
 ps -xo command -u "$USER" | grep -q '/\Mail.app/' || exit 0
