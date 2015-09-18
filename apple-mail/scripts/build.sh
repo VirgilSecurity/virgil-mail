@@ -23,7 +23,7 @@ function prepare() {
 	RESULT_FOLDER="${BUILD_FOLDER}/Release"
 	PKG_PLIST_FILE="${RESULT_FOLDER}/PkgInfo.plist"
 	PKG_SCRIPTS_FOLDER="${SCRIPT_FOLDER}/pkg_scripts"
-	PKG_NAME="InstallVirgilMail.pkg"
+	PKG_NAME="Install Virgil Mail.pkg"
 	
 	DMG_PREPARE_FOLDER="${BUILD_FOLDER}/DMG"
 	
@@ -175,10 +175,10 @@ function create_pkg() {
 			
 			check_errors $?
 			
-			hideExtention "${PKG_NAME}"
-			setIcon "${IMAGES_FOLDER}" "${PKG_ICON}" "${BUILD_FOLDER}/${PKG_NAME}"
+			#hideExtention "${PKG_NAME}"
+			#setIcon "${IMAGES_FOLDER}" "${PKG_ICON}" "${BUILD_FOLDER}/${PKG_NAME}"
 			
-			check_errors $?
+			#check_errors $?
 			
 			rm "tmp-${PKG_NAME}"
 			
