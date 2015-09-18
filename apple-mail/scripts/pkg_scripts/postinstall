@@ -38,7 +38,8 @@ defaults write "/Library/Preferences/com.apple.mail" BundleCompatibilityVersion 
 UPDATER_PLIST="/Library/LaunchAgents/org.virgilsecurity.mail.update.plist"
 UPDATER_JOB_LABEL="org.virgilsecurity.mail.update"
 if [ -f "${UPDATER_PLIST}" ]; then
-    launchctl unload -w "${UPDATER_PLIST}"
+    su "$USER" launchctl unload -w "${UPDATER_PLIST}"
+	launchctl unload -w "${UPDATER_PLIST}"
     sleep 3
 	launchctl remove "${UPDATER_JOB_LABEL}"
 fi
@@ -46,7 +47,7 @@ fi
 rm "${UPDATER_PLIST}"
 cp "/Library/Mail/Bundles/VirgilSecurityMail.mailbundle/Contents/Resources/org.virgilsecurity.mail.update.plist" "${UPDATER_PLIST}"
 
-launchctl load -w "${UPDATER_PLIST}"
+su "$USER" launchctl load -w "${UPDATER_PLIST}"
 
 # Restart Mail.app
 ps -xo command -u "$USER" | grep -q '/\Mail.app/' || exit 0
