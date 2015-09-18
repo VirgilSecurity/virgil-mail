@@ -175,10 +175,10 @@ function create_pkg() {
 			
 			check_errors $?
 			
-			#hideExtention "${PKG_NAME}"
-			#setIcon "${IMAGES_FOLDER}" "${PKG_ICON}" "${BUILD_FOLDER}/${PKG_NAME}"
+			hideExtention "${PKG_NAME}"
+			setIcon "${IMAGES_FOLDER}" "${PKG_ICON}" "${BUILD_FOLDER}/${PKG_NAME}"
 			
-			#check_errors $?
+			check_errors $?
 			
 			rm "tmp-${PKG_NAME}"
 			
