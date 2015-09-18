@@ -27,7 +27,7 @@ function prepare() {
 		RELEASE_NOTES_FILE="release-notes.html"
 		ZIP_FILE="${MAIL_BUNDLE_NAME}-${CUR_VERSION}.zip"
 	else
-		BASE_LINK="https://downloads.virgilsecurity.com/updates/apple-mail"
+		BASE_LINK="https://downloads.virgilsecurity.com/apps/virgil-mail/apple-mail"
 		APPCAST_FILE="virgilmailcast.xml"
 		RELEASE_NOTES_FILE="release-notes.html"
 		ZIP_FILE="${MAIL_BUNDLE_NAME}-${CUR_VERSION}.zip"
