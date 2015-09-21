@@ -46,6 +46,8 @@
 
 @implementation VirgilEmailConfirmViewController
 
+NSString * _account;
+
 - (IBAction)onAcceptClicked : (id)sender {
     NSTextField * codeField = [self.view viewWithTag : 1000];
     if (!codeField) return;
@@ -55,15 +57,18 @@
                             atView : codeField];
         return;
     }
-    if ([VirgilKeyManager confirmAccountCreationWithCode : code]) {
-        [VirgilGui setUserActivityPrivateKey : [VirgilKeyManager newAccountPrivateKey]];
+    if (YES == [VirgilKeyManager confirmAccountCreation : _account code : code]) {
+        [VirgilGui setUserActivityPrivateKey : [VirgilKeyManager getPrivateKey:_account containerPassword:@""]];
         [self closeWindow];
     } else {
+        NSLog(@"%@", [VirgilKeyManager lastError]);
         [self showErrorView : @"Wrong confirmation code. // TODO: resend"];
     }
 }
 
-- (void) setConfirmationCode : (NSString *) confirmationCode {
+- (void) setConfirmationCode : (NSString *) confirmationCode
+                  forAccount : (NSString *) account {
+    _account = account;
     NSTextField * codeField = [self.view viewWithTag : 1000];
     if (!codeField) return;
     if (nil == confirmationCode) {

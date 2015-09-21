@@ -38,6 +38,7 @@
 
 @interface VirgilEmailConfirmViewController : NSViewController
 
-- (void) setConfirmationCode : (NSString *) confirmationCode;
+- (void) setConfirmationCode : (NSString *) confirmationCode
+                  forAccount : (NSString *) account;
 
 @end

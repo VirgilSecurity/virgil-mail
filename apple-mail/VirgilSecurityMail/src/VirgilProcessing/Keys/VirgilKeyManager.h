@@ -60,10 +60,28 @@
 
 /**
  * @brief Confirm account creation with received (by email) code
+ * @param account - email
  * @param code - code from email
  * @return YES - success | NO - error occured, get error with [VirgilKeyManager lastError]
  */
-+ (BOOL) confirmAccountCreationWithCode : (NSString *) code;
++ (BOOL) confirmAccountCreation : (NSString *) account
+                           code : (NSString *) code;
+
+/**
+ * @brief Resend confirmation email
+ * @param account - email
+ * @return YES - success | NO - error occured, get error with [VirgilKeyManager lastError]
+ */
++ (BOOL) resendConfirmEMail : (NSString *) account;
+
+/**
+ * @brief Resend confirmation email
+ * @param publicKey - public key
+ * @param privateKey - private key
+ * @return YES - success | NO - error occured, get error with [VirgilKeyManager lastError]
+ */
++ (BOOL) resendConfirmEMail : (VirgilPublicKey *) publicKey
+                 privateKey : (VirgilPrivateKey *) privateKey;
 
 /**
  * @brief Get public key by account (email)
@@ -85,9 +103,5 @@
  * @brief Get last error user friendly string
  */
 + (NSString *) lastError;
-
-//TODO: Remove this
-+ (VirgilPrivateKey *) newAccountPrivateKey;
-+ (VirgilPublicKey *) newAccountPublicKey;
 
 @end

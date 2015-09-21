@@ -313,14 +313,16 @@ static BOOL _decryptionStart = YES;
     }
 
     VirgilKeyChainContainer * senderContainer = [self getKeysContainer : sender
-                                                    forcePrivateKeyGet : NO];
+                                                    forcePrivateKeyGet : NO
+                                                    forceActiveAccount : YES];
     if (nil == senderContainer || nil == senderContainer.publicKey) return NO;
     NSString * senderPublicKey = senderContainer.publicKey.publicKey;
     
     // Get receiver (me) info
     NSString * receiver = [self getMyAccountFromMessage : message];
     VirgilKeyChainContainer * receiverContainer = [self getKeysContainer : receiver
-                                                      forcePrivateKeyGet : YES];
+                                                      forcePrivateKeyGet : YES
+                                                      forceActiveAccount : YES];
     if (nil == receiverContainer ||
         nil == receiverContainer.privateKey ||
         nil == receiverContainer.publicKey) {
@@ -423,7 +425,8 @@ static BOOL _decryptionStart = YES;
     if (YES == [message isRead]) return YES;
     
     VirgilKeyChainContainer * receiverContainer = [self getKeysContainer : receiver
-                                                      forcePrivateKeyGet : YES];
+                                                      forcePrivateKeyGet : YES
+                                                      forceActiveAccount : NO];
     if (nil == receiverContainer) return NO;
     
     VirgilPrivateKey * privateKey = receiverContainer.privateKey;
@@ -460,7 +463,8 @@ static BOOL _decryptionStart = YES;
     for (NSString * email in set) {
         NSLog(@"                        getAllPrivateKeys");
         [self getKeysContainer : email
-            forcePrivateKeyGet : YES];
+            forcePrivateKeyGet : YES
+            forceActiveAccount : YES];
     }
 }
 
@@ -517,18 +521,29 @@ static BOOL _decryptionStart = YES;
 }
 
 - (VirgilKeyChainContainer *) getKeysContainer : (NSString *) account
-                            forcePrivateKeyGet : (BOOL) forcePrivateKey {
+                            forcePrivateKeyGet : (BOOL) forcePrivateKey
+                            forceActiveAccount : (BOOL) forceActiveAccount {
     NSLog(@"                        getKeysContainer  account : %@  forcePrivateKey : %hhd", account, forcePrivateKey);
     if (nil == account) return nil;
     VirgilKeyChainContainer * container = [VirgilKeyChain loadContainer : account];
     
-    if (nil != container && nil != container.publicKey && nil != container.privateKey) {
+    if (nil != container &&
+        nil != container.publicKey &&
+        nil != container.privateKey &&
+        (!forceActiveAccount || (YES == container.isActive))) {
         return container;
     }
     
     VirgilPrivateKey * privateKey = container.privateKey;
     if ((nil == container || nil == privateKey) && forcePrivateKey) {
         privateKey = [VirgilGui getPrivateKey : account];
+    }
+    
+    if (forcePrivateKey && nil != container && (NO == container.isActive)) {
+        BOOL res = [VirgilKeyManager resendConfirmEMail : account];
+        if (NO == res) {
+            NSLog(@"ERROR: getKeysContainer : %@", [VirgilKeyManager lastError]);
+        }
     }
     
     VirgilPublicKey * publicKey = container.publicKey;
@@ -545,7 +560,6 @@ static BOOL _decryptionStart = YES;
                                                andPublicKey : publicKey
                                                    isActive : isActive];
     
-    NSLog(@"                         saveContainer %@", container);
     [VirgilKeyChain saveContainer : container
                        forAccount : account];
     
@@ -569,7 +583,8 @@ static BOOL _decryptionStart = YES;
     
     NSString * fixedSender = [self getEmailFromFullName : sender];
     VirgilKeyChainContainer * container = [self getKeysContainer : fixedSender
-                                              forcePrivateKeyGet : YES];
+                                              forcePrivateKeyGet : YES
+                                              forceActiveAccount : YES];
     if (nil == container || nil == container.privateKey) return nil;
 
     // Get all public keys

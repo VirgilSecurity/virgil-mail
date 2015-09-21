@@ -41,12 +41,14 @@
     NSString * accountID;
     NSString * publicKeyID;
     NSString * publicKey;
+    NSString * userDataID;
 }
 
 - (id) init;
 - (id) initAccountID:(NSString *)a_accountID
          publicKeyID:(NSString *)a_publicKeyID
-           publicKey:(NSString *)a_publicKey;
+           publicKey:(NSString *)a_publicKey
+          userDataID:(NSString *)a_userDataID;
 
 // NSCoder
 - (void) encodeWithCoder : (NSCoder *)encoder;
@@ -56,5 +58,6 @@
 @property (retain) NSString * accountID;
 @property (retain) NSString * publicKeyID;
 @property (retain) NSString * publicKey;
+@property (retain) NSString * userDataID;
 
 @end

@@ -77,12 +77,6 @@
                             keyPassword : nil
                           containerType : VirgilContainerEasy
                       containerPassword : password]) {
-        VirgilKeyChainContainer * container =
-            [[VirgilKeyChainContainer alloc] initWithPrivateKey : [VirgilKeyManager newAccountPrivateKey]
-                                                   andPublicKey : [VirgilKeyManager newAccountPublicKey]
-                                                       isActive : NO];
-        [VirgilKeyChain saveContainer : container
-                           forAccount : email];
         [self closeWindow];
     } else {
         [self showErrorView : [VirgilKeyManager lastError]];

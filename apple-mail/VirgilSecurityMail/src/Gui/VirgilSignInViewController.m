@@ -99,4 +99,21 @@
     [self changeView : @"viewRegister"];
 }
 
+- (IBAction)onResendConfirm:(id)sender {
+    NSTextField * emailField = [self.view viewWithTag : 2000];
+    
+    if (!emailField) return;
+    
+    NSString * email = [emailField stringValue];
+
+    BOOL res = [VirgilKeyManager resendConfirmEMail : email];
+    
+    if (NO == res) {
+        [self showErrorView : [VirgilKeyManager lastError]];
+    } else {
+        [VirgilGui setUserActivityPrivateKey : nil];
+        [self onCloseClicked:nil];
+    }
+}
+
 @end

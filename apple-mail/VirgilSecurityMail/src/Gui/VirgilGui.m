@@ -78,7 +78,8 @@ BOOL _waitConfirmation = NO;
     // Check for need confirmation
     if (YES == _waitConfirmation) {
         _waitConfirmation = NO;
-        return [VirgilGui getPrivateKeyAfterActivation : _confirmationCode];
+        return [VirgilGui getPrivateKeyAfterActivation : _confirmationCode
+                                            forAccount : account];
     }
     
     NSWindow * containerWindow = [[NSApplication sharedApplication] mainWindow];
@@ -116,7 +117,8 @@ BOOL _waitConfirmation = NO;
     return _userActivityKey;
 }
 
-+ (VirgilPrivateKey*) getPrivateKeyAfterActivation : (NSString *) confirmationCode {
++ (VirgilPrivateKey*) getPrivateKeyAfterActivation : (NSString *) confirmationCode
+                                        forAccount : (NSString *) account {
     _userActivityKey = nil;
     
     NSWindow * containerWindow = [[NSApplication sharedApplication] mainWindow];
@@ -142,7 +144,7 @@ BOOL _waitConfirmation = NO;
             [windowControler setContentViewController:controller];
             
             if (nil == controller) return;
-            [controller setConfirmationCode : confirmationCode];
+            [controller setConfirmationCode : confirmationCode forAccount : account];
             
             NSWindow * controllerWindow = [windowControler window];
             
@@ -160,24 +162,15 @@ BOOL _waitConfirmation = NO;
     @finally {
     }
     
-    if (nil != _userActivityKey) {
-        VirgilKeyChainContainer * container =
-            [[VirgilKeyChainContainer alloc] initWithPrivateKey : _userActivityKey
-                                                   andPublicKey : [VirgilKeyManager newAccountPublicKey]
-                                                       isActive : YES];
-            [VirgilKeyChain saveContainer : container
-                               forAccount : _userActivityKey.account];
-    }
-    
     return _userActivityKey;
 }
 
 + (BOOL) askForCanDecrypt {
     NSWindow * containerWindow = [[NSApplication sharedApplication] mainWindow];
-    if (nil == containerWindow) return nil;
+    if (nil == containerWindow) return NO;
     
     NSBundle * bundle = [VirgilGui getVirgilBundle];
-    if (nil == bundle) return nil;
+    if (nil == bundle) return NO;
     
     @try {
         dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);

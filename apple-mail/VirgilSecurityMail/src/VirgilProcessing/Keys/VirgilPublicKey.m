@@ -39,6 +39,7 @@
 #define kAccountID      @"AccountID"
 #define kPublicKeyID    @"PublicKeyID"
 #define kPublicKey      @"PublicKey"
+#define kUserDataID     @"UserDataID"
 
 @implementation VirgilPublicKey : NSObject
 
@@ -51,17 +52,20 @@
         self.accountID = @"";
         self.publicKeyID = @"";
         self.publicKey = @"";
+        self.userDataID = @"";
     }
     return self;
 }
 
 - (id) initAccountID:(NSString *)a_accountID
          publicKeyID:(NSString *)a_publicKeyID
-           publicKey:(NSString *)a_publicKey {
+           publicKey:(NSString *)a_publicKey
+          userDataID:(NSString *)a_userDataID{
     if ([super init]) {
         self.accountID = [[NSString alloc] initWithString:a_accountID];
         self.publicKeyID = [[NSString alloc] initWithString:a_publicKeyID];
         self.publicKey = [[NSString alloc] initWithString:a_publicKey];
+        self.userDataID = [[NSString alloc] initWithString:a_userDataID];
     }
     return self;
 }
@@ -70,15 +74,18 @@
     [encoder encodeObject : self.accountID forKey : kAccountID];
     [encoder encodeObject : self.publicKeyID forKey : kPublicKeyID];
     [encoder encodeObject : self.publicKey forKey : kPublicKey];
+    [encoder encodeObject : self.userDataID forKey : kUserDataID];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {
     NSString * a_accountID = [decoder decodeObjectForKey : kAccountID];
     NSString * a_publicKeyID = [decoder decodeObjectForKey : kPublicKeyID];
     NSString * a_publicKey = [decoder decodeObjectForKey : kPublicKey];
+    NSString * a_userDataID = [decoder decodeObjectForKey : kUserDataID];
     return [self initAccountID : a_accountID
                    publicKeyID : a_publicKeyID
-                     publicKey : a_publicKey];
+                     publicKey : a_publicKey
+                    userDataID : a_userDataID];
 }
 
 - (NSString *) description {
@@ -86,6 +93,7 @@
     [res appendString:@"VirgilPublicKey : \n"];
     [res appendString:@"{ \n"];
     [res appendFormat:@"accountID : %@\n", self.accountID];
+    [res appendFormat:@"userDataID : %@\n", self.userDataID];
     [res appendFormat:@"publicKeyID : %@\n", self.publicKeyID];
     [res appendFormat:@"publicKey : %@\n", self.publicKey];
     [res appendString:@"} \n"];
