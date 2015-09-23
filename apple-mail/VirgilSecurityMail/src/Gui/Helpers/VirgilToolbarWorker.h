@@ -35,24 +35,36 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "VirgilPrivateKey.h"
+#import <AppKit/NSToolbar.h>
+#import <AppKit/NSToolbarItem.h>
 
-/**
- * @class Class for interaction with user
- */
+@interface NSToolbar (Virgil)
 
-@interface VirgilGui : NSObject
-
-+ (void) showMain;
-
-+ (VirgilPrivateKey*) getPrivateKey : (NSString *) account;
-
-+ (NSString *) currentAccount;
-
-+ (void) setConfirmationCode : (NSString *) confirmationCode;
-
-+ (void) setUserActivityPrivateKey : (VirgilPrivateKey *) privateKey;
-
-+ (BOOL) askForCanDecrypt;
+- (id) MAConfigureToolbarItems;
 
 @end
+
+@interface VirgilToolbarDelegate : NSObject <NSToolbarDelegate> {
+    id <NSToolbarDelegate> defaultDelegate;
+}
+
++ (VirgilToolbarDelegate *) sharedInstance;
+- (void) setDefaultDelegate : (id <NSToolbarDelegate>) a_defaultDelegate;
+
+- (NSToolbarItem *) toolbar : (NSToolbar *) toolbar
+      itemForItemIdentifier : (NSString *) itemIdentifier
+  willBeInsertedIntoToolbar : (BOOL)flag;
+
+- (NSArray *) toolbarDefaultItemIdentifiers : (NSToolbar *) toolbar;
+- (NSArray *) toolbarAllowedItemIdentifiers : (NSToolbar *) toolbar;
+- (NSArray *) toolbarSelectableItemIdentifiers : (NSToolbar *) toolbar;
+
+// Notifications
+- (void) toolbarWillAddItem : (NSNotification *) notification;
+- (void) toolbarDidRemoveItem : (NSNotification *) notification;
+
+@property (weak, readonly) id <NSToolbarDelegate> defaultDelegate;
+
+@end
+
+

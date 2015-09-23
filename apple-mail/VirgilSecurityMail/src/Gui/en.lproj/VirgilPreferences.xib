@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">101000</int>
-		<string key="IBDocument.SystemVersion">14F27</string>
+		<string key="IBDocument.SystemVersion">14C109</string>
 		<string key="IBDocument.InterfaceBuilderVersion">7706</string>
-		<string key="IBDocument.AppKitVersion">1348.17</string>
-		<string key="IBDocument.HIToolboxVersion">758.70</string>
+		<string key="IBDocument.AppKitVersion">1344.72</string>
+		<string key="IBDocument.HIToolboxVersion">757.30</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
 			<string key="NS.object.0">7706</string>
@@ -34,7 +34,7 @@
 				<string key="NSClassName">NSApplication</string>
 			</object>
 			<object class="NSBox" id="85714290">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="NSView" id="782958523">
@@ -54,8 +54,6 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{16, 12}, {351, 18}}</string>
 												<reference key="NSSuperview" ref="13910720"/>
-												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView"/>
 												<string key="NSReuseIdentifierKey">_NS:9</string>
 												<int key="NSTag">1001</int>
 												<bool key="NSEnabled">YES</bool>
@@ -83,7 +81,6 @@
 													<string key="NSKeyEquivalent"/>
 													<int key="NSPeriodicDelay">200</int>
 													<int key="NSPeriodicInterval">25</int>
-													<int key="NSAuxButtonType">3</int>
 												</object>
 												<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 											</object>
@@ -92,7 +89,6 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{16, 32}, {351, 18}}</string>
 												<reference key="NSSuperview" ref="13910720"/>
-												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="714016839"/>
 												<string key="NSReuseIdentifierKey">_NS:717</string>
 												<int key="NSTag">1000</int>
@@ -112,21 +108,18 @@
 													<string key="NSKeyEquivalent"/>
 													<int key="NSPeriodicDelay">200</int>
 													<int key="NSPeriodicInterval">25</int>
-													<int key="NSAuxButtonType">3</int>
 												</object>
 												<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 											</object>
 										</array>
 										<string key="NSFrame">{{1, 1}, {309, 58}}</string>
 										<reference key="NSSuperview" ref="166400783"/>
-										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="915859109"/>
 										<string key="NSReuseIdentifierKey">_NS:11</string>
 									</object>
 								</array>
 								<string key="NSFrame">{{163, 12}, {311, 77}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="13910720"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<string key="NSOffsets">{0, 0}</string>
@@ -167,13 +160,10 @@
 						</array>
 						<string key="NSFrameSize">{605, 105}</string>
 						<reference key="NSSuperview" ref="85714290"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="166400783"/>
 					</object>
 				</array>
 				<string key="NSFrameSize">{605, 105}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="782958523"/>
 				<string key="NSOffsets">{0, 0}</string>
 				<object class="NSTextFieldCell" key="NSTitleCell">

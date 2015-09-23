@@ -45,6 +45,8 @@
 
 + (VirgilProcessingManager *) sharedInstance;
 
++ (NSArray *) accountsList;
+
 // Encryption
 - (BOOL) isNeedToEncrypt;
 - (BOOL) encryptMessage : (WebComposeMessageContents *)message

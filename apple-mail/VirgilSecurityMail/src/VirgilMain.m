@@ -67,10 +67,12 @@ NSString *VirgilMailMethodPrefix = @"MA";
 
     VirgilMain * instance = [VirgilMain sharedInstance];
     
+#if 0
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 4 * NSEC_PER_SEC),
                    dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         [[VirgilProcessingManager sharedInstance] getAllPrivateKeys];
     });
+#endif
     
     // Registering plugin in Mail.app
     [[((VirgilMain *)self) class] registerBundle];

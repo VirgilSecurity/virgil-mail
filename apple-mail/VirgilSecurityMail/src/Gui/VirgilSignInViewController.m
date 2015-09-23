@@ -40,24 +40,17 @@
 #import "VirgilErrorViewController.h"
 #import "VirgilValidator.h"
 #import "VirgilGui.h"
+#import "VirgilProcessingManager.h"
 
 @implementation VirgilSignInViewController
 
 - (IBAction)onSignInClicked:(id)sender {
-    NSTextField * emailField = [self.view viewWithTag : 2000];
     NSSecureTextField * passwordField = [self.view viewWithTag : 2001];
     
-    if (!emailField || !passwordField) return;
+    if (!passwordField) return;
     
-    NSString * email = [emailField stringValue];
+    NSString * email = [self selectedAccount];
     NSString * password = [passwordField stringValue];
-    
-    // Verify input data
-    if (NO == [VirgilValidator email : email]) {
-        [self showCompactErrorView : @"Check email address input please."
-                            atView : emailField];
-        return;
-    }
     
     if (NO == [VirgilValidator simplePassword : password]) {
         [self showCompactErrorView : @"Password can't be empty, can't contains not latin letters."
@@ -76,14 +69,35 @@
     }
 }
 
+- (NSString *) selectedAccount {
+    NSPopUpButton * popUpButton = [self.view viewWithTag : 5000];
+    if (!popUpButton) return nil;
+    
+    return [popUpButton titleOfSelectedItem];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    NSTextField * emailField = [self.view viewWithTag : 2000];
-    if (!emailField) return;
-    NSString * currentAccount = [VirgilGui currentAccount];
-    if (nil == currentAccount) return;
-    [emailField setStringValue : currentAccount];
+    NSPopUpButton * popUpButton = [self.view viewWithTag : 5000];
+    if (!popUpButton) return;
+    
+    [popUpButton removeAllItems];
+    NSArray * accounts = [VirgilProcessingManager accountsList];
+    if ([accounts count]) {
+        [popUpButton addItemsWithTitles : accounts];
+        BOOL accountPresent = NO;
+        for (NSString * el in accounts) {
+            if ([el isEqualToString : [VirgilGui currentAccount]]) {
+                accountPresent = YES;
+                break;
+            }
+        }
+        
+        if (YES == accountPresent) {
+            [popUpButton selectItemWithTitle : [VirgilGui currentAccount]];
+        }
+    }
 }
 
 - (IBAction)onCloseClicked:(id)sender {

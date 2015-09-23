@@ -66,6 +66,9 @@
                      @"windowWillResize:toSize:",
                      @"toolbarItemClicked:",
                      @"showPreferencesPanelForOwner:"
+                     ],
+             @"NSToolbar": @[
+                        @"configureToolbarItems"
                      ]
              };
 }

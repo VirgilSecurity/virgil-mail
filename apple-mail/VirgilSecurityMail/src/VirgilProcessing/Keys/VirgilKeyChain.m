@@ -47,7 +47,7 @@
                                                        account : account];
     
     if (nil != res) {
-        NSLog(@"VirgilKeyChainContainer : %@", res);
+        //NSLog(@"VirgilKeyChainContainer : %@", res);
         return res;
     }
     

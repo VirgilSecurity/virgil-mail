@@ -173,7 +173,6 @@ static NSString * _lastError = nil;
         const std::string _key(virgil::crypto::bytes2str(publicKey.key()));
         const std::string _userDataId(publicKey.userData().front().userDataId());
         
-        NSLog(@"        User data id : %@", [VirgilHelpers _strStd2NS : _userDataId]);
         
         VirgilPublicKey * publicKeyInfo =
         [[VirgilPublicKey alloc] initAccountID : [VirgilHelpers _strStd2NS : publicKey.accountId()]
@@ -187,6 +186,8 @@ static NSString * _lastError = nil;
                                                    isActive : NO];
         [VirgilKeyChain saveContainer : container
                            forAccount : account];
+        
+        //NSLog(@"createAccount : %@", container);
         
         return YES;
     } catch (std::exception& exception) {
@@ -215,6 +216,9 @@ static NSString * _lastError = nil;
         [VirgilKeyManager setErrorString : @"account not present for confirmation"];
         return NO;
     }
+    
+    NSLog(@"confirmAccountCreation : %@", keyChainContainer);
+    
     BOOL res = [VirgilKeyManager confirmAccountCreationWithCode : code
                                                    keyContainer : keyChainContainer];
     
@@ -294,47 +298,20 @@ static NSString * _lastError = nil;
  * @return YES - success | NO - error occured, get error with [VirgilKeyManager lastError]
  */
 + (BOOL) resendConfirmEMail : (VirgilPublicKey *) publicKey
-                 privateKey : (VirgilPrivateKey *) privateKey; {
-    _lastError = nil;
+                 privateKey : (VirgilPrivateKey *) privateKey {
     
     if (nil == publicKey || nil == privateKey) {
         [VirgilKeyManager setErrorString : @"wrong params for resend confirmation email"];
         return NO;
     }
     
-    // Prepare public key id
-    const std::string _publicKeyIdData([VirgilHelpers _strNS2Std : publicKey.publicKeyID]);
+    [VirgilKeyManager deletePublicKey : publicKey
+                           privateKey : privateKey];
     
-    // Prepare user data id
-    const std::string _userIdData([VirgilHelpers _strNS2Std : publicKey.userDataID]);
-    
-    // Prepare private key
-    const std::string _privateKeyData([VirgilHelpers _strNS2Std : privateKey.key]);
-    VirgilByteArray baPrivateKey(_privateKeyData.begin(), _privateKeyData.end());
-    
-    // Prepare private key password
-    std::string _keyPassword;
-    if (nil != privateKey.keyPassword) {
-        _keyPassword = std::string([privateKey.keyPassword UTF8String]);
-    }
-    
-    try {
-        Credentials credentials(_publicKeyIdData, baPrivateKey/*, _keyPassword*/);
-        
-        KeysClient keysClient(
-                              [VirgilHelpers _strNS2Std : [VirgilHelpers applicationToken]],
-                              [VirgilHelpers _strNS2Std : [VirgilHelpers keysURLBase]]
-                              );
-        const std::string uuid([VirgilHelpers _uuid]);
-        keysClient.userData().resendConfirmation(_userIdData, credentials, uuid);
-        
-        return YES;
-    } catch (std::exception& exception) {
-        const std::string _error(exception.what());
-        [VirgilKeyManager setErrorString : [NSString stringWithFormat:@"resendConfirmEMail : %s", _error.c_str()]];
-    }
-    
-    return NO;
+    return [VirgilKeyManager createAccount : privateKey.account
+                               keyPassword : privateKey.keyPassword
+                             containerType : privateKey.containerType
+                         containerPassword : privateKey.containerPassword];
 }
 
 /**
@@ -374,6 +351,51 @@ static NSString * _lastError = nil;
  */
 + (void) setErrorString : (NSString *) errorStr {
     _lastError = [[NSString alloc] initWithFormat : @"VirgilKeyManager error : %@", errorStr];
+}
+
+/**
+ * @brief Delete public key
+ * @param publicKey - public key
+ * @param privateKey - private key
+ * @return YES - success | NO - error occured, get error with [VirgilKeyManager lastError]
+ */
++ (BOOL) deletePublicKey : (VirgilPublicKey *) publicKey
+              privateKey : (VirgilPrivateKey *) privateKey {
+    
+    if (nil == publicKey || nil == privateKey) {
+        [VirgilKeyManager setErrorString : @"wrong params for account deletion"];
+        return NO;
+    }
+    
+    // Prepare public key id
+    const std::string _publicKeyId([VirgilHelpers _strNS2Std : publicKey.publicKeyID]);
+    
+    // Prepare private key
+    const std::string _privateKey([VirgilHelpers _strNS2Std : privateKey.key]);
+    VirgilByteArray baPrivateKey(_privateKey.begin(), _privateKey.end());
+    
+    // Prepare password
+    std::string _privateKeyPassword;
+    if (nil != privateKey.keyPassword) {
+        _privateKeyPassword = std::string([VirgilHelpers _strNS2Std:privateKey.keyPassword]);
+    }
+    
+    try {
+        Credentials credentials(_publicKeyId, baPrivateKey, _privateKeyPassword);
+        KeysClient keysClient(
+                              [VirgilHelpers _strNS2Std : [VirgilHelpers applicationToken]],
+                              [VirgilHelpers _strNS2Std : [VirgilHelpers keysURLBase]]
+                              );
+        const std::string uuid([VirgilHelpers _uuid]);
+        keysClient.publicKey().del(credentials, uuid);
+        NSLog(@"                 deletePublicKey : DONE");
+        return YES;
+    } catch (std::exception& exception) {
+        const std::string _error(exception.what());
+        [VirgilKeyManager setErrorString : [NSString stringWithFormat:@"deletePublicKey : %s", _error.c_str()]];
+        NSLog(@"%@", [VirgilKeyManager lastError]);
+    }
+    return NO;
 }
 
 @end

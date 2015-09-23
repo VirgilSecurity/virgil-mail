@@ -71,6 +71,39 @@ BOOL _waitConfirmation = NO;
     return bundle;
 }
 
++ (void) showMain {
+    NSWindow * containerWindow = [[NSApplication sharedApplication] mainWindow];
+    if (nil == containerWindow) return;
+    
+    NSBundle * bundle = [VirgilGui getVirgilBundle];
+    if (nil == bundle) return;
+    
+    @try {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSStoryboard * storyBoard =
+            [NSStoryboard storyboardWithName : @"Main"
+                                      bundle : bundle];
+            if (nil == storyBoard) return;
+            
+            NSWindowController * windowControler = [storyBoard instantiateInitialController];
+            if (nil == windowControler) return;
+            
+            NSWindow * controllerWindow = [windowControler window];
+            if (nil == controllerWindow) return;
+            
+            [containerWindow beginSheet : controllerWindow
+                      completionHandler : ^(NSModalResponse returnCode) {
+                      }];
+
+        });
+    }
+    @catch (NSException *exception) {
+    }
+    @finally {
+    }
+    
+}
+
 + (VirgilPrivateKey *) getPrivateKey : (NSString *) account {
     _currentAccount = account;
     _userActivityKey = nil;
@@ -99,7 +132,15 @@ BOOL _waitConfirmation = NO;
             NSWindowController * windowControler = [storyBoard instantiateInitialController];
             if (nil == windowControler) return;
             
+            VirgilEmailConfirmViewController * controller =
+            (VirgilEmailConfirmViewController*)[storyBoard instantiateControllerWithIdentifier : @"viewSignIn"];
+            
+            [windowControler setContentViewController:controller];
+            
+            if (nil == controller) return;
+            
             NSWindow * controllerWindow = [windowControler window];
+            
             if (nil == controllerWindow) return;
             
             [containerWindow beginSheet : controllerWindow

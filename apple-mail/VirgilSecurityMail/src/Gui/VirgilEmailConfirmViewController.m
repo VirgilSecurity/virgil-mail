@@ -39,14 +39,13 @@
 #import "NSViewController+VirgilView.h"
 #import "VirgilValidator.h"
 #import "VirgilGui.h"
+#import "VirgilProcessingManager.h"
 
 @interface VirgilEmailConfirmViewController ()
 
 @end
 
 @implementation VirgilEmailConfirmViewController
-
-NSString * _account;
 
 - (IBAction)onAcceptClicked : (id)sender {
     NSTextField * codeField = [self.view viewWithTag : 1000];
@@ -57,17 +56,38 @@ NSString * _account;
                             atView : codeField];
         return;
     }
-    if (YES == [VirgilKeyManager confirmAccountCreation : _account code : code]) {
-        [VirgilGui setUserActivityPrivateKey : [VirgilKeyManager getPrivateKey:_account containerPassword:@""]];
+    NSString * account = [self selectedAccount];
+    if (YES == [VirgilKeyManager confirmAccountCreation : account
+                                                   code : code]) {
+        [VirgilGui setUserActivityPrivateKey : [VirgilKeyManager getPrivateKey : account
+                                                             containerPassword : @""]];
         [self closeWindow];
     } else {
         NSLog(@"%@", [VirgilKeyManager lastError]);
-        [self showErrorView : @"Wrong confirmation code. // TODO: resend"];
+        [self showErrorView : @"Wrong confirmation code."];
     }
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    NSPopUpButton * popUpButton = [self.view viewWithTag : 5000];
+    if (!popUpButton) return;
+    
+    [popUpButton removeAllItems];
+    [popUpButton addItemsWithTitles : [VirgilProcessingManager accountsList]];
+}
+
+- (NSString *) selectedAccount {
+    NSPopUpButton * popUpButton = [self.view viewWithTag : 5000];
+    if (!popUpButton) return nil;
+    
+    return [popUpButton titleOfSelectedItem];
 }
 
 - (void) setConfirmationCode : (NSString *) confirmationCode
                   forAccount : (NSString *) account {
+#if 0
     _account = account;
     NSTextField * codeField = [self.view viewWithTag : 1000];
     if (!codeField) return;
@@ -76,6 +96,7 @@ NSString * _account;
     } else {
         [codeField setStringValue : confirmationCode];
     }
+#endif
 }
 
 - (IBAction)onCancel:(id)sender {

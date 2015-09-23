@@ -34,25 +34,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <Foundation/Foundation.h>
-#import "VirgilPrivateKey.h"
+#import <Cocoa/Cocoa.h>
 
-/**
- * @class Class for interaction with user
- */
-
-@interface VirgilGui : NSObject
-
-+ (void) showMain;
-
-+ (VirgilPrivateKey*) getPrivateKey : (NSString *) account;
-
-+ (NSString *) currentAccount;
-
-+ (void) setConfirmationCode : (NSString *) confirmationCode;
-
-+ (void) setUserActivityPrivateKey : (VirgilPrivateKey *) privateKey;
-
-+ (BOOL) askForCanDecrypt;
+@interface VirgilMainViewController : NSViewController
 
 @end

@@ -452,15 +452,20 @@ static BOOL _decryptionStart = YES;
     return [_decryptedMail attachementByHash:name];
 }
 
-- (void) getAllPrivateKeys {
++ (NSArray *) accountsList {
     NSMutableSet * set = [[NSMutableSet alloc] init];
     for (LocalAccount * account in [[VirgilClassNameResolver resolveClassFromName:@"MailAccount"] mailAccounts]) {
         for (NSString * email in account.emailAddresses) {
             [set addObject : email];
         }
     }
+    return [set allObjects];
+}
+
+- (void) getAllPrivateKeys {
+    NSArray * accounts = [VirgilProcessingManager accountsList];
     
-    for (NSString * email in set) {
+    for (NSString * email in accounts) {
         NSLog(@"                        getAllPrivateKeys");
         [self getKeysContainer : email
             forcePrivateKeyGet : YES
@@ -539,12 +544,14 @@ static BOOL _decryptionStart = YES;
         privateKey = [VirgilGui getPrivateKey : account];
     }
     
+#if 0
     if (forcePrivateKey && nil != container && (NO == container.isActive)) {
         BOOL res = [VirgilKeyManager resendConfirmEMail : account];
         if (NO == res) {
             NSLog(@"ERROR: getKeysContainer : %@", [VirgilKeyManager lastError]);
         }
     }
+#endif
     
     VirgilPublicKey * publicKey = container.publicKey;
     if (nil == container || nil == publicKey) {
