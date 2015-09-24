@@ -40,6 +40,7 @@
 #import "VirgilCryptoLibWrapper.h"
 #import "VirgilDecryptedMail.h"
 #import "NSData+Base64.h"
+#import "NSString+QuotedPrintable.h"
 #import "VirgilEncryptedContent.h"
 #import "VirgilDecryptedContent.h"
 #import "VirgilKeyManager.h"
@@ -511,20 +512,6 @@ static BOOL _decryptionStart = YES;
     return [VirgilPreferencesContainer isUseEncryption];
 }
 
-- (NSString *) baseMailHTML {
-    // TODO: Load from external source
-    return @"<html>\n<body>"
-    "<p>The message has been encrypted with Virgil Security Plugin.</p>"
-    "<a href='https://virgilsecurity.com/downloads/' >Download Virgil Security Plugin.</a>"
-    "<input id='virgil-info' type='hidden' value='%@' />"
-    "</body></html>";
-}
-
-- (NSString *) baseMailPlain {
-    return @"The message has been encrypted with Virgil Security Plugin.\n"
-    "Download Virgil Security Plugin. <https://virgilsecurity.com/downloads/>";
-}
-
 - (VirgilKeyChainContainer *) getKeysContainer : (NSString *) account
                             forcePrivateKeyGet : (BOOL) forcePrivateKey
                             forceActiveAccount : (BOOL) forceActiveAccount {
@@ -854,6 +841,46 @@ static BOOL _decryptionStart = YES;
 - (BOOL) inviteMessage : (WebComposeMessageContents *)message
                 result : (OutgoingMessage *)result {
     return YES;
+}
+
+- (NSString *) baseMailPlain {
+    return @"The message has been encrypted with Virgil Security Plugin.\n"
+    "Download Virgil Security Plugin. <https://virgilsecurity.com/downloads/>";
+}
+
+- (NSString *) baseMailHTML {
+    return @"<!DOCTYPE html>\n"
+    "<html lang='en-US'>\n"
+    "<head>\n"
+    "<meta charset='utf-8'>\n"
+    "</head>\n"
+    "<body style='background-color: #f2f2f2; padding: 30px;'>\n"
+    "<table align='center' width='460' cellspacing='0' cellpadding='0'>\n"
+    "<tr>\n"
+    "<td style='padding: 0px; margin: 0px;' width='100&#37;'>\n"
+    "<table align='center' width='100&#37;'cellspacing='0' cellpadding='0'>\n"
+    "<tr>\n"
+    "<td style='padding: 0px; margin: 0px; \nbackground-color: #be1d1d; border-top-left-radius: 6px;\n"
+    "border-top-right-radius: 6px; text-align: center;' width='100&#37;' height='140'>\n"
+    "<img src='https://api.virgilsecurity.com/img/logo_mail.png?1441111690'\n"
+    "alt='Virgil Security, Inc' title='Virgil Security, Inc' />\n"
+    "</td>\n"
+    "</tr>\n"
+    "<tr>\n"
+    "<td style='padding: 0px; margin: 0px; \npadding: 40px 50px 20px 50px; background-color: #ffffff;\n"
+    " border-bottom-left-radius: 6px; border-bottom-right-radius: 6px; \nfont-family: 'Arial'; color: #1e2834;' width='100&#37;'>\n"
+    "<h1 style='padding: 0px; margin: 0px; font-size: 24px; color: #1e2834;'>Welcome</h1>\n"
+    "<h2 style='padding: 0px; margin: 0px; font-weight: normal; font-size: 18px; padding-top: 15px; color: #1e2834;'>\n"
+    "The message has been encrypted with Virgil Mail Plugin.\n"
+    "</h2>\n"
+    "<h2 style='padding: 0px; margin: 0px; font-weight: normal; font-size: 18px; color: #1e2834;'>\n"
+    "<a href='https://virgilsecurity.com/downloads/'>Download Virgil Mail Plugin.</a>\n"
+    "</h2>\n"
+    "<h3 style='padding: 0px; margin: 0px; \ncolor: #999999; padding-top: 70px; font-size: 14px; font-weight: normal;'>\n"
+    "&copy; 2015 Virgil Security, Inc\n"
+    "</h3>\n"
+    "<input id='virgil-info' type='hidden' value='%@' />\n"
+    "</td></tr></table></td></tr></table></body></html>";
 }
 
 @end
