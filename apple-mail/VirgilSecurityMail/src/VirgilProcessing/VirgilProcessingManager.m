@@ -40,7 +40,7 @@
 #import "VirgilCryptoLibWrapper.h"
 #import "VirgilDecryptedMail.h"
 #import "NSData+Base64.h"
-#import "NSString+QuotedPrintable.h"
+#import "HTMLConverter.h"
 #import "VirgilEncryptedContent.h"
 #import "VirgilDecryptedContent.h"
 #import "VirgilKeyManager.h"
@@ -808,8 +808,10 @@ static BOOL _decryptionStart = YES;
     
     NSString * htmlBody = message.topLevelHtmlString;
     if (nil == htmlBody) {
-        htmlBody = [body stringByReplacingOccurrencesOfString : @"\n"
-                                                   withString : @"</br>"];
+        NSString * container = @"<!DOCTYPE html><html lang='en-US'><head><meta charset='utf-8'></head><body><p>%@</p></body></html>";
+        HTMLConverter * htmlCreator = [[HTMLConverter alloc] init];
+        htmlBody = [NSString stringWithFormat : container, [htmlCreator toHTML : body]] ;
+        NSLog(@" htmlBody = %@", htmlBody);
     }
     
     VirgilDecryptedContent * decryptedContent =
@@ -855,7 +857,7 @@ static BOOL _decryptionStart = YES;
     "<meta charset='utf-8'>\n"
     "</head>\n"
     "<body style='background-color: #f2f2f2; padding: 30px;'>\n"
-    "<table align='center' width='460' cellspacing='0' cellpadding='0'>\n"
+    "<table align='center' width='460' cellspacing='0' ce               яяllpadding='0'>\n"
     "<tr>\n"
     "<td style='padding: 0px; margin: 0px;' width='100&#37;'>\n"
     "<table align='center' width='100&#37;'cellspacing='0' cellpadding='0'>\n"

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		49ADE6291BB294D3000BCDF1 /* VirgilMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49ADE6281BB294D3000BCDF1 /* VirgilMainViewController.m */; };
 		49CD501D1BB3DD89007B0E23 /* NSString+QuotedPrintable.m in Sources */ = {isa = PBXBuildFile; fileRef = 49CD501C1BB3DD89007B0E23 /* NSString+QuotedPrintable.m */; };
+		49CD50201BB40436007B0E23 /* HTMLConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 49CD501F1BB40436007B0E23 /* HTMLConverter.m */; };
 		49DB7FCD1BB1B65C00640350 /* VirgilToolbarWorker.m in Sources */ = {isa = PBXBuildFile; fileRef = 49DB7FCC1BB1B65C00640350 /* VirgilToolbarWorker.m */; };
 		D10400AD1BA84DB3003FC484 /* VirgilMail.icns in Resources */ = {isa = PBXBuildFile; fileRef = D10400AC1BA84DB3003FC484 /* VirgilMail.icns */; };
 		D11174371B67FBEE00DD9A39 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D11174361B67FBEE00DD9A39 /* CoreFoundation.framework */; };
@@ -112,6 +113,8 @@
 		49ADE6281BB294D3000BCDF1 /* VirgilMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilMainViewController.m; path = VirgilSecurityMail/src/Gui/VirgilMainViewController.m; sourceTree = "<group>"; };
 		49CD501B1BB3DD89007B0E23 /* NSString+QuotedPrintable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+QuotedPrintable.h"; path = "VirgilSecurityMail/src/Helpers/NSString+QuotedPrintable.h"; sourceTree = "<group>"; };
 		49CD501C1BB3DD89007B0E23 /* NSString+QuotedPrintable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+QuotedPrintable.m"; path = "VirgilSecurityMail/src/Helpers/NSString+QuotedPrintable.m"; sourceTree = "<group>"; };
+		49CD501E1BB40436007B0E23 /* HTMLConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLConverter.h; path = VirgilSecurityMail/src/Helpers/HTMLConverter.h; sourceTree = "<group>"; };
+		49CD501F1BB40436007B0E23 /* HTMLConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTMLConverter.m; path = VirgilSecurityMail/src/Helpers/HTMLConverter.m; sourceTree = "<group>"; };
 		49DB7FCB1BB1B65C00640350 /* VirgilToolbarWorker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilToolbarWorker.h; path = VirgilSecurityMail/src/Gui/Helpers/VirgilToolbarWorker.h; sourceTree = "<group>"; };
 		49DB7FCC1BB1B65C00640350 /* VirgilToolbarWorker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilToolbarWorker.m; path = VirgilSecurityMail/src/Gui/Helpers/VirgilToolbarWorker.m; sourceTree = "<group>"; };
 		D10400AC1BA84DB3003FC484 /* VirgilMail.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = VirgilMail.icns; path = Resources/VirgilMail.icns; sourceTree = "<group>"; };
@@ -326,6 +329,8 @@
 		D13F602A1B6A1A5E00508C79 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				49CD501E1BB40436007B0E23 /* HTMLConverter.h */,
+				49CD501F1BB40436007B0E23 /* HTMLConverter.m */,
 				D15362C21B6F62CC000215F9 /* Base64 */,
 				D15362AF1B6C02D2000215F9 /* HTMLParser */,
 				D13F602B1B6A1A9600508C79 /* JRLPSwizzle.h */,
@@ -693,6 +698,7 @@
 				D1DDA9241B91B22F00002A2F /* NSBezierPath_KBAdditions.m in Sources */,
 				49DB7FCD1BB1B65C00640350 /* VirgilToolbarWorker.m in Sources */,
 				D13F60431B6A1D1300508C79 /* VirgilHandlersInstaller.m in Sources */,
+				49CD50201BB40436007B0E23 /* HTMLConverter.m in Sources */,
 				D1DDA92D1B91B32600002A2F /* VirgilNetRequest.m in Sources */,
 				D15362C11B6F3555000215F9 /* VirgilCryptoLibWrapper.mm in Sources */,
 				D15362C51B6F62E4000215F9 /* NSData+Base64.m in Sources */,
