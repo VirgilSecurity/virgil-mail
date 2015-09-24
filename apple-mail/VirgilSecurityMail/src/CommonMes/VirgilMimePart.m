@@ -61,14 +61,32 @@
     if ([className isEqualToString:@"MCParsedMessage"]) {
         
         // Iterate throw all attachements and decrypt
-        for (MCAttachment * attach in [((ParsedMessage *)nativePart).attachmentsByURL allValues]) {
-            // TODO: Check for need to decrypt by attach.originalData
+        
+        NSMutableDictionary * attachments = [((ParsedMessage *)nativePart).attachmentsByURL mutableCopy];
+        NSMutableSet * forDelete = [[NSMutableSet alloc] init];
+        
+        for (NSString * key in [attachments allKeys]) {
+            MCAttachment * attach = [attachments objectForKey : key];
+            
+            if ([attach.filename isEqualToString : VIRGIL_MAIL_INFO_ATTACH] ||
+                [attach.filename isEqualToString : WIN_MAIL_DATA_ATTACH]) {
+                [forDelete addObject : key];
+                continue;
+            }
+            
             NSData * decryptedAttach = [[VirgilProcessingManager sharedInstance]
                                                       decryptedAttachementByName:attach.filename];
             if (nil != decryptedAttach) {
                 attach.currentData = decryptedAttach;
             }
         }
+        
+        // Remove helper attachments
+        for (NSString * key in forDelete) {
+            [attachments removeObjectForKey : key];
+        }
+
+        ((ParsedMessage *)nativePart).attachmentsByURL = [attachments copy];
         
         decryptedPart = nativePart;
         

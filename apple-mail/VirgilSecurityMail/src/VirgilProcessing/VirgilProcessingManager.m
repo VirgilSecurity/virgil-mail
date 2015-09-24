@@ -115,6 +115,11 @@ static BOOL _decryptionStart = YES;
         if ([self isPartContainsVirgilSignature:part]) {
             return part;
         }
+        
+        if ([[part disposition] isEqualToString : @"attachment"] &&
+            [part.attachmentFilename isEqualToString : VIRGIL_MAIL_INFO_ATTACH]) {
+            return part;
+        }
     }
     return nil;
 }
@@ -154,27 +159,32 @@ static BOOL _decryptionStart = YES;
     NSData *bodyData = [mimePart bodyData];
     NSString* strBody = [[NSString alloc] initWithData:bodyData encoding:NSUTF8StringEncoding];
     NSError *error = nil;
-    HTMLParser *parser = [[HTMLParser alloc] initWithString:strBody error:&error];
     
-    if (error) {
-        NSLog(@"Error: %@", error);
-        return NO;
-    }
-    
-    HTMLNode *bodyNode = [parser body];
-    NSArray *inputNodes = [bodyNode findChildTags:@"input"];
-    
-    for (HTMLNode *inputNode in inputNodes) {
-        if ([[inputNode getAttributeNamed:@"id"] isEqualToString:@"virgil-info"]) {
-            if ([[inputNode getAttributeNamed:@"type"] isEqualToString:@"hidden"]) {
-                NSString * base64Data = [inputNode getAttributeNamed:@"value"];
-                NSData* res = [NSData dataFromBase64String:base64Data];
-                return res;
+    if (NO == [strBody localizedCaseInsensitiveContainsString : @"html"] ) {
+        // Get virgil data from VirgilSecurity.mailinfo attachment
+        return [NSData dataFromBase64String : strBody];
+    } else {
+        // Get virgil data from html body
+        HTMLParser *parser = [[HTMLParser alloc] initWithString:strBody error:&error];
+        
+        if (error) {
+            NSLog(@"Error: %@", error);
+            return NO;
+        }
+        
+        HTMLNode *bodyNode = [parser body];
+        NSArray *inputNodes = [bodyNode findChildTags:@"input"];
+        
+        for (HTMLNode *inputNode in inputNodes) {
+            if ([[inputNode getAttributeNamed:@"id"] isEqualToString:@"virgil-info"]) {
+                if ([[inputNode getAttributeNamed:@"type"] isEqualToString:@"hidden"]) {
+                    NSString * base64Data = [inputNode getAttributeNamed:@"value"];
+                    NSData* res = [NSData dataFromBase64String:base64Data];
+                    return res;
+                }
             }
         }
     }
-    
-    //TODO: Get base64 data for attachements
     
     return nil;
 }
@@ -185,6 +195,8 @@ static BOOL _decryptionStart = YES;
 
 // Get EmailData and signature
 - (VirgilEncryptedContent *) getMainEncryptedData : (NSData *)data {
+    if (nil == data) return nil;
+    
     // Parse json email body, get EmailData and Signature
     // result in emailDictionary
     NSError *error = nil;
@@ -269,8 +281,8 @@ static BOOL _decryptionStart = YES;
 - (NSData *) getEncryptedAttachement : (MimePart *)part {
     if (![[part disposition] isEqualToString:@"attachment"]) return nil;
     if (![part.contentTransferEncoding isEqualToString:@"base64"]) return nil;
+    if (YES == [part.attachmentFilename isEqualToString:VIRGIL_MAIL_INFO_ATTACH]) return nil;
     NSData *bodyData = [part bodyData];
-    //NSString* strBody = [[NSString alloc] initWithData:bodyData encoding:NSUTF8StringEncoding];
     return bodyData;
 }
 
@@ -294,17 +306,40 @@ static BOOL _decryptionStart = YES;
     return YES;
 }
 
+- (BOOL) isVirgilDataInAttach : (MimePart *) virgilPart {
+    return [[virgilPart disposition] isEqualToString:@"attachment"];
+}
+
+- (MimePart *) partForReplacement : (MimePart *)topMimePart {
+    NSSet * allMimeParts = [self allMimeParts : topMimePart];
+    for (MimePart * part in allMimeParts) {
+        if ([part.subtype isEqualTo:@"html"] || [part.subtype isEqualTo:@"plain"]) {
+            NSData * bodyData = [part bodyData];
+            NSString * strBody = [[NSString alloc] initWithData:bodyData encoding:NSUTF8StringEncoding];
+            if ([strBody containsString : @"https://virgilsecurity.com"]) {
+                return part;
+            }
+        }
+    }
+    return nil;
+}
+
+- (BOOL) isPlainTextPart : (MimePart *)part {
+    if (nil == part) return NO;
+    return [part.subtype isEqualTo:@"plain"];
+}
+
 - (BOOL) decryptWholeMessage : (MimePart *)topMimePart {
     if (NO == [self canDecrypt]) return NO;
     
     MimePart * mainVirgilPart = [self partWithVirgilSignature:topMimePart];
+    BOOL virgilDataInAttach = [self isVirgilDataInAttach : mainVirgilPart];
     if (nil == mainVirgilPart) return NO;
     Message * message = [(MimeBody *)[topMimePart mimeBody] message];
     NSSet * allMimeParts = [self allMimeParts:topMimePart];
     
     VirgilEncryptedContent * encryptedContent = [self getMainEncryptedData:
-                                                 [self getEncryptedContent:mainVirgilPart]];
-    //NSLog(@"encryptedContent : %@", encryptedContent);
+                                                 [self getEncryptedContent : mainVirgilPart]];
     // Get sender info
     NSString * sender = nil;
     if (nil != encryptedContent.sender) {
@@ -361,10 +396,22 @@ static BOOL _decryptionStart = YES;
     // Prepare decrypted mail data
     // and set decrypted mail part
     [_decryptedMail clear];
-    [_decryptedMail setCurrentMailHash:message];
-    [_decryptedMail addPart:decryptedContent.htmlBody
-                   partHash:mainVirgilPart];
+    [_decryptedMail setCurrentMailHash : message];
     
+    if (YES == virgilDataInAttach) {
+        MimePart * partForReplacement = [self partForReplacement : topMimePart];
+        if (YES == [self isPlainTextPart : partForReplacement]) {
+            // Change mime type to text/html to workaround of text encoding bugs
+            [partForReplacement setSubtype : @"html"];
+        }
+        
+        [_decryptedMail addPart : decryptedContent.htmlBody
+                       partHash : partForReplacement];
+    } else {
+        [_decryptedMail addPart : decryptedContent.htmlBody
+                       partHash : mainVirgilPart];
+    }
+        
     for (MimePart * part in allMimeParts) {
         if (part == mainVirgilPart) continue;
         NSData * encryptedAttachement = [self getEncryptedAttachement:part];
@@ -392,7 +439,8 @@ static BOOL _decryptionStart = YES;
     
     Message * currentMessage = [(MimeBody *)[mimePart mimeBody] message];
 
-    if (YES == _decryptionStart && ![_decryptedMail isCurrentMail:currentMessage]) {
+    NSLog(@"    decryptMessagePart, _decryptionStart : %hhd   isCurrentMail : %hhd", _decryptionStart, [_decryptedMail isCurrentMail:currentMessage]);
+    if (YES == _decryptionStart || ![_decryptedMail isCurrentMail:currentMessage]) {
         [self decryptWholeMessage:topMimePart];
         _decryptionStart = NO;
     }

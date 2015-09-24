@@ -41,6 +41,9 @@
 #import <OutgoingMessage.h>
 #import "VirgilDecryptedMail.h"
 
+#define VIRGIL_MAIL_INFO_ATTACH @"virgilsecurity.mailinfo"
+#define WIN_MAIL_DATA_ATTACH @"winmail.dat"
+
 @interface VirgilProcessingManager : NSObject
 
 + (VirgilProcessingManager *) sharedInstance;
