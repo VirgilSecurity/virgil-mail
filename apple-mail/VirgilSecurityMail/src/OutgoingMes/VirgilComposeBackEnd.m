@@ -36,6 +36,7 @@
 
 #import "VirgilComposeBackEnd.h"
 #import "VirgilProcessingManager.h"
+#import "VirgilLog.h"
 #import <MCAttachment.h>
 
 @implementation VirgilComposeBackEnd
@@ -46,7 +47,7 @@
                     shouldEncrypt : (BOOL)shouldEncrypt
               shouldSkipSignature : (BOOL)shouldSkipSignature
                 shouldBePlainText : (BOOL)shouldBePlainText {
-    NSLog(@"MA_makeMessageWithContents");
+    VLogInfo(@"MA_makeMessageWithContents");
 
     VirgilProcessingManager * _vpm = [VirgilProcessingManager sharedInstance];
     BOOL _needEncryption = [_vpm isNeedToEncrypt];
@@ -79,7 +80,7 @@
     @finally {
     }
     
-    NSLog(@"Attach count 2 : %lu", [attachments count]);
+    VLogInfo(@"Attach count : %lu", [attachments count]);
     
     [NSThread sleepForTimeInterval : 1.0f];
     

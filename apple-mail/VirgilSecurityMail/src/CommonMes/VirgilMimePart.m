@@ -38,6 +38,7 @@
 #import "VirgilProcessingManager.h"
 #import <MimeBody.h>
 #import "VirgilClassNameResolver.h"
+#import "VirgilLog.h"
 
 #import "ParsedMessage.h"
 #import "MCAttachment.h"
@@ -123,7 +124,7 @@
 }
 
 - (void)MAClearCachedDecryptedMessageBody {
-    NSLog(@"MAClearCachedDecryptedMessageBody");
+    VLogInfo(@"MAClearCachedDecryptedMessageBody");
     return [self MAClearCachedDecryptedMessageBody];
 }
 

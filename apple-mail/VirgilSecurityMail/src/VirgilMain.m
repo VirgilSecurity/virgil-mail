@@ -38,6 +38,7 @@
 #import "VirgilHandlersInstaller.h"
 #import "VirgilProcessingManager.h"
 #import "VirgilPreferences.h"
+#import "VirgilLog.h"
 
 NSString *VirgilMailMethodPrefix = @"MA";
 
@@ -56,7 +57,7 @@ NSString *VirgilMailMethodPrefix = @"MA";
     /// doesn't allow bundles anymore.
     
     if (!mvMailBundleClass) {
-        NSLog(@"Mail.app doesn't support bundles anymore. Exit.");
+        VLogFatal(@"Mail.app doesn't support bundles anymore. Exit.");
         return;
     }
     
@@ -78,18 +79,20 @@ NSString *VirgilMailMethodPrefix = @"MA";
     [[((VirgilMain *)self) class] registerBundle];
 }
 
+- (NSString *) version {
+    NSDictionary * info = [[NSBundle bundleForClass : [self class]] infoDictionary];
+    return [info objectForKey:@"CFBundleVersion"];
+}
+
 - (id)init {
 	if (self = [super init]) {
-		NSLog(@"Virgil Security Mail Plugin successfully Loaded");
+		VLogInfo(@"Virgil Security Mail Plugin %@ successfully Loaded", [self version]);
 
         // Install handlers
         [VirgilHandlersInstaller installHandlerByPrefix:VirgilMailMethodPrefix];
 	}
     
 	return self;
-}
-
-- (void)dealloc {
 }
 
 + (BOOL)hasPreferencesPanel {

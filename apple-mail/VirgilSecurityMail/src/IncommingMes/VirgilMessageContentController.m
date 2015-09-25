@@ -7,17 +7,18 @@
 //
 
 #import "VirgilMessageContentController.h"
+#import "VirgilLog.h"
 
 @implementation VirgilMessageContentController
 
 - (void)MASetMessageToDisplay:(id)message {
     [self MASetMessageToDisplay:message];
-    NSLog(@"Message have been selected by user");
+    VLogInfo(@"Message have been selected by user");
 }
 
 - (void)MASetRepresentedObject:(id)representedObject {
     [self MASetRepresentedObject:representedObject];
-    NSLog(@"Message have been selected by user");
+    VLogInfo(@"Message have been selected by user");
 }
 
 @end

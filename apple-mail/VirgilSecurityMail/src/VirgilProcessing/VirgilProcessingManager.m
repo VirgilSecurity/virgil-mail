@@ -50,6 +50,7 @@
 #import "VirgilPreferencesContainer.h"
 #import "VirgilKeyChainContainer.h"
 #import "VirgilKeyChain.h"
+#import "VirgilLog.h"
 
 #import <MessageStore.h>
 #import <MailAccount.h>
@@ -137,7 +138,7 @@ static BOOL _decryptionStart = YES;
     HTMLParser *parser = [[HTMLParser alloc] initWithString:strBody error:&error];
     
     if (error) {
-        NSLog(@"Error: %@", error);
+        VLogError(@"Error: %@", error);
         return NO;
     }
     
@@ -168,7 +169,7 @@ static BOOL _decryptionStart = YES;
         HTMLParser *parser = [[HTMLParser alloc] initWithString:strBody error:&error];
         
         if (error) {
-            NSLog(@"Error: %@", error);
+            VLogError(@"Error: %@", error);
             return NO;
         }
         
@@ -206,7 +207,7 @@ static BOOL _decryptionStart = YES;
                    error:&error];
     
     if(error) {
-        NSLog(@"Can't read e-mail JSON");
+        VLogError(@"Can't read e-mail JSON");
         return nil;
     }
     
@@ -214,7 +215,7 @@ static BOOL _decryptionStart = YES;
     if([mailJSON isKindOfClass:[NSDictionary class]]) {
         emailDictionary = mailJSON;
     } else {
-        NSLog(@"Can't read e-mail JSON (not a dictionary)");
+        VLogError(@"Can't read e-mail JSON (not a dictionary)");
         return nil;
     }
     
@@ -257,7 +258,7 @@ static BOOL _decryptionStart = YES;
                    error:&error];
     
     if(error) {
-        NSLog(@"Can't read e-mail JSON");
+        VLogError(@"Can't read e-mail JSON");
         return nil;
     }
 
@@ -265,7 +266,7 @@ static BOOL _decryptionStart = YES;
     if([mailJSON isKindOfClass:[NSDictionary class]]) {
         emailDictionary = mailJSON;
     } else {
-        NSLog(@"Can't read e-mail JSON (not a dictionary)");
+        VLogError(@"Can't read e-mail JSON (not a dictionary)");
         return NO;
     }
 
@@ -373,11 +374,11 @@ static BOOL _decryptionStart = YES;
         nil == publicId ||
         nil == privateKey ||
         nil == encryptedContent) {
-        NSLog(@"sender : %@", sender);
-        NSLog(@"senderPublicKey : %@", senderPublicKey);
-        NSLog(@"receiver : %@", receiver);
-        NSLog(@"publicId : %@", publicId);
-        NSLog(@"ERROR : Can't decrypt message !");
+        VLogInfo(@"sender : %@", sender);
+        VLogInfo(@"senderPublicKey : %@", senderPublicKey);
+        VLogInfo(@"receiver : %@", receiver);
+        VLogInfo(@"publicId : %@", publicId);
+        VLogError(@"ERROR : Can't decrypt message !");
         return NO;
     }
     
@@ -385,7 +386,7 @@ static BOOL _decryptionStart = YES;
                                               data:encryptedContent.emailData
                                          publicKey:senderPublicKey]) {
         //TODO: Place to email information about invalid signature
-        NSLog(@"ERROR : Wrong signature !");
+        VLogError(@"Wrong signature !");
     }
     
     VirgilDecryptedContent * decryptedContent = [self decryptContent:encryptedContent
@@ -439,7 +440,6 @@ static BOOL _decryptionStart = YES;
     
     Message * currentMessage = [(MimeBody *)[mimePart mimeBody] message];
 
-    NSLog(@"    decryptMessagePart, _decryptionStart : %hhd   isCurrentMail : %hhd", _decryptionStart, [_decryptedMail isCurrentMail:currentMessage]);
     if (YES == _decryptionStart || ![_decryptedMail isCurrentMail:currentMessage]) {
         [self decryptWholeMessage:topMimePart];
         _decryptionStart = NO;
@@ -455,7 +455,7 @@ static BOOL _decryptionStart = YES;
     Message * message = [(MimeBody *)[topMimePart mimeBody] message];
     NSString * receiver = [self getMyAccountFromMessage:message];
     if (nil == message || nil == receiver) return NO;
-    NSLog(@"isRead = %hhd", [message isRead]);
+    VLogInfo(@"isRead = %hhd", [message isRead]);
     
     if (![topMimePart.subtype isEqualTo:@"html"]) return NO;
     
@@ -515,7 +515,7 @@ static BOOL _decryptionStart = YES;
     NSArray * accounts = [VirgilProcessingManager accountsList];
     
     for (NSString * email in accounts) {
-        NSLog(@"                        getAllPrivateKeys");
+        VLogInfo(@"getAllPrivateKeys");
         [self getKeysContainer : email
             forcePrivateKeyGet : YES
             forceActiveAccount : YES];
@@ -524,8 +524,6 @@ static BOOL _decryptionStart = YES;
 
 - (NSString *) getMyAccountFromMessage : (Message *)message {
     if (nil == message) return nil;
-    
-    // TODO: Pay attention to [message account] (MFIMAPAccount)
     
     // Get my accounts
     NSMutableSet * myAccounts = [[NSMutableSet alloc] init];
@@ -563,7 +561,7 @@ static BOOL _decryptionStart = YES;
 - (VirgilKeyChainContainer *) getKeysContainer : (NSString *) account
                             forcePrivateKeyGet : (BOOL) forcePrivateKey
                             forceActiveAccount : (BOOL) forceActiveAccount {
-    NSLog(@"                        getKeysContainer  account : %@  forcePrivateKey : %hhd", account, forcePrivateKey);
+    VLogInfo(@"getKeysContainer  account : %@  NeedPrivateKey : %hhd", account, forcePrivateKey);
     if (nil == account) return nil;
     VirgilKeyChainContainer * container = [VirgilKeyChain loadContainer : account];
     
@@ -571,11 +569,17 @@ static BOOL _decryptionStart = YES;
         nil != container.publicKey &&
         nil != container.privateKey &&
         (!forceActiveAccount || (YES == container.isActive))) {
+        VLogInfo(@"Container present in KeyChain");
         return container;
+    }
+    
+    if (nil != container) {
+        VLogInfo(@"Container in KeyChain : %@", container);
     }
     
     VirgilPrivateKey * privateKey = container.privateKey;
     if ((nil == container || nil == privateKey) && forcePrivateKey) {
+        VLogInfo(@"GUI request for account login");
         privateKey = [VirgilGui getPrivateKey : account];
     }
     
@@ -583,7 +587,7 @@ static BOOL _decryptionStart = YES;
     if (forcePrivateKey && nil != container && (NO == container.isActive)) {
         BOOL res = [VirgilKeyManager resendConfirmEMail : account];
         if (NO == res) {
-            NSLog(@"ERROR: getKeysContainer : %@", [VirgilKeyManager lastError]);
+            VLogError(@"getKeysContainer : %@", [VirgilKeyManager lastError]);
         }
     }
 #endif
@@ -615,11 +619,8 @@ static BOOL _decryptionStart = YES;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject : [content toDictionary]
                                                        options : 0
                                                          error : &error];
-    NSLog(@"jsonData    =  %@",
-          [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding]);
-    
     if (!jsonData) {
-        NSLog(@"JSON creation error: %@", error.localizedDescription);
+        VLogError(@"JSON creation error: %@", error.localizedDescription);
         return nil;
     }
     
@@ -636,8 +637,8 @@ static BOOL _decryptionStart = YES;
     if (nil == publicKeyForSender) return nil;
     [publicKeys addObject : publicKeyForSender];
     
-    NSLog(@"sender : %@", sender);
-    NSLog(@"receivers : %@", receivers);
+    VLogInfo(@"sender : %@", sender);
+    VLogInfo(@"receivers : %@", receivers);
     
     for (NSString * receiverEmail in receivers) {
         NSString * fixedReceiver = [self getEmailFromFullName : receiverEmail];
@@ -655,8 +656,6 @@ static BOOL _decryptionStart = YES;
     NSData * signature = [VirgilCryptoLibWrapper signatureForData : encryptedEmailBody
                                                    withPrivateKey : container.privateKey.key
                                                 privatKeyPassword : container.privateKey.keyPassword];
-    
-    
     VirgilEncryptedContent * encryptedContent =
             [[VirgilEncryptedContent alloc] initWithEmailData : encryptedEmailBody
                                                     signature : signature
@@ -668,7 +667,7 @@ static BOOL _decryptionStart = YES;
                                                                 options : 0
                                                                   error : &error];
     if (!jsonEncryptedData) {
-        NSLog(@"JSON creation error: %@", error.localizedDescription);
+        VLogError(@"JSON creation error: %@", error.localizedDescription);
         return nil;
     }
 
@@ -859,7 +858,6 @@ static BOOL _decryptionStart = YES;
         NSString * container = @"<!DOCTYPE html><html lang='en-US'><head><meta charset='utf-8'></head><body><p>%@</p></body></html>";
         HTMLConverter * htmlCreator = [[HTMLConverter alloc] init];
         htmlBody = [NSString stringWithFormat : container, [htmlCreator toHTML : body]] ;
-        NSLog(@" htmlBody = %@", htmlBody);
     }
     
     VirgilDecryptedContent * decryptedContent =

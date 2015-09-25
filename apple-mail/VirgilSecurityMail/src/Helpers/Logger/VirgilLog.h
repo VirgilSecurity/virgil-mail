@@ -34,76 +34,45 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "VirgilDecryptedMail.h"
-#import "MessageBody.h"
-#import "Message.h"
-#import "VirgilClassNameResolver.h"
-#import "VirgilLog.h"
+#import <Foundation/Foundation.h>
 
-@implementation VirgilDecryptedMail
+#define VLogInfo(s,...)                     \
+[[VirgilLog sharedInstance] myLog:@"INFO"   \
+file:__FILE__                               \
+lineNumber:__LINE__                         \
+format:(s), ##__VA_ARGS__]
 
-+(id)alloc{
-    return [super alloc];
-}
+#define VLogWarning(s,...)                   \
+[[VirgilLog sharedInstance] myLog:@"WARNING" \
+file:__FILE__                                \
+lineNumber:__LINE__                          \
+format:(s), ##__VA_ARGS__]
 
--(id)init{
-    _curMailHash = 0;
-    _mailParts = [[NSMutableDictionary alloc] init];
-    return [super init];
-}
+#define VLogError(s,...)                    \
+[[VirgilLog sharedInstance] myLog:@"ERROR"  \
+file:__FILE__                               \
+lineNumber:__LINE__                         \
+format:(s), ##__VA_ARGS__]
 
-- (void) clear {
-    _curMailHash = 0;
-    [_mailParts removeAllObjects];
-}
+#define VLogFatal(s,...)                    \
+[[VirgilLog sharedInstance] myLog:@"FATAL"  \
+file:__FILE__                               \
+lineNumber:__LINE__                         \
+format:(s), ##__VA_ARGS__]
 
-- (BOOL) isEmpty {
-    return !_curMailHash;
-}
+@interface VirgilLog : NSObject {
+@private
+    NSFileHandle * _fileHandle;
+} 
 
-- (NSString *) hashVal:(id)someId {
-    return [NSString stringWithFormat:@"%lu", (NSUInteger)someId];
-}
++ (VirgilLog *) sharedInstance;
 
-- (NSString *) invalidHashVal {
-    return [NSString stringWithFormat:@"%lu", (NSUInteger)0];
-}
+- (void) myLog : (NSString * ) type
+          file : (char *) file
+    lineNumber : (int) lineNumber
+        format : (NSString *) format, ...;
 
-- (void) setCurrentMailHash:(id)hash {
-    if ([self isCurrentMail:hash]) {
-        [self clear];
-    }
-    _curMailHash = [self hashVal:hash];
-}
-
-- (BOOL) isCurrentMail:(id)someMail {
-    return _curMailHash == [self hashVal:someMail];
-}
-
-- (void) addPart:(id)part partHash:(id)partHash {
-    if ([self isEmpty]) return;
-    [_mailParts setValue:part forKey:[self hashVal:partHash]];
-}
-
-- (void) addAttachement:(id)attach attachHash:(id)attachHash {
-    if ([self isEmpty]) return;
-    [_mailParts setValue:attach forKey:attachHash];
-}
-
-- (id) partByHash:(id)partHash {
-    if ([self isEmpty]) {
-        VLogError(@"PART NOT PRESENT");
-        return nil;
-    }
-    return [_mailParts	valueForKey:[self hashVal:partHash]];
-}
-
-- (id) attachementByHash:(id)attachHash {
-    if ([self isEmpty]) {
-        VLogError(@"Error: PART NOT PRESENT");
-        return nil;
-    }
-    return [_mailParts	valueForKey:attachHash];
-}
+- (id) init;
+- (void) dealloc;
 
 @end

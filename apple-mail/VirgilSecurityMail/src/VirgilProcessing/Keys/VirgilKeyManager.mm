@@ -38,6 +38,7 @@
 #import "VirgilPrivateKeyManager.h"
 #import "VirgilHelpers.h"
 #import "VirgilKeyChain.h"
+#import "VirgilLog.h"
 
 #include <iostream>
 #include <fstream>
@@ -186,9 +187,6 @@ static NSString * _lastError = nil;
                                                    isActive : NO];
         [VirgilKeyChain saveContainer : container
                            forAccount : account];
-        
-        //NSLog(@"createAccount : %@", container);
-        
         return YES;
     } catch (std::exception& exception) {
         const std::string _error(exception.what());
@@ -216,8 +214,6 @@ static NSString * _lastError = nil;
         [VirgilKeyManager setErrorString : @"account not present for confirmation"];
         return NO;
     }
-    
-    NSLog(@"confirmAccountCreation : %@", keyChainContainer);
     
     BOOL res = [VirgilKeyManager confirmAccountCreationWithCode : code
                                                    keyContainer : keyChainContainer];
@@ -388,12 +384,12 @@ static NSString * _lastError = nil;
                               );
         const std::string uuid([VirgilHelpers _uuid]);
         keysClient.publicKey().del(credentials, uuid);
-        NSLog(@"                 deletePublicKey : DONE");
+        VLogInfo(@"deletePublicKey : DONE");
         return YES;
     } catch (std::exception& exception) {
         const std::string _error(exception.what());
         [VirgilKeyManager setErrorString : [NSString stringWithFormat:@"deletePublicKey : %s", _error.c_str()]];
-        NSLog(@"%@", [VirgilKeyManager lastError]);
+        VLogError(@"%@", [VirgilKeyManager lastError]);
     }
     return NO;
 }

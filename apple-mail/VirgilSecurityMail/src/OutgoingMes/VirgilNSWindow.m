@@ -41,7 +41,6 @@
 @implementation NSWindow (Virgil)
 
 - (void) MAToggleFullScreen : (id)sender {
-    NSLog(@"MAToggleFullScreen");
     
 #if 0
     for(DocumentEditor * editor in [/*DocumentEditor*/NSClassFromString(@"DocumentEditor") documentEditors]) {

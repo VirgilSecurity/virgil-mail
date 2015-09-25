@@ -37,6 +37,7 @@
 #import "VirgilCryptoLibWrapper.h"
 #import "NSData+Base64.h"
 #import "VirgilPublicKey.h"
+#import "VirgilLog.h"
 
 #include <iostream>
 #include <algorithm>
@@ -99,7 +100,7 @@ using virgil::crypto::foundation::VirgilBase64;
         
     } catch (std::exception& exception) {
         const std::string _error(exception.what());
-        NSLog(@"decryptData ERROR %s", _error.c_str());
+        VLogError(@"decryptData ERROR %s", _error.c_str());
     }
     return nil;
 }
@@ -124,7 +125,7 @@ using virgil::crypto::foundation::VirgilBase64;
         
     } catch (std::exception& exception) {
         const std::string _error(exception.what());
-        NSLog(@"decryptData ERROR %s", _error.c_str());
+        VLogError(@"decryptData ERROR %s", _error.c_str());
     }
     return nil;
 }
@@ -154,7 +155,7 @@ using virgil::crypto::foundation::VirgilBase64;
         
     } catch (std::exception& exception) {
         const std::string _error(exception.what());
-        NSLog(@"decryptData ERROR %s", _error.c_str());
+        VLogError(@"checkSignature ERROR %s", _error.c_str());
     }
     return NO;
 }
@@ -186,7 +187,7 @@ using virgil::crypto::foundation::VirgilBase64;
         
     } catch (std::exception& exception) {
         const std::string _error(exception.what());
-        NSLog(@"encryptData ERROR %s", _error.c_str());
+        VLogError(@"encryptData ERROR %s", _error.c_str());
     }
     return nil;
 }
@@ -210,7 +211,7 @@ using virgil::crypto::foundation::VirgilBase64;
         
     } catch (std::exception& exception) {
         const std::string _error(exception.what());
-        NSLog(@"encryptData ERROR %s", _error.c_str());
+        VLogError(@"encryptData ERROR %s", _error.c_str());
     }
     return nil;
 }
@@ -244,7 +245,7 @@ using virgil::crypto::foundation::VirgilBase64;
         
     } catch (std::exception& exception) {
         const std::string _error(exception.what());
-        NSLog(@"signatureForData ERROR %s", _error.c_str());
+        VLogError(@"signatureForData ERROR %s", _error.c_str());
     }
     return nil;
 }

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		49ADE6291BB294D3000BCDF1 /* VirgilMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49ADE6281BB294D3000BCDF1 /* VirgilMainViewController.m */; };
+		49C9B2761BB568DB001B86F0 /* VirgilLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C9B2751BB568DB001B86F0 /* VirgilLog.m */; };
 		49CD501D1BB3DD89007B0E23 /* NSString+QuotedPrintable.m in Sources */ = {isa = PBXBuildFile; fileRef = 49CD501C1BB3DD89007B0E23 /* NSString+QuotedPrintable.m */; };
 		49CD50201BB40436007B0E23 /* HTMLConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 49CD501F1BB40436007B0E23 /* HTMLConverter.m */; };
 		49DB7FCD1BB1B65C00640350 /* VirgilToolbarWorker.m in Sources */ = {isa = PBXBuildFile; fileRef = 49DB7FCC1BB1B65C00640350 /* VirgilToolbarWorker.m */; };
@@ -111,6 +112,8 @@
 /* Begin PBXFileReference section */
 		49ADE6271BB294D3000BCDF1 /* VirgilMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilMainViewController.h; path = VirgilSecurityMail/src/Gui/VirgilMainViewController.h; sourceTree = "<group>"; };
 		49ADE6281BB294D3000BCDF1 /* VirgilMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilMainViewController.m; path = VirgilSecurityMail/src/Gui/VirgilMainViewController.m; sourceTree = "<group>"; };
+		49C9B2741BB568DB001B86F0 /* VirgilLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilLog.h; path = VirgilSecurityMail/src/Helpers/Logger/VirgilLog.h; sourceTree = "<group>"; };
+		49C9B2751BB568DB001B86F0 /* VirgilLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilLog.m; path = VirgilSecurityMail/src/Helpers/Logger/VirgilLog.m; sourceTree = "<group>"; };
 		49CD501B1BB3DD89007B0E23 /* NSString+QuotedPrintable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+QuotedPrintable.h"; path = "VirgilSecurityMail/src/Helpers/NSString+QuotedPrintable.h"; sourceTree = "<group>"; };
 		49CD501C1BB3DD89007B0E23 /* NSString+QuotedPrintable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+QuotedPrintable.m"; path = "VirgilSecurityMail/src/Helpers/NSString+QuotedPrintable.m"; sourceTree = "<group>"; };
 		49CD501E1BB40436007B0E23 /* HTMLConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLConverter.h; path = VirgilSecurityMail/src/Helpers/HTMLConverter.h; sourceTree = "<group>"; };
@@ -256,6 +259,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		49C9B2731BB568B1001B86F0 /* Logger */ = {
+			isa = PBXGroup;
+			children = (
+				49C9B2741BB568DB001B86F0 /* VirgilLog.h */,
+				49C9B2751BB568DB001B86F0 /* VirgilLog.m */,
+			);
+			name = Logger;
+			sourceTree = "<group>";
+		};
 		D111742A1B67FBEE00DD9A39 = {
 			isa = PBXGroup;
 			children = (
@@ -329,12 +341,13 @@
 		D13F602A1B6A1A5E00508C79 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				49CD501E1BB40436007B0E23 /* HTMLConverter.h */,
-				49CD501F1BB40436007B0E23 /* HTMLConverter.m */,
+				49C9B2731BB568B1001B86F0 /* Logger */,
 				D15362C21B6F62CC000215F9 /* Base64 */,
 				D15362AF1B6C02D2000215F9 /* HTMLParser */,
 				D13F602B1B6A1A9600508C79 /* JRLPSwizzle.h */,
 				D13F602C1B6A1A9600508C79 /* JRLPSwizzle.m */,
+				49CD501E1BB40436007B0E23 /* HTMLConverter.h */,
+				49CD501F1BB40436007B0E23 /* HTMLConverter.m */,
 				D1E7CABF1B73FC9E00F4EC4F /* VirgilClassNameResolver.h */,
 				D1E7CAC01B73FC9E00F4EC4F /* VirgilClassNameResolver.m */,
 				D1DDA9091B91B1EA00002A2F /* VirgilValidator.h */,
@@ -702,6 +715,7 @@
 				D1DDA92D1B91B32600002A2F /* VirgilNetRequest.m in Sources */,
 				D15362C11B6F3555000215F9 /* VirgilCryptoLibWrapper.mm in Sources */,
 				D15362C51B6F62E4000215F9 /* NSData+Base64.m in Sources */,
+				49C9B2761BB568DB001B86F0 /* VirgilLog.m in Sources */,
 				D13F605C1B6B6D6200508C79 /* VirgilProcessingManager.m in Sources */,
 				D1DDA9261B91B22F00002A2F /* VirgilReplaceAnimator.m in Sources */,
 				D1DDA9021B91A34100002A2F /* VirgilPrivateKey.m in Sources */,

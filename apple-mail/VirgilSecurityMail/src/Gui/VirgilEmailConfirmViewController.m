@@ -40,6 +40,7 @@
 #import "VirgilValidator.h"
 #import "VirgilGui.h"
 #import "VirgilProcessingManager.h"
+#import "VirgilLog.h"
 
 @interface VirgilEmailConfirmViewController ()
 
@@ -63,7 +64,7 @@
                                                              containerPassword : @""]];
         [self closeWindow];
     } else {
-        NSLog(@"%@", [VirgilKeyManager lastError]);
+        VLogError(@"%@", [VirgilKeyManager lastError]);
         [self showErrorView : @"Wrong confirmation code."];
     }
 }

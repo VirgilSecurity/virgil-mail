@@ -36,6 +36,7 @@
 
 #import "VirgilDocumentEditor.h"
 #import "VirgilMenu.h"
+#import "VirgilLog.h"
 #import "MailNotificationCenter.h"
 #import "MFError.h"
 #import "DocumentEditor.h"
@@ -43,7 +44,6 @@
 @implementation VirgilDocumentEditor
 
 - (void) MABackEndDidLoadInitialContent : (id)content {
-    NSLog(@"MABackEndDidLoadInitialContent");
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didExitFullScreen:)
                                                  name:@"NSWindowDidExitFullScreenNotification"

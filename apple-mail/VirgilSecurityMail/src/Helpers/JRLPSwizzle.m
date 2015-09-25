@@ -2,6 +2,7 @@
 //	Some rights reserved: http://opensource.org/licenses/mit-license.php
 
 #import "JRLPSwizzle.h"
+#import "VirgilLog.h"
 #import <objc/objc-class.h>	
 
 #define SetNSErrorFor(FUNC, ERROR_VAR, FORMAT,...)	\
@@ -121,14 +122,14 @@
     Method *classMethods;
     for(unsigned int i = 0; i < 2; i++) {
         classMethods = class_copyMethodList(i == 0 ? aClass : object_getClass(aClass), &methodCount);
-        NSLog(@"Number of methods found for class %@: %u", aClass, methodCount);
+        VLogInfo(@"Number of methods found for class %@: %u", aClass, methodCount);
         
         for (unsigned int j = 0; j < methodCount; j++) {
             currentSelector = method_getName((Method)classMethods[j]);
-            NSLog(@"%d: Adding method %@ from %@", i, NSStringFromSelector(currentSelector), i == 0 ? aClass : object_getClass(aClass));
+            VLogInfo(@"%d: Adding method %@ from %@", i, NSStringFromSelector(currentSelector), i == 0 ? aClass : object_getClass(aClass));
             [i == 0 ? self : object_getClass(self) jrlp_addMethod:currentSelector fromClass:i == 0 ? aClass : object_getClass(aClass) error:error];
             if(*error) {
-                NSLog(@"failed to add method: %@", NSStringFromSelector(currentSelector));
+                VLogError(@"failed to add method: %@", NSStringFromSelector(currentSelector));
                 free(classMethods);
                 return NO;
             }

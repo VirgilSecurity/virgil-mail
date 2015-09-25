@@ -35,6 +35,7 @@
  */
 
 #import "VirgilKeychainWrapper.h"
+#import "VirgilLog.h"
 
 @implementation VirgilKeychainWrapper
 
@@ -69,7 +70,7 @@
             ret = [NSKeyedUnarchiver unarchiveObjectWithData:(__bridge NSData *)keyData];
         }
         @catch (NSException *e) {
-            NSLog(@"Unarchive of %@ failed: %@", service, e);
+            VLogInfo(@"Unarchive of %@ failed: %@", service, e);
         }
         @finally {}
     }

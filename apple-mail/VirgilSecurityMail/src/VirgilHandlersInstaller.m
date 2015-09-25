@@ -37,6 +37,7 @@
 #import "VirgilHandlersInstaller.h"
 #import "JRLPSwizzle.h"
 #import "VirgilSecurityMail-Prefix.pch"
+#import "VirgilLog.h"
 
 @implementation VirgilHandlersInstaller
 
@@ -183,7 +184,7 @@
         
 		Class mailClass = NSClassFromString(class);
         if(!mailClass) {
-            NSLog(@"Virgil Security Mail Plugin can't install all need handlers. Absent class is %@.", class);
+            VLogFatal(@"Virgil Security Mail Plugin can't install all need handlers. Absent class is %@.", class);
 			continue;
 		}
 		
@@ -196,7 +197,7 @@
 		BOOL extend = ourClass != nil ? YES : NO;
 		if(extend) {
 			if(![mailClass jrlp_addMethodsFromClass:ourClass error:&error]) {
-                NSLog(@"Virgil Security Mail Plugin can't install all need handlers. Methods of %@ couldn't be added to %@.", ourClass, mailClass);
+                VLogFatal(@"Virgil Security Mail Plugin can't install all need handlers. Methods of %@ couldn't be added to %@.", ourClass, mailClass);
             }
 		}
 		
@@ -213,7 +214,7 @@
 			if(![mailClass jrlp_swizzleMethod:selector withMethod:extensionSelector error:&error]) {
                 // If that didn't work, try to add as class method.
                 if(![mailClass jrlp_swizzleClassMethod:selector withClassMethod:extensionSelector error:&error])
-                    NSLog(@"WARNING: %@ doesn't respond to selector %@ - %@", NSStringFromClass(mailClass),
+                    VLogWarning(@"%@ doesn't respond to selector %@ - %@", NSStringFromClass(mailClass),
 						  NSStringFromSelector(selector), error);
             }
 		}
