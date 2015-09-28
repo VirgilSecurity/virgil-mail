@@ -65,8 +65,6 @@
 
 @implementation VirgilProcessingManager
 
-static BOOL _decryptionStart = YES;
-
 + (VirgilProcessingManager *) sharedInstance {
     static VirgilProcessingManager * singletonObject = nil;
     static dispatch_once_t onceToken;
@@ -84,10 +82,6 @@ static BOOL _decryptionStart = YES;
 - (id) init{
     _decryptedMail = [[VirgilDecryptedMail alloc] init];
     return [super init];
-}
-
-- (BOOL) resetDecryption {
-    return _decryptionStart = YES;
 }
 
 - (BOOL) isEncryptedByVirgil : (MimePart *)topMimePart {
@@ -299,12 +293,34 @@ static BOOL _decryptionStart = YES;
     return emailPart;
 }
 
+- (NSTimeInterval) curTime {
+    return [[NSDate date] timeIntervalSince1970];
+}
+
 - (BOOL) canDecrypt {
-    if ([VirgilPreferencesContainer isNeedAskToDecrypt]) {
-        return [VirgilGui askForCanDecrypt];
+    static BOOL _lastAnswer = NO;
+    static NSTimeInterval _lastAnswerTime = 0;
+    
+    @synchronized(self) {
+        if ([VirgilPreferencesContainer isNeedAskToDecrypt]) {
+            
+            NSTimeInterval _saveAnswerTime = 1.0;
+            
+            if (YES == _lastAnswer && YES == [VirgilPreferencesContainer isSaveDecryptionAccept]) {
+                _saveAnswerTime = 60.0 * [VirgilPreferencesContainer acceptSaveTimeMin];
+            }
+            
+            if (([self curTime] - _lastAnswerTime) > _saveAnswerTime) {
+                _lastAnswer = [VirgilGui askForCanDecrypt];
+                _lastAnswerTime = [self curTime];
+            }
+        } else {
+            _lastAnswer = YES;
+        }
     }
     
-    return YES;
+    VLogInfo(@"canDecrypt %hhd", _lastAnswer);
+    return _lastAnswer;
 }
 
 - (BOOL) isVirgilDataInAttach : (MimePart *) virgilPart {
@@ -425,6 +441,7 @@ static BOOL _decryptionStart = YES;
         [_decryptedMail addAttachement:decryptedAttachement
                             attachHash:[part attachmentFilename]];
     }
+    
     return YES;
 }
 
@@ -440,9 +457,10 @@ static BOOL _decryptionStart = YES;
     
     Message * currentMessage = [(MimeBody *)[mimePart mimeBody] message];
 
-    if (YES == _decryptionStart || ![_decryptedMail isCurrentMail:currentMessage]) {
+    if (![_decryptedMail isCurrentMail:currentMessage]) {
+        [_decryptedMail clear];
         [self decryptWholeMessage:topMimePart];
-        _decryptionStart = NO;
+        [_decryptedMail setCurrentMailHash:currentMessage];
     }
     
     return [_decryptedMail partByHash:mimePart];

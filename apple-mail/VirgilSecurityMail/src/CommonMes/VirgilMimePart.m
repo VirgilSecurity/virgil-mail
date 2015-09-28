@@ -45,9 +45,7 @@
 
 @implementation VirgilMimePart
 
-- (id)MADecodeWithContext:(id)ctx {
-    [[VirgilProcessingManager sharedInstance] resetDecryption];
-    
+- (id)MADecodeWithContext:(id)ctx {    
     id decryptedPart = nil;
     id nativePart = [self MADecodeWithContext:ctx];
     

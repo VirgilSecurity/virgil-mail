@@ -44,4 +44,10 @@
 + (BOOL) isUseEncryption;
 + (void) setUseEncryption : (BOOL)use;
 
++ (BOOL) isSaveDecryptionAccept;
++ (void) setSaveDecryptionAccept : (BOOL)use;
+
++ (NSInteger) acceptSaveTimeMin;
++ (void) setSaveAcceptTimeMin : (NSInteger) timeInMin;
+
 @end

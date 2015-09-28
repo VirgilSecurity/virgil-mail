@@ -70,14 +70,11 @@
 }
 
 - (void) setCurrentMailHash:(id)hash {
-    if ([self isCurrentMail:hash]) {
-        [self clear];
-    }
     _curMailHash = [self hashVal:hash];
 }
 
 - (BOOL) isCurrentMail:(id)someMail {
-    return _curMailHash == [self hashVal:someMail];
+    return [_curMailHash isEqualToString : [self hashVal:someMail]];
 }
 
 - (void) addPart:(id)part partHash:(id)partHash {

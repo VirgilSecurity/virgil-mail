@@ -64,7 +64,6 @@
 - (NSData *) decryptedAttachementByName:(NSString *) name;
 - (BOOL) isEncryptedByVirgil : (MimePart *)topMimePart;
 - (MimePart *) topLevelPartByAnyPart:(MimePart *)part;
-- (BOOL) resetDecryption;
 
 // Helper work with keys
 - (void) setCurrentConfirmationCode : (NSString *) confirmationCode;

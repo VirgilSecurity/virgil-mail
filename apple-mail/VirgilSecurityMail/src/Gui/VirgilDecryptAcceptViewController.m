@@ -35,7 +35,8 @@
  */
 
 #import "VirgilDecryptAcceptViewController.h"
-#include "NSViewController+VirgilView.h"
+#import "NSViewController+VirgilView.h"
+#import "VirgilPreferencesContainer.h"
 
 static UserAcceptResult _result = userUnknown;
 
@@ -46,13 +47,45 @@ static UserAcceptResult _result = userUnknown;
 }
 
 - (IBAction)onAcceptClick:(id)sender {
+    NSButton * element = [self.view viewWithTag : 7000];
+    
+    BOOL saveAccept = NSOnState == element.state;
+    
+    NSTextField * acceptTimeField = [self.view viewWithTag : 7001];
+    NSInteger saveAcceptTime = 0;
+    @try {
+        saveAcceptTime = [acceptTimeField integerValue];
+    }
+    @catch (NSException *exception) {}
+    @finally {}
+    
+    if (saveAcceptTime < 1 || saveAcceptTime > 60) {
+        [self showCompactErrorView : @"Save time shoud be in range 1 .. 60 minutes"
+                            atView : acceptTimeField];
+        return;
+    }
+    
     _result = userAccept;
+    
+    [VirgilPreferencesContainer setSaveDecryptionAccept:saveAccept];
+    [VirgilPreferencesContainer setSaveAcceptTimeMin:saveAcceptTime];
+
     [self closeWindow];
 }
 
 - (IBAction)onDeclineClick:(id)sender {
     _result = userDecline;
     [self closeWindow];
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    NSButton * element = [self.view viewWithTag : 7000];
+    [element setState : [VirgilPreferencesContainer isSaveDecryptionAccept] ? NSOnState : NSOffState];
+    
+    NSTextField * acceptTimeField = [self.view viewWithTag : 7001];
+    [acceptTimeField setIntegerValue : [VirgilPreferencesContainer acceptSaveTimeMin]];
 }
 
 @end

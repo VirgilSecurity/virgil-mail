@@ -62,7 +62,7 @@
     NSRange      numRange;
     NSUInteger   numLength;
     threadString = [NSString stringWithFormat:@"%@", [NSThread currentThread]];
-    numRange = [threadString rangeOfString:@"num = "];
+    numRange = [threadString rangeOfString:@"number = "];
     numLength = [threadString length] - numRange.location - numRange.length;
     numRange.location = numRange.location + numRange.length;
     numRange.length   = numLength - 1;
@@ -92,24 +92,15 @@
     
     NSTimeInterval timeInMiliseconds = [[NSDate date] timeIntervalSince1970];
     
-    if(nil == [[NSThread currentThread] name]) {
-        // The thread has no name, try to find the threadnumber instead.
-        logString = [NSString stringWithFormat:@"[%@] %f Thread <%li> | %s:%d %@",
-                     type,
-                     timeInMiliseconds,
-                     (long)[self currentThreadNumber],
-                     [[sourceFile lastPathComponent] UTF8String],
-                     lineNumber,
-                     formattedString];
-    } else {
-        logString = [NSString stringWithFormat:@"[%@] %f Thread <%@> | %s:%d %@",
-                     type,
-                     timeInMiliseconds,
-                     [[NSThread currentThread] name],
-                     [[sourceFile lastPathComponent] UTF8String],
-                     lineNumber,
-                     formattedString];
-    }
+    logString = [NSString stringWithFormat:@"[%@] %f Thread <%li:%@> | %s:%d %@",
+                 type,
+                 timeInMiliseconds,
+                 (long)[self currentThreadNumber],
+                 [[NSThread currentThread] name],
+                 [[sourceFile lastPathComponent] UTF8String],
+                 lineNumber,
+                 formattedString];
+
     
     NSLog(@"%@", logString);
     [self writeToLogFile : logString];

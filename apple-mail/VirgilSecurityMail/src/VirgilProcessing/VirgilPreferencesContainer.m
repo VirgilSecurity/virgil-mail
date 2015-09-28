@@ -40,6 +40,8 @@
 
 static NSString * _NeedAskToDecrypt = @"_NeedAskToDecrypt";
 static NSString * _UseEncryption = @"_UseEncryption";
+static NSString * _SaveDecriptionAccept = @"_SaveDecriptionAccept";
+static NSString * _SaveDecriptionAcceptTime = @"_SaveDecriptionAcceptTime";
 
 + (BOOL) isNeedAskToDecrypt {
     if (NO == [VirgilPreferencesHelper isKeyPresent : _NeedAskToDecrypt]) {
@@ -63,6 +65,30 @@ static NSString * _UseEncryption = @"_UseEncryption";
 + (void) setUseEncryption : (BOOL)use {
     [VirgilPreferencesHelper setBoolForKey : use
                                        key : _UseEncryption];
+}
+
++ (BOOL) isSaveDecryptionAccept {
+    if (NO == [VirgilPreferencesHelper isKeyPresent : _SaveDecriptionAccept]) {
+        return NO;
+    }
+    return [VirgilPreferencesHelper getBoolForKey : _SaveDecriptionAccept];
+}
+
++ (void) setSaveDecryptionAccept : (BOOL)use {
+    [VirgilPreferencesHelper setBoolForKey : use
+                                       key : _SaveDecriptionAccept];
+}
+
++ (NSInteger) acceptSaveTimeMin {
+    if (NO == [VirgilPreferencesHelper isKeyPresent : _SaveDecriptionAcceptTime]) {
+        return 1;
+    }
+    return [VirgilPreferencesHelper getIntForkey : _SaveDecriptionAcceptTime];
+}
+
++ (void) setSaveAcceptTimeMin : (NSInteger) timeInMin {
+    [VirgilPreferencesHelper setIntForKey : timeInMin
+                                      key : _SaveDecriptionAcceptTime];
 }
 
 @end
