@@ -58,6 +58,9 @@ cp "/Library/Mail/Bundles/VirgilSecurityMail.mailbundle/Contents/Resources/org.v
 
 sudo -u "${USER}" launchctl load -w "${UPDATER_PLIST}"
 
+# Copy feedback creator
+cp "/Library/Mail/Bundles/VirgilSecurityMail.mailbundle/Contents/Resources/virgil-feedback.sh" "/usr/bin/"
+
 # Restart Mail.app
 ps -xo command -u "$USER" | grep -q '/\Mail.app/' || exit 0
 
