@@ -91,6 +91,7 @@ NSString *VirgilMailMethodPrefix = @"MA";
         // Install handlers
         [VirgilHandlersInstaller installHandlerByPrefix:VirgilMailMethodPrefix];
 	}
+    [self _loadImages];
     
 	return self;
 }
@@ -107,5 +108,31 @@ NSString *VirgilMailMethodPrefix = @"MA";
     return @"Virgil Preferences";
 }
 
+- (void)_loadImages {
+    NSBundle *myBundle = [NSBundle bundleForClass:[VirgilMain class]];
+    
+    NSArray *bundleImageNames = @[@"encrypt_mail",
+                                  @"menu",
+                                  @"encrypt_ok_small",
+                                  @"encrypt_unknown_small",
+                                  @"encrypt_wrong_small"];
+    NSMutableArray *bundleImages = [[NSMutableArray alloc] initWithCapacity:[bundleImageNames count]];
+    
+    for (NSString *name in bundleImageNames) {
+        NSImage *image = [[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:name]];
+        
+        // Shoud an image not exist, log a warning, but don't crash because of inserting
+        // nil!
+        if(!image) {
+            NSLog(@"GPGMail: Image %@ not found in bundle resources.", name);
+            continue;
+        }
+        [image setName:name];
+        [bundleImages addObject:image];
+    }
+    
+    _bundleImages = bundleImages;
+    
+}
 
 @end

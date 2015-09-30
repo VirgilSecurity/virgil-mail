@@ -48,12 +48,14 @@
 
 -(id)init{
     _curMailHash = 0;
+    _decryptStatus = decryptUnknown;
     _mailParts = [[NSMutableDictionary alloc] init];
     return [super init];
 }
 
 - (void) clear {
     _curMailHash = 0;
+    _decryptStatus = decryptUnknown;
     [_mailParts removeAllObjects];
 }
 
@@ -69,8 +71,10 @@
     return [NSString stringWithFormat:@"%lu", (NSUInteger)0];
 }
 
-- (void) setCurrentMailHash:(id)hash {
+- (void) setCurrentMailHash:(id)hash
+           signatureCorrect:(BOOL)signatureCorrect {
     _curMailHash = [self hashVal:hash];
+    _decryptStatus = (YES == signatureCorrect) ? decryptOk : decryptError;
 }
 
 - (BOOL) isCurrentMail:(id)someMail {

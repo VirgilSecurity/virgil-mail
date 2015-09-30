@@ -48,7 +48,8 @@
 					 @"decodeTextPlainWithContext:",
 					 @"decodeTextHtmlWithContext:",
 					 @"decodeApplicationOctet_streamWithContext:",
-					 @"clearCachedDecryptedMessageBody"
+					 @"clearCachedDecryptedMessageBody",
+                     @"hasCachedDataInStore"
                      ],
              @"DocumentEditor": @[
                      @"backEndDidLoadInitialContent:",
@@ -70,6 +71,17 @@
                      ],
              @"NSToolbar": @[
                         @"configureToolbarItems"
+                     ],
+             //@"MessageView": @[
+             //           @"_borderColor"
+             //        ],
+             @"HeaderViewController":@[
+                        @"_updateTextStorageWithHardInvalidation:"
+                     ],
+             @"MessageListObjectProxy": @[
+                        @"_updateSnippet",
+                        @"_updatePhoto",
+                        @"_updateContactPhotoVisibilityFromDefaults"
                      ]
              };
 }
@@ -167,9 +179,6 @@
     // This methods converts known classes to their counterparts in Mavericks.
     if([@[@"MC", @"MF"] containsObject:[className substringToIndex:2]])
         return [className substringFromIndex:2];
-    
-    if([className isEqualToString:@"HeaderViewController"])
-        return @"MessageHeaderDisplay";
     
     return className;
 }

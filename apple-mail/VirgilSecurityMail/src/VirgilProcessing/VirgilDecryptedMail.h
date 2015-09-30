@@ -37,10 +37,17 @@
 #import <Foundation/Foundation.h>
 #import "MimeBody.h"
 
+typedef NS_ENUM(NSInteger, DecryptStatus) {
+    decryptUnknown,
+    decryptOk,
+    decryptError
+};
+
 @interface VirgilDecryptedMail : NSObject
 - (void) clear;
 - (BOOL) isEmpty;
-- (void) setCurrentMailHash:(id)hash;
+- (void) setCurrentMailHash:(id)hash
+          signatureCorrect:(BOOL)signatureCorrect;
 - (BOOL) isCurrentMail:(id)someMail;
 
 - (void) addPart:(id)part partHash:(id)partHash;
@@ -54,6 +61,7 @@
 
 @property (readonly) NSString * curMailHash;
 @property (readonly) NSMutableDictionary * mailParts;
+@property (readonly) DecryptStatus decryptStatus;
 //@property (readonly) NSString * subject;
 
 @end

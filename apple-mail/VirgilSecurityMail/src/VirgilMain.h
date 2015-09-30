@@ -36,7 +36,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface VirgilMain : NSObject
+@interface VirgilMain : NSObject {
+    NSMutableArray * _bundleImages;
+}
 
 @end
 

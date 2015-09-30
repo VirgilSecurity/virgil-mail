@@ -4,16 +4,16 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2012 by Steve Nygard.
  */
 
-#import "NSViewController.h"
+//#import "NSViewController.h"
 
-#import "HeaderLayoutManagerDelegate.h"
-#import "NSDraggingSource.h"
-#import "NSTextViewDelegate.h"
-#import "NSTokenAttachmentDelegate.h"
+//#import "HeaderLayoutManagerDelegate.h"
+//#import "NSDraggingSource.h"
+//#import "NSTextViewDelegate.h"
+//#import "NSTokenAttachmentDelegate.h"
 
 @class ConversationMember, HeaderTextContainer, NSButton, NSImageView, NSLayoutConstraint, NSMutableDictionary, NSMutableSet, NSString, NSTextAttachment, NSTextView;
 
-@interface HeaderViewController : NSViewController <HeaderLayoutManagerDelegate, NSTextViewDelegate, NSTokenAttachmentDelegate, NSDraggingSource>
+@interface HeaderViewController : NSViewController </*HeaderLayoutManagerDelegate,*/ NSTextViewDelegate, /*NSTokenAttachmentDelegate,*/ NSDraggingSource>
 {
     long long _detailLevel;
     long long _showDetails;
@@ -32,7 +32,7 @@
 @property(retain, nonatomic) NSLayoutConstraint *senderImageViewBottomSpaceConstraint; // @synthesize senderImageViewBottomSpaceConstraint=_senderImageViewBottomSpaceConstraint;
 @property(readonly, nonatomic) NSTextAttachment *attachmentTextAttachment; // @synthesize attachmentTextAttachment=_attachmentTextAttachment;
 @property(readonly, nonatomic) NSTextAttachment *flagTextAttachment; // @synthesize flagTextAttachment=_flagTextAttachment;
-- (void).cxx_destruct;
+//- (void).cxx_destruct;
 - (void)toggleVIP:(id)arg1;
 - (void)showSignerCertificate:(id)arg1;
 - (void)draggingSession:(id)arg1 endedAtPoint:(struct CGPoint)arg2 operation:(unsigned long long)arg3;

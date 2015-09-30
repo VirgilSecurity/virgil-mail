@@ -88,15 +88,22 @@
     return [self partWithVirgilSignature:topMimePart] != nil;
 }
 
+- (BOOL) isEncryptedByVirgilByAnyPart : (MimePart *)mimePart {
+    MimePart * topMimePart = [self topLevelPartByAnyPart : mimePart];
+    return [self isEncryptedByVirgil:topMimePart];
+}
+
 - (NSSet *) allMimeParts : (MimePart *)topMimePart {
     NSMutableSet * mimeParts = [[NSMutableSet alloc] init];
     
-    [mimeParts addObject:topMimePart];
-    
-    for(MimePart *part in [topMimePart subparts]) {
-        // Recursive search
-        NSSet * subSet = [self allMimeParts:part];
-        [mimeParts addObjectsFromArray:[subSet allObjects]];
+    if (nil != topMimePart) {
+        [mimeParts addObject:topMimePart];
+        
+        for(MimePart *part in [topMimePart subparts]) {
+            // Recursive search
+            NSSet * subSet = [self allMimeParts:part];
+            [mimeParts addObjectsFromArray:[subSet allObjects]];
+        }
     }
     
     return [mimeParts copy];
@@ -304,7 +311,7 @@
     @synchronized(self) {
         if ([VirgilPreferencesContainer isNeedAskToDecrypt]) {
             
-            NSTimeInterval _saveAnswerTime = 1.0;
+            NSTimeInterval _saveAnswerTime = 2.0;
             
             if (YES == _lastAnswer && YES == [VirgilPreferencesContainer isSaveDecryptionAccept]) {
                 _saveAnswerTime = 60.0 * [VirgilPreferencesContainer acceptSaveTimeMin];
@@ -347,6 +354,7 @@
 }
 
 - (BOOL) decryptWholeMessage : (MimePart *)topMimePart {
+    [_decryptedMail clear];
     if (NO == [self canDecrypt]) return NO;
     
     MimePart * mainVirgilPart = [self partWithVirgilSignature:topMimePart];
@@ -398,11 +406,14 @@
         return NO;
     }
     
-    if (![VirgilCryptoLibWrapper isSignatureCorrect:encryptedContent.signature
-                                              data:encryptedContent.emailData
-                                         publicKey:senderPublicKey]) {
-        //TODO: Place to email information about invalid signature
+    BOOL signatureCorrect = [VirgilCryptoLibWrapper isSignatureCorrect : encryptedContent.signature
+                                                                  data : encryptedContent.emailData
+                                                             publicKey : senderPublicKey];
+    if (NO == signatureCorrect) {
         VLogError(@"Wrong signature !");
+        [_decryptedMail clear];
+        [_decryptedMail setCurrentMailHash:message signatureCorrect:NO];
+        return NO;
     }
     
     VirgilDecryptedContent * decryptedContent = [self decryptContent:encryptedContent
@@ -412,8 +423,7 @@
     
     // Prepare decrypted mail data
     // and set decrypted mail part
-    [_decryptedMail clear];
-    [_decryptedMail setCurrentMailHash : message];
+    [_decryptedMail setCurrentMailHash:message signatureCorrect:YES];
     
     if (YES == virgilDataInAttach) {
         MimePart * partForReplacement = [self partForReplacement : topMimePart];
@@ -445,6 +455,12 @@
     return YES;
 }
 
+- (DecryptStatus) getDecriptionStatusForMessage : (Message *)message {
+    if (YES == [_decryptedMail isCurrentMail:message]) {
+        return _decryptedMail.decryptStatus;
+    }
+    return decryptUnknown;
+}
 
 - (id) decryptMessagePart:(MimePart *)mimePart {
     if (nil == mimePart) return nil;
@@ -458,9 +474,7 @@
     Message * currentMessage = [(MimeBody *)[mimePart mimeBody] message];
 
     if (![_decryptedMail isCurrentMail:currentMessage]) {
-        [_decryptedMail clear];
         [self decryptWholeMessage:topMimePart];
-        [_decryptedMail setCurrentMailHash:currentMessage];
     }
     
     return [_decryptedMail partByHash:mimePart];

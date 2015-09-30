@@ -63,7 +63,9 @@
 - (id) decryptMessagePart:(MimePart *)mimePart;
 - (NSData *) decryptedAttachementByName:(NSString *) name;
 - (BOOL) isEncryptedByVirgil : (MimePart *)topMimePart;
+- (BOOL) isEncryptedByVirgilByAnyPart : (MimePart *)mimePart;
 - (MimePart *) topLevelPartByAnyPart:(MimePart *)part;
+- (DecryptStatus) getDecriptionStatusForMessage : (Message *)message;
 
 // Helper work with keys
 - (void) setCurrentConfirmationCode : (NSString *) confirmationCode;

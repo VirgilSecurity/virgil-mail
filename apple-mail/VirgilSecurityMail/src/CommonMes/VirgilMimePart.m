@@ -126,4 +126,11 @@
     return [self MAClearCachedDecryptedMessageBody];
 }
 
+- (BOOL)MAHasCachedDataInStore {
+    //if (YES == [[VirgilProcessingManager sharedInstance] isEncryptedByVirgilByAnyPart:(MimePart *)self]) {
+    //    return NO;
+    //}
+    return [self MAHasCachedDataInStore];
+}
+
 @end

@@ -4,7 +4,7 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2012 by Steve Nygard.
  */
 
-#import "NSObject.h"
+//#import "NSObject.h"
 
 @class MCMessage, MFCriterion, NSDictionary, NSImage, NSIndexSet, NSOrderedSet, NSString;
 
@@ -64,7 +64,7 @@
 @property(copy, nonatomic) NSString *dateString; // @synthesize dateString=_dateString;
 @property(copy, nonatomic) NSString *addressee; // @synthesize addressee=_addressee;
 @property(readonly, nonatomic) MCMessage *message; // @synthesize message=_message;
-- (void).cxx_destruct;
+//- (void).cxx_destruct;
 @property(readonly, nonatomic) NSImage *firstFlag;
 - (id)_iconsForFlags:(id)arg1;
 @property(readonly, nonatomic) NSImage *attachmentImage;

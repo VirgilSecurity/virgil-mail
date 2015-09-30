@@ -4,13 +4,13 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2012 by Steve Nygard.
  */
 
-#import "NSObject.h"
+//#import "NSObject.h"
 
-#import "NSURLDownloadDelegate.h"
+//#import "NSURLDownloadDelegate.h"
 
 @class MCError, MCMessage, MCMessageBody, NSArray, NSMutableDictionary, NSString;
 
-@interface MCMimePart : NSObject <NSURLDownloadDelegate>
+@interface MCMimePart : NSObject /*<NSURLDownloadDelegate>*/
 {
     id _encryptSignLock;
     NSArray *_messageSigners;
@@ -29,10 +29,10 @@
     BOOL _isMimeSigned;
     MCMessageBody *_decryptedMessageBody;
     MCMessage *_decryptedMessage;
-    id <MCMessageDataSource> _decryptedMessageDataSource;
+    //id <MCMessageDataSource> _decryptedMessageDataSource;
 }
 
-@property(retain, nonatomic) id <MCMessageDataSource> decryptedMessageDataSource; // @synthesize decryptedMessageDataSource=_decryptedMessageDataSource;
+@property(retain, nonatomic) id/* <MCMessageDataSource>*/ decryptedMessageDataSource; // @synthesize decryptedMessageDataSource=_decryptedMessageDataSource;
 @property(retain, nonatomic) MCMessage *decryptedMessage; // @synthesize decryptedMessage=_decryptedMessage;
 @property(retain, nonatomic) MCMessageBody *decryptedMessageBody; // @synthesize decryptedMessageBody=_decryptedMessageBody;
 @property(nonatomic) BOOL isMimeSigned; // @synthesize isMimeSigned=_isMimeSigned;

@@ -35,35 +35,15 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <MimeBody.h>
-#import <MimePart.h>
-#import <MFMimeDecodeContext.h>
 
-@interface VirgilMimePart : NSObject
-- (id)MADecodeWithContext:(id)ctx;
-- (id)MADecodeTextPlainWithContext:(MFMimeDecodeContext *)ctx;
-- (id)MADecodeTextHtmlWithContext:(MFMimeDecodeContext *)ctx;
-- (id)MADecodeApplicationOctet_streamWithContext:(MFMimeDecodeContext *)ctx;
-- (void)MAClearCachedDecryptedMessageBody;
-- (BOOL)MAHasCachedDataInStore;
-@end
+@interface VirgilImageProcessing : NSObject
 
-@interface VirgilMimePart (NativeMimePartMethods)
-- (MimeBody *)mimeBody;
-- (MimePart *)startPart;
-- (MimePart *)parentPart;
-- (MimePart *)nextSiblingPart;
-- (NSData *)bodyData;
-- (id)dispositionParameterForKey:(NSString *)key;
-- (BOOL)isType:(NSString *)type subtype:(NSString *)subtype;
-- (id)bodyParameterForKey:(NSString *)key;
-- (NSArray *)subparts;
-- (id)decryptedMessageBody;
-- (void)setDispositionParameter:(id)parameter forKey:(id)key;
-- (BOOL)isAttachment;
-- (NSData *)signedData;
-- (NSString *)type;
-- (NSString *)subtype;
-- (id)contentTransferEncoding;
++ (NSImage *)resize : (NSImage *) anImage
+            newSize : (NSSize) newSize;
+
++ (NSImage *) imageWithStatusPicture : (NSImage *) userImage
+                     statusImageName : (NSString *) statusImageName
+                            minWidth : (NSUInteger) minWidth
+                           minHeight : (NSUInteger) minHeight;
 
 @end

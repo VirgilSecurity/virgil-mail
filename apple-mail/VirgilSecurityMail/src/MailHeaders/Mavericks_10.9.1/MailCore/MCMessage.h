@@ -4,16 +4,16 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2012 by Steve Nygard.
  */
 
-#import "NSObject.h"
+//#import "NSObject.h"
 
-#import "MCMessageSortingInterface.h"
-#import "NSCopying.h"
+//#import "MCMessageSortingInterface.h"
+//#import "NSCopying.h"
 
 @class NSArray, NSData, NSMutableSet, NSSet, NSString, NSUUID;
 
-@interface MCMessage : NSObject <MCMessageSortingInterface, NSCopying>
+@interface MCMessage : NSObject /*<MCMessageSortingInterface, NSCopying>*/
 {
-    id <MCMessageDataSource> _dataSource;
+    //id <MCMessageDataSource> _dataSource;
     NSString *_senderDisplayName;
     NSString *_subject;
     NSArray *_toRecipients;
@@ -22,7 +22,7 @@
     NSData *_inReplyToHeaderDigest;
     NSUUID *_documentID;
     unsigned int _messageFlags;
-    CDStruct_accefccd _flags;
+    //CDStruct_accefccd _flags;
     BOOL _type;
     double _dateSentInterval;
     double _dateReceivedInterval;
@@ -35,7 +35,7 @@
 + (BOOL)isMessageURLString:(id)arg1;
 + (unsigned long long)displayablePriorityForPriority:(unsigned int)arg1;
 + (unsigned int)validatePriority:(unsigned int)arg1;
-+ (BOOL)colorIsSetInMoreFlags:(CDStruct_accefccd)arg1;
+//+ (BOOL)colorIsSetInMoreFlags:(CDStruct_accefccd)arg1;
 + (BOOL)allMessages:(id)arg1 areSameType:(BOOL)arg2;
 + (unsigned char)subjectPrefixLengthUnknown;
 + (id)unreadMessagesFromMessages:(id)arg1;
@@ -74,7 +74,7 @@
 - (id)remoteMailboxURLString;
 - (id)account;
 - (id)path;
-- (CDStruct_accefccd)moreMessageFlags;
+//- (CDStruct_accefccd)moreMessageFlags;
 - (unsigned int)uidForSort;
 - (unsigned int)uid;
 - (id)remoteID;
