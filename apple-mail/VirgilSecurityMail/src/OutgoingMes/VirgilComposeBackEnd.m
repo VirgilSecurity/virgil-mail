@@ -93,7 +93,7 @@
     [_vpm inviteMessage : contents
                  result : result];
     
-    return result;
+    return nil;
 }
 
 
