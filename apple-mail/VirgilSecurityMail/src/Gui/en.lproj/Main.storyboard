@@ -953,11 +953,11 @@
             <objects>
                 <viewController storyboardIdentifier="viewEntrance" id="iQc-2T-UL0" customClass="VirgilMainViewController" sceneMemberID="viewController">
                     <view key="view" id="fzO-E4-ZGt">
-                        <rect key="frame" x="0.0" y="0.0" width="350" height="224"/>
+                        <rect key="frame" x="0.0" y="0.0" width="350" height="143"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Uft-mn-pfh">
-                                <rect key="frame" x="125" y="190" width="117" height="19"/>
+                                <rect key="frame" x="125" y="109" width="117" height="19"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Virgil Security" id="aW2-g5-hwj">
                                     <font key="font" metaFont="systemBold" size="16"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -965,7 +965,7 @@
                                 </textFieldCell>
                             </textField>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Q2Q-mL-e8x">
-                                <rect key="frame" x="42" y="132" width="276" height="32"/>
+                                <rect key="frame" x="42" y="51" width="276" height="32"/>
                                 <buttonCell key="cell" type="push" title="Sign In" bezelStyle="rounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="fse-52-RHG">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -984,26 +984,13 @@
                                     <action selector="onCloseClicked:" target="iQc-2T-UL0" id="np3-ow-nM2"/>
                                 </connections>
                             </button>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="noy-gA-xrj">
-                                <rect key="frame" x="42" y="81" width="276" height="32"/>
-                                <buttonCell key="cell" type="push" title="Enter confirmatiom code" bezelStyle="rounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="yaI-Xu-8yu">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <segue destination="Nop-Vx-hwn" kind="custom" customClass="VirgilReplaceSegue" id="PIA-ma-LqW"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <constraints>
                             <constraint firstItem="Uft-mn-pfh" firstAttribute="top" secondItem="fzO-E4-ZGt" secondAttribute="top" constant="15" id="0OO-nk-wfi"/>
-                            <constraint firstItem="noy-gA-xrj" firstAttribute="top" secondItem="Q2Q-mL-e8x" secondAttribute="bottom" constant="30" id="21P-R6-NTx"/>
                             <constraint firstItem="Uft-mn-pfh" firstAttribute="leading" secondItem="Q2Q-mL-e8x" secondAttribute="trailing" constant="-185" id="7RO-lX-bMT"/>
-                            <constraint firstItem="Uft-mn-pfh" firstAttribute="leading" secondItem="noy-gA-xrj" secondAttribute="trailing" constant="-185" id="TB1-uW-qsQ"/>
                             <constraint firstAttribute="centerX" secondItem="Q2Q-mL-e8x" secondAttribute="centerX" constant="-5" id="Ujb-ag-sRb"/>
                             <constraint firstItem="Q2Q-mL-e8x" firstAttribute="top" secondItem="Uft-mn-pfh" secondAttribute="bottom" constant="30" id="Zko-ri-lu2"/>
                             <constraint firstAttribute="centerX" secondItem="cBR-KX-kpi" secondAttribute="centerX" constant="-4.5" id="msK-PQ-3aw"/>
-                            <constraint firstAttribute="centerX" secondItem="noy-gA-xrj" secondAttribute="centerX" constant="-5" id="rHu-dl-6JX"/>
                             <constraint firstAttribute="bottom" secondItem="cBR-KX-kpi" secondAttribute="bottom" constant="20" id="t2r-iv-Sf1"/>
                             <constraint firstAttribute="centerX" secondItem="Uft-mn-pfh" secondAttribute="centerX" constant="-8" id="xjr-Bs-f69"/>
                         </constraints>
@@ -1011,7 +998,7 @@
                 </viewController>
                 <customObject id="1dH-A4-R24" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-909" y="473"/>
+            <point key="canvasLocation" x="-909" y="432.5"/>
         </scene>
         <!--Virgil Register View Controller-->
         <scene sceneID="67o-Rz-Nb0">
@@ -1272,6 +1259,6 @@ Gw
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="kTg-s3-sts"/>
-        <segue reference="K9B-Ju-PDz"/>
+        <segue reference="rBp-Oy-zJ2"/>
     </inferredMetricsTieBreakers>
 </document>
