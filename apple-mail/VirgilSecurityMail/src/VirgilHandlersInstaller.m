@@ -55,7 +55,8 @@
                      @"backEndDidLoadInitialContent:",
                      @"dealloc",
                      @"backEnd:didCancelMessageDeliveryForEncryptionError:",
-                     @"backEnd:didCancelMessageDeliveryForError:"
+                     @"backEnd:didCancelMessageDeliveryForError:",
+                     @"show"
                      ],
              @"NSWindow": @[
                      @"toggleFullScreen:"
@@ -75,6 +76,9 @@
              //@"MessageView": @[
              //           @"_borderColor"
              //        ],
+             @"MessageViewController": @[
+                        @"setRepresentedObject:"
+                     ],
              @"HeaderViewController":@[
                         @"_updateTextStorageWithHardInvalidation:"
                      ],
@@ -82,6 +86,18 @@
                         @"_updateSnippet",
                         @"_updatePhoto",
                         @"_updateContactPhotoVisibilityFromDefaults"
+                     ],
+             @"ComposeViewController": @[
+                        @"finishUICustomization:",
+                        @"_newComposeViewControllerCommonInit",
+                        @"initWithCoder:",
+                        @"initWithNibName:bundle:"
+                     ],
+             @"HeadersEditor": @[
+                        @"configureButtonsAndPopUps"
+                     ],
+             @"BannerContainerViewController": @[
+                        @"updateBannerDisplay"
                      ]
              };
 }

@@ -20,7 +20,7 @@
 - (void)observeValueForKeyPath:(id)arg1 ofObject:(id)arg2 change:(id)arg3 context:(void *)arg4;
 - (void)setRepresentedObject:(id)arg1;
 - (BOOL)shouldDisplayToLoadImages;
-- (CDStruct_3c058996)iconAlignmentRectInsets;
+//- (CDStruct_3c058996)iconAlignmentRectInsets;
 - (id)backgroundColor;
 - (void)dealloc;
 - (id)nibName;

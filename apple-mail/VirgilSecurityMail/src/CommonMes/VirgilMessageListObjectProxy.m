@@ -85,7 +85,7 @@ static BOOL _virgilShowPhotos = NO;
     [self MA_updateContactPhotoVisibilityFromDefaults];
     _virgilShowPhotos = ((MessageListObjectProxy *)self).showContactPhotos;
     [self MA_updatePhoto];
-    [self highlightVirgil];
+    //[self highlightVirgil];
 }
 
 @end

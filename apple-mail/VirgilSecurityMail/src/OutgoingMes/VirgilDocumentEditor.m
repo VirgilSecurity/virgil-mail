@@ -40,6 +40,9 @@
 #import "MailNotificationCenter.h"
 #import "MFError.h"
 #import "DocumentEditor.h"
+#import "VirgilGui.h"
+
+#import "BannerController.h"
 
 @implementation VirgilDocumentEditor
 
@@ -70,6 +73,15 @@
 
 - (void) hideMenu {
     
+}
+
+- (void) MAShow {
+    [self MAShow];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 100 * NSEC_PER_MSEC),
+                   dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+                       [VirgilGui askForCanDecrypt];
+                   });
 }
 
 - (void)MADealloc {

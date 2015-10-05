@@ -34,52 +34,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+#import <Foundation/Foundation.h>
 #import "VirgilDecryptedMail.h"
-#import "MessageBody.h"
-#import "Message.h"
-#import "MimePart.h"
-#import "VirgilClassNameResolver.h"
-#import "VirgilLog.h"
 
-@implementation VirgilDecryptedMail
+@interface VirgilDecryptedMailContainer : NSObject
 
-+(id)alloc{
-    return [super alloc];
-}
+- (BOOL) isMailPresent:(id)email;
 
--(id)init{
-    _decryptStatus = decryptUnknown;
-    _mailParts = [[NSMutableDictionary alloc] init];
-    return [super init];
-}
+- (void) setStatus:(DecryptStatus) status forEmail:(id)email;
+- (DecryptStatus) statusForEmail:(id)email;
 
-- (void) addPart:(id)part partHash:(id)partHash {
-    [_mailParts setValue:part forKey:[self mimeHash:partHash]];
-}
+- (void) addPart:(id)part partHash:(id)partHash forEmail:(id)email;
+- (void) addAttachement:(id)attach attachHash:(id)attachHash forEmail:(id)email;
 
-- (void) addAttachement:(id)attach attachHash:(id)attachHash {
-    [_mailParts setValue:attach forKey:attachHash];
-}
+- (id) partByHash:(id)partHash forEmail:(id)email;
+- (id) attachementByHash:(id)attachHash forEmail:(id)email;
 
-- (NSString *) mimeHash : (MimePart *)part {
-    struct _NSRange range = [part range];
-    return [NSString stringWithFormat:@"%lu_%lu", range.length, range.location];
-}
-
-- (id) partByHash:(id)partHash {
-    id res = [_mailParts valueForKey:[self mimeHash:partHash]];
-    if (nil == res) {
-        VLogError(@"PART NOT PRESENT");
-    }
-    return res;
-}
-
-- (id) attachementByHash:(id)attachHash {
-    id res = [_mailParts valueForKey:attachHash];
-    if (nil == res) {
-        VLogError(@"Error: PART NOT PRESENT");
-    }
-    return res;
-}
+@property (readonly, retain) NSMutableDictionary * mails;
 
 @end

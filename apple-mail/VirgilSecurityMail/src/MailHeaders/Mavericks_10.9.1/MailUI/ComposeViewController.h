@@ -4,17 +4,17 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2012 by Steve Nygard.
  */
 
-#import "NSViewController.h"
+//#import "NSViewController.h"
 
-#import "AccountStatusDataSourceDelegate.h"
-#import "MCActivityTarget.h"
-#import "NSUserInterfaceValidations.h"
+//#import "AccountStatusDataSourceDelegate.h"
+//#import "MCActivityTarget.h"
+//#import "NSUserInterfaceValidations.h"
 
 @class AccountStatusDataSource, NSOperationQueue, NewDeliveryFailure;
 
-@interface ComposeViewController : NSViewController <AccountStatusDataSourceDelegate, MCActivityTarget, NSUserInterfaceValidations>
+@interface ComposeViewController : NSViewController /*<AccountStatusDataSourceDelegate, MCActivityTarget, NSUserInterfaceValidations>*/
 {
-    id <ComposeViewControllerDelegate> _delegate;
+    id /*<ComposeViewControllerDelegate>*/ _delegate;
     NSOperationQueue *_workerQueue;
     AccountStatusDataSource *_deliveryAccountStatusDataSource;
     NewDeliveryFailure *_deliveryFailure;
@@ -23,7 +23,7 @@
 @property(retain, nonatomic) NewDeliveryFailure *deliveryFailure; // @synthesize deliveryFailure=_deliveryFailure;
 @property(retain, nonatomic) AccountStatusDataSource *deliveryAccountStatusDataSource; // @synthesize deliveryAccountStatusDataSource=_deliveryAccountStatusDataSource;
 @property(readonly) NSOperationQueue *workerQueue; // @synthesize workerQueue=_workerQueue;
-@property(nonatomic) id <ComposeViewControllerDelegate> delegate; // @synthesize delegate=_delegate;
+@property(nonatomic) id /*<ComposeViewControllerDelegate>*/ delegate; // @synthesize delegate=_delegate;
 - (BOOL)_alwaysCcOrBccMyself;
 - (BOOL)validateUserInterfaceItem:(id)arg1;
 - (void)_updateActiveField;

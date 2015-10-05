@@ -80,7 +80,7 @@
 }
 
 - (id) init{
-    _decryptedMail = [[VirgilDecryptedMail alloc] init];
+    _decryptedMailContainer = [[VirgilDecryptedMailContainer alloc] init];
     return [super init];
 }
 
@@ -354,7 +354,6 @@
 }
 
 - (BOOL) decryptWholeMessage : (MimePart *)topMimePart {
-    [_decryptedMail clear];
     if (NO == [self canDecrypt]) return NO;
     
     MimePart * mainVirgilPart = [self partWithVirgilSignature:topMimePart];
@@ -411,8 +410,7 @@
                                                              publicKey : senderPublicKey];
     if (NO == signatureCorrect) {
         VLogError(@"Wrong signature !");
-        [_decryptedMail clear];
-        [_decryptedMail setCurrentMailHash:message signatureCorrect:NO];
+        [_decryptedMailContainer setStatus:decryptError forEmail:message];
         return NO;
     }
     
@@ -423,7 +421,7 @@
     
     // Prepare decrypted mail data
     // and set decrypted mail part
-    [_decryptedMail setCurrentMailHash:message signatureCorrect:YES];
+    [_decryptedMailContainer setStatus:decryptOk forEmail:message];
     
     if (YES == virgilDataInAttach) {
         MimePart * partForReplacement = [self partForReplacement : topMimePart];
@@ -432,11 +430,13 @@
             [partForReplacement setSubtype : @"html"];
         }
         
-        [_decryptedMail addPart : decryptedContent.htmlBody
-                       partHash : partForReplacement];
+        [_decryptedMailContainer addPart : decryptedContent.htmlBody
+                                partHash : partForReplacement
+                                forEmail : message];
     } else {
-        [_decryptedMail addPart : decryptedContent.htmlBody
-                       partHash : mainVirgilPart];
+        [_decryptedMailContainer addPart : decryptedContent.htmlBody
+                                partHash : mainVirgilPart
+                                forEmail : message];
     }
         
     for (MimePart * part in allMimeParts) {
@@ -448,18 +448,16 @@
                                                                  privateKey:privateKey.key
                                                          privateKeyPassword:privateKey.keyPassword];
         if (nil == decryptedAttachement) continue;
-        [_decryptedMail addAttachement:decryptedAttachement
-                            attachHash:[part attachmentFilename]];
+        [_decryptedMailContainer addAttachement : decryptedAttachement
+                                     attachHash : [part attachmentFilename]
+                                       forEmail : message];
     }
     
     return YES;
 }
 
 - (DecryptStatus) getDecriptionStatusForMessage : (Message *)message {
-    if (YES == [_decryptedMail isCurrentMail:message]) {
-        return _decryptedMail.decryptStatus;
-    }
-    return decryptUnknown;
+    return [_decryptedMailContainer statusForEmail:message];
 }
 
 - (id) decryptMessagePart:(MimePart *)mimePart {
@@ -473,11 +471,15 @@
     
     Message * currentMessage = [(MimeBody *)[mimePart mimeBody] message];
 
-    if (![_decryptedMail isCurrentMail:currentMessage]) {
-        [self decryptWholeMessage:topMimePart];
+    id res = nil;
+    @synchronized (currentMessage) {
+        if (NO == [_decryptedMailContainer isMailPresent:currentMessage]) {
+            [self decryptWholeMessage:topMimePart];
+        }
+        res = [_decryptedMailContainer partByHash:mimePart forEmail:currentMessage];
     }
     
-    return [_decryptedMail partByHash:mimePart];
+    return res;
 }
 
 - (BOOL) checkConfirmationEmail : (MimePart *) mimePart {
@@ -497,27 +499,28 @@
     if (nil == strBody) return NO;
     if (![strBody containsString : @"confirmation code is"]) return NO;
     
-    NSRange range = [strBody rangeOfString:@"font-weight: bold;\">"];
-    if (NSNotFound == range.location) return NO;
-    NSString * rightPart = [strBody substringFromIndex : range.location + 20];
-    range = [rightPart rangeOfString:@"</b>"];
-    if (NSNotFound == range.location) return NO;
-    NSString * strCode = [rightPart substringToIndex:range.location];
-    if (YES == [message isRead]) return YES;
-    
-    VirgilKeyChainContainer * receiverContainer = [self getKeysContainer : receiver
-                                                      forcePrivateKeyGet : YES
-                                                      forceActiveAccount : NO];
-    if (nil == receiverContainer) return NO;
-    
-    VirgilPrivateKey * privateKey = receiverContainer.privateKey;
-    if (nil == privateKey) return NO;
-    if (YES == receiverContainer.isActive) return YES;
-    //TODO: Check is email registered
-    [VirgilGui setConfirmationCode : strCode];
-    [VirgilGui getPrivateKey : receiver];
-    
     return YES;
+    //NSRange range = [strBody rangeOfString:@"font-weight: bold;\">"];
+    //if (NSNotFound == range.location) return NO;
+    //NSString * rightPart = [strBody substringFromIndex : range.location + 20];
+    //range = [rightPart rangeOfString:@"</b>"];
+    //if (NSNotFound == range.location) return NO;
+    //NSString * strCode = [rightPart substringToIndex:range.location];
+    //if (YES == [message isRead]) return YES;
+    
+    //VirgilKeyChainContainer * receiverContainer = [self getKeysContainer : receiver
+    //                                                  forcePrivateKeyGet : YES
+    //                                                  forceActiveAccount : NO];
+    //if (nil == receiverContainer) return NO;
+    
+    //VirgilPrivateKey * privateKey = receiverContainer.privateKey;
+    //if (nil == privateKey) return NO;
+    //if (YES == receiverContainer.isActive) return YES;
+    //TODO: Check is email registered
+    //[VirgilGui setConfirmationCode : strCode];
+    //[VirgilGui getPrivateKey : receiver];
+    
+    //return YES;
 }
 
 - (MimePart *) topLevelPartByAnyPart : (MimePart *)part {
@@ -528,9 +531,9 @@
     return res;
 }
 
-- (NSData *) decryptedAttachementByName : (NSString *) name {
+- (NSData *) decryptedAttachementByName : (NSString *) name forEmail : (id)message {
     if (nil == name) return nil;
-    return [_decryptedMail attachementByHash:name];
+    return [_decryptedMailContainer attachementByHash:name forEmail:message];
 }
 
 + (NSArray *) accountsList {

@@ -63,6 +63,7 @@
         
         NSMutableDictionary * attachments = [((ParsedMessage *)nativePart).attachmentsByURL mutableCopy];
         NSMutableSet * forDelete = [[NSMutableSet alloc] init];
+        Message * message = [(MimeBody *)[self mimeBody] message];
         
         for (NSString * key in [attachments allKeys]) {
             MCAttachment * attach = [attachments objectForKey : key];
@@ -74,7 +75,7 @@
             }
             
             NSData * decryptedAttach = [[VirgilProcessingManager sharedInstance]
-                                                      decryptedAttachementByName:attach.filename];
+                                                      decryptedAttachementByName:attach.filename forEmail:message];
             if (nil != decryptedAttach) {
                 attach.currentData = decryptedAttach;
             }

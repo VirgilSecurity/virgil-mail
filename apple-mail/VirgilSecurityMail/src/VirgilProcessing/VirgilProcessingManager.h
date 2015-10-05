@@ -39,7 +39,7 @@
 #import <MimePart.h>
 #import <WebComposeMessageContents.h>
 #import <OutgoingMessage.h>
-#import "VirgilDecryptedMail.h"
+#import "VirgilDecryptedMailContainer.h"
 
 #define VIRGIL_MAIL_INFO_ATTACH @"virgilsecurity.mailinfo"
 #define WIN_MAIL_DATA_ATTACH @"winmail.dat"
@@ -61,7 +61,8 @@
 
 // Decryption
 - (id) decryptMessagePart:(MimePart *)mimePart;
-- (NSData *) decryptedAttachementByName:(NSString *) name;
+- (NSData *) decryptedAttachementByName : (NSString *) name
+                               forEmail : (id)message;
 - (BOOL) isEncryptedByVirgil : (MimePart *)topMimePart;
 - (BOOL) isEncryptedByVirgilByAnyPart : (MimePart *)mimePart;
 - (MimePart *) topLevelPartByAnyPart:(MimePart *)part;
@@ -72,6 +73,6 @@
 - (BOOL) checkConfirmationEmail : (MimePart *) mimePart;
 - (void) getAllPrivateKeys;
 
-@property (readonly) VirgilDecryptedMail * decryptedMail;
+@property (readonly, retain) VirgilDecryptedMailContainer * decryptedMailContainer;
 
 @end

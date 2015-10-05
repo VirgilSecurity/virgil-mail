@@ -44,11 +44,6 @@ typedef NS_ENUM(NSInteger, DecryptStatus) {
 };
 
 @interface VirgilDecryptedMail : NSObject
-- (void) clear;
-- (BOOL) isEmpty;
-- (void) setCurrentMailHash:(id)hash
-          signatureCorrect:(BOOL)signatureCorrect;
-- (BOOL) isCurrentMail:(id)someMail;
 
 - (void) addPart:(id)part partHash:(id)partHash;
 - (void) addAttachement:(id)attach attachHash:(id)attachHash;
@@ -56,12 +51,8 @@ typedef NS_ENUM(NSInteger, DecryptStatus) {
 - (id) partByHash:(id)partHash;
 - (id) attachementByHash:(id)attachHash;
 
-- (NSString *) hashVal:(id)someId;
-- (NSString *) invalidHashVal;
-
-@property (readonly) NSString * curMailHash;
-@property (readonly) NSMutableDictionary * mailParts;
-@property (readonly) DecryptStatus decryptStatus;
-//@property (readonly) NSString * subject;
+@property (readonly, retain) NSMutableDictionary * mailParts;
+@property DecryptStatus decryptStatus;
+@property NSTimeInterval timeStamp;
 
 @end

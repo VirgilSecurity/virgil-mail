@@ -34,51 +34,41 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "VirgilDecryptedMail.h"
-#import "MessageBody.h"
-#import "Message.h"
-#import "MimePart.h"
-#import "VirgilClassNameResolver.h"
+#import "VirgilComposeViewController.h"
+#import <ComposeViewController.h>
 #import "VirgilLog.h"
 
-@implementation VirgilDecryptedMail
+@implementation VirgilComposeViewController
 
-+(id)alloc{
-    return [super alloc];
+- (void)MAFinishUICustomization:(id)arg1 {
+    [self MAFinishUICustomization:arg1];
 }
 
--(id)init{
-    _decryptStatus = decryptUnknown;
-    _mailParts = [[NSMutableDictionary alloc] init];
-    return [super init];
+- (void)MA_newComposeViewControllerCommonInit {
+    [self MA_newComposeViewControllerCommonInit];
 }
 
-- (void) addPart:(id)part partHash:(id)partHash {
-    [_mailParts setValue:part forKey:[self mimeHash:partHash]];
-}
-
-- (void) addAttachement:(id)attach attachHash:(id)attachHash {
-    [_mailParts setValue:attach forKey:attachHash];
-}
-
-- (NSString *) mimeHash : (MimePart *)part {
-    struct _NSRange range = [part range];
-    return [NSString stringWithFormat:@"%lu_%lu", range.length, range.location];
-}
-
-- (id) partByHash:(id)partHash {
-    id res = [_mailParts valueForKey:[self mimeHash:partHash]];
-    if (nil == res) {
-        VLogError(@"PART NOT PRESENT");
-    }
+- (id)MAInitWithCoder:(id)arg1 {
+    id res = [self MAInitWithCoder:arg1];
+    
+    VLogInfo(@">>>>>>>>>>>>>>>>>>>>>>>>>>>> MAInitWithCoder");
+    
+    NSTextField * fromLabel = [self valueForKey:@"fromLabel"];
+    [fromLabel setBackgroundColor:[NSColor yellowColor]];
+    [fromLabel setEditable:NO];
+    [fromLabel setEditable:YES];
     return res;
 }
 
-- (id) attachementByHash:(id)attachHash {
-    id res = [_mailParts valueForKey:attachHash];
-    if (nil == res) {
-        VLogError(@"Error: PART NOT PRESENT");
-    }
+- (id)MAInitWithNibName:(id)arg1 bundle:(id)arg2 {
+    id res = [self MAInitWithNibName:arg1 bundle:arg2];
+    
+    VLogInfo(@">>>>>>>>>>>>>>>>>>>>>>>>>>>> MAInitWithNibName");
+    
+    NSTextField * fromLabel = [self valueForKey:@"fromLabel"];
+    [fromLabel setBackgroundColor:[NSColor yellowColor]];
+    [fromLabel setEditable:NO];
+    [fromLabel setEditable:YES];
     return res;
 }
 

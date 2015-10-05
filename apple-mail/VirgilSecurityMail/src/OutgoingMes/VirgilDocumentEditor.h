@@ -40,6 +40,7 @@
 @interface VirgilDocumentEditor : NSObject <NSMenuDelegate, VirgilMenuViewDelegate>
 - (void) MABackEndDidLoadInitialContent : (id)content;
 - (void) MADealloc;
+- (void) MAShow;
 - (void) addMenu;
 - (void) didExitFullScreen : (NSNotification *)notification;
 - (void) hideMenu;

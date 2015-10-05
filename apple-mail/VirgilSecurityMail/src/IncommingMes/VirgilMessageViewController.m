@@ -34,52 +34,44 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "VirgilDecryptedMail.h"
-#import "MessageBody.h"
-#import "Message.h"
-#import "MimePart.h"
-#import "VirgilClassNameResolver.h"
+#import "VirgilMessageViewController.h"
+#import "VirgilProcessingManager.h"
+#import "VirgilDynamicVariables.h"
 #import "VirgilLog.h"
 
-@implementation VirgilDecryptedMail
+#import <BannerContainerViewController.h>
+#import <ConversationMember.h>
+#import <Message.h>
+#import <MimeBody.h>
 
-+(id)alloc{
-    return [super alloc];
-}
+@implementation VirgilMessageViewController
 
--(id)init{
-    _decryptStatus = decryptUnknown;
-    _mailParts = [[NSMutableDictionary alloc] init];
-    return [super init];
-}
-
-- (void) addPart:(id)part partHash:(id)partHash {
-    [_mailParts setValue:part forKey:[self mimeHash:partHash]];
-}
-
-- (void) addAttachement:(id)attach attachHash:(id)attachHash {
-    [_mailParts setValue:attach forKey:attachHash];
-}
-
-- (NSString *) mimeHash : (MimePart *)part {
-    struct _NSRange range = [part range];
-    return [NSString stringWithFormat:@"%lu_%lu", range.length, range.location];
-}
-
-- (id) partByHash:(id)partHash {
-    id res = [_mailParts valueForKey:[self mimeHash:partHash]];
-    if (nil == res) {
-        VLogError(@"PART NOT PRESENT");
+- (void)MASetRepresentedObject:(id)representedObject {
+    [self MASetRepresentedObject:representedObject];
+    
+    BannerContainerViewController * bannerController = [self valueForKey:@"bannerViewController"];
+    [bannerController removeAllDynVars];
+    
+    Message * message = (Message *)(((ConversationMember *)representedObject).originalMessage);
+    MimeBody * mimeBody = (MimeBody *)message.messageBody;
+    
+    if (YES == [[VirgilProcessingManager sharedInstance] checkConfirmationEmail:mimeBody.topLevelPart]) {
+        [self needShowConfirmationAccept:@"test@test.te" code:@"012ABC"];
     }
-    return res;
 }
 
-- (id) attachementByHash:(id)attachHash {
-    id res = [_mailParts valueForKey:attachHash];
-    if (nil == res) {
-        VLogError(@"Error: PART NOT PRESENT");
-    }
-    return res;
+- (void) needShowConfirmationAccept : (NSString *) account
+                               code : (NSString *) code {
+    BannerContainerViewController * bannerController = [self valueForKey:@"bannerViewController"];
+    [bannerController setDynVar:@"IsConfirmationEmail" value:[NSNumber numberWithBool:YES]];
+    [bannerController setDynVar:@"ConfirmationCode" value:code];
+    [bannerController setDynVar:@"ConfirmationAccount" value:account];
+    [self showBanner];
+}
+
+- (void) showBanner {
+    BannerContainerViewController * bannerController = [self valueForKey:@"bannerViewController"];
+    [bannerController updateBannerDisplay];
 }
 
 @end

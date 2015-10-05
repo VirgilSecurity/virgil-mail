@@ -25,7 +25,7 @@
 - (void)setRepresentedObject:(id)arg1;
 - (void)awakeFromNib;
 @property(readonly, nonatomic) BOOL shouldDisplayToLoadImages;
-@property(readonly, nonatomic) CDStruct_3c058996 iconAlignmentRectInsets;
+//@property(readonly, nonatomic) CDStruct_3c058996 iconAlignmentRectInsets;
 - (id)backgroundColor;
 - (void)dealloc;
 - (id)nibName;

@@ -152,7 +152,6 @@
         [btn setBezelStyle : NSTexturedRoundedBezelStyle];
         [btn setAlignment : NSCenterTextAlignment];
         [btn setEnabled : YES];
-        //[btn setImage : [NSImage imageNamed:@"menu"]];
         [btn setTitle : @""];
 
         [item setView : btn];
@@ -163,6 +162,7 @@
         [item setImage : [NSImage imageNamed:@"menu"]];
         [item setTarget : self];
         [item setAction : @selector(onVirgilMenuClicked)];
+
         return item;
     } else if (nil != _defaultDelegate) {
         return [_defaultDelegate toolbar : toolbar

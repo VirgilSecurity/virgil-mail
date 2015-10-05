@@ -34,52 +34,29 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "VirgilDecryptedMail.h"
-#import "MessageBody.h"
-#import "Message.h"
-#import "MimePart.h"
-#import "VirgilClassNameResolver.h"
-#import "VirgilLog.h"
+#import "VirgilDynamicVariables.h"
+#import <objc/runtime.h>
 
-@implementation VirgilDecryptedMail
+@implementation NSObject (VirgilDynamicVariables)
 
-+(id)alloc{
-    return [super alloc];
+- (void)setDynVar:(id)key value:(id)value {
+    objc_setAssociatedObject(self,
+                             (__bridge const void *)(key),
+                             value,
+                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
--(id)init{
-    _decryptStatus = decryptUnknown;
-    _mailParts = [[NSMutableDictionary alloc] init];
-    return [super init];
+- (id)dynVar:(id)key {
+    return objc_getAssociatedObject(self, (__bridge const void *)(key));
 }
 
-- (void) addPart:(id)part partHash:(id)partHash {
-    [_mailParts setValue:part forKey:[self mimeHash:partHash]];
+- (BOOL)isExistsDynVar:(id)key {
+    return [self dynVar:key] == nil ? NO : YES;
 }
 
-- (void) addAttachement:(id)attach attachHash:(id)attachHash {
-    [_mailParts setValue:attach forKey:attachHash];
-}
-
-- (NSString *) mimeHash : (MimePart *)part {
-    struct _NSRange range = [part range];
-    return [NSString stringWithFormat:@"%lu_%lu", range.length, range.location];
-}
-
-- (id) partByHash:(id)partHash {
-    id res = [_mailParts valueForKey:[self mimeHash:partHash]];
-    if (nil == res) {
-        VLogError(@"PART NOT PRESENT");
-    }
-    return res;
-}
-
-- (id) attachementByHash:(id)attachHash {
-    id res = [_mailParts valueForKey:attachHash];
-    if (nil == res) {
-        VLogError(@"Error: PART NOT PRESENT");
-    }
-    return res;
+- (void)removeAllDynVars {
+    objc_removeAssociatedObjects(self);
 }
 
 @end
+

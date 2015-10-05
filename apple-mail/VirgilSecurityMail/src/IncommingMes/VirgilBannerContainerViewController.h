@@ -34,52 +34,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "VirgilDecryptedMail.h"
-#import "MessageBody.h"
-#import "Message.h"
-#import "MimePart.h"
-#import "VirgilClassNameResolver.h"
-#import "VirgilLog.h"
+#import <Cocoa/Cocoa.h>
 
-@implementation VirgilDecryptedMail
+@interface VirgilBannerContainerViewController : NSObject
 
-+(id)alloc{
-    return [super alloc];
-}
+- (void)MAUpdateBannerDisplay;
 
--(id)init{
-    _decryptStatus = decryptUnknown;
-    _mailParts = [[NSMutableDictionary alloc] init];
-    return [super init];
-}
+@end
 
-- (void) addPart:(id)part partHash:(id)partHash {
-    [_mailParts setValue:part forKey:[self mimeHash:partHash]];
-}
+@interface VirgilBannerContainerViewController (NativeBannerContainerViewControllerMethods)
 
-- (void) addAttachement:(id)attach attachHash:(id)attachHash {
-    [_mailParts setValue:attach forKey:attachHash];
-}
-
-- (NSString *) mimeHash : (MimePart *)part {
-    struct _NSRange range = [part range];
-    return [NSString stringWithFormat:@"%lu_%lu", range.length, range.location];
-}
-
-- (id) partByHash:(id)partHash {
-    id res = [_mailParts valueForKey:[self mimeHash:partHash]];
-    if (nil == res) {
-        VLogError(@"PART NOT PRESENT");
-    }
-    return res;
-}
-
-- (id) attachementByHash:(id)attachHash {
-    id res = [_mailParts valueForKey:attachHash];
-    if (nil == res) {
-        VLogError(@"Error: PART NOT PRESENT");
-    }
-    return res;
-}
+- (id)nibBundle;
+- (id)nibName;
 
 @end
