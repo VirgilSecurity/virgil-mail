@@ -42,66 +42,136 @@
 #import "VirgilProcessingManager.h"
 #import "VirgilLog.h"
 
+#define TAG_BTN_CANCEL 8000
+#define TAG_BTN_OK 8001
+#define TAG_BTN_RESEND 8002
+
+#define TAG_TEXT_INFO 8003
+
+static NSString * curAccount = nil;
+
 @interface VirgilEmailConfirmViewController ()
 
 @end
 
 @implementation VirgilEmailConfirmViewController
 
-- (IBAction)onAcceptClicked : (id)sender {
-    NSTextField * codeField = [self.view viewWithTag : 1000];
-    if (!codeField) return;
-    NSString * code = [codeField stringValue];
-    if (![VirgilValidator emailCode : code]) {
-        [self showCompactErrorView : @"Confirmation code should contains 6 letters and digits."
-                            atView : codeField];
-        return;
-    }
-    NSString * account = [self selectedAccount];
-    if (YES == [VirgilKeyManager confirmAccountCreation : account
-                                                   code : code]) {
-        [VirgilGui setUserActivityPrivateKey : [VirgilKeyManager getPrivateKey : account
-                                                             containerPassword : @""]];
-        [self closeWindow];
-    } else {
-        VLogError(@"%@", [VirgilKeyManager lastError]);
-        [self showErrorView : @"Wrong confirmation code."];
-    }
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    NSPopUpButton * popUpButton = [self.view viewWithTag : 5000];
-    if (!popUpButton) return;
-    
-    [popUpButton removeAllItems];
-    [popUpButton addItemsWithTitles : [VirgilProcessingManager accountsList]];
-}
-
-- (NSString *) selectedAccount {
-    NSPopUpButton * popUpButton = [self.view viewWithTag : 5000];
-    if (!popUpButton) return nil;
-    
-    return [popUpButton titleOfSelectedItem];
+    [self setCurrentState:confirmInAction];
 }
 
 - (void) setConfirmationCode : (NSString *) confirmationCode
-                  forAccount : (NSString *) account {
-#if 0
-    _account = account;
-    NSTextField * codeField = [self.view viewWithTag : 1000];
-    if (!codeField) return;
-    if (nil == confirmationCode) {
-        [codeField setStringValue : @""];
-    } else {
-        [codeField setStringValue : confirmationCode];
+                  forAccount : (NSString *) account
+                resultObject : (id)resultObject
+                 resultBlock : (void (^)(id arg1, BOOL isOk))resultBlock {
+    [self setCurrentState:confirmInAction];
+    curAccount = account;
+    
+    @try {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            BOOL res =  [VirgilKeyManager confirmAccountCreation : account
+                                                            code : confirmationCode];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (res) {
+                    [self setCurrentState:confirmDone];
+                } else {
+                    [self setCurrentState:confirmError];
+                }
+                resultBlock(resultObject, res);
+            });
+        });
+        
     }
-#endif
+    @catch (NSException *exception) {
+        [self externalActionDone];
+    }
+    @finally {}
 }
 
 - (IBAction)onCancel:(id)sender {
     [self closeWindow];
+}
+
+- (IBAction)onOk:(id)sender {
+    [self closeWindow];
+}
+
+- (IBAction)onResendConfirmation:(id)sender {
+    [self setCurrentState:confirmResend];
+    
+    @try {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [VirgilKeyManager resendConfirmEMail : curAccount];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self closeWindow];
+            });
+        });
+        
+    }
+    @catch (NSException *exception) {
+        [self externalActionDone];
+    }
+    @finally {}
+}
+
+- (void) setButtonVisible : (BOOL)visible
+                   forTag : (NSInteger)tag {
+    NSButton * btn = [self.view viewWithTag : tag];
+    if (btn) {
+        btn.hidden = !visible;
+    }
+}
+
+- (void) setCurrentState : (ConfirmationState)state {
+    _state = state;
+    NSTextField * infoField = [self.view viewWithTag : 8003];
+    
+    if (confirmInAction == _state) {
+        [self setProgressVisible:YES];
+        [self preventUserActivity:YES];
+        if (nil != infoField) {
+            infoField.stringValue = @"In progress ...";
+        }
+        [self setButtonVisible:NO forTag:TAG_BTN_OK];
+        [self setButtonVisible:NO forTag:TAG_BTN_CANCEL];
+        [self setButtonVisible:NO forTag:TAG_BTN_RESEND];
+        
+    } else if (confirmDone == _state) {
+        [self setProgressVisible:NO];
+        [self preventUserActivity:NO];
+        if (nil != infoField) {
+            infoField.stringValue = @"Account confirmation was finished successfuly.";
+        }
+        [self setButtonVisible:YES forTag:TAG_BTN_OK];
+        [self setButtonVisible:NO forTag:TAG_BTN_CANCEL];
+        [self setButtonVisible:NO forTag:TAG_BTN_RESEND];
+        
+    } else if (confirmResend == _state) {
+        [self setProgressVisible:YES];
+        [self preventUserActivity:YES];
+        if (nil != infoField) {
+            infoField.stringValue = @"Sending request for resend confirmation code ...";
+        }
+    } else if (confirmResendDone == _state) {
+        [self setProgressVisible:NO];
+        [self preventUserActivity:NO];
+        if (nil != infoField) {
+            infoField.stringValue = @"Request was sent.";
+        }
+        [self setButtonVisible:YES forTag:TAG_BTN_OK];
+        [self setButtonVisible:NO forTag:TAG_BTN_CANCEL];
+        [self setButtonVisible:NO forTag:TAG_BTN_RESEND];
+    } else /*error*/ {
+        [self setProgressVisible:NO];
+        [self preventUserActivity:NO];
+        if (nil != infoField) {
+            infoField.stringValue = @"Account confirmation error!";
+        }
+        [self setButtonVisible:NO forTag:TAG_BTN_OK];
+        [self setButtonVisible:YES forTag:TAG_BTN_CANCEL];
+        [self setButtonVisible:YES forTag:TAG_BTN_RESEND];
+    }
 }
 
 @end

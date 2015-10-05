@@ -47,12 +47,18 @@
 
 + (VirgilPrivateKey*) getPrivateKey : (NSString *) account;
 
-+ (NSString *) currentAccount;
++ (void) confirmAccount : account
+       confirmationCode : code
+           resultObject : (id)resultObject
+            resultBlock : (void (^)(id arg1, BOOL isOk))resultBlock;
 
-+ (void) setConfirmationCode : (NSString *) confirmationCode;
++ (NSString *) currentAccount;
 
 + (void) setUserActivityPrivateKey : (VirgilPrivateKey *) privateKey;
 
 + (BOOL) askForCanDecrypt;
+
++ (void) showError : (NSString *) error;
++ (void) showMessage : (NSString *) message;
 
 @end

@@ -53,10 +53,14 @@
     [bannerController removeAllDynVars];
     
     Message * message = (Message *)(((ConversationMember *)representedObject).originalMessage);
-    MimeBody * mimeBody = (MimeBody *)message.messageBody;
     
-    if (YES == [[VirgilProcessingManager sharedInstance] checkConfirmationEmail:mimeBody.topLevelPart]) {
-        [self needShowConfirmationAccept:@"test@test.te" code:@"012ABC"];
+    NSString * myAccount = [[VirgilProcessingManager sharedInstance] getMyAccountFromMessage:message];
+    BOOL accountNeedsConfirmation = [[VirgilProcessingManager sharedInstance] accountNeedsConfirmation:myAccount];
+    if (YES == accountNeedsConfirmation) {
+        NSString * confirmationCode = [[VirgilProcessingManager sharedInstance] confirmationCodeFromEmail:message];
+        if (nil != confirmationCode) {
+            [self needShowConfirmationAccept:myAccount code:confirmationCode];
+        }
     }
 }
 

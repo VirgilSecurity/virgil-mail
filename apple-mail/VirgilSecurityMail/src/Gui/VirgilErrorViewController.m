@@ -35,6 +35,7 @@
  */
 
 #import "VirgilErrorViewController.h"
+#import "NSViewController+VirgilView.h"
 
 @implementation VirgilErrorViewController
 
@@ -56,6 +57,11 @@
  * @brief Activated on "Ok" button click
  */
 - (IBAction)onOkClicked : (id)sender {
+    if (YES == _singleWindow) {
+        [self closeWindow];
+    } else {
+        [self dismissController:self];
+    }
 }
 
 @end

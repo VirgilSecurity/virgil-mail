@@ -41,6 +41,7 @@
 #import "VirgilValidator.h"
 #import "VirgilGui.h"
 #import "VirgilProcessingManager.h"
+#import "VirgilLog.h"
 
 @implementation VirgilSignInViewController
 
@@ -58,15 +59,29 @@
         return;
     }
     
-    // Get key request
-    VirgilPrivateKey * res = [VirgilKeyManager getPrivateKey : email
-                                           containerPassword : password];
-    if (nil == res) {
-        [self showErrorView : [VirgilKeyManager lastError]];
-    } else {
-        [VirgilGui setUserActivityPrivateKey : res];
-        [self onCloseClicked:nil];
+    [self setProgressVisible:YES];
+    [self preventUserActivity:YES];
+
+    @try {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            VirgilPrivateKey * res = [VirgilKeyManager getPrivateKey : email
+                                                   containerPassword : password];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self externalActionDone];
+                if (nil == res) {
+                    [self showErrorView : [VirgilKeyManager lastError]];
+                } else {
+                    [VirgilGui setUserActivityPrivateKey : res];
+                    [self onCloseClicked:nil];
+                }
+            });
+        });
+        
     }
+    @catch (NSException *exception) {
+        [self externalActionDone];
+    }
+    @finally {}
 }
 
 - (NSString *) selectedAccount {

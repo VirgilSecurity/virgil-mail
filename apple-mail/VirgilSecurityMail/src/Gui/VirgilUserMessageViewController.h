@@ -36,22 +36,10 @@
 
 #import <Cocoa/Cocoa.h>
 
-typedef NS_ENUM(NSInteger, ConfirmationState) {
-    confirmInAction,
-    
-    confirmError,
-    confirmDone,
-    confirmResend,
-    confirmResendDone
-};
+@interface VirgilUserMessageViewController : NSViewController
 
-@interface VirgilEmailConfirmViewController : NSViewController
+- (void) setMessageText : (NSString *) messageText;
 
-- (void) setConfirmationCode : (NSString *) confirmationCode
-                  forAccount : (NSString *) account
-                resultObject : (id)resultObject
-                 resultBlock : (void (^)(id arg1, BOOL isOk))resultBlock;
-
-@property (readonly) ConfirmationState state;
+@property BOOL singleWindow;
 
 @end

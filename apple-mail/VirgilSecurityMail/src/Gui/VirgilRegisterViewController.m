@@ -68,14 +68,32 @@
         return;
     }
     
-    if ([VirgilKeyManager createAccount : email
-                            keyPassword : nil
-                          containerType : VirgilContainerEasy
-                      containerPassword : password]) {
-        [self closeWindow];
-    } else {
-        [self showErrorView : [VirgilKeyManager lastError]];
+    [self setProgressVisible:YES];
+    [self preventUserActivity:YES];
+    
+    @try {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            BOOL res = [VirgilKeyManager createAccount : email
+                                           keyPassword : nil
+                                         containerType : VirgilContainerEasy
+                                     containerPassword : password];
+            
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self externalActionDone];
+                if (res) {
+                    [self closeWindow];
+                } else {
+                    [self showErrorView : [VirgilKeyManager lastError]];
+                }
+            });
+        });
+        
     }
+    @catch (NSException *exception) {
+        [self externalActionDone];
+    }
+    @finally {}
 }
 
 - (NSString *) selectedAccount {

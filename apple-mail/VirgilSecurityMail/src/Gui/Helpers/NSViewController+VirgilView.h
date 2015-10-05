@@ -69,4 +69,8 @@
  */
 - (void) closeWindow;
 
+- (void) preventUserActivity : (BOOL) prevent;
+- (void) externalActionDone;
+- (void) setProgressVisible : (BOOL) visible;
+
 @end

@@ -36,6 +36,8 @@
 
 #import "VirgilBannerContainerViewController.h"
 #import "VirgilDynamicVariables.h"
+#import "VirgilProcessingManager.h"
+#import "VirgilGui.h"
 #import "VirgilLog.h"
 
 #import <BannerContainerViewController.h>
@@ -62,8 +64,8 @@
 }
 
 - (void) restoreOriginalView {
-   BannerContainerViewController * bunnerController = (BannerContainerViewController *)self;
-    BannerViewController * viewController = (BannerViewController *)[bunnerController.bannerViewControllers objectAtIndex:VIRGIL_BANNER_INDEX];
+   BannerContainerViewController * bannerController = (BannerContainerViewController *)self;
+    BannerViewController * viewController = (BannerViewController *)[bannerController.bannerViewControllers objectAtIndex:VIRGIL_BANNER_INDEX];
 
     NSTextField * curTextField;
     for (id viewElement in [(NSView *)viewController.view subviews]) {
@@ -94,8 +96,8 @@
 }
 
 - (void) showEmailConfirnation {
-    BannerContainerViewController * bunnerController = (BannerContainerViewController *)self;
-    BannerViewController * viewController = (BannerViewController *)[bunnerController.bannerViewControllers objectAtIndex:VIRGIL_BANNER_INDEX];
+    BannerContainerViewController * bannerController = (BannerContainerViewController *)self;
+    BannerViewController * viewController = (BannerViewController *)[bannerController.bannerViewControllers objectAtIndex:VIRGIL_BANNER_INDEX];
     
     NSTextField * oldTextField = nil;
     
@@ -141,7 +143,22 @@
 }
 
 - (void) onConfirmClicked : (id)sender {
-    VLogInfo(@">>>>>>>>>>>>>>>>> onConfirmClicked <<<<<<<<<<<<<<<<<<");
+    NSString * code = [self dynVar:@"ConfirmationCode"];
+    NSString * account = [self dynVar:@"ConfirmationAccount"];
+    if (nil == account | nil == code) return;
+    [VirgilGui confirmAccount : account
+             confirmationCode : code
+                 resultObject : self
+                  resultBlock : ^(id arg1, BOOL isOk) {
+                      if (isOk) {
+                          [self removeAllDynVars];
+                          [self restoreOriginalView];
+                          [self MAUpdateBannerDisplay];
+                          BannerContainerViewController * bannerController = (BannerContainerViewController *)self;
+                          BannerViewController * viewController = (BannerViewController *)[bannerController.bannerViewControllers objectAtIndex:VIRGIL_BANNER_INDEX];
+                          viewController.wantsDisplay = NO;
+                      }
+                  }];
 }
 
 @end

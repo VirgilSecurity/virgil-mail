@@ -69,9 +69,10 @@
 - (DecryptStatus) getDecriptionStatusForMessage : (Message *)message;
 
 // Helper work with keys
-- (void) setCurrentConfirmationCode : (NSString *) confirmationCode;
-- (BOOL) checkConfirmationEmail : (MimePart *) mimePart;
+- (NSString *) confirmationCodeFromEmail : (Message *) message;
 - (void) getAllPrivateKeys;
+- (BOOL) accountNeedsConfirmation : (NSString *)account;
+- (NSString *) getMyAccountFromMessage : (Message *)message;
 
 @property (readonly, retain) VirgilDecryptedMailContainer * decryptedMailContainer;
 

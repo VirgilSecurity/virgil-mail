@@ -41,5 +41,4 @@
  */
 @interface VirgilRegisterViewController : NSViewController
 
-
 @end

@@ -47,5 +47,7 @@
  */
 - (void) setErrorText : (NSString *) errorText;
 
+@property BOOL singleWindow;
+
 @end
 

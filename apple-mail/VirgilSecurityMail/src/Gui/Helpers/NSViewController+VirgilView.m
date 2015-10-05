@@ -95,4 +95,41 @@
     [curWindow close];
 }
 
+- (void) preventUserActivity : (BOOL) prevent {
+    for (id elem in [self.view subviews]) {
+        NSString * className = NSStringFromClass ([elem class]);
+        if (![className isEqualTo:@"NSProgressIndicator"]) {
+            NSControl * control = (NSControl *)elem;
+            control.enabled = !prevent;
+        }
+    }
+}
+
+- (void) externalActionDone {
+    [self setProgressVisible:NO];
+    [self preventUserActivity:NO];
+}
+
+- (void) setProgressVisible : (BOOL) visible {
+    NSProgressIndicator * progressBar = nil;
+    for (id elem in [self.view subviews]) {
+        NSString * className = NSStringFromClass ([elem class]);
+        if ([className isEqualTo:@"NSProgressIndicator"]) {
+            progressBar = (NSProgressIndicator *)elem;
+        }
+    }
+    if (nil == progressBar) return;
+    progressBar.minValue = 0;
+    progressBar.maxValue = 1000;
+    progressBar.doubleValue = 0;
+    progressBar.usesThreadedAnimation = YES;
+    
+    if (visible) {
+        [progressBar startAnimation:nil];
+    } else {
+        [progressBar stopAnimation:nil];
+    }
+}
+
+
 @end

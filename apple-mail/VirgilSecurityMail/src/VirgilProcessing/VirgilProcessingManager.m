@@ -191,10 +191,6 @@
     return nil;
 }
 
-- (void) setCurrentConfirmationCode : (NSString *) confirmationCode {
-    [VirgilGui setConfirmationCode : confirmationCode];
-}
-
 // Get EmailData and signature
 - (VirgilEncryptedContent *) getMainEncryptedData : (NSData *)data {
     if (nil == data) return nil;
@@ -308,7 +304,7 @@
     static BOOL _lastAnswer = NO;
     static NSTimeInterval _lastAnswerTime = 0;
     
-    @synchronized(self) {
+    //@synchronized(self) {
         if ([VirgilPreferencesContainer isNeedAskToDecrypt]) {
             
             NSTimeInterval _saveAnswerTime = 2.0;
@@ -324,7 +320,7 @@
         } else {
             _lastAnswer = YES;
         }
-    }
+    //}
     
     VLogInfo(@"canDecrypt %hhd", _lastAnswer);
     return _lastAnswer;
@@ -472,7 +468,7 @@
     Message * currentMessage = [(MimeBody *)[mimePart mimeBody] message];
 
     id res = nil;
-    @synchronized (currentMessage) {
+    @synchronized (self) {
         if (NO == [_decryptedMailContainer isMailPresent:currentMessage]) {
             [self decryptWholeMessage:topMimePart];
         }
@@ -482,45 +478,39 @@
     return res;
 }
 
-- (BOOL) checkConfirmationEmail : (MimePart *) mimePart {
-    if (nil == mimePart) return NO;
-    MimePart * topMimePart = [self topLevelPartByAnyPart:mimePart];
+- (NSString *) confirmationCodeFromEmail : (Message *) message {
+    if (nil == message) return nil;
+    MimePart * topMimePart = ((MimeBody *)message.messageBody).topLevelPart;
+    if (nil == topMimePart) return nil;
     
-    Message * message = [(MimeBody *)[topMimePart mimeBody] message];
     NSString * receiver = [self getMyAccountFromMessage:message];
-    if (nil == message || nil == receiver) return NO;
+    if (nil == message || nil == receiver) return nil;
     VLogInfo(@"isRead = %hhd", [message isRead]);
     
-    if (![topMimePart.subtype isEqualTo:@"html"]) return NO;
+    if (![topMimePart.subtype isEqualTo:@"html"]) return nil;
     
-    NSData *bodyData = [mimePart bodyData];
+    NSData *bodyData = [topMimePart bodyData];
     NSString* strBody = [[NSString alloc] initWithData:bodyData encoding:NSUTF8StringEncoding];
     
     if (nil == strBody) return NO;
-    if (![strBody containsString : @"confirmation code is"]) return NO;
+    if (![strBody containsString : @"confirmation code is"]) return nil;
+    
+    NSRange range = [strBody rangeOfString:@"font-weight: bold;\">"];
+    if (NSNotFound == range.location) return nil;
+    NSString * rightPart = [strBody substringFromIndex : range.location + 20];
+    range = [rightPart rangeOfString:@"</b>"];
+    if (NSNotFound == range.location) return nil;
+    return [rightPart substringToIndex:range.location];
+}
+
+- (BOOL) accountNeedsConfirmation : (NSString *)account {
+    if (nil == account) return  NO;
+    
+    VirgilKeyChainContainer * container = [VirgilKeyChain loadContainer : account];
+    if (nil == container) return NO;
+    if (YES == container.isActive) return NO;
     
     return YES;
-    //NSRange range = [strBody rangeOfString:@"font-weight: bold;\">"];
-    //if (NSNotFound == range.location) return NO;
-    //NSString * rightPart = [strBody substringFromIndex : range.location + 20];
-    //range = [rightPart rangeOfString:@"</b>"];
-    //if (NSNotFound == range.location) return NO;
-    //NSString * strCode = [rightPart substringToIndex:range.location];
-    //if (YES == [message isRead]) return YES;
-    
-    //VirgilKeyChainContainer * receiverContainer = [self getKeysContainer : receiver
-    //                                                  forcePrivateKeyGet : YES
-    //                                                  forceActiveAccount : NO];
-    //if (nil == receiverContainer) return NO;
-    
-    //VirgilPrivateKey * privateKey = receiverContainer.privateKey;
-    //if (nil == privateKey) return NO;
-    //if (YES == receiverContainer.isActive) return YES;
-    //TODO: Check is email registered
-    //[VirgilGui setConfirmationCode : strCode];
-    //[VirgilGui getPrivateKey : receiver];
-    
-    //return YES;
 }
 
 - (MimePart *) topLevelPartByAnyPart : (MimePart *)part {
@@ -617,15 +607,6 @@
         VLogInfo(@"GUI request for account login");
         privateKey = [VirgilGui getPrivateKey : account];
     }
-    
-#if 0
-    if (forcePrivateKey && nil != container && (NO == container.isActive)) {
-        BOOL res = [VirgilKeyManager resendConfirmEMail : account];
-        if (NO == res) {
-            VLogError(@"getKeysContainer : %@", [VirgilKeyManager lastError]);
-        }
-    }
-#endif
     
     VirgilPublicKey * publicKey = container.publicKey;
     if (nil == container || nil == publicKey) {

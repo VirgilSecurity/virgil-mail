@@ -34,24 +34,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <Cocoa/Cocoa.h>
+#import "VirgilUserMessageViewController.h"
+#import "NSViewController+VirgilView.h"
 
-typedef NS_ENUM(NSInteger, ConfirmationState) {
-    confirmInAction,
-    
-    confirmError,
-    confirmDone,
-    confirmResend,
-    confirmResendDone
-};
+@implementation VirgilUserMessageViewController
 
-@interface VirgilEmailConfirmViewController : NSViewController
+- (void) setMessageText : (NSString *) messageText {
+    NSTextField * messageTextField = [self.view viewWithTag : 1000];
+    if (nil == messageTextField || nil == messageText) return;
+    [messageTextField setStringValue : messageText];
+}
 
-- (void) setConfirmationCode : (NSString *) confirmationCode
-                  forAccount : (NSString *) account
-                resultObject : (id)resultObject
-                 resultBlock : (void (^)(id arg1, BOOL isOk))resultBlock;
-
-@property (readonly) ConfirmationState state;
+- (IBAction)onOkClicked : (id)sender {
+    if (YES == _singleWindow) {
+        [self closeWindow];
+    } else {
+        [self dismissController:self];
+    }
+}
 
 @end

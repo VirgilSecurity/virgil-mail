@@ -37,6 +37,8 @@
 #import "VirgilGui.h"
 #import "VirgilSignInViewController.h"
 #import "VirgilEmailConfirmViewController.h"
+#import "VirgilErrorViewController.h"
+#import "VirgilUserMessageViewController.h"
 #import "VirgilKeyManager.h"
 #import "VirgilDecryptAcceptViewController.h"
 #import "VirgilKeyChainContainer.h"
@@ -47,17 +49,6 @@ static VirgilPrivateKey * _userActivityKey = nil;
 @implementation VirgilGui
 
 NSString * _currentAccount = @"";
-NSString * _confirmationCode = @"";
-BOOL _waitConfirmation = NO;
-
-+ (void) setConfirmationCode : (NSString *) confirmationCode {
-    _waitConfirmation = YES;
-    if (nil == confirmationCode) {
-        _confirmationCode = @"";
-    } else {
-        _confirmationCode = confirmationCode;
-    }
-}
 
 + (NSBundle *) getVirgilBundle {
     NSBundle * bundle = nil;
@@ -104,16 +95,89 @@ BOOL _waitConfirmation = NO;
     
 }
 
++ (void) showError : (NSString *) error {
+    NSWindow * containerWindow = [[NSApplication sharedApplication] mainWindow];
+    if (nil == containerWindow) return;
+    
+    NSBundle * bundle = [VirgilGui getVirgilBundle];
+    if (nil == bundle) return;
+    
+    @try {
+        NSStoryboard * storyBoard =
+        [NSStoryboard storyboardWithName : @"Main"
+                                  bundle : bundle];
+        if (nil == storyBoard) return;
+        
+        NSWindowController * windowControler = [storyBoard instantiateInitialController];
+        if (nil == windowControler) return;
+        
+        VirgilErrorViewController * controller =
+        (VirgilErrorViewController*)[storyBoard instantiateControllerWithIdentifier : @"viewError"];
+        
+        controller.singleWindow = YES;
+        [controller setErrorText:error];
+        
+        [windowControler setContentViewController:controller];
+        
+        if (nil == controller) return;
+        
+        NSWindow * controllerWindow = [windowControler window];
+        
+        if (nil == controllerWindow) return;
+        
+        [containerWindow beginSheet : controllerWindow
+                  completionHandler : ^(NSModalResponse returnCode) {
+                  }];
+    }
+    @catch (NSException *exception) {
+    }
+    @finally {
+    }
+}
+
++ (void) showMessage : (NSString *) message {
+    NSWindow * containerWindow = [[NSApplication sharedApplication] mainWindow];
+    if (nil == containerWindow) return;
+    
+    NSBundle * bundle = [VirgilGui getVirgilBundle];
+    if (nil == bundle) return;
+    
+    @try {
+        NSStoryboard * storyBoard =
+        [NSStoryboard storyboardWithName : @"Main"
+                                  bundle : bundle];
+        if (nil == storyBoard) return;
+        
+        NSWindowController * windowControler = [storyBoard instantiateInitialController];
+        if (nil == windowControler) return;
+        
+        VirgilUserMessageViewController * controller =
+        (VirgilUserMessageViewController*)[storyBoard instantiateControllerWithIdentifier : @"viewMessage"];
+        
+        controller.singleWindow = YES;
+        [controller setMessageText:message];
+        
+        [windowControler setContentViewController:controller];
+        
+        if (nil == controller) return;
+        
+        NSWindow * controllerWindow = [windowControler window];
+        
+        if (nil == controllerWindow) return;
+        
+        [containerWindow beginSheet : controllerWindow
+                  completionHandler : ^(NSModalResponse returnCode) {
+                  }];
+    }
+    @catch (NSException *exception) {
+    }
+    @finally {
+    }
+}
+
 + (VirgilPrivateKey *) getPrivateKey : (NSString *) account {
     _currentAccount = account;
     _userActivityKey = nil;
-    
-    // Check for need confirmation
-    if (YES == _waitConfirmation) {
-        _waitConfirmation = NO;
-        return [VirgilGui getPrivateKeyAfterActivation : _confirmationCode
-                                            forAccount : account];
-    }
     
     NSWindow * containerWindow = [[NSApplication sharedApplication] mainWindow];
     if (nil == containerWindow) return nil;
@@ -138,54 +202,6 @@ BOOL _waitConfirmation = NO;
             [windowControler setContentViewController:controller];
             
             if (nil == controller) return;
-            
-            NSWindow * controllerWindow = [windowControler window];
-            
-            if (nil == controllerWindow) return;
-            
-            [containerWindow beginSheet : controllerWindow
-                      completionHandler : ^(NSModalResponse returnCode) {
-                          dispatch_semaphore_signal(semaphore);
-                      }];
-        });
-        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-    }
-    @catch (NSException *exception) {
-    }
-    @finally {
-    }
-    
-    return _userActivityKey;
-}
-
-+ (VirgilPrivateKey*) getPrivateKeyAfterActivation : (NSString *) confirmationCode
-                                        forAccount : (NSString *) account {
-    _userActivityKey = nil;
-    
-    NSWindow * containerWindow = [[NSApplication sharedApplication] mainWindow];
-    if (nil == containerWindow) return nil;
-    
-    NSBundle * bundle = [VirgilGui getVirgilBundle];
-    if (nil == bundle) return nil;
-    
-    @try {
-        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-        dispatch_async(dispatch_get_main_queue(), ^{
-            NSStoryboard * storyBoard =
-            [NSStoryboard storyboardWithName : @"Main"
-                                      bundle : bundle];
-            if (nil == storyBoard) return;
-            
-            NSWindowController * windowControler = [storyBoard instantiateInitialController];
-            if (nil == windowControler) return;
-            
-            VirgilEmailConfirmViewController * controller =
-                (VirgilEmailConfirmViewController*)[storyBoard instantiateControllerWithIdentifier : @"viewEmailConfirm"];
-            
-            [windowControler setContentViewController:controller];
-            
-            if (nil == controller) return;
-            [controller setConfirmationCode : confirmationCode forAccount : account];
             
             NSWindow * controllerWindow = [windowControler window];
             
@@ -248,6 +264,66 @@ BOOL _waitConfirmation = NO;
     }
     
     return userAccept == [VirgilDecryptAcceptViewController getLastResult];
+}
+
++ (void) confirmAccount : account
+       confirmationCode : code
+           resultObject : (id)resultObject
+            resultBlock : (void (^)(id arg1, BOOL isOk))resultBlock {
+    NSWindow * containerWindow = [[NSApplication sharedApplication] mainWindow];
+    if (nil == containerWindow) {
+        resultBlock(resultObject, NO);
+        return;
+    }
+        
+    NSBundle * bundle = [VirgilGui getVirgilBundle];
+    if (nil == bundle) {
+        resultBlock(resultObject, NO);
+        return;
+    }
+    
+    @try {
+        NSStoryboard * storyBoard =
+        [NSStoryboard storyboardWithName : @"Main"
+                                  bundle : bundle];
+        if (nil == storyBoard) {
+            resultBlock(resultObject, NO);
+            return;
+        }
+        
+        NSWindowController * windowControler = [storyBoard instantiateInitialController];
+        if (nil == windowControler) return;
+        
+        VirgilEmailConfirmViewController * controller =
+        (VirgilEmailConfirmViewController*)[storyBoard instantiateControllerWithIdentifier : @"viewEmailConfirm"];
+        
+        [controller setConfirmationCode : code
+                             forAccount : account
+                           resultObject : resultObject
+                            resultBlock : resultBlock];
+        
+        [windowControler setContentViewController:controller];
+        
+        if (nil == controller) {
+            resultBlock(resultObject, NO);
+            return;
+        }
+        
+        NSWindow * controllerWindow = [windowControler window];
+        
+        if (nil == controllerWindow) {
+            resultBlock(resultObject, NO);
+            return;
+        }
+        
+        [containerWindow beginSheet : controllerWindow
+                  completionHandler : ^(NSModalResponse returnCode) {
+                  }];
+    }
+    @catch (NSException *exception) {
+    }
+    @finally {
+    }
 }
 
 + (NSString *) currentAccount {

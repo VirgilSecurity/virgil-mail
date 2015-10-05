@@ -49,13 +49,6 @@
     id decryptedPart = nil;
     id nativePart = [self MADecodeWithContext:ctx];
     
-#if 0
-    if (YES == [[VirgilProcessingManager sharedInstance]
-                checkConfirmationEmail: (MimePart *)self]) {
-        return nativePart;
-    }
-#endif
-    
     NSString *className = NSStringFromClass([nativePart class]);
     if ([className isEqualToString:@"MCParsedMessage"]) {
         
