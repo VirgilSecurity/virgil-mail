@@ -9,19 +9,23 @@ Html preview with encrypted recepients/signs data in #virgil-info input
 			<p>The message has been encrypted with VirgilOutlook Add-In.</p>
 			<a href='https://virgilsecurity.com/downloads/' >Download Virgil Outlook Add-In.</a>
 
-			<input id='virgil-info' type='hidden' value='{0}' />
+			<div id='virgil-info' style='display: none'>
+				{MailData}
+			</div>
 
 		</body>
 	</html>
-
-And encrypted mail attachments.
+	
+And encrypted mail attachments
 
 
 Virgil info contains base64 encoded string of a json serialized structure 
 
 	{
 		"EmailData" : "123abcd...", // base64 string of encrypted mail data
-		"Sign" : "acdef12345..." // base64 string os sign of encrypted mail, created data with sender private key
+		"Sign" : "acdef12345...", // base64 string os sign of encrypted mail, created data with sender private key
+		"Version" : "1.0.0.0", // string version of the email structure, default value is 1.0.0.0
+		"Sender" : "sender@email.address" // email address of the actual sender 
 	}
 
 EmailData is encrypted json object of following structure
@@ -46,6 +50,8 @@ To encrypt email this steps are executed:
 	3. EmailData is encrypted with embedContentInfo set to true
 5. Encrypted MailData object then used as an input for a sign method as well as sender private key value
 6. Each attachment is being scanned and replaced with its encrypted value, using same cipher.
+7. MailData is added as an attachemnt to email. File name is virgilsecurity.mailinfo
+8. MailData is encapsulated into mail html body 
 
 
 Pseudo code:
@@ -84,6 +90,8 @@ Pseudo code:
 	// replace email text with html template containing mail data
 	string mailInfoJson = JsonConvert.SerializeObject(mailInfo);
 	byte[] encodedInfo = Convert.ToBase64(mailInfoJson);
+	
+	mail.Attachemnts.Add(encodedInfo, "virgilsecurity.mailinfo")
 		
 	mail.HTMLBody = string.Format(HtmlBody, encodedInfo);
 
@@ -91,7 +99,8 @@ Pseudo code:
 
 Steps to decrypt : 
 
-1. Scan mail plain text for `<input id='virgil-info' type='hidden' value='{0}' />` and extact its value
+1. Scan attachemts for attachemt with the name "virgilsecurity.mailinfo" and extract its value.
+2. If no attchemt found scan mail HTML Body for `<div id='virgil-info' >` and extract its value
 2. Deserialize VirgilInfo
 2. Verify sign with sender's public key
 2. Decrypt EmailData with your private key
@@ -100,7 +109,9 @@ Steps to decrypt :
 
 Pseudocode:
 
-	VirgilMessageInfo info = mail.ExtractHtmlNodeValue('#virgil-info');
+	VirgilMessageInfo info = mail.ExtractMailInfoFromAttachment("virgilsecurity.mailinfo");
+	if (info == null)
+		info = mail.ExtractHtmlNodeValue("#virgil-info");
 	
 	var senderPublicKey = PKI.GetPublicKey(mail.Sender);
 	
@@ -116,7 +127,7 @@ Pseudocode:
 	    attachment.Data = cipher.Decrypt(attachemnt.Data, ourPublicKeyId, ourPrivateKey);    
 	}
 
-## Handling unregistered users: ## 
+## Handling unregistered users ## 
 
 Currently for a recipient who's email is not registered on Public Key Service we send invitation instead of encrypted mail. Sender would have to resend email one more time to deliver it to the initial recipient.
 
