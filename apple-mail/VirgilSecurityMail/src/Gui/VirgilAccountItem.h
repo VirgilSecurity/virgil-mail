@@ -35,49 +35,14 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <Message.h>
-#import <MimePart.h>
-#import <WebComposeMessageContents.h>
-#import <OutgoingMessage.h>
-#import "VirgilDecryptedMailContainer.h"
 #import "VirgilAccountInfo.h"
 
-#define VIRGIL_MAIL_INFO_ATTACH @"virgilsecurity.mailinfo"
-#define WIN_MAIL_DATA_ATTACH @"winmail.dat"
+@interface VirgilAccountItem : NSObject
 
-@interface VirgilProcessingManager : NSObject
-
-+ (VirgilProcessingManager *) sharedInstance;
-
-+ (NSArray *) accountsList;
-
-// Encryption
-- (BOOL) isNeedToEncrypt;
-- (BOOL) encryptMessage : (WebComposeMessageContents *)message
-            attachments : (NSArray *)attachments
-                 result : (OutgoingMessage *)result;
-
-- (BOOL) inviteMessage : (WebComposeMessageContents *)message
-                 result : (OutgoingMessage *)result;
-
-// Decryption
-- (id) decryptMessagePart:(MimePart *)mimePart;
-- (NSData *) decryptedAttachementByName : (NSString *) name
-                               forEmail : (id)message;
-- (BOOL) isEncryptedByVirgil : (MimePart *)topMimePart;
-- (BOOL) isEncryptedByVirgilByAnyPart : (MimePart *)mimePart;
-- (MimePart *) topLevelPartByAnyPart:(MimePart *)part;
-- (DecryptStatus) getDecriptionStatusForMessage : (Message *)message;
-
-// Helper work with keys
-- (NSString *) confirmationCodeFromEmail : (Message *) message;
-- (BOOL) accountNeedsConfirmation : (NSString *)account;
-- (NSString *) getMyAccountFromMessage : (Message *)message;
-
-- (VirgilAccountInfo *) accountInfo : (NSString *)account
-                       checkInCloud : (BOOL)checkInCloud;
-
-
-@property (readonly, retain) VirgilDecryptedMailContainer * decryptedMailContainer;
+@property (nonatomic, copy) NSString * name;
+@property (nonatomic) NSString * account;
+@property (nonatomic) NSImage * userImage;
+@property (nonatomic) NSImage * accountImage;
+@property (nonatomic) AccountStatus status;
 
 @end

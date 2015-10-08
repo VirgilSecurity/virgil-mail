@@ -47,6 +47,9 @@
 + (BOOL) isSaveDecryptionAccept;
 + (void) setSaveDecryptionAccept : (BOOL)use;
 
++ (BOOL) isNeedShowWellcome;
++ (void) setNeedShowWellcome : (BOOL)use;
+
 + (NSInteger) acceptSaveTimeMin;
 + (void) setSaveAcceptTimeMin : (NSInteger) timeInMin;
 

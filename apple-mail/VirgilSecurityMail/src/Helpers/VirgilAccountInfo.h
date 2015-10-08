@@ -34,13 +34,21 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+typedef NS_ENUM(NSInteger, AccountStatus) {
+    statusUnknown,
+    
+    statusAllDone,
+    statusWaitActivation,
+    statusPublicKeyPresent,
+    statusPublicKeyNotPresent
+};
+
 #import <Foundation/Foundation.h>
 
-@interface VirgilComposeViewController : NSObject
+@interface VirgilAccountInfo : NSObject
 
-- (void)MAFinishUICustomization:(id)arg1;
-- (void)MA_newComposeViewControllerCommonInit;
-- (id)MAInitWithCoder:(id)arg1;
-- (id)MAInitWithNibName:(id)arg1 bundle:(id)arg2;
+@property (nonatomic, copy) NSString * name;
+@property (nonatomic) NSString * account;
+@property (nonatomic) AccountStatus status;
 
 @end

@@ -33,6 +33,7 @@
  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 #import "VirgilPreferencesContainer.h"
 #import "VirgilPreferencesHelper.h"
 
@@ -42,6 +43,7 @@ static NSString * _NeedAskToDecrypt = @"_NeedAskToDecrypt";
 static NSString * _UseEncryption = @"_UseEncryption";
 static NSString * _SaveDecriptionAccept = @"_SaveDecriptionAccept";
 static NSString * _SaveDecriptionAcceptTime = @"_SaveDecriptionAcceptTime";
+static NSString * _NeedShowWellcome = @"_NeedShowWellcome";
 
 + (BOOL) isNeedAskToDecrypt {
     if (NO == [VirgilPreferencesHelper isKeyPresent : _NeedAskToDecrypt]) {
@@ -77,6 +79,17 @@ static NSString * _SaveDecriptionAcceptTime = @"_SaveDecriptionAcceptTime";
 + (void) setSaveDecryptionAccept : (BOOL)use {
     [VirgilPreferencesHelper setBoolForKey : use
                                        key : _SaveDecriptionAccept];
+}
+
++ (BOOL) isNeedShowWellcome {
+    if (NO == [VirgilPreferencesHelper isKeyPresent : _NeedShowWellcome]) {
+        return YES;
+    }
+    return [VirgilPreferencesHelper getBoolForKey : _NeedShowWellcome];
+}
++ (void) setNeedShowWellcome : (BOOL)use {
+    [VirgilPreferencesHelper setBoolForKey : use
+                                       key : _NeedShowWellcome];
 }
 
 + (NSInteger) acceptSaveTimeMin {

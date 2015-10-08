@@ -39,6 +39,7 @@
 @interface VirgilBannerContainerViewController : NSObject
 
 - (void)MAUpdateBannerDisplay;
+- (void)MASetRepresentedObject:(id)arg1;
 
 @end
 

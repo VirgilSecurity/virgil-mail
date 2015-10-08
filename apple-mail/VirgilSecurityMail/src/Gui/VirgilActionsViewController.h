@@ -35,7 +35,13 @@
  */
 
 #import <Cocoa/Cocoa.h>
+#import "VirgilAccountsProtocol.h"
 
-@interface VirgilMainViewController : NSViewController
+@interface VirgilActionsViewController : NSViewController
+
+@property (nonatomic) NSString * account;
+@property (nonatomic, weak) id <VirgilAccountsProtocol> delegate;
+
+@property (nonatomic, weak) IBOutlet NSTextField * infoTextField;
 
 @end

@@ -38,6 +38,8 @@
 #import "VirgilHandlersInstaller.h"
 #import "VirgilProcessingManager.h"
 #import "VirgilPreferences.h"
+#import "VirgilPreferencesContainer.h"
+#import "VirgilGui.h"
 #import "VirgilLog.h"
 
 NSString *VirgilMailMethodPrefix = @"MA";
@@ -68,12 +70,12 @@ NSString *VirgilMailMethodPrefix = @"MA";
 
     VirgilMain * instance = [VirgilMain sharedInstance];
     
-#if 0
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 4 * NSEC_PER_SEC),
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC),
                    dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-        [[VirgilProcessingManager sharedInstance] getAllPrivateKeys];
+                       if ([VirgilPreferencesContainer isNeedShowWellcome]) {
+                           [VirgilGui showWellcome];
+                       }
     });
-#endif
     
     // Registering plugin in Mail.app
     [[((VirgilMain *)self) class] registerBundle];
@@ -115,7 +117,12 @@ NSString *VirgilMailMethodPrefix = @"MA";
                                   @"menu",
                                   @"encrypt_ok_small",
                                   @"encrypt_unknown_small",
-                                  @"encrypt_wrong_small"];
+                                  @"encrypt_wrong_small",
+                                  @"account",
+                                  @"in_progress",
+                                  @"ok",
+                                  @"attention",
+                                  @"problem"];
     NSMutableArray *bundleImages = [[NSMutableArray alloc] initWithCapacity:[bundleImageNames count]];
     
     for (NSString *name in bundleImageNames) {

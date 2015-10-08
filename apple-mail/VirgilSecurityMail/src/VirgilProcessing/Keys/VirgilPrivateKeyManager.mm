@@ -40,6 +40,7 @@
 #import "VirgilPrivateKey.h"
 #import "VirgilCryptoLibWrapper.h"
 #import "VirgilNetRequest.h"
+#import "VirgilLog.h"
 #import "NSData+Base64.h"
 
 @implementation VirgilPrivateKeyManager
@@ -314,14 +315,13 @@ static VirgilPrivateKeyEndpoints * _endpoints =
  * @return encrypted and BASE64 encoded private key | nil - error occured, get error with [VirgilPrivateKeyManager lastError]
  */
 + (NSString *) prepareKeyToPush : (VirgilPrivateKey *) key {
+    NSData * keyData = [key.key dataUsingEncoding : NSUTF8StringEncoding];
     if (VirgilContainerEasy == key.containerType) {
-        NSData * keyData = [key.key dataUsingEncoding : NSUTF8StringEncoding];
         NSData * encryptedKey = [VirgilCryptoLibWrapper encryptData : keyData
                                                            password : key.containerPassword];
         return [encryptedKey base64EncodedStringWithSeparateLines : NO];
-    } else {
-        // TODO: support "normal" container type
-        [VirgilPrivateKeyManager setErrorString : @"try to create not supported container type"];
+    } else { // Normal mode
+        return [keyData base64EncodedStringWithSeparateLines : NO];
     }
     return nil;
 }

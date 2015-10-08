@@ -43,7 +43,8 @@
 
 @interface VirgilGui : NSObject
 
-+ (void) showMain;
++ (void) showWellcome;
++ (void) showAccountsFor : (NSString *) account;
 
 + (VirgilPrivateKey*) getPrivateKey : (NSString *) account;
 

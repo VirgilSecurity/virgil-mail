@@ -49,8 +49,7 @@
 - (void)MASetRepresentedObject:(id)representedObject {
     [self MASetRepresentedObject:representedObject];
     
-    BannerContainerViewController * bannerController = [self valueForKey:@"bannerViewController"];
-    [bannerController removeAllDynVars];
+    [representedObject removeAllDynVars];
     
     Message * message = (Message *)(((ConversationMember *)representedObject).originalMessage);
     
@@ -59,17 +58,18 @@
     if (YES == accountNeedsConfirmation) {
         NSString * confirmationCode = [[VirgilProcessingManager sharedInstance] confirmationCodeFromEmail:message];
         if (nil != confirmationCode) {
-            [self needShowConfirmationAccept:myAccount code:confirmationCode];
+            [self needShowConfirmationAccept:myAccount code:confirmationCode object:representedObject];
         }
     }
 }
 
 - (void) needShowConfirmationAccept : (NSString *) account
-                               code : (NSString *) code {
-    BannerContainerViewController * bannerController = [self valueForKey:@"bannerViewController"];
-    [bannerController setDynVar:@"IsConfirmationEmail" value:[NSNumber numberWithBool:YES]];
-    [bannerController setDynVar:@"ConfirmationCode" value:code];
-    [bannerController setDynVar:@"ConfirmationAccount" value:account];
+                               code : (NSString *) code
+                             object : (id) object {
+    VLogInfo(@">>> needShowConfirmationAccept : %@", account);
+    [object setDynVar:@"IsConfirmationEmail" value:[NSNumber numberWithBool:YES]];
+    [object setDynVar:@"ConfirmationCode" value:code];
+    [object setDynVar:@"ConfirmationAccount" value:account];
     [self showBanner];
 }
 

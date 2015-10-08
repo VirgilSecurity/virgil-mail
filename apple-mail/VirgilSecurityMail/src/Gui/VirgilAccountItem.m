@@ -34,13 +34,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "VirgilMainViewController.h"
-#import "NSViewController+VirgilView.h"
+#import "VirgilAccountItem.h"
 
-@implementation VirgilMainViewController
-
-- (IBAction)onCloseClicked:(id)sender {
-    [self closeWindow];
-}
+@implementation VirgilAccountItem : NSObject 
 
 @end

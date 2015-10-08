@@ -126,7 +126,7 @@
 }
 
 - (void) onVirgilMenuClicked {
-    [VirgilGui showMain];
+    [VirgilGui showAccountsFor:nil];
 }
 
 - (void) toolbarDidRemoveItem : (NSNotification *) notification {

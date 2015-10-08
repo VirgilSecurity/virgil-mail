@@ -40,15 +40,29 @@
 
 @implementation NSViewController (VirgilView)
 
-- (BOOL) changeView : (NSString *) newViewName {
+- (NSViewController *) changeView : (NSString *) newViewName {
     NSStoryboard * storyboard = [self storyboard];
-    if (nil == storyboard) return NO;
+    if (nil == storyboard) return nil;
     NSViewController * controller =
     (NSViewController*)[storyboard instantiateControllerWithIdentifier : newViewName];
-    if (nil == controller) return NO;
+    if (nil == controller) return nil;
     [self presentViewController : controller
                        animator : [[VirgilReplaceAnimator alloc] init]];
-    return YES;
+    return controller;
+}
+
+- (NSViewController *) showSheetView : (NSString *) newViewName {
+    NSStoryboard * storyboard = [self storyboard];
+    
+    if (nil == storyboard) return nil;
+    NSViewController * controller =
+    (NSViewController*)[storyboard instantiateControllerWithIdentifier : newViewName];
+    
+    if (nil == controller) return nil;
+    
+    [self presentViewControllerAsSheet : controller];
+    
+    return controller;
 }
 
 - (BOOL) showErrorView : (NSString *) errorText {
@@ -96,11 +110,22 @@
 }
 
 - (void) preventUserActivity : (BOOL) prevent {
+    NSMutableArray * controls = [NSMutableArray new];
     for (id elem in [self.view subviews]) {
+        [controls addObject:elem];
+        if ([elem respondsToSelector:@selector(subviews)]) {
+            for (id subElem in [elem subviews]) {
+                [controls addObject:subElem];
+            }
+        }
+    }
+    
+    for (id elem in controls) {
         NSString * className = NSStringFromClass ([elem class]);
         if (![className isEqualTo:@"NSProgressIndicator"]) {
-            NSControl * control = (NSControl *)elem;
-            control.enabled = !prevent;
+            if ([elem respondsToSelector:@selector(setEnabled:)]) {
+                [elem setEnabled:!prevent];
+            }
         }
     }
 }
@@ -116,6 +141,7 @@
         NSString * className = NSStringFromClass ([elem class]);
         if ([className isEqualTo:@"NSProgressIndicator"]) {
             progressBar = (NSProgressIndicator *)elem;
+            break;
         }
     }
     if (nil == progressBar) return;

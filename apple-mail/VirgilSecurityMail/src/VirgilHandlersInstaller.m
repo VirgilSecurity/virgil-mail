@@ -86,18 +86,13 @@
                         @"_updateSnippet",
                         @"_updatePhoto",
                         @"_updateContactPhotoVisibilityFromDefaults"
-                     ],
-             @"ComposeViewController": @[
-                        @"finishUICustomization:",
-                        @"_newComposeViewControllerCommonInit",
-                        @"initWithCoder:",
-                        @"initWithNibName:bundle:"
-                     ],
+                     ],	
              @"HeadersEditor": @[
-                        @"configureButtonsAndPopUps"
+                        @"changeFromHeader:"
                      ],
              @"BannerContainerViewController": @[
-                        @"updateBannerDisplay"
+                        @"updateBannerDisplay",
+                        @"setRepresentedObject:"
                      ]
              };
 }

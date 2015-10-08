@@ -58,13 +58,27 @@
     
     [self MAUpdateBannerDisplay];
     
-    if ([self isExistsDynVar:@"IsConfirmationEmail"]) {
-        [self showEmailConfirnation];
+    if ([((BannerContainerViewController*)self).representedObject isExistsDynVar:@"IsConfirmationEmail"]) {
+        [self showEmailConfirmation];
+    }
+}
+
+- (void)MASetRepresentedObject:(id)arg1 {
+    [self MASetRepresentedObject:arg1];
+    
+    [self restoreOriginalView];
+    if ([((BannerContainerViewController*)self).representedObject isExistsDynVar:@"IsConfirmationEmail"]) {
+        [self showEmailConfirmation];
     }
 }
 
 - (void) restoreOriginalView {
-   BannerContainerViewController * bannerController = (BannerContainerViewController *)self;
+    static BOOL flEntered = NO;
+    
+    if (YES == flEntered) return;
+    flEntered = YES;
+    
+    BannerContainerViewController * bannerController = (BannerContainerViewController *)self;
     BannerViewController * viewController = (BannerViewController *)[bannerController.bannerViewControllers objectAtIndex:VIRGIL_BANNER_INDEX];
 
     NSTextField * curTextField;
@@ -93,9 +107,13 @@
         [(NSView *)viewController.view replaceSubview:curTextField with:original];
         [(NSView *)viewController.view setNeedsDisplay:YES];
     }
+    
+    // TODO: Pay attention here
+    viewController.wantsDisplay = NO;
+    flEntered = NO;
 }
 
-- (void) showEmailConfirnation {
+- (void) showEmailConfirmation {
     BannerContainerViewController * bannerController = (BannerContainerViewController *)self;
     BannerViewController * viewController = (BannerViewController *)[bannerController.bannerViewControllers objectAtIndex:VIRGIL_BANNER_INDEX];
     
@@ -142,21 +160,34 @@
     viewController.wantsDisplay = YES;
 }
 
+- (void) clearVirgilBanner {
+    BannerContainerViewController * bannerController = (BannerContainerViewController *)self;
+    [bannerController.representedObject removeAllDynVars];
+    [self restoreOriginalView];
+    [self MAUpdateBannerDisplay];
+    
+    BannerViewController * viewController = (BannerViewController *)[bannerController.bannerViewControllers objectAtIndex:VIRGIL_BANNER_INDEX];
+    viewController.wantsDisplay = NO;
+}
+
 - (void) onConfirmClicked : (id)sender {
-    NSString * code = [self dynVar:@"ConfirmationCode"];
-    NSString * account = [self dynVar:@"ConfirmationAccount"];
+    NSString * code = [((BannerContainerViewController*)self).representedObject dynVar:@"ConfirmationCode"];
+    NSString * account = [((BannerContainerViewController*)self).representedObject dynVar:@"ConfirmationAccount"];
     if (nil == account | nil == code) return;
     [VirgilGui confirmAccount : account
              confirmationCode : code
                  resultObject : self
                   resultBlock : ^(id arg1, BOOL isOk) {
                       if (isOk) {
-                          [self removeAllDynVars];
-                          [self restoreOriginalView];
-                          [self MAUpdateBannerDisplay];
-                          BannerContainerViewController * bannerController = (BannerContainerViewController *)self;
-                          BannerViewController * viewController = (BannerViewController *)[bannerController.bannerViewControllers objectAtIndex:VIRGIL_BANNER_INDEX];
-                          viewController.wantsDisplay = NO;
+                          @try {
+                              [self performSelectorOnMainThread : @selector(clearVirgilBanner)
+                                                     withObject : nil
+                                                  waitUntilDone : NO];
+                          }
+                          @catch (NSException *exception) {
+                          }
+                          @finally {
+                          }
                       }
                   }];
 }

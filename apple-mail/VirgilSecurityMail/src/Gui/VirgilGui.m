@@ -39,6 +39,7 @@
 #import "VirgilEmailConfirmViewController.h"
 #import "VirgilErrorViewController.h"
 #import "VirgilUserMessageViewController.h"
+#import "VirgilAccountsViewController.h"
 #import "VirgilKeyManager.h"
 #import "VirgilDecryptAcceptViewController.h"
 #import "VirgilKeyChainContainer.h"
@@ -62,7 +63,7 @@ NSString * _currentAccount = @"";
     return bundle;
 }
 
-+ (void) showMain {
++ (void) showWellcome {
     NSWindow * containerWindow = [[NSApplication sharedApplication] mainWindow];
     if (nil == containerWindow) return;
     
@@ -79,6 +80,50 @@ NSString * _currentAccount = @"";
             NSWindowController * windowControler = [storyBoard instantiateInitialController];
             if (nil == windowControler) return;
             
+            id controller = [storyBoard instantiateControllerWithIdentifier : @"viewWellcome"];
+            
+            [windowControler setContentViewController:controller];
+            
+            if (nil == controller) return;
+            
+            NSWindow * controllerWindow = [windowControler window];
+            if (nil == controllerWindow) return;
+            
+            [containerWindow beginSheet : controllerWindow
+                      completionHandler : ^(NSModalResponse returnCode) {
+                      }];
+            
+        });
+    }
+    @catch (NSException *exception) {
+    }
+    @finally {
+    }
+}
+
++ (void) showAccountsFor : (NSString *) account {
+    NSWindow * containerWindow = [[NSApplication sharedApplication] mainWindow];
+    if (nil == containerWindow) return;
+    
+    NSBundle * bundle = [VirgilGui getVirgilBundle];
+    if (nil == bundle) return;
+    
+    @try {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSStoryboard * storyBoard =
+            [NSStoryboard storyboardWithName : @"Main"
+                                      bundle : bundle];
+            if (nil == storyBoard) return;
+            
+            NSWindowController * windowControler = [storyBoard instantiateInitialController];
+            if (nil == windowControler) return;
+            
+            VirgilAccountsViewController * controller = (VirgilAccountsViewController *)[storyBoard instantiateControllerWithIdentifier : @"viewAccounts"];
+            
+            [windowControler setContentViewController:controller];
+            
+            if (nil == controller) return;
+            
             NSWindow * controllerWindow = [windowControler window];
             if (nil == controllerWindow) return;
             
@@ -92,7 +137,6 @@ NSString * _currentAccount = @"";
     }
     @finally {
     }
-    
 }
 
 + (void) showError : (NSString *) error {
@@ -297,17 +341,17 @@ NSString * _currentAccount = @"";
         VirgilEmailConfirmViewController * controller =
         (VirgilEmailConfirmViewController*)[storyBoard instantiateControllerWithIdentifier : @"viewEmailConfirm"];
         
+        if (nil == controller) {
+            resultBlock(resultObject, NO);
+            return;
+        }
+        
         [controller setConfirmationCode : code
                              forAccount : account
                            resultObject : resultObject
                             resultBlock : resultBlock];
         
         [windowControler setContentViewController:controller];
-        
-        if (nil == controller) {
-            resultBlock(resultObject, NO);
-            return;
-        }
         
         NSWindow * controllerWindow = [windowControler window];
         

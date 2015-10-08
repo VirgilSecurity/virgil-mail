@@ -34,42 +34,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "VirgilComposeViewController.h"
-#import <ComposeViewController.h>
-#import "VirgilLog.h"
+#import <Cocoa/Cocoa.h>
+#import "VirgilAccountsProtocol.h"
 
-@implementation VirgilComposeViewController
+@interface VirgilStorageSetViewController : NSViewController
 
-- (void)MAFinishUICustomization:(id)arg1 {
-    [self MAFinishUICustomization:arg1];
-}
+@property (nonatomic, weak) IBOutlet NSMatrix * radioBtnMatrix;
+@property (nonatomic, weak) IBOutlet NSButton * btnProtectWithPassword;
 
-- (void)MA_newComposeViewControllerCommonInit {
-    [self MA_newComposeViewControllerCommonInit];
-}
+@property (nonatomic, weak) IBOutlet NSTextField * cloudPassword;
+@property (nonatomic, weak) IBOutlet NSTextField * cloudPasswordConfirm;
 
-- (id)MAInitWithCoder:(id)arg1 {
-    id res = [self MAInitWithCoder:arg1];
-    
-    VLogInfo(@">>>>>>>>>>>>>>>>>>>>>>>>>>>> MAInitWithCoder");
-    
-    NSTextField * fromLabel = [self valueForKey:@"fromLabel"];
-    [fromLabel setBackgroundColor:[NSColor yellowColor]];
-    [fromLabel setEditable:NO];
-    [fromLabel setEditable:YES];
-    return res;
-}
+@property (nonatomic, weak) IBOutlet NSTextField * keyPassword;
+@property (nonatomic, weak) IBOutlet NSTextField * keyPasswordConfirm;
 
-- (id)MAInitWithNibName:(id)arg1 bundle:(id)arg2 {
-    id res = [self MAInitWithNibName:arg1 bundle:arg2];
-    
-    VLogInfo(@">>>>>>>>>>>>>>>>>>>>>>>>>>>> MAInitWithNibName");
-    
-    NSTextField * fromLabel = [self valueForKey:@"fromLabel"];
-    [fromLabel setBackgroundColor:[NSColor yellowColor]];
-    [fromLabel setEditable:NO];
-    [fromLabel setEditable:YES];
-    return res;
-}
+@property (nonatomic, copy) NSString * account;
+
+@property (nonatomic, weak) id <VirgilAccountsProtocol> delegate;
 
 @end

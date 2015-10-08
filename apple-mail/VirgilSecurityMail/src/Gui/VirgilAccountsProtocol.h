@@ -34,11 +34,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <Cocoa/Cocoa.h>
+@protocol VirgilAccountsProtocol
 
-/**
- * @class View class for users register
- */
-@interface VirgilRegisterViewController : NSViewController
+- (void) askRefresh;
 
 @end

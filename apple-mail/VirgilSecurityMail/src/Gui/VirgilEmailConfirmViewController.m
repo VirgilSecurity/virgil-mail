@@ -70,16 +70,23 @@ static NSString * curAccount = nil;
     
     @try {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            BOOL res =  [VirgilKeyManager confirmAccountCreation : account
-                                                            code : confirmationCode];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (res) {
-                    [self setCurrentState:confirmDone];
-                } else {
-                    [self setCurrentState:confirmError];
-                }
-                resultBlock(resultObject, res);
-            });
+            if (![[VirgilProcessingManager sharedInstance] accountNeedsConfirmation:account]) {
+                resultBlock(resultObject, YES);
+                [self performSelectorOnMainThread : @selector(closeWindow)
+                                       withObject : nil
+                                    waitUntilDone : NO];
+            } else {
+                BOOL res =  [VirgilKeyManager confirmAccountCreation : account
+                                                                code : confirmationCode];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (res) {
+                        [self setCurrentState:confirmDone];
+                    } else {
+                        [self setCurrentState:confirmError];
+                    }
+                    resultBlock(resultObject, res);
+                });
+            }
         });
         
     }

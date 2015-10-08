@@ -44,9 +44,16 @@
 /**
  * @brief Replace current view by newViewName using VirgilReplaceAnimator
  * @param newViewName - view name to show
- * @return YES - success | NO - can't show need view
+ * @return created view controller - success | nil - can't show need view
  */
-- (BOOL) changeView : (NSString *) newViewName;
+- (NSViewController *) changeView : (NSString *) newViewName;
+
+/**
+ * @brief Show new view as sheet
+ * @param newViewName - view name to show
+ * @return created view controller - success | nil - can't show need view
+ */
+- (NSViewController *) showSheetView : (NSString *) newViewName;
 
 /**
  * @brief Show error message in sheet view

@@ -34,50 +34,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <Foundation/Foundation.h>
-#import <Message.h>
-#import <MimePart.h>
-#import <WebComposeMessageContents.h>
-#import <OutgoingMessage.h>
-#import "VirgilDecryptedMailContainer.h"
-#import "VirgilAccountInfo.h"
+#import <Cocoa/Cocoa.h>
+#import "VirgilAccountItem.h"
+#import "VirgilAccountsProtocol.h"
 
-#define VIRGIL_MAIL_INFO_ATTACH @"virgilsecurity.mailinfo"
-#define WIN_MAIL_DATA_ATTACH @"winmail.dat"
+@interface VirgilAccountsViewController : NSViewController <NSTableViewDelegate, VirgilAccountsProtocol>
 
-@interface VirgilProcessingManager : NSObject
+@property (nonatomic, readonly) NSArray * items;
+@property (nonatomic, weak) IBOutlet NSTableView * tableView;
+@property (nonatomic, weak) IBOutlet NSArrayController * arrayController;
+@property (nonatomic, weak) IBOutlet NSTextField * accountName;
+@property (nonatomic, weak) IBOutlet NSView * embedView;
 
-+ (VirgilProcessingManager *) sharedInstance;
+@property (nonatomic, copy) NSString * selectedAccount;;
 
-+ (NSArray *) accountsList;
-
-// Encryption
-- (BOOL) isNeedToEncrypt;
-- (BOOL) encryptMessage : (WebComposeMessageContents *)message
-            attachments : (NSArray *)attachments
-                 result : (OutgoingMessage *)result;
-
-- (BOOL) inviteMessage : (WebComposeMessageContents *)message
-                 result : (OutgoingMessage *)result;
-
-// Decryption
-- (id) decryptMessagePart:(MimePart *)mimePart;
-- (NSData *) decryptedAttachementByName : (NSString *) name
-                               forEmail : (id)message;
-- (BOOL) isEncryptedByVirgil : (MimePart *)topMimePart;
-- (BOOL) isEncryptedByVirgilByAnyPart : (MimePart *)mimePart;
-- (MimePart *) topLevelPartByAnyPart:(MimePart *)part;
-- (DecryptStatus) getDecriptionStatusForMessage : (Message *)message;
-
-// Helper work with keys
-- (NSString *) confirmationCodeFromEmail : (Message *) message;
-- (BOOL) accountNeedsConfirmation : (NSString *)account;
-- (NSString *) getMyAccountFromMessage : (Message *)message;
-
-- (VirgilAccountInfo *) accountInfo : (NSString *)account
-                       checkInCloud : (BOOL)checkInCloud;
-
-
-@property (readonly, retain) VirgilDecryptedMailContainer * decryptedMailContainer;
+- (void) askRefresh;
 
 @end

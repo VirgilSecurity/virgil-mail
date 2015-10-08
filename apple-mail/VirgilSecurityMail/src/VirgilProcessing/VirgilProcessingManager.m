@@ -508,6 +508,7 @@
     
     VirgilKeyChainContainer * container = [VirgilKeyChain loadContainer : account];
     if (nil == container) return NO;
+    if (nil == container.privateKey) return NO;
     if (YES == container.isActive) return NO;
     
     return YES;
@@ -536,15 +537,39 @@
     return [set allObjects];
 }
 
-- (void) getAllPrivateKeys {
-    NSArray * accounts = [VirgilProcessingManager accountsList];
+- (VirgilAccountInfo *) accountInfo : (NSString *)account
+                       checkInCloud : (BOOL)checkInCloud {
+    VirgilAccountInfo * res = [VirgilAccountInfo new];
+    res.account = account;
     
-    for (NSString * email in accounts) {
-        VLogInfo(@"getAllPrivateKeys");
-        [self getKeysContainer : email
-            forcePrivateKeyGet : YES
-            forceActiveAccount : YES];
+    // Get name by account
+    for (LocalAccount * elem in [[VirgilClassNameResolver resolveClassFromName:@"MailAccount"] mailAccounts]) {
+        for (NSString * emailAccount in elem.emailAddresses) {
+            if ([emailAccount isEqualToString:account]) {
+                res.name = elem.fullUserName;
+                break;
+            }
+        }
+        if (nil != res.name) break;
     }
+    
+    VirgilKeyChainContainer * container = [VirgilKeyChain loadContainer : account];
+    if (container) {
+        if (nil != container.privateKey) {
+            res.status = container.isActive ? statusAllDone : statusWaitActivation;
+        } else {
+            res.status = statusPublicKeyPresent;
+        }
+    } else {
+        if (YES == checkInCloud) {
+            VirgilPublicKey * publicKey = [VirgilKeyManager getPublicKey : account];
+            res.status = (nil == publicKey) ? statusPublicKeyNotPresent : statusPublicKeyPresent;
+        } else {
+            res.status = statusPublicKeyNotPresent;
+        }
+    }
+    
+    return res;
 }
 
 - (NSString *) getMyAccountFromMessage : (Message *)message {
@@ -605,7 +630,7 @@
     VirgilPrivateKey * privateKey = container.privateKey;
     if ((nil == container || nil == privateKey) && forcePrivateKey) {
         VLogInfo(@"GUI request for account login");
-        privateKey = [VirgilGui getPrivateKey : account];
+        //privateKey = [VirgilGui getPrivateKey : account];
     }
     
     VirgilPublicKey * publicKey = container.publicKey;
