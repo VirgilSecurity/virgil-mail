@@ -89,6 +89,9 @@ static NSString * _lastError = nil;
     _lastError = nil;
     
     if (nil == account) return nil;
+    
+    VirgilKeyChainContainer * keyChainContainer = [VirgilKeyChain loadContainer : account];
+    
     try {
         
         const std::string _account([VirgilHelpers _strNS2Std : account]);
@@ -109,6 +112,15 @@ static NSString * _lastError = nil;
                                                            publicKeyID:nsKeyID
                                                              publicKey:nsKey
                                                             userDataID:@""];
+        if (nil == keyChainContainer) {
+            keyChainContainer =
+            [[VirgilKeyChainContainer alloc] initWithPrivateKey : nil
+                                                   andPublicKey : res
+                                                       isActive : YES];
+            [VirgilKeyChain saveContainer : keyChainContainer
+                               forAccount : account];
+        }
+        
         return res;
     } catch (std::exception& exception) {
         const std::string _error(exception.what());
@@ -244,10 +256,12 @@ static NSString * _lastError = nil;
                               );
         keysClient.userData().confirm(strUserDataId, confirmationCode);
         
-        if (![VirgilPrivateKeyManager pushPrivateKey : container.privateKey
-                                     withPublicKeyID : container.publicKey.publicKeyID]) {
-            [VirgilKeyManager setErrorString : [VirgilPrivateKeyManager lastError]];
-            return NO;
+        if (VirgilContainerParanoic != container.privateKey.containerType) {
+            if (![VirgilPrivateKeyManager pushPrivateKey : container.privateKey
+                                         withPublicKeyID : container.publicKey.publicKeyID]) {
+                [VirgilKeyManager setErrorString : [VirgilPrivateKeyManager lastError]];
+                return NO;
+            }
         }
         
         VirgilKeyChainContainer * updatedContainer =
@@ -310,19 +324,30 @@ static NSString * _lastError = nil;
                          containerPassword : privateKey.containerPassword];
 }
 
+
 /**
- * @brief Get private key by account (email) and container password from Private Keys Service
+ * @brief Get private key by account (email) and container password from Private Keys Service without decryption
  * @param account - email
  * @param containerPassword - password to Private Keys Service' container
  * @return VirgilPrivateKey - instance | nil - error occured, get error with [VirgilKeyManager lastError]
  */
-+ (VirgilPrivateKey *) getPrivateKey : (NSString *) account
-                   containerPassword : (NSString *) containerPassword {
++ (VirgilPrivateKey *) getEncryptedPrivateKeyFromCloud : (NSString *) account
+                                     containerPassword : (NSString *) containerPassword {
     _lastError = nil;
     
-    VirgilPublicKey * publicKey = [VirgilKeyManager getPublicKey : account];
+    VirgilPublicKey * publicKey = nil;
+    VirgilKeyChainContainer * keyChainContainer = [VirgilKeyChain loadContainer : account];
     
-    if (nil == publicKey) return nil;
+    if (nil == keyChainContainer || nil == keyChainContainer.publicKey) {
+        publicKey = [VirgilKeyManager getPublicKey : account];                     // Check
+        keyChainContainer = [VirgilKeyChain loadContainer : account];
+    } else {
+        publicKey = keyChainContainer.publicKey;
+    }
+    
+    if (nil == publicKey) {
+        return nil;
+    }
     
     VirgilPrivateKey * privateKey =
     [VirgilPrivateKeyManager getPrivateKey : account
@@ -331,7 +356,42 @@ static NSString * _lastError = nil;
     if (nil == privateKey) {
         [VirgilKeyManager setErrorString : [VirgilPrivateKeyManager lastError]];
     }
+    
     return privateKey;
+}
+
+/**
+ * @brief Decrypt private key by password
+ * @param encryptedKey - encrypted private key
+ * @param keyPassword - password for private key decryption
+ * @return VirgilPrivateKey - decrypted private key | nil - error occured, get error with [VirgilKeyManager lastError]
+ */
++ (VirgilPrivateKey *) decryptedPrivateKey : (VirgilPrivateKey *) encryptedKey
+                                           keyPassword : (NSString *) keyPassword {
+    if ([VirgilPrivateKeyManager isCorrectPrivateKey : encryptedKey]) {
+        return encryptedKey;
+    }
+    VirgilPrivateKey * decryptedKey = [VirgilPrivateKeyManager decryptKey:encryptedKey withPassword:keyPassword];
+    if (nil == decryptedKey) return nil;
+    
+    VLogInfo(@"encryptedKey :  %@", encryptedKey);
+    VLogInfo(@"decryptedKey :  %@", decryptedKey);
+
+    
+    if ([VirgilPrivateKeyManager isCorrectPrivateKey : decryptedKey]) {
+        VirgilPublicKey * publicKey = [VirgilKeyManager getPublicKey:encryptedKey.account];
+        if (nil == publicKey) {
+            [self setErrorString:@"There is no public key for this account"];
+            return nil;
+        }
+        VirgilKeyChainContainer * container = [[VirgilKeyChainContainer alloc] initWithPrivateKey : decryptedKey
+                                                                                     andPublicKey : publicKey
+                                                                                         isActive : YES];
+        [VirgilKeyChain saveContainer:container forAccount:encryptedKey.account];
+        return decryptedKey;
+    }
+    [self setErrorString:@"Wrong password for private key"];
+    return nil;
 }
 
 /**

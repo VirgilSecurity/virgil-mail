@@ -254,9 +254,7 @@ static VirgilPrivateKeyEndpoints * _endpoints =
                          publicKeyID : (NSString *) publicKeyID {
     _lastError = nil;
     
-    if (nil == account) return nil;
-    
-    if (nil == containerPassword || nil == publicKeyID) return nil;
+    if (nil == account || nil == containerPassword || nil == publicKeyID) return nil;
     
     // Get auth token
     NSString * authToken = [VirgilPrivateKeyManager createSession:account
@@ -267,46 +265,43 @@ static VirgilPrivateKeyEndpoints * _endpoints =
                                                                   authToken : authToken];
     if (nil == privateKey) return nil;
     
-    // TODO: get container type
-    VirgilContainerType containerType = VirgilContainerEasy;
-    
     VirgilPrivateKey * encryptedKey =
           [[VirgilPrivateKey alloc] initAccount : account
-                                  containerType : containerType
+                                  containerType : VirgilContainerUnknown
                                      privateKey : privateKey
                                     keyPassword : nil
                               containerPassword : containerPassword];
     
-    VirgilPrivateKey * res = [VirgilPrivateKeyManager decryptKey : encryptedKey];
-    if (nil == res) return nil;
-    
-    return res;
+    return encryptedKey;
 }
 
 /**
- * @brief [Internal use] Decrypt key from Private Key Service.
+ * @brief Decrypt key from Private Key Service.
  * @param key - VirgilPrivateKey instance
+ * @param password - password for key decription
  * @return Decrypted key | nil - error occured, get error with [VirgilPrivateKeyManager lastError]
  */
-+ (VirgilPrivateKey *) decryptKey : (VirgilPrivateKey *) encryptedKey {
-    if (VirgilContainerEasy == encryptedKey.containerType) {
-        
-        NSData * encryptedKeyData = [NSData dataFromBase64String : encryptedKey.key];
-        NSData * decryptedKeyData = [VirgilCryptoLibWrapper decryptData : encryptedKeyData
-                                                           withPassword : encryptedKey.containerPassword];
-        if (nil == decryptedKeyData) return nil;
-        
-        return [[VirgilPrivateKey alloc] initAccount : encryptedKey.account
-                                       containerType : encryptedKey.containerType
-                                          privateKey : [[NSString alloc] initWithData : decryptedKeyData
-                                                                             encoding : NSUTF8StringEncoding]
-                                         keyPassword : encryptedKey.keyPassword
-                                   containerPassword : encryptedKey.containerPassword];
-    } else {
-        // TODO: support "normal" container type
-        [VirgilPrivateKeyManager setErrorString : @"try to decrypt not supported container type"];
-    }
-    return nil;
++ (VirgilPrivateKey *) decryptKey : (VirgilPrivateKey *) encryptedKey
+                     withPassword : (NSString *) password {
+    NSData * encryptedKeyData = [NSData dataFromBase64String : encryptedKey.key];
+    NSData * decryptedKeyData = [VirgilCryptoLibWrapper decryptData : encryptedKeyData
+                                                       withPassword : password];
+    if (nil == decryptedKeyData) return nil;    
+    return [[VirgilPrivateKey alloc] initAccount : encryptedKey.account
+                                   containerType : encryptedKey.containerType
+                                      privateKey : [[NSString alloc] initWithData : decryptedKeyData
+                                                                         encoding : NSUTF8StringEncoding]
+                                     keyPassword : encryptedKey.keyPassword
+                               containerPassword : encryptedKey.containerPassword];
+}
+
+/**
+ * @brief Check is correct private key.
+ * @return boolean is key correct
+ */
++ (BOOL) isCorrectPrivateKey : (VirgilPrivateKey *) privateKey {
+    if (!privateKey || !privateKey.key) return NO;
+    return [privateKey.key containsString:@"-----BEGIN EC PRIVATE KEY-----"];
 }
 
 /**

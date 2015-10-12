@@ -35,21 +35,17 @@
  */
 
 #import "VirgilGui.h"
-#import "VirgilSignInViewController.h"
 #import "VirgilEmailConfirmViewController.h"
 #import "VirgilErrorViewController.h"
 #import "VirgilUserMessageViewController.h"
 #import "VirgilAccountsViewController.h"
+#import "VirgilGetPassword.h"
 #import "VirgilKeyManager.h"
-#import "VirgilDecryptAcceptViewController.h"
 #import "VirgilKeyChainContainer.h"
 #import "VirgilKeyChain.h"
-
-static VirgilPrivateKey * _userActivityKey = nil;
+#import "VirgilLog.h"
 
 @implementation VirgilGui
-
-NSString * _currentAccount = @"";
 
 + (NSBundle *) getVirgilBundle {
     NSBundle * bundle = nil;
@@ -89,6 +85,8 @@ NSString * _currentAccount = @"";
             NSWindow * controllerWindow = [windowControler window];
             if (nil == controllerWindow) return;
             
+            [controllerWindow setStyleMask:[controllerWindow styleMask] & ~NSResizableWindowMask];
+            
             [containerWindow beginSheet : controllerWindow
                       completionHandler : ^(NSModalResponse returnCode) {
                       }];
@@ -126,6 +124,8 @@ NSString * _currentAccount = @"";
             
             NSWindow * controllerWindow = [windowControler window];
             if (nil == controllerWindow) return;
+            
+            [controllerWindow setStyleMask:[controllerWindow styleMask] & ~NSResizableWindowMask];
             
             [containerWindow beginSheet : controllerWindow
                       completionHandler : ^(NSModalResponse returnCode) {
@@ -169,6 +169,8 @@ NSString * _currentAccount = @"";
         
         if (nil == controllerWindow) return;
         
+        [controllerWindow setStyleMask:[controllerWindow styleMask] & ~NSResizableWindowMask];
+        
         [containerWindow beginSheet : controllerWindow
                   completionHandler : ^(NSModalResponse returnCode) {
                   }];
@@ -209,6 +211,8 @@ NSString * _currentAccount = @"";
         
         if (nil == controllerWindow) return;
         
+        [controllerWindow setStyleMask:[controllerWindow styleMask] & ~NSResizableWindowMask];
+        
         [containerWindow beginSheet : controllerWindow
                   completionHandler : ^(NSModalResponse returnCode) {
                   }];
@@ -217,97 +221,6 @@ NSString * _currentAccount = @"";
     }
     @finally {
     }
-}
-
-+ (VirgilPrivateKey *) getPrivateKey : (NSString *) account {
-    _currentAccount = account;
-    _userActivityKey = nil;
-    
-    NSWindow * containerWindow = [[NSApplication sharedApplication] mainWindow];
-    if (nil == containerWindow) return nil;
-    
-    NSBundle * bundle = [VirgilGui getVirgilBundle];
-    if (nil == bundle) return nil;
-    
-    @try {
-        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-        dispatch_async(dispatch_get_main_queue(), ^{
-            NSStoryboard * storyBoard =
-            [NSStoryboard storyboardWithName : @"Main"
-                                      bundle : bundle];
-            if (nil == storyBoard) return;
-            
-            NSWindowController * windowControler = [storyBoard instantiateInitialController];
-            if (nil == windowControler) return;
-            
-            VirgilEmailConfirmViewController * controller =
-            (VirgilEmailConfirmViewController*)[storyBoard instantiateControllerWithIdentifier : @"viewSignIn"];
-            
-            [windowControler setContentViewController:controller];
-            
-            if (nil == controller) return;
-            
-            NSWindow * controllerWindow = [windowControler window];
-            
-            if (nil == controllerWindow) return;
-            
-            [containerWindow beginSheet : controllerWindow
-                      completionHandler : ^(NSModalResponse returnCode) {
-                          dispatch_semaphore_signal(semaphore);
-                      }];
-        });
-        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-    }
-    @catch (NSException *exception) {
-    }
-    @finally {
-    }
-    
-    return _userActivityKey;
-}
-
-+ (BOOL) askForCanDecrypt {
-    NSWindow * containerWindow = [[NSApplication sharedApplication] mainWindow];
-    if (nil == containerWindow) return NO;
-    
-    NSBundle * bundle = [VirgilGui getVirgilBundle];
-    if (nil == bundle) return NO;
-    
-    @try {
-        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-        dispatch_async(dispatch_get_main_queue(), ^{
-            NSStoryboard * storyBoard =
-            [NSStoryboard storyboardWithName : @"Main"
-                                      bundle : bundle];
-            if (nil == storyBoard) return;
-            
-            NSWindowController * windowControler = [storyBoard instantiateInitialController];
-            if (nil == windowControler) return;
-            
-            VirgilDecryptAcceptViewController * controller =
-            (VirgilDecryptAcceptViewController*)[storyBoard instantiateControllerWithIdentifier : @"viewDecryptAccept"];
-            
-            [windowControler setContentViewController:controller];
-            
-            if (nil == controller) return;
-            
-            NSWindow * controllerWindow = [windowControler window];
-            
-            if (nil == controllerWindow) return;
-            
-            [containerWindow beginSheet : controllerWindow
-                      completionHandler : ^(NSModalResponse returnCode) {
-                          dispatch_semaphore_signal(semaphore);
-                      }];
-        });
-        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-    }
-    @catch (NSException *exception) {
-    }
-    @finally {
-    }
-    
-    return userAccept == [VirgilDecryptAcceptViewController getLastResult];
 }
 
 + (void) confirmAccount : account
@@ -360,6 +273,8 @@ NSString * _currentAccount = @"";
             return;
         }
         
+        [controllerWindow setStyleMask:[controllerWindow styleMask] & ~NSResizableWindowMask];
+        
         [containerWindow beginSheet : controllerWindow
                   completionHandler : ^(NSModalResponse returnCode) {
                   }];
@@ -370,12 +285,46 @@ NSString * _currentAccount = @"";
     }
 }
 
-+ (NSString *) currentAccount {
-    return _currentAccount;
-}
-
-+ (void) setUserActivityPrivateKey : (VirgilPrivateKey *) privateKey {
-    _userActivityKey = privateKey;
++ (NSString *) getUserPassword {
+    NSWindow * containerWindow = [[NSApplication sharedApplication] mainWindow];
+    if (nil == containerWindow) return nil;
+    
+    NSBundle * bundle = [VirgilGui getVirgilBundle];
+    if (nil == bundle) return nil;
+    
+    @try {
+        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSStoryboard * storyBoard =
+            [NSStoryboard storyboardWithName : @"Main"
+                                      bundle : bundle];
+            if (nil == storyBoard) return;
+            
+            NSWindowController * windowControler = [storyBoard instantiateInitialController];
+            if (nil == windowControler) return;
+            
+            VirgilGetPassword * controller =
+            (VirgilGetPassword*)[storyBoard instantiateControllerWithIdentifier : @"viewGetPassword"];
+            
+            [windowControler setContentViewController:controller];
+            if (nil == controller) return;
+            
+            NSWindow * controllerWindow = [windowControler window];
+            if (nil == controllerWindow) return;
+            
+            [controllerWindow setStyleMask:[controllerWindow styleMask] & ~NSResizableWindowMask];
+            
+            [containerWindow beginCriticalSheet : controllerWindow
+                              completionHandler : ^(NSModalResponse returnCode) {
+                          dispatch_semaphore_signal(semaphore);
+                      }];
+        });
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    }
+    @catch (NSException *exception) {}
+    @finally {}
+    
+    return [VirgilGetPassword password];
 }
 
 @end

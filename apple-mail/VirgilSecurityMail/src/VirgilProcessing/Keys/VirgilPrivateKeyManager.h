@@ -66,6 +66,21 @@
 
 
 /**
+ * @brief Decrypt key from Private Key Service.
+ * @param key - VirgilPrivateKey instance
+ * @param password - password for key decription
+ * @return Decrypted key | nil - error occured, get error with [VirgilPrivateKeyManager lastError]
+ */
++ (VirgilPrivateKey *) decryptKey : (VirgilPrivateKey *) encryptedKey
+                     withPassword : (NSString *) password;
+
+/**
+ * @brief Check is correct private key.
+ * @return boolean is key correct
+ */
++ (BOOL) isCorrectPrivateKey : (VirgilPrivateKey *) privateKey;
+
+/**
  * @brief Get last error user friendly string
  */
 + (NSString *) lastError;

@@ -46,7 +46,7 @@
 @property (nonatomic, weak) IBOutlet NSTextField * accountName;
 @property (nonatomic, weak) IBOutlet NSView * embedView;
 
-@property (nonatomic, copy) NSString * selectedAccount;;
+@property (nonatomic, copy) NSString * selectedAccount;
 
 - (void) askRefresh;
 

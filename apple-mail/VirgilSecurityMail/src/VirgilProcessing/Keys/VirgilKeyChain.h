@@ -44,5 +44,6 @@
 + (BOOL) saveContainer : (VirgilKeyChainContainer *) container
             forAccount : (NSString *) account;
 
++ (void) removeContainer : (NSString *) account;
 
 @end

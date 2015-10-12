@@ -301,29 +301,7 @@
 }
 
 - (BOOL) canDecrypt {
-    static BOOL _lastAnswer = NO;
-    static NSTimeInterval _lastAnswerTime = 0;
-    
-    //@synchronized(self) {
-        if ([VirgilPreferencesContainer isNeedAskToDecrypt]) {
-            
-            NSTimeInterval _saveAnswerTime = 2.0;
-            
-            if (YES == _lastAnswer && YES == [VirgilPreferencesContainer isSaveDecryptionAccept]) {
-                _saveAnswerTime = 60.0 * [VirgilPreferencesContainer acceptSaveTimeMin];
-            }
-            
-            if (([self curTime] - _lastAnswerTime) > _saveAnswerTime) {
-                _lastAnswer = [VirgilGui askForCanDecrypt];
-                _lastAnswerTime = [self curTime];
-            }
-        } else {
-            _lastAnswer = YES;
-        }
-    //}
-    
-    VLogInfo(@"canDecrypt %hhd", _lastAnswer);
-    return _lastAnswer;
+    return YES;
 }
 
 - (BOOL) isVirgilDataInAttach : (MimePart *) virgilPart {
@@ -565,7 +543,7 @@
             VirgilPublicKey * publicKey = [VirgilKeyManager getPublicKey : account];
             res.status = (nil == publicKey) ? statusPublicKeyNotPresent : statusPublicKeyPresent;
         } else {
-            res.status = statusPublicKeyNotPresent;
+            res.status = statusUnknown;
         }
     }
     
@@ -629,8 +607,7 @@
     
     VirgilPrivateKey * privateKey = container.privateKey;
     if ((nil == container || nil == privateKey) && forcePrivateKey) {
-        VLogInfo(@"GUI request for account login");
-        //privateKey = [VirgilGui getPrivateKey : account];
+        VLogWarning(@"There is no private key for decryption : account - %@", account);
     }
     
     VirgilPublicKey * publicKey = container.publicKey;

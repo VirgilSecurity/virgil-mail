@@ -63,4 +63,10 @@
     return YES;
 }
 
++ (void) removeContainer : (NSString *) account {
+    if (account) {
+        [VirgilKeychainWrapper remove:kVirgilService account:account];
+    }
+}
+
 @end

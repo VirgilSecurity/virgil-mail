@@ -145,10 +145,12 @@
     if (nil != oldTextField) {
         if (![viewController isExistsDynVar:BANNER_TEXT_FIELD]) [viewController setDynVar:BANNER_TEXT_FIELD value:oldTextField];
         
+        NSString * account = [bannerController.representedObject dynVar:@"ConfirmationAccount"];
+        NSString * message = [NSString stringWithFormat:@"This message contains confirmation code for account %@", account];
         NSTextField * newTextField = [[NSTextField alloc] initWithFrame:NSMakeRect(50, 2, 200, 25)];
         [newTextField setFont:oldTextField.font];
         [newTextField setTextColor:oldTextField.textColor];
-        [newTextField setStringValue:@"Email confirmation"];
+        [newTextField setStringValue : message];
         [newTextField setBackgroundColor:oldTextField.backgroundColor];
         [newTextField setDrawsBackground:oldTextField.drawsBackground];
         [newTextField setBordered:oldTextField.bordered];

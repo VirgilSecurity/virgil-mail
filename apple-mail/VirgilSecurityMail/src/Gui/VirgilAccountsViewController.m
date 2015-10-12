@@ -91,7 +91,17 @@
         }
     }
     _items = [ar copy];
-    [_tableView reloadData];
+    NSString * updateAccount = _selectedAccount;
+    [_arrayController setContent:_items];
+    [self selectAccount:updateAccount];
+}
+
+- (void) updateSelection {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 100 * NSEC_PER_MSEC),
+                   dispatch_get_main_queue(), ^{
+                       [self selectAccount:_selectedAccount];
+                   });
+
 }
 
 - (NSArray *)items {
@@ -104,24 +114,26 @@
             VirgilAccountItem * item = [self info2item:info];
             [ar addObject:item];
             
-            if (statusPublicKeyNotPresent == item.status) {
+            if (statusUnknown == item.status) {
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                     VirgilAccountInfo * infoCloud =
                         [[VirgilProcessingManager sharedInstance] accountInfo:account checkInCloud:YES];
-                    
-                    if (statusPublicKeyPresent == infoCloud.status) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            [self updateAccountInfo:infoCloud];
-                        });
-                    }
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self updateAccountInfo:infoCloud];
+                    });
                 });
             }
             
             if (_selectedAccount && [_selectedAccount isEqualToString:info.account]) {
-                [self tableViewSelectionDidChange:nil];
+                [self updateSelection];
             }
         }
         _items = [ar copy];
+        if (nil == _selectedAccount && _items && _items.count) {
+            VirgilAccountInfo * info = [_items objectAtIndex:0];
+            _selectedAccount = info.account;
+            [self updateSelection];
+        }
     }
     return _items;
 }
@@ -141,6 +153,7 @@
     else if (statusPublicKeyNotPresent == accountItem.status) return [self switchEmbedViewTo : @"viewNoAccount"];
     else if (statusPublicKeyPresent == accountItem.status) return [self switchEmbedViewTo : @"viewGetKey"];
     else if (statusWaitActivation == accountItem.status) return [self switchEmbedViewTo : @"viewWaitConfirmation"];
+    else if (statusWaitActivation == accountItem.status) return [self switchEmbedViewTo : @"viewNoStatus"];
     
     return nil;
 }
@@ -162,10 +175,23 @@
     [self closeWindow];
 }
 
+- (void) selectAccount : (NSString *) account {
+    for (VirgilAccountItem * item in [_arrayController content]) {
+        if ([item.account isEqualToString:account]) {
+            [_arrayController setSelectedObjects:[NSArray arrayWithObject:item]];
+            break;
+        }
+    }
+    [self tableViewSelectionDidChange:nil];
+}
+
+
 - (void) askRefresh {
+    NSString * updateAccount = _selectedAccount;
     _items = nil;
     [self items];
-    [_tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+    [_arrayController setContent:_items];
+    [self selectAccount:updateAccount];
 }
 
 @end

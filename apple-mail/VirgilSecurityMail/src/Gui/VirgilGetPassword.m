@@ -34,14 +34,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <Cocoa/Cocoa.h>
-#import "VirgilPrivateKey.h"
+#import "VirgilGetPassword.h"
+#import "NSViewController+VirgilView.h"
 
-/**
- * @class View class for users sign in
- */
-@interface VirgilSignInViewController : NSViewController
+static NSString * _password = nil;
 
-- (void) setCurrentAccount : (NSString *) account;
+@implementation VirgilGetPassword
+
+- (IBAction)onOkClicked:(id)sender {
+    _password = _passwordField.stringValue;
+    [self closeWindow];
+}
+
+- (IBAction)onCancelClicked:(id)sender {
+    _password = nil;
+    [self closeWindow];
+}
+
++ (NSString *) password {
+    return _password;
+}
 
 @end

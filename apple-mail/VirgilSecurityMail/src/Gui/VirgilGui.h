@@ -46,18 +46,12 @@
 + (void) showWellcome;
 + (void) showAccountsFor : (NSString *) account;
 
-+ (VirgilPrivateKey*) getPrivateKey : (NSString *) account;
-
 + (void) confirmAccount : account
        confirmationCode : code
            resultObject : (id)resultObject
             resultBlock : (void (^)(id arg1, BOOL isOk))resultBlock;
 
-+ (NSString *) currentAccount;
-
-+ (void) setUserActivityPrivateKey : (VirgilPrivateKey *) privateKey;
-
-+ (BOOL) askForCanDecrypt;
++ (NSString *) getUserPassword;
 
 + (void) showError : (NSString *) error;
 + (void) showMessage : (NSString *) message;

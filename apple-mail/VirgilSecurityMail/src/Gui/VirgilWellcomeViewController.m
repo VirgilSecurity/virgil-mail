@@ -49,4 +49,8 @@
     [VirgilPreferencesContainer setNeedShowWellcome:(NSOnState == [sender state])];
 }
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+}
+
 @end

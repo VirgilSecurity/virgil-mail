@@ -91,14 +91,24 @@
 + (VirgilPublicKey *) getPublicKey : (NSString *) account;
 
 /**
- * @brief Get private key by account (email) and container password from Private Keys Service
+ * @brief Get private key by account (email) and container password from Private Keys Service without decryption
  * @param account - email
  * @param containerPassword - password to Private Keys Service' container
  * @return VirgilPrivateKey - instance | nil - error occured, get error with [VirgilKeyManager lastError]
  */
-+ (VirgilPrivateKey *) getPrivateKey : (NSString *) account
-                   containerPassword : (NSString *) containerPassword;
 
++ (VirgilPrivateKey *) getEncryptedPrivateKeyFromCloud : (NSString *) account
+                                     containerPassword : (NSString *) containerPassword;
+
+/**
+ * @brief Encrypt private key by password
+ * @param encryptedKey - encrypted private key
+ * @param keyPassword - password for private key decryption
+ * @return VirgilPrivateKey - decrypted private key | nil - error occured, get error with [VirgilKeyManager lastError]
+ */
++ (VirgilPrivateKey *) decryptedPrivateKey : (VirgilPrivateKey *) encryptedKey
+                               keyPassword : (NSString *) keyPassword;
+ 
 /**
  * @brief Get last error user friendly string
  */
