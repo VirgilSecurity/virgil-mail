@@ -46,9 +46,6 @@
 
 @property (nonatomic, weak) IBOutlet NSMatrix * matrixField;
 
-
-@property (nonatomic, weak) IBOutlet NSButton * btnProtectWithPassword;
-
 @property (nonatomic, weak) IBOutlet NSTextField * cloudPassword;
 @property (nonatomic, weak) IBOutlet NSTextField * cloudPasswordConfirm;
 

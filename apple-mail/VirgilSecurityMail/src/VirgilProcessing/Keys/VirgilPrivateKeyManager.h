@@ -78,7 +78,13 @@
  * @brief Check is correct private key.
  * @return boolean is key correct
  */
-+ (BOOL) isCorrectPrivateKey : (VirgilPrivateKey *) privateKey;
++ (BOOL) isCorrectPrivateKey : (NSString *) privateKey;
+
+/**
+ * @brief Check is correct encrypted private key.
+ * @return boolean is key correct
+ */
++ (BOOL) isCorrectEncryptedPrivateKey : (NSString *) privateKey;
 
 /**
  * @brief Get last error user friendly string

@@ -243,7 +243,7 @@ static VirgilPrivateKeyEndpoints * _endpoints =
 }
 
 /**
- * @brief Get private key (paranoic mode not supported yet)
+ * @brief Get private key
  * @param account - email
  * @param containerPassword - Container's password
  * @param publicKeyID - public key ID for request verification
@@ -288,7 +288,7 @@ static VirgilPrivateKeyEndpoints * _endpoints =
                                                        withPassword : password];
     if (nil == decryptedKeyData) return nil;    
     return [[VirgilPrivateKey alloc] initAccount : encryptedKey.account
-                                   containerType : encryptedKey.containerType
+                                   containerType : VirgilContainerEasy
                                       privateKey : [[NSString alloc] initWithData : decryptedKeyData
                                                                          encoding : NSUTF8StringEncoding]
                                      keyPassword : encryptedKey.keyPassword
@@ -299,9 +299,18 @@ static VirgilPrivateKeyEndpoints * _endpoints =
  * @brief Check is correct private key.
  * @return boolean is key correct
  */
-+ (BOOL) isCorrectPrivateKey : (VirgilPrivateKey *) privateKey {
-    if (!privateKey || !privateKey.key) return NO;
-    return [privateKey.key containsString:@"-----BEGIN EC PRIVATE KEY-----"];
++ (BOOL) isCorrectPrivateKey : (NSString *) privateKey {
+    if (!privateKey) return NO;
+    return [privateKey containsString:@"-----BEGIN EC PRIVATE KEY-----"];
+}
+
+/**
+ * @brief Check is correct encrypted private key.
+ * @return boolean is key correct
+ */
++ (BOOL) isCorrectEncryptedPrivateKey : (NSString *) privateKey {
+    if (!privateKey) return NO;
+    return [privateKey containsString:@"-----BEGIN ENCRYPTED PRIVATE KEY-----"];
 }
 
 /**

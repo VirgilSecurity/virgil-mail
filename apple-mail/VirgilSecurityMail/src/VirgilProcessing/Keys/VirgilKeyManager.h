@@ -108,7 +108,17 @@
  */
 + (VirgilPrivateKey *) decryptedPrivateKey : (VirgilPrivateKey *) encryptedKey
                                keyPassword : (NSString *) keyPassword;
- 
+
+
+/**
+ * @brief Set private key for account
+ * @param key - private key
+ * @param account - account
+ * @return BOOL YES - set done | NO - error was occured
+ */
++ (BOOL) setPrivateKey : (VirgilPrivateKey *) key
+            forAccount : (NSString *) account;
+
 /**
  * @brief Get last error user friendly string
  */

@@ -35,12 +35,13 @@
  */
 
 #import "VirgilActionsViewController.h"
-#import "VirgilStorageSetViewController.h"
 #import "VirgilKeyManager.h"
 #import "VirgilKeyChain.h"
+#import "VirgilPrivateKeyManager.h"
 #import "VirgilValidator.h"
 #import "VirgilGui.h"
 #import "NSViewController+VirgilView.h"
+#import "NSData+Base64.h"
 #import "VirgilLog.h"
 
 #define VIRGILKEY_EXTENTION @"virgilkey"
@@ -61,11 +62,95 @@
 
 - (IBAction)onCreateKeysClicked:(id)sender {
     if (nil == _account) return;
-    VirgilStorageSetViewController * controller = (VirgilStorageSetViewController *)[self showSheetView:@"viewKeyStorage"];
-    if (controller) {
-        controller.account = _account;
-        controller.delegate = _delegate;
+    BOOL useCloudStorage = NSOnState == [[_matrixField cellAtRow:0 column:0] state];
+    BOOL useKeyPassword = YES;
+    
+    NSString * cloudPass = nil;
+    NSString * cloudPassConfirm = nil;
+    
+    NSString * keyPass = nil;
+    NSString * keyPassConfirm = nil;
+    
+    if (useCloudStorage) {
+        cloudPass = _cloudPassword.stringValue;
+        cloudPassConfirm = _cloudPasswordConfirm.stringValue;
+        
+        if (NO == [VirgilValidator simplePassword : cloudPass]) {
+            [self showCompactErrorView : @"Password can't be empty, can't contains not latin letters."
+                                atView : _cloudPassword];
+            return;
+        }
+        
+        if (NO == [cloudPassConfirm isEqualToString : cloudPass]) {
+            [self showCompactErrorView : @"Passwords shoud be equal in both fields."
+                                atView : _cloudPasswordConfirm];
+            return;
+        }
     }
+    
+    if (useKeyPassword) {
+        keyPass = _keyPassword.stringValue;
+        keyPassConfirm = _keyPasswordConfirm.stringValue;
+        
+        if (NO == [VirgilValidator simplePassword : keyPass]) {
+            [self showCompactErrorView : @"Password can't be empty, can't contains not latin letters."
+                                atView : _keyPassword];
+            return;
+        }
+        
+        if (NO == [keyPassConfirm isEqualToString : keyPass]) {
+            [self showCompactErrorView : @"Passwords shoud be equal in both fields."
+                                atView : _keyPasswordConfirm];
+            return;
+        }
+    }
+    
+    
+    [self setProgressVisible:YES];
+    [self preventUserActivity:YES];
+    
+    @try {
+        VirgilContainerType containerType = VirgilContainerUnknown;
+        if (useCloudStorage) {
+            containerType = useKeyPassword ? VirgilContainerNormal : VirgilContainerEasy;
+        } else {
+            containerType = VirgilContainerParanoic;
+        }
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            BOOL res = [VirgilKeyManager createAccount : _account
+                                           keyPassword : keyPass
+                                         containerType : containerType
+                                     containerPassword : cloudPass];
+            VLogInfo(@"createAccount : %@", [VirgilKeyChain loadContainer:_account]);
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self externalActionDone];
+                if (res) {
+                    [self delegateRefresh];
+                } else {
+                    [self showErrorView : [VirgilKeyManager lastError]];
+                }
+            });
+        });
+        
+    }
+    @catch (NSException *exception) {
+        [self externalActionDone];
+    }
+    @finally {}
+}
+
+- (IBAction)onCreationDestChanged:(id)sender {
+    NSButtonCell *selCell = [sender selectedCell];
+    BOOL isCloudStorage = 1000 == [selCell tag];
+    _cloudPassword.hidden = !isCloudStorage;
+    _cloudPasswordConfirm.hidden = !isCloudStorage;
+}
+
+- (NSString *) stripBase64 : (NSString *) string {
+    NSData * originalData = [NSData dataFromBase64String : string];
+    return [[NSString alloc] initWithData:originalData encoding:NSUTF8StringEncoding];
 }
 
 - (IBAction)onLoadKeyClicked:(id)sender {
@@ -96,13 +181,24 @@
             if (nil == encryptedKey) {
                 errorStr = @"Can't find need key or wrong password";
             } else {
-                decryptedKey = [VirgilKeyManager decryptedPrivateKey:encryptedKey keyPassword:password];
                 
-                if (nil == decryptedKey) {
+                NSString * normalizedKeyString = [self stripBase64:encryptedKey.key];
+                if ([VirgilPrivateKeyManager isCorrectEncryptedPrivateKey : normalizedKeyString]) {
                     NSString * userPassword = [VirgilGui getUserPassword];
+                
                     if (nil != userPassword) {
-                        errorStr = @"Wrong key password";
-                        decryptedKey = [VirgilKeyManager decryptedPrivateKey:encryptedKey keyPassword:userPassword];
+                        decryptedKey = [[VirgilPrivateKey alloc] initAccount : _account
+                                                               containerType : (useCloudStorage ? VirgilContainerNormal : VirgilContainerParanoic)
+                                                                  privateKey : normalizedKeyString
+                                                                 keyPassword : userPassword
+                                                           containerPassword : password];
+                        [VirgilKeyManager setPrivateKey : decryptedKey
+                                             forAccount : _account];
+                    }
+                } else {
+                    decryptedKey = [VirgilKeyManager decryptedPrivateKey:encryptedKey keyPassword:password];
+                    if (nil == decryptedKey) {
+                        errorStr = @"Can't decrypt private key";
                     }
                 }
             }
@@ -140,12 +236,6 @@
     }];
     
     return NO;
-}
-
-- (IBAction)onSourceChanged:(id)sender {
-    BOOL useCloudStorage = NSOnState == [[_matrixField cellAtRow:0 column:0] state];
-    NSString * palceHolder = useCloudStorage ? @"Cloud password" : @"Key file password";
-    [_cloudPassword setPlaceholderString : palceHolder];
 }
 
 - (IBAction)onResendConfirmationClicked:(id)sender {

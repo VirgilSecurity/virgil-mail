@@ -39,6 +39,7 @@
 #import "VirgilHelpers.h"
 #import "VirgilKeyChain.h"
 #import "VirgilLog.h"
+#import "NSData+Base64.h"
 
 #include <iostream>
 #include <fstream>
@@ -172,6 +173,8 @@ static NSString * _lastError = nil;
                                    privateKey : nsPrivateKey
                                   keyPassword : keyPassword
                             containerPassword : containerPassword];
+        
+        VLogInfo(@"keyPassword : <%@>   nsPrivateKey : %@", keyPassword, privateKeyInfo);
         
         // Register user
         Credentials credentials(_privateKey, _passwordData);
@@ -368,17 +371,13 @@ static NSString * _lastError = nil;
  */
 + (VirgilPrivateKey *) decryptedPrivateKey : (VirgilPrivateKey *) encryptedKey
                                            keyPassword : (NSString *) keyPassword {
-    if ([VirgilPrivateKeyManager isCorrectPrivateKey : encryptedKey]) {
+    if ([VirgilPrivateKeyManager isCorrectPrivateKey : encryptedKey.key]) {
         return encryptedKey;
     }
     VirgilPrivateKey * decryptedKey = [VirgilPrivateKeyManager decryptKey:encryptedKey withPassword:keyPassword];
     if (nil == decryptedKey) return nil;
     
-    VLogInfo(@"encryptedKey :  %@", encryptedKey);
-    VLogInfo(@"decryptedKey :  %@", decryptedKey);
-
-    
-    if ([VirgilPrivateKeyManager isCorrectPrivateKey : decryptedKey]) {
+    if ([VirgilPrivateKeyManager isCorrectPrivateKey : decryptedKey.key]) {
         VirgilPublicKey * publicKey = [VirgilKeyManager getPublicKey:encryptedKey.account];
         if (nil == publicKey) {
             [self setErrorString:@"There is no public key for this account"];
@@ -392,6 +391,35 @@ static NSString * _lastError = nil;
     }
     [self setErrorString:@"Wrong password for private key"];
     return nil;
+}
+
+/**
+ * @brief Set private key for account
+ * @param key - private key
+ * @param account - account
+ * @return BOOL YES - set done | NO - error was occured
+ */
++ (BOOL) setPrivateKey : (VirgilPrivateKey *) key
+            forAccount : (NSString *) account {
+    if (nil == key || nil == account) return NO;
+    
+    VirgilPublicKey * publicKey = nil;
+    VirgilKeyChainContainer * keyChainContainer = [VirgilKeyChain loadContainer : account];
+    
+    if (nil == keyChainContainer || nil == keyChainContainer.publicKey) {
+        publicKey = [VirgilKeyManager getPublicKey : account];
+        keyChainContainer = [VirgilKeyChain loadContainer : account];
+    } else {
+        publicKey = keyChainContainer.publicKey;
+    }
+    
+    if (nil == publicKey) return NO;
+    
+    VirgilKeyChainContainer * container = [[VirgilKeyChainContainer alloc] initWithPrivateKey : key
+                                                                                 andPublicKey : publicKey
+                                                                                     isActive : YES];
+    [VirgilKeyChain saveContainer:container forAccount:account];
+    return YES;
 }
 
 /**

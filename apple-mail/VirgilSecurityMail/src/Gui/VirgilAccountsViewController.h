@@ -44,6 +44,7 @@
 @property (nonatomic, weak) IBOutlet NSTableView * tableView;
 @property (nonatomic, weak) IBOutlet NSArrayController * arrayController;
 @property (nonatomic, weak) IBOutlet NSTextField * accountName;
+@property (nonatomic, weak) IBOutlet NSTextField * accountEmail;
 @property (nonatomic, weak) IBOutlet NSView * embedView;
 
 @property (nonatomic, copy) NSString * selectedAccount;

@@ -37,7 +37,6 @@
 #import "VirgilAccountsViewController.h"
 #import "VirgilAccountItem.h"
 #import "VirgilProcessingManager.h"
-#import "VirgilStorageSetViewController.h"
 #import "VirgilActionsViewController.h"
 #import "NSViewController+VirgilView.h"
 #import "VirgilLog.h"
@@ -147,7 +146,8 @@
 }
 
 - (NSViewController *) showAccountActions : (VirgilAccountItem *)accountItem {
-    _accountName.stringValue = [NSString stringWithFormat:@"%@ - %@", accountItem.name, accountItem.account];
+    _accountName.stringValue = accountItem.name;
+    _accountEmail.stringValue = accountItem.account;
     
     if (statusAllDone == accountItem.status) return [self switchEmbedViewTo : @"viewAccountPresent"];
     else if (statusPublicKeyNotPresent == accountItem.status) return [self switchEmbedViewTo : @"viewNoAccount"];
