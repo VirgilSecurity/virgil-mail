@@ -1526,18 +1526,8 @@ Gw
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ERd-Rs-uic">
-                                <rect key="frame" x="14" y="177" width="220" height="32"/>
-                                <buttonCell key="cell" type="push" title="Export private key" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="svP-cB-mly">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="onExportKeyClicked:" target="aOi-Ks-iIS" id="L1P-N4-pmC"/>
-                                </connections>
-                            </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bOb-n4-C6y">
-                                <rect key="frame" x="14" y="144" width="220" height="32"/>
+                                <rect key="frame" x="14" y="172" width="220" height="32"/>
                                 <buttonCell key="cell" type="push" title="Remove key from Keychain" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="8XG-pb-BUc">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -1546,18 +1536,80 @@ Gw
                                     <action selector="onRemoveKeyFromKeyChain:" target="aOi-Ks-iIS" id="rUo-S1-Ukx"/>
                                 </connections>
                             </button>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GMS-Lz-eMG">
-                                <rect key="frame" x="14" y="111" width="220" height="32"/>
-                                <buttonCell key="cell" type="push" title="Remove key from Virgil cloud" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="RUd-VB-9Gi">
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ERd-Rs-uic">
+                                <rect key="frame" x="14" y="131" width="220" height="32"/>
+                                <buttonCell key="cell" type="push" title="Export private key" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="svP-cB-mly">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="onRemoveKeyFromCloud:" target="aOi-Ks-iIS" id="vFL-Jj-kBI"/>
+                                    <action selector="onExportKeyClicked:" target="aOi-Ks-iIS" id="L1P-N4-pmC"/>
+                                </connections>
+                            </button>
+                            <secureTextField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qUM-kP-GoT">
+                                <rect key="frame" x="152" y="82" width="134" height="22"/>
+                                <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Confirm" drawsBackground="YES" usesSingleLineMode="YES" id="ifn-vN-Zej">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    <allowedInputSourceLocales>
+                                        <string>NSAllRomanInputSourcesLocaleIdentifier</string>
+                                    </allowedInputSourceLocales>
+                                </secureTextFieldCell>
+                            </secureTextField>
+                            <secureTextField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wpq-qz-l9Z">
+                                <rect key="frame" x="0.0" y="82" width="137" height="22"/>
+                                <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Password" drawsBackground="YES" usesSingleLineMode="YES" id="X4g-rR-P8S">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    <allowedInputSourceLocales>
+                                        <string>NSAllRomanInputSourcesLocaleIdentifier</string>
+                                    </allowedInputSourceLocales>
+                                </secureTextFieldCell>
+                            </secureTextField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TMj-ok-4sq">
+                                <rect key="frame" x="-1" y="112" width="176" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Password for file encryption" id="8T4-EK-rZV">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GP9-jF-AEr">
+                                <rect key="frame" x="7" y="38" width="83" height="32"/>
+                                <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Nj7-Du-PhA">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                    <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="onCancelExportClicked:" target="aOi-Ks-iIS" id="zoJ-3L-jPp"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jAf-ka-0Aw">
+                                <rect key="frame" x="176" y="38" width="96" height="32"/>
+                                <buttonCell key="cell" type="push" title="Continue" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="xDI-F5-gLi">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="onExportContinueClicked:" target="aOi-Ks-iIS" id="3RY-7P-I4X"/>
                                 </connections>
                             </button>
                         </subviews>
                     </view>
+                    <connections>
+                        <outlet property="btnCancel" destination="GP9-jF-AEr" id="bYl-lP-e49"/>
+                        <outlet property="btnContinue" destination="jAf-ka-0Aw" id="AHN-vC-7Na"/>
+                        <outlet property="btnExport" destination="ERd-Rs-uic" id="5HS-yK-Jwd"/>
+                        <outlet property="btnRemoveFromKeyChain" destination="bOb-n4-C6y" id="bOg-7B-cmV"/>
+                        <outlet property="keyPassword" destination="wpq-qz-l9Z" id="r35-xm-cyb"/>
+                        <outlet property="keyPasswordConfirm" destination="qUM-kP-GoT" id="kcd-3m-mc0"/>
+                        <outlet property="prograssExplain" destination="TMj-ok-4sq" id="Tnc-r6-yXJ"/>
+                    </connections>
                 </viewController>
                 <customObject id="hQF-uv-W3n" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>

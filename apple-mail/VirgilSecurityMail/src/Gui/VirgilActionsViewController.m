@@ -52,9 +52,35 @@ static BOOL _cloudSelection = YES;
 @implementation VirgilActionsViewController
 
 - (IBAction)onExportKeyClicked:(id)sender {
+    [self setVisibleExportControls:YES];
+}
+
+- (IBAction)onCancelExportClicked:(id)sender {
+    [self setVisibleExportControls:NO];
 }
 
 - (IBAction)onRemoveKeyFromCloud:(id)sender {
+}
+
+- (void) setVisibleExportControls : (BOOL) visible {
+    if (nil == _btnCancel) return;
+    
+    _btnCancel.hidden = !visible;
+    _btnCancel.enabled = visible;
+    
+    _btnContinue.hidden = !visible;
+    _btnContinue.enabled = visible;
+    
+    _prograssExplain.hidden = !visible;
+    
+    _keyPassword.hidden = !visible;
+    _keyPassword.enabled = visible;
+    
+    _keyPasswordConfirm.hidden = !visible;
+    _keyPasswordConfirm.enabled = visible;
+    
+    _btnRemoveFromKeyChain.enabled = !visible;
+    _btnExport.enabled = !visible;
 }
 
 - (IBAction)onRemoveKeyFromKeyChain:(id)sender {
@@ -69,6 +95,8 @@ static BOOL _cloudSelection = YES;
         [[_matrixField cellAtRow:0 column:0] setState:(_cloudSelection ? NSOnState : NSOffState)];
         [[_matrixField cellAtRow:1 column:0] setState:(_cloudSelection ? NSOffState : NSOnState)];
     }
+    
+    [self setVisibleExportControls:NO];
 }
 
 - (IBAction)onCreateKeysClicked:(id)sender {
@@ -153,6 +181,79 @@ static BOOL _cloudSelection = YES;
     @finally {}
 }
 
+- (IBAction)onExportContinueClicked:(id)sender {
+    if (nil == _account) return;
+    
+    NSString * keyPass = nil;
+    NSString * keyPassConfirm = nil;
+    
+    keyPass = _keyPassword.stringValue;
+    keyPassConfirm = _keyPasswordConfirm.stringValue;
+    
+    if (NO == [VirgilValidator simplePassword : keyPass]) {
+        [self showCompactErrorView : @"Password can't be empty, can't contains not latin letters."
+                            atView : _keyPassword];
+        return;
+    }
+    
+    if (NO == [keyPassConfirm isEqualToString : keyPass]) {
+        [self showCompactErrorView : @"Passwords shoud be equal in both fields."
+                            atView : _keyPasswordConfirm];
+        return;
+    }
+    
+    [self setProgressVisible:YES];
+    [self preventUserActivity:YES];
+    
+    @try {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NSString * fileName = [self exportFileName];
+            if (!fileName) return;
+            
+            BOOL res = [VirgilKeyManager exportAccountData : _account
+                                                    toFile : fileName
+                                              withPassword : keyPass];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self externalActionDone];
+                if (res) {
+                    [self setVisibleExportControls:NO];
+                } else {
+                    [self showErrorView : [VirgilKeyManager lastError]];
+                }
+            });
+        });
+        
+    }
+    @catch (NSException *exception) {
+        [self externalActionDone];
+    }
+    @finally {}
+}
+
+- (NSString *) exportFileName {
+    __block NSString * fileName = nil;
+    @try {
+        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSSavePanel * saveDlg = [NSSavePanel savePanel];
+            [saveDlg setAllowedFileTypes:[NSArray arrayWithObjects:VIRGILKEY_EXTENTION, nil]];
+            
+            [saveDlg beginSheetModalForWindow:self.view.window completionHandler:^(NSInteger result) {
+                if (NSFileHandlingPanelOKButton == result) {
+                    fileName = [[saveDlg URL] path];
+                }
+                dispatch_semaphore_signal(semaphore);
+            }];
+        });
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    }
+    @catch (NSException *exception) {}
+    @finally {}
+    
+    return fileName;
+}
+
 - (IBAction)onCreationDestChanged:(id)sender {
     NSButtonCell *selCell = [sender selectedCell];
     BOOL isCloudStorage = 1000 == [selCell tag];
@@ -191,16 +292,19 @@ static BOOL _cloudSelection = YES;
                 
                 // Load key from file
                 NSDictionary * resDict = [self importKeyWithPassword:password];
+                
+                VLogInfo(@"importKeyWithPassword res : %@", resDict);
+                
                 loadStoppedByUser = [[resDict objectForKey:@"stoppedByUser"] boolValue];
                 
                 if (!loadStoppedByUser) {
                     VirgilKeyChainContainer * container = nil;
                     if ([[resDict objectForKey:@"resBool"] boolValue]) {
-                        [resDict objectForKey:@"resContainer"];
+                        container = [resDict objectForKey:@"resContainer"];
                     }
                     
                     if (container) {
-                        errorStr = @"Should load file ...";
+                        encryptedKey = container.privateKey;
                     } else {
                         errorStr = [resDict objectForKey:@"errorStr"];
                         loadStoppedByError = YES;
@@ -210,6 +314,8 @@ static BOOL _cloudSelection = YES;
             
             VirgilPrivateKey * decryptedKey = nil;
             
+            
+            BOOL loadDone = NO;
             if (NO == loadStoppedByUser && NO == loadStoppedByError) {
                 if (nil == encryptedKey) {
                     errorStr = @"Can't find need key or wrong password";
@@ -228,12 +334,15 @@ static BOOL _cloudSelection = YES;
                                                                containerPassword : password];
                             [VirgilKeyManager setPrivateKey : decryptedKey
                                                  forAccount : _account];
+                            loadDone = YES;
                         }
                     } else {
                         // Decrypt private key with account password
                         decryptedKey = [VirgilKeyManager decryptedPrivateKey:encryptedKey keyPassword:password];
                         if (nil == decryptedKey) {
                             errorStr = @"Can't decrypt private key";
+                        } else {
+                            loadDone = YES;
                         }
                     }
                 }
@@ -241,10 +350,11 @@ static BOOL _cloudSelection = YES;
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self externalActionDone];
-                if (nil == decryptedKey && nil != errorStr) {
-                    [self showErrorView : errorStr];
-                }
-                if (NO == loadStoppedByUser) {
+                if (NO == loadDone) {
+                    if (nil != errorStr) {
+                        [self showErrorView : errorStr];
+                    }
+                } else {
                     [self delegateRefresh];
                 }
             });
@@ -270,9 +380,6 @@ static BOOL _cloudSelection = YES;
             [openDlg setAllowsMultipleSelection:NO];
             [openDlg setCanChooseDirectories:NO];
             [openDlg setAllowedFileTypes:[NSArray arrayWithObjects:VIRGILKEY_EXTENTION, nil]];
-            NSWindow * containerWindow = [[NSApplication sharedApplication] mainWindow];
-            if (nil == containerWindow) return;
-            
             [openDlg beginSheetModalForWindow:self.view.window completionHandler:^(NSInteger result) {
                                 if (NSFileHandlingPanelOKButton == result) {
                                     NSArray* urls = [openDlg URLs];
@@ -296,7 +403,7 @@ static BOOL _cloudSelection = YES;
                                                                          fromFile : fileName
                                                                      withPassword : password];
         if (container) {
-            loadDone = YES;
+            boolRes = YES;
             [res setObject:container forKey:@"resContainer"];
         }
     }

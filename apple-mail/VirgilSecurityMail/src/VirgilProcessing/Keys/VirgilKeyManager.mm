@@ -38,6 +38,7 @@
 #import "VirgilPrivateKeyManager.h"
 #import "VirgilHelpers.h"
 #import "VirgilKeyChain.h"
+#import "VirgilCryptoLibWrapper.h"
 #import "VirgilLog.h"
 #import "NSData+Base64.h"
 #import "NSString+Base64.h"
@@ -491,7 +492,63 @@ static NSString * _lastError = nil;
 + (BOOL) exportAccountData : (NSString *) account
                     toFile : (NSString *) fileName
               withPassword : (NSString *) passwordForEncryption {
-    return NO;
+    
+    NSString * errorString = [NSString stringWithFormat:@"Can't save data to %@", [fileName lastPathComponent]];
+    
+    VirgilKeyChainContainer * container = [VirgilKeyChain loadContainer : account];
+    if (nil == container) {
+        [self setErrorString:errorString];
+        return NO;
+    }
+    
+    NSMutableDictionary * userDataDict = [NSMutableDictionary new];
+    [userDataDict setObject : container.publicKey.userDataID forKey:@"user_data_id"];
+    [userDataDict setObject : @"EmailId" forKey:@"class"];
+    [userDataDict setObject : @"EmailId" forKey:@"type"];
+    [userDataDict setObject : @"true" forKey:@"confirmed"];
+    [userDataDict setObject : container.privateKey.account forKey:@"value"];
+    
+    NSArray * userDataArray = [NSArray arrayWithObjects:[userDataDict copy], nil];
+    
+    NSMutableDictionary * publicKeyDict = [NSMutableDictionary new];
+    [publicKeyDict setObject : userDataArray forKey:@"tickets"];
+    [publicKeyDict setObject : container.publicKey.publicKeyID forKey:@"public_key_id"];
+    [publicKeyDict setObject : [container.publicKey.publicKey base64Wrap] forKey:@"public_key"];
+    
+    NSString * isUploaded = (VirgilContainerParanoic == container.privateKey.containerType) ? @"false" : @"true";
+    NSMutableDictionary * bundle = [NSMutableDictionary new];
+    [bundle setObject : [publicKeyDict copy] forKey:@"public_key"];
+    [bundle setObject : [container.privateKey.key base64Wrap] forKey:@"private_key"];
+    [bundle setObject : isUploaded forKey:@"uploaded"];
+
+    NSArray * bundles = [NSArray arrayWithObjects:[bundle copy], nil];
+    
+    NSMutableDictionary * jsonDict = [NSMutableDictionary new];
+    
+    [jsonDict setObject : bundles forKey:@"bundles"];
+    [jsonDict setObject : [NSNumber numberWithInt:0] forKey:@"mode"];
+    [jsonDict setObject : @"true" forKey:@"user_selected_store_mode"];
+    [jsonDict setObject : @"true" forKey:@"is_protected"];
+    [jsonDict setObject : container.publicKey.accountID forKey:@"account_id"];
+
+    NSArray * jsonArray = [NSArray arrayWithObjects:jsonDict, nil];
+    
+    NSError * error;
+    NSData * jsonData = [NSJSONSerialization dataWithJSONObject : jsonArray
+                                                        options : 0
+                                                          error : &error];
+    NSData * preparedData = nil;
+    if (passwordForEncryption && passwordForEncryption.length) {
+        preparedData = [VirgilCryptoLibWrapper encryptData : jsonData
+                                                  password : passwordForEncryption];
+    } else {
+        preparedData = jsonData;
+    }
+    NSString * base64Str = [preparedData base64EncodedStringWithSeparateLines : NO];
+    
+    return [[NSFileManager defaultManager] createFileAtPath:fileName
+                                            contents:[base64Str dataUsingEncoding:NSUTF8StringEncoding]
+                                          attributes:nil];
 }
 
 /**
@@ -504,7 +561,7 @@ static NSString * _lastError = nil;
 + (VirgilKeyChainContainer *) importAccountData : (NSString *) account
                                        fromFile : (NSString *) fileName
                                    withPassword : (NSString *) passwordForDecryption {
-    NSString * errorString = [NSString stringWithFormat:@"Can't load data from %@", [fileName lastPathComponent]];
+    NSString * errorString = [NSString stringWithFormat:@"Can't load data from %@ or wrong password", [fileName lastPathComponent]];
     
     NSError *error;
 
@@ -524,8 +581,24 @@ static NSString * _lastError = nil;
         return nil;
     }
     
+    // Decrypt content if need
+    NSData * jsonData = nil;
+    
+    if (passwordForDecryption && passwordForDecryption.length) {
+        NSData * encryptedData = [NSData dataFromBase64String:fileContent];
+        jsonData = [VirgilCryptoLibWrapper decryptData : encryptedData
+                                          withPassword : passwordForDecryption];
+    } else {
+        jsonData = [NSData dataFromBase64String:fileContent];
+    }
+    
+    if (nil == jsonData) {
+        [self setErrorString:errorString];
+        return nil;
+    }
+    
     // Parse JSON data
-    id resultJSON = [NSJSONSerialization JSONObjectWithData : [NSData dataFromBase64String:fileContent]
+    id resultJSON = [NSJSONSerialization JSONObjectWithData : jsonData
                                                     options : 0
                                                       error : &error];
     if (error) {

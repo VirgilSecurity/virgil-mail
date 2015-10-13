@@ -52,4 +52,13 @@
 @property (nonatomic, weak) IBOutlet NSTextField * keyPassword;
 @property (nonatomic, weak) IBOutlet NSTextField * keyPasswordConfirm;
 
+
+@property (nonatomic, weak) IBOutlet NSButton * btnRemoveFromKeyChain;
+@property (nonatomic, weak) IBOutlet NSButton * btnRemoveFromCloud;
+@property (nonatomic, weak) IBOutlet NSButton * btnExport;
+
+@property (nonatomic, weak) IBOutlet NSButton * btnCancel;
+@property (nonatomic, weak) IBOutlet NSButton * btnContinue;
+@property (nonatomic, weak) IBOutlet NSTextField * prograssExplain;
+
 @end

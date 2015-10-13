@@ -39,5 +39,6 @@
 @interface NSString (Base64)
 
 - (NSString *) stripBase64;
+- (NSString *) base64Wrap;
 
 @end

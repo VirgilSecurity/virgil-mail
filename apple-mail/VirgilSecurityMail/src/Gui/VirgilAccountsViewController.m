@@ -153,7 +153,7 @@
     else if (statusPublicKeyNotPresent == accountItem.status) return [self switchEmbedViewTo : @"viewNoAccount"];
     else if (statusPublicKeyPresent == accountItem.status) return [self switchEmbedViewTo : @"viewGetKey"];
     else if (statusWaitActivation == accountItem.status) return [self switchEmbedViewTo : @"viewWaitConfirmation"];
-    else if (statusWaitActivation == accountItem.status) return [self switchEmbedViewTo : @"viewNoStatus"];
+    else if (statusUnknown == accountItem.status) return [self switchEmbedViewTo : @"viewNoStatus"];
     
     return nil;
 }

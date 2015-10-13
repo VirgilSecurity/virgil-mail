@@ -44,4 +44,9 @@
     return [[NSString alloc] initWithData:originalData encoding:NSUTF8StringEncoding];
 }
 
+- (NSString *) base64Wrap {
+    NSData * data = [self dataUsingEncoding:NSUTF8StringEncoding];
+    return [data base64EncodedString];
+}
+
 @end
