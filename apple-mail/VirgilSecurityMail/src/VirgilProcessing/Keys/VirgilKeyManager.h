@@ -38,6 +38,7 @@
 #import "VirgilPublicKey.h"
 #import "VirgilPrivateKey.h"
 #import "VirgilDataTypes.h"
+#import "VirgilKeyChainContainer.h"
 
 /**
  * @brief Class for working with Private and Public keys
@@ -118,6 +119,30 @@
  */
 + (BOOL) setPrivateKey : (VirgilPrivateKey *) key
             forAccount : (NSString *) account;
+
+
+/**
+ * @brief Export account to file
+ * @param account - account
+ * @param fileName - result file
+ * @param passwordForEncryption - password which used to encrypt result file
+ * @return BOOL YES - set done | NO - error was occured
+ */
++ (BOOL) exportAccountData : (NSString *) account
+                    toFile : (NSString *) fileName
+              withPassword : (NSString *) passwordForEncryption;
+
+
+/**
+ * @brief Import account from file
+ * @param account - account
+ * @param fileName - source file
+ * @param passwordForDecryption - password which used to decrypt source file
+ * @return container with loaded data
+ */
++ (VirgilKeyChainContainer *) importAccountData : (NSString *) account
+                                       fromFile : (NSString *) fileName
+                                   withPassword : (NSString *) passwordForDecryption;
 
 /**
  * @brief Get last error user friendly string

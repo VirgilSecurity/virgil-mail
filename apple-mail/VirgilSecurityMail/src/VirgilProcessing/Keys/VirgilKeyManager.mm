@@ -40,6 +40,7 @@
 #import "VirgilKeyChain.h"
 #import "VirgilLog.h"
 #import "NSData+Base64.h"
+#import "NSString+Base64.h"
 
 #include <iostream>
 #include <fstream>
@@ -434,7 +435,7 @@ static NSString * _lastError = nil;
  * @param errorStr - error description
  */
 + (void) setErrorString : (NSString *) errorStr {
-    _lastError = [[NSString alloc] initWithFormat : @"VirgilKeyManager error : %@", errorStr];
+    _lastError = [[NSString alloc] initWithFormat : @"%@", errorStr];
 }
 
 /**
@@ -472,14 +473,115 @@ static NSString * _lastError = nil;
                               );
         const std::string uuid([VirgilHelpers _uuid]);
         keysClient.publicKey().del(credentials, uuid);
-        VLogInfo(@"deletePublicKey : DONE");
         return YES;
     } catch (std::exception& exception) {
         const std::string _error(exception.what());
         [VirgilKeyManager setErrorString : [NSString stringWithFormat:@"deletePublicKey : %s", _error.c_str()]];
-        VLogError(@"%@", [VirgilKeyManager lastError]);
     }
     return NO;
+}
+
+/**
+ * @brief Export account to file
+ * @param account - account
+ * @param fileName - result file
+ * @param passwordForEncryption - password which used to encrypt result file
+ * @return BOOL YES - set done | NO - error was occured
+ */
++ (BOOL) exportAccountData : (NSString *) account
+                    toFile : (NSString *) fileName
+              withPassword : (NSString *) passwordForEncryption {
+    return NO;
+}
+
+/**
+ * @brief Import account from file
+ * @param account - account
+ * @param fileName - source file
+ * @param passwordForDecryption - password which used to decrypt source file
+ * @return container with loaded data
+ */
++ (VirgilKeyChainContainer *) importAccountData : (NSString *) account
+                                       fromFile : (NSString *) fileName
+                                   withPassword : (NSString *) passwordForDecryption {
+    NSString * errorString = [NSString stringWithFormat:@"Can't load data from %@", [fileName lastPathComponent]];
+    
+    NSError *error;
+
+    // Check file size before read
+    unsigned long long fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:fileName error:nil] fileSize];
+    if (error || fileSize > 10240) {
+        [self setErrorString:errorString];
+        return nil;
+    }
+    
+    // Read file data
+    NSString * fileContent = [NSString stringWithContentsOfFile : fileName
+                                                       encoding : NSUTF8StringEncoding
+                                                          error : &error];
+    if (error) {
+        [self setErrorString:errorString];
+        return nil;
+    }
+    
+    // Parse JSON data
+    id resultJSON = [NSJSONSerialization JSONObjectWithData : [NSData dataFromBase64String:fileContent]
+                                                    options : 0
+                                                      error : &error];
+    if (error) {
+        [self setErrorString:errorString];
+        return nil;
+    }
+    
+    NSDictionary * jsonDict = nil;
+    
+    if ([resultJSON isKindOfClass:[NSDictionary class]]) {
+        jsonDict = (NSDictionary *) resultJSON;
+    } else if ([resultJSON isKindOfClass:[NSArray class]]) {
+        jsonDict = [(NSArray *)resultJSON objectAtIndex:0];
+    }
+    
+    
+    if (jsonDict) {
+        NSArray * bundles = [jsonDict objectForKey:@"bundles"];
+        NSDictionary * bundle = [bundles objectAtIndex:0];
+        NSString * privateKey = [(NSString *)[bundle objectForKey:@"private_key"] stripBase64];
+        
+        NSDictionary * userDataDict = [bundle objectForKey : @"public_key"];
+        NSArray * userDataAr = [userDataDict objectForKey : @"tickets"];
+        
+        NSString * importAccount = nil;
+        for (NSDictionary * dict in userDataAr) {
+            NSString * type = [dict objectForKey:@"type"];
+            if ([type isEqualTo:@"EmailId"]) {
+                importAccount = [dict objectForKey:@"value"];
+                break;
+            }
+        }
+        
+        if ([importAccount isEqualTo:account]) {
+            VirgilKeyChainContainer * keyChainContainer = [VirgilKeyChain loadContainer : account];
+            if (keyChainContainer) {
+                VirgilPrivateKey * updatedPrivateKey = [[VirgilPrivateKey alloc] initAccount : account
+                                                                               containerType : VirgilContainerEasy
+                                                                                  privateKey : privateKey
+                                                                                 keyPassword : nil
+                                                                           containerPassword : nil];
+                VirgilKeyChainContainer * updatedConteiner = [[VirgilKeyChainContainer alloc] initWithPrivateKey : updatedPrivateKey
+                                                                                                    andPublicKey : keyChainContainer.publicKey
+                                                                                                        isActive : YES];
+                [VirgilKeyChain saveContainer:updatedConteiner forAccount:account];
+                return updatedConteiner;
+            }
+        } else {
+            [self setErrorString:@"These virgil keys belong to another user"];
+        }
+        
+        return nil;
+    }
+    
+    [self setErrorString:errorString];
+    return nil;
 }
 
 @end

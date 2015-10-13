@@ -68,7 +68,7 @@
         self.containerType = a_containerType;
         self.key = [[NSString alloc] initWithString : a_key];
         self.keyPassword = (nil == a_keyPassword) ? nil : [[NSString alloc] initWithString : a_keyPassword];
-        self.containerPassword = [[NSString alloc] initWithString : a_containerPassword];
+        self.containerPassword = (nil == a_containerPassword) ? nil : [[NSString alloc] initWithString : a_containerPassword];
     }
     return self;
 }

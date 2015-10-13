@@ -34,47 +34,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "VirgilMessageViewController.h"
-#import "VirgilProcessingManager.h"
-#import "VirgilDynamicVariables.h"
-#import "VirgilLog.h"
+#import <Foundation/Foundation.h>
 
-#import <BannerContainerViewController.h>
-#import <ConversationMember.h>
-#import <Message.h>
-#import <MimeBody.h>
+@interface NSString (Base64)
 
-@implementation VirgilMessageViewController
-
-- (void)MASetRepresentedObject:(id)representedObject {
-    [self MASetRepresentedObject:representedObject];
-    
-    [representedObject removeAllDynVars];
-    
-    Message * message = (Message *)(((ConversationMember *)representedObject).originalMessage);
-    
-    NSString * myAccount = [[VirgilProcessingManager sharedInstance] getMyAccountFromMessage:message];
-    BOOL accountNeedsConfirmation = [[VirgilProcessingManager sharedInstance] accountNeedsConfirmation:myAccount];
-    if (YES == accountNeedsConfirmation) {
-        NSString * confirmationCode = [[VirgilProcessingManager sharedInstance] confirmationCodeFromEmail:message];
-        if (nil != confirmationCode) {
-            [self needShowConfirmationAccept:myAccount code:confirmationCode object:representedObject];
-        }
-    }
-}
-
-- (void) needShowConfirmationAccept : (NSString *) account
-                               code : (NSString *) code
-                             object : (id) object {
-    [object setDynVar:@"IsConfirmationEmail" value:[NSNumber numberWithBool:YES]];
-    [object setDynVar:@"ConfirmationCode" value:code];
-    [object setDynVar:@"ConfirmationAccount" value:account];
-    [self showBanner];
-}
-
-- (void) showBanner {
-    BannerContainerViewController * bannerController = [self valueForKey:@"bannerViewController"];
-    [bannerController updateBannerDisplay];
-}
+- (NSString *) stripBase64;
 
 @end
