@@ -35,6 +35,7 @@
  */
 
 #import "VirgilMenu.h"
+#import "VirgilMain.h"
 #import "VirgilNSWindow.h"
 #import "VirgilProcessingManager.h"
 #import "VirgilPreferencesContainer.h"
@@ -221,7 +222,7 @@
     [self.label sizeToFit];
     NSRect frame = self.label.frame;
     
-    frame.origin.y = 2;
+    frame.origin.y = [VirgilMain isElCapitan] ? 4 : 2;
     
     // Now center the new label.
     frame.origin.x = roundf((self.frame.size.width - frame.size.width) / 2.0f);
@@ -232,7 +233,7 @@
     NSRect rect = [self bounds];
     rect.origin = NSMakePoint(0, 0);
     float cornerRadius = 4.0f;
-    KBCornerType corners = self.fullscreen ? (KBTopLeftCorner | KBBottomLeftCorner | KBTopRightCorner | KBBottomRightCorner) : (KBTopRightCorner | KBBottomLeftCorner);
+    KBCornerType corners = (self.fullscreen || [VirgilMain isElCapitan]) ? (KBTopLeftCorner | KBBottomLeftCorner | KBTopRightCorner | KBBottomRightCorner) : (KBTopRightCorner | KBBottomLeftCorner);
     NSBezierPath* path = [NSBezierPath bezierPathWithRoundedRect:rect inCorners:corners cornerRadius:cornerRadius flipped:NO];
     
     NSGradient *gradient = nil;

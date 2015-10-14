@@ -35,6 +35,7 @@
  */
 
 #import "VirgilHandlersInstaller.h"
+#import "VirgilMain.h"
 #import "JRLPSwizzle.h"
 #import "VirgilSecurityMail-Prefix.pch"
 #import "VirgilLog.h"
@@ -54,8 +55,8 @@
              @"DocumentEditor": @[
                      @"backEndDidLoadInitialContent:",
                      @"dealloc",
-                     @"backEnd:didCancelMessageDeliveryForEncryptionError:",
-                     @"backEnd:didCancelMessageDeliveryForError:",
+                     //@"backEnd:didCancelMessageDeliveryForEncryptionError:",
+                     //@"backEnd:didCancelMessageDeliveryForError:",
                      @"show"
                      ],
              @"NSWindow": @[
@@ -106,10 +107,31 @@
              };
 }
 
++ (NSDictionary *)handlerChangesForElCaptain {
+    return @{
+             @"MailToolbar": @{
+                     @"selectors": @[
+                             @"_plistForToolbarWithIdentifier:"
+                             ]
+                     },
+             @"ComposeWindowController": @{
+                     @"selectors": @[
+                             @"toolbarDefaultItemIdentifiers:",
+                             @"toolbar:itemForItemIdentifier:willBeInsertedIntoToolbar:",
+                             @"_performSendAnimation",
+                             @"_tabBarView:performSendAnimationOfTabBarViewItem:"
+                             ]
+                     },
+             @"DocumentEditor": @{
+                     @"status": @"renamed",
+                     @"name": @"ComposeViewController"
+                     }
+             };
+}
+
 + (NSDictionary *)handlerChangesForYosemite {
     return @{};
 }
-
 
 + (NSDictionary *) handlers {
 	static NSDictionary *_handlers;
@@ -124,12 +146,17 @@
 		for(NSString *class in commonHandlers)
 			handlers[class] = [NSMutableArray arrayWithArray:commonHandlers[class]];
 		
-		/* Fix, once we can compile with stable Xcode including 10.9 SDK. */
 		if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_8)
 			[self applyHandlerChangesForVersion:@"10.9" toHandlers:handlers];
         
 		if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_9)
             [self applyHandlerChangesForVersion:@"10.10" toHandlers:handlers];
+        
+        if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_9)
+            [self applyHandlerChangesForVersion:@"10.10" toHandlers:handlers];
+        
+        if([VirgilMain isElCapitan])
+            [self applyHandlerChangesForVersion:@"10.11" toHandlers:handlers];
         
 		_handlers = [NSDictionary dictionaryWithDictionary:handlers];
 	});
@@ -143,6 +170,8 @@
 		handlerChanges = [self handlerChangesForMavericks];
 	else if([osxVersion isEqualToString:@"10.10"])
         handlerChanges = [self handlerChangesForYosemite];
+    else if([osxVersion isEqualToString:@"10.11"])
+        handlerChanges = [self handlerChangesForElCaptain];
     
 	for(NSString *class in handlerChanges) {
 		NSDictionary *handler = handlerChanges[class];
@@ -190,6 +219,9 @@
     // This methods converts known classes to their counterparts in Mavericks.
     if([@[@"MC", @"MF"] containsObject:[className substringToIndex:2]])
         return [className substringFromIndex:2];
+    
+    if([VirgilMain isElCapitan] && [className isEqualToString:@"ComposeViewController"])
+        return @"DocumentEditor";
     
     return className;
 }

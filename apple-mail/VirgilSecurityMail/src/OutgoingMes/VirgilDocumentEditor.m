@@ -36,6 +36,7 @@
 
 #import "VirgilDocumentEditor.h"
 #import "VirgilMenu.h"
+#import "VirgilMain.h"
 #import "VirgilLog.h"
 #import "MailNotificationCenter.h"
 #import "MFError.h"
@@ -59,12 +60,15 @@
 - (void) addMenu {
     VirgilMenu * menu = [[VirgilMenu alloc] init];
     menu.delegate = self;
-    NSWindow *window = [self valueForKey:@"_window"];
+    
+    if(![VirgilMain isElCapitan]) {
+        NSWindow *window = [self valueForKey:@"_window"];
 
-    if([NSApp mainWindow].styleMask & NSFullScreenWindowMask)
-        [menu prepareForFullScreen:window];
-    else
-        [menu prepareForNormalView:window];
+        if([NSApp mainWindow].styleMask & NSFullScreenWindowMask)
+            [menu prepareForFullScreen:window];
+        else
+            [menu prepareForNormalView:window];
+    }
 }
 
 - (void)didExitFullScreen:(NSNotification *)notification {
@@ -95,12 +99,5 @@
     [self MADealloc];
 }
 
-- (void)MABackEnd:(id)backEnd didCancelMessageDeliveryForEncryptionError:(MFError *)error {
-    [self MABackEnd:backEnd didCancelMessageDeliveryForEncryptionError:error];
-}
-
-- (void)MABackEnd:(id)backEnd didCancelMessageDeliveryForError:(MFError *)error {
-    [self MABackEnd:backEnd didCancelMessageDeliveryForError:error];
-}
 
 @end

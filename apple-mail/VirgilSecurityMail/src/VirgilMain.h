@@ -40,6 +40,8 @@
     NSMutableArray * _bundleImages;
 }
 
++ (BOOL)isElCapitan;
+
 @end
 
 @interface VirgilMain (NoImplementation)

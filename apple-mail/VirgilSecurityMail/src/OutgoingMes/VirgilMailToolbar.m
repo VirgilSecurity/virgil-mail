@@ -34,29 +34,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "VirgilClassNameResolver.h"
-#import "VirgilMain.h"
+#import "VirgilMailToolbar.h"
 
-@implementation VirgilClassNameResolver
-+ (Class)resolveClassFromName:(NSString *)name {
-    NSArray *prefixes = @[@"", @"MC", @"MF"];
+@implementation VirgilMailToolbar
+
++ (id)MA_plistForToolbarWithIdentifier:(id)arg1 {
+    id ret = [self MA_plistForToolbarWithIdentifier:arg1];
     
-    // MessageWriter is called MessageGenerator under Mavericks.
-    if([name isEqualToString:@"MessageWriter"] && !NSClassFromString(@"MessageWriter"))
-        name = @"MessageGenerator";
+    if(![arg1 isEqualToString:@"ComposeWindow"])
+        return ret;
     
-    __block Class resolvedClass = nil;
-    [prefixes enumerateObjectsUsingBlock:^(NSString *prefix, NSUInteger idx, BOOL *stop) {
-        NSString *modifiedName = [name copy];
-        if([prefixes containsObject:[modifiedName substringToIndex:2]])
-            modifiedName = [modifiedName substringFromIndex:2];
-        
-        NSString *className = [prefix stringByAppendingString:modifiedName];
-        resolvedClass = NSClassFromString(className);
-        if(resolvedClass)
-            *stop = YES;
-    }];
+    NSMutableDictionary *configuration = [ret mutableCopy];
+    NSMutableArray *defaultSet = [configuration[@"default set"] mutableCopy];
+    [defaultSet addObject:VIRGIL_MENU_IDENTIFIER];
+    [configuration setObject:defaultSet forKey:@"default set"];
     
-    return resolvedClass;
+    return configuration;
 }
+
 @end

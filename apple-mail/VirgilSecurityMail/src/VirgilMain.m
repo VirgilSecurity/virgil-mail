@@ -98,6 +98,15 @@ NSString *VirgilMailMethodPrefix = @"MA";
 	return self;
 }
 
++ (BOOL)isElCapitan {
+    NSProcessInfo *info = [NSProcessInfo processInfo];
+    if(![info respondsToSelector:@selector(isOperatingSystemAtLeastVersion:)])
+        return NO;
+    
+    NSOperatingSystemVersion requiredVersion = {10,11,0};
+    return [info isOperatingSystemAtLeastVersion:requiredVersion];
+}
+
 + (BOOL)hasPreferencesPanel {
     return YES;
 }

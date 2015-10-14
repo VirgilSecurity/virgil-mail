@@ -34,29 +34,50 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "VirgilClassNameResolver.h"
-#import "VirgilMain.h"
+#import "VirgilComposeWindowController.h"
+#import "VirgilMailToolbar.h"
+#import "VirgilMenu.h"
+#import "VirgilDynamicVariables.h"
 
-@implementation VirgilClassNameResolver
-+ (Class)resolveClassFromName:(NSString *)name {
-    NSArray *prefixes = @[@"", @"MC", @"MF"];
+@implementation VirgilComposeWindowController
+
+- (id)MAToolbarDefaultItemIdentifiers:(id)toolbar {
+    id defaultItemIdentifiers = [self MAToolbarDefaultItemIdentifiers:toolbar];
     
-    // MessageWriter is called MessageGenerator under Mavericks.
-    if([name isEqualToString:@"MessageWriter"] && !NSClassFromString(@"MessageWriter"))
-        name = @"MessageGenerator";
+    NSMutableArray *identifiers = [defaultItemIdentifiers mutableCopy];
+    [identifiers addObject:VIRGIL_MENU_IDENTIFIER];
     
-    __block Class resolvedClass = nil;
-    [prefixes enumerateObjectsUsingBlock:^(NSString *prefix, NSUInteger idx, BOOL *stop) {
-        NSString *modifiedName = [name copy];
-        if([prefixes containsObject:[modifiedName substringToIndex:2]])
-            modifiedName = [modifiedName substringFromIndex:2];
-        
-        NSString *className = [prefix stringByAppendingString:modifiedName];
-        resolvedClass = NSClassFromString(className);
-        if(resolvedClass)
-            *stop = YES;
-    }];
-    
-    return resolvedClass;
+    return identifiers;
 }
+
+- (id)MAToolbar:(id)toolbar itemForItemIdentifier:(id)itemIdentifier willBeInsertedIntoToolbar:(BOOL)willBeInsertedIntoToolbar {
+    if(![itemIdentifier isEqualToString:VIRGIL_MENU_IDENTIFIER]) {
+        return [self MAToolbar:toolbar itemForItemIdentifier:itemIdentifier willBeInsertedIntoToolbar:willBeInsertedIntoToolbar];
+    }
+    
+    for(NSToolbarItem *item in [toolbar items]) {
+        if([item.itemIdentifier isEqualToString:itemIdentifier])
+            return nil;
+    }
+    
+    VirgilMenu * menu = [[VirgilMenu alloc] init];
+    [self setDynVar:menu value:@"VirgilDocumentMenu"];
+    
+    NSToolbarItem *item = [[NSToolbarItem alloc] initWithItemIdentifier:itemIdentifier];
+    
+    [item setView : menu];
+    [item setMinSize:NSMakeSize(75, 23)];
+    [item setTarget:nil];
+    
+    return item;
+}
+
+- (void)MA_performSendAnimation {
+    [self MA_performSendAnimation];
+}
+
+- (void)MA_tabBarView:(id)tabBarView performSendAnimationOfTabBarViewItem:(id)tabBarViewItem {
+    [self MA_tabBarView:tabBarView performSendAnimationOfTabBarViewItem:tabBarViewItem];
+}
+
 @end

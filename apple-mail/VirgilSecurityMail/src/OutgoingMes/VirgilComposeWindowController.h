@@ -34,29 +34,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "VirgilClassNameResolver.h"
-#import "VirgilMain.h"
+#import <Foundation/Foundation.h>
 
-@implementation VirgilClassNameResolver
-+ (Class)resolveClassFromName:(NSString *)name {
-    NSArray *prefixes = @[@"", @"MC", @"MF"];
-    
-    // MessageWriter is called MessageGenerator under Mavericks.
-    if([name isEqualToString:@"MessageWriter"] && !NSClassFromString(@"MessageWriter"))
-        name = @"MessageGenerator";
-    
-    __block Class resolvedClass = nil;
-    [prefixes enumerateObjectsUsingBlock:^(NSString *prefix, NSUInteger idx, BOOL *stop) {
-        NSString *modifiedName = [name copy];
-        if([prefixes containsObject:[modifiedName substringToIndex:2]])
-            modifiedName = [modifiedName substringFromIndex:2];
-        
-        NSString *className = [prefix stringByAppendingString:modifiedName];
-        resolvedClass = NSClassFromString(className);
-        if(resolvedClass)
-            *stop = YES;
-    }];
-    
-    return resolvedClass;
-}
+@interface VirgilComposeWindowController : NSObject
+
 @end
