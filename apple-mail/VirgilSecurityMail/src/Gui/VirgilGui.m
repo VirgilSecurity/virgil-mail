@@ -46,6 +46,9 @@
 #import "VirgilKeyChain.h"
 #import "VirgilLog.h"
 
+static BOOL _accountsVisible = NO;
+static BOOL _configureForSendVisible = NO;
+
 @implementation VirgilGui
 
 + (NSBundle *) getVirgilBundle {
@@ -107,6 +110,7 @@
     NSBundle * bundle = [VirgilGui getVirgilBundle];
     if (nil == bundle) return;
     
+    if (YES == _accountsVisible) return;
     @try {
         dispatch_async(dispatch_get_main_queue(), ^{
             NSStoryboard * storyBoard =
@@ -128,8 +132,10 @@
             
             [controllerWindow setStyleMask:[controllerWindow styleMask] & ~NSResizableWindowMask];
             
+            _accountsVisible = YES;
             [containerWindow beginSheet : controllerWindow
                       completionHandler : ^(NSModalResponse returnCode) {
+                          _accountsVisible = NO;
                       }];
 
         });
@@ -335,6 +341,7 @@
     NSBundle * bundle = [VirgilGui getVirgilBundle];
     if (nil == bundle) return;
     
+    if (YES == _accountsVisible || YES == _configureForSendVisible) return;
     @try {
         dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -359,9 +366,11 @@
             
             [controllerWindow setStyleMask:[controllerWindow styleMask] & ~NSResizableWindowMask];
             
+            _configureForSendVisible = YES;
             [containerWindow beginCriticalSheet : controllerWindow
                               completionHandler : ^(NSModalResponse returnCode) {
                                   dispatch_semaphore_signal(semaphore);
+                                  _configureForSendVisible = NO;
                               }];
         });
         dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
