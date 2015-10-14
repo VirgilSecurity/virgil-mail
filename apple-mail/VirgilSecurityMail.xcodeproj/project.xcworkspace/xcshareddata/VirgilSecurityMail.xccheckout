@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>0EC658F6-6E11-41AF-9E8B-B0A589756751</string>
 	<key>IDESourceControlProjectName</key>
-	<string>VirgilSecurityMail</string>
+	<string>project</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>B61EEFF91CBF844E2F72C143CE779333F41C4094</key>
 		<string>https://github.com/VirgilSecurity/virgil-mail.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>apple-mail/VirgilSecurityMail.xcodeproj</string>
+	<string>apple-mail/VirgilSecurityMail.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>B61EEFF91CBF844E2F72C143CE779333F41C4094</key>

@@ -34,28 +34,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <Foundation/Foundation.h>
-#import "VirgilPrivateKey.h"
+#import "VirgilEmailSendConfigureViewContainer.h"
+#import "NSViewController+VirgilView.h"
+#import "VirgilLog.h"
 
-/**
- * @class Class for interaction with user
- */
+@implementation VirgilEmailSendConfigureViewContainer
 
-@interface VirgilGui : NSObject
-
-+ (void) showWellcome;
-+ (void) showAccountsFor : (NSString *) account;
-
-+ (void) confirmAccount : account
-       confirmationCode : code
-           resultObject : (id)resultObject
-            resultBlock : (void (^)(id arg1, BOOL isOk))resultBlock;
-
-+ (NSString *) getUserPassword;
-
-+ (void) showError : (NSString *) error;
-+ (void) showMessage : (NSString *) message;
-
-+ (void) configureAccountForSend;
+- (void)viewDidLoad {
+    [super viewDidLoad];
+}
 
 @end

@@ -20,6 +20,7 @@
 		4907EC591BCE77170008A7E8 /* VirgilComposeWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4907EC571BCE77170008A7E8 /* VirgilComposeWindowController.m */; };
 		4907EC621BCE78060008A7E8 /* VirgilMailToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4907EC601BCE78060008A7E8 /* VirgilMailToolbar.m */; };
 		49740B621BC5000800000D5E /* VirgilAccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49740B611BC5000800000D5E /* VirgilAccountsViewController.m */; };
+		499D24E11BCEC67500AFA42B /* VirgilEmailSendConfigureViewContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 499D24DF1BCEC67500AFA42B /* VirgilEmailSendConfigureViewContainer.m */; };
 		49C821DE1BBAA6A70031ED7F /* encrypt_mail.png in Resources */ = {isa = PBXBuildFile; fileRef = 49C821DB1BBAA6A70031ED7F /* encrypt_mail.png */; };
 		49C821DF1BBAA6A70031ED7F /* menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 49C821DC1BBAA6A70031ED7F /* menu.png */; };
 		49C821E01BBAA6A70031ED7F /* menu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 49C821DD1BBAA6A70031ED7F /* menu@2x.png */; };
@@ -157,6 +158,8 @@
 		4907EC611BCE78060008A7E8 /* VirgilMailToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilMailToolbar.h; path = VirgilSecurityMail/src/OutgoingMes/VirgilMailToolbar.h; sourceTree = "<group>"; };
 		49740B601BC5000800000D5E /* VirgilAccountsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilAccountsViewController.h; path = VirgilSecurityMail/src/Gui/VirgilAccountsViewController.h; sourceTree = "<group>"; };
 		49740B611BC5000800000D5E /* VirgilAccountsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilAccountsViewController.m; path = VirgilSecurityMail/src/Gui/VirgilAccountsViewController.m; sourceTree = "<group>"; };
+		499D24DF1BCEC67500AFA42B /* VirgilEmailSendConfigureViewContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilEmailSendConfigureViewContainer.m; path = VirgilSecurityMail/src/Gui/VirgilEmailSendConfigureViewContainer.m; sourceTree = "<group>"; };
+		499D24E01BCEC67500AFA42B /* VirgilEmailSendConfigureViewContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilEmailSendConfigureViewContainer.h; path = VirgilSecurityMail/src/Gui/VirgilEmailSendConfigureViewContainer.h; sourceTree = "<group>"; };
 		49C821DB1BBAA6A70031ED7F /* encrypt_mail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = encrypt_mail.png; path = Resources/encrypt_mail.png; sourceTree = "<group>"; };
 		49C821DC1BBAA6A70031ED7F /* menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = menu.png; path = Resources/menu.png; sourceTree = "<group>"; };
 		49C821DD1BBAA6A70031ED7F /* menu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "menu@2x.png"; path = "Resources/menu@2x.png"; sourceTree = "<group>"; };
@@ -626,6 +629,8 @@
 				49E32FA21BC29DB600A37F42 /* VirgilUserMessageViewController.m */,
 				49740B601BC5000800000D5E /* VirgilAccountsViewController.h */,
 				49740B611BC5000800000D5E /* VirgilAccountsViewController.m */,
+				499D24E01BCEC67500AFA42B /* VirgilEmailSendConfigureViewContainer.h */,
+				499D24DF1BCEC67500AFA42B /* VirgilEmailSendConfigureViewContainer.m */,
 				4904352E1BC53E3E00083D16 /* VirgilAccountItem.h */,
 				4904352F1BC53E3E00083D16 /* VirgilAccountItem.m */,
 				4904354D1BC6BD1700083D16 /* VirgilActionsViewController.h */,
@@ -887,6 +892,7 @@
 				D1CBA84F1B7BC55300217919 /* VirgilMenu.m in Sources */,
 				49D0C2ED1BB9B8ED00131ACB /* VirgilHeaderViewController.m in Sources */,
 				D13F602F1B6A1A9600508C79 /* JRLPSwizzle.m in Sources */,
+				499D24E11BCEC67500AFA42B /* VirgilEmailSendConfigureViewContainer.m in Sources */,
 				49E32F9A1BC24D6600A37F42 /* VirgilDecryptedMailContainer.m in Sources */,
 				D1DDA9011B91A34100002A2F /* VirgilKeyManager.mm in Sources */,
 				D1FA26261B98E6E2003335BB /* VirgilKeychainWrapper.m in Sources */,

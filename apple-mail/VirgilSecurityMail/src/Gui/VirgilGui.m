@@ -327,4 +327,8 @@
     return [VirgilGetPassword password];
 }
 
++ (void) configureAccountForSend {
+// viewEmailSendConfigure
+}
+
 @end
