@@ -123,6 +123,8 @@ static BOOL _configureForSendVisible = NO;
             
             VirgilAccountsViewController * controller = (VirgilAccountsViewController *)[storyBoard instantiateControllerWithIdentifier : @"viewAccounts"];
             
+            controller.selectedAccount = account;
+            
             [windowControler setContentViewController:controller];
             
             if (nil == controller) return;
