@@ -56,6 +56,6 @@
 + (void) showError : (NSString *) error;
 + (void) showMessage : (NSString *) message;
 
-+ (void) configureAccountForSend;
++ (void) configureAccountForSend : (NSString *)account;
 
 @end

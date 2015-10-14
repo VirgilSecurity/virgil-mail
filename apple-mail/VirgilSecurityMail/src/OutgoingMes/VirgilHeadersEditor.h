@@ -39,5 +39,6 @@
 @interface VirgilHeadersEditor : NSObject
 
 - (void)MAChangeFromHeader:(id)arg1;
+- (void) checkAccount;
 
 @end

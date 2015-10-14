@@ -36,12 +36,27 @@
 
 #import "VirgilEmailSendConfigureViewContainer.h"
 #import "NSViewController+VirgilView.h"
+#import "VirgilPreferencesContainer.h"
+#import "VirgilGui.h"
 #import "VirgilLog.h"
 
 @implementation VirgilEmailSendConfigureViewContainer
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+}
+
+- (IBAction)onConfigureClicked:(id)sender {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 500 * NSEC_PER_MSEC),
+                   dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+                       [VirgilGui showAccountsFor : _account];
+                   });
+    [self closeWindow];
+}
+
+- (IBAction)onDisableEncryptionClicked:(id)sender {
+    [VirgilPreferencesContainer setUseEncryption : NO];
+    [self closeWindow];
 }
 
 @end

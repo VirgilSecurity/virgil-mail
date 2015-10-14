@@ -77,6 +77,8 @@
 - (VirgilAccountInfo *) accountInfo : (NSString *)account
                        checkInCloud : (BOOL)checkInCloud;
 
+- (void) checkAccountForEncryption : (NSString *) account;
+
 
 @property (readonly, retain) VirgilDecryptedMailContainer * decryptedMailContainer;
 

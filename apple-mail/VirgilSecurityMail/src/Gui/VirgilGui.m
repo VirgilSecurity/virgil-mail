@@ -36,6 +36,7 @@
 
 #import "VirgilGui.h"
 #import "VirgilEmailConfirmViewController.h"
+#import "VirgilEmailSendConfigureViewContainer.h"
 #import "VirgilErrorViewController.h"
 #import "VirgilUserMessageViewController.h"
 #import "VirgilAccountsViewController.h"
@@ -327,8 +328,46 @@
     return [VirgilGetPassword password];
 }
 
-+ (void) configureAccountForSend {
-// viewEmailSendConfigure
++ (void) configureAccountForSend : (NSString *)account {
+    NSWindow * containerWindow = [[NSApplication sharedApplication] mainWindow];
+    if (nil == containerWindow) return;
+    
+    NSBundle * bundle = [VirgilGui getVirgilBundle];
+    if (nil == bundle) return;
+    
+    @try {
+        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSStoryboard * storyBoard =
+            [NSStoryboard storyboardWithName : @"Main"
+                                      bundle : bundle];
+            if (nil == storyBoard) return;
+            
+            NSWindowController * windowControler = [storyBoard instantiateInitialController];
+            if (nil == windowControler) return;
+            
+            VirgilEmailSendConfigureViewContainer * controller =
+            (VirgilEmailSendConfigureViewContainer*)[storyBoard instantiateControllerWithIdentifier : @"viewEmailSendConfigure"];
+            
+            controller.account = account;
+            
+            [windowControler setContentViewController:controller];
+            if (nil == controller) return;
+            
+            NSWindow * controllerWindow = [windowControler window];
+            if (nil == controllerWindow) return;
+            
+            [controllerWindow setStyleMask:[controllerWindow styleMask] & ~NSResizableWindowMask];
+            
+            [containerWindow beginCriticalSheet : controllerWindow
+                              completionHandler : ^(NSModalResponse returnCode) {
+                                  dispatch_semaphore_signal(semaphore);
+                              }];
+        });
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    }
+    @catch (NSException *exception) {}
+    @finally {}
 }
 
 @end

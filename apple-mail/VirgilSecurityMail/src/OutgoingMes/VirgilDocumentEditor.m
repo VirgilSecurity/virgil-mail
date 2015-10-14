@@ -42,17 +42,11 @@
 #import "MFError.h"
 #import "DocumentEditor.h"
 #import "VirgilGui.h"
-
-#import "BannerController.h"
+#import "VirgilHeadersEditor.h"
 
 @implementation VirgilDocumentEditor
 
 - (void) MABackEndDidLoadInitialContent : (id)content {
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didExitFullScreen:)
-                                                 name:@"NSWindowDidExitFullScreenNotification"
-                                               object:nil];
-    
     [self addMenu];
     [self MABackEndDidLoadInitialContent:content];
 }
@@ -72,20 +66,38 @@
 }
 
 - (void)didExitFullScreen:(NSNotification *)notification {
-    //[self performSelectorOnMainThread:@selector(configureSecurityMethodAccessoryViewForNormalMode) withObject:nil waitUntilDone:NO];
 }
 
 - (void) hideMenu {
-    
 }
 
 - (void) MAShow {
+    static BOOL catchNotificationsReady = NO;
     [self MAShow];
     
-    /*dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 100 * NSEC_PER_MSEC),
-                   dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-                       [VirgilGui askForCanDecrypt];
-                   });*/
+    if (NO == catchNotificationsReady) {
+        NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+        [center addObserver : self
+                   selector : @selector(checkAccount:)
+                       name : NSUserDefaultsDidChangeNotification
+                     object : nil];
+        catchNotificationsReady = YES;
+    }
+    
+    [self checkAccount : nil];
+}
+
+- (void) checkAccount : (NSNotification *)notification {
+    @try {
+        VirgilHeadersEditor * vhe = ((DocumentEditor *)self).headersEditor;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC),
+                       dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+                           [vhe checkAccount];
+                       });
+        
+    }
+    @catch (NSException *exception) {}
+    @finally {}
 }
 
 - (void)MADealloc {

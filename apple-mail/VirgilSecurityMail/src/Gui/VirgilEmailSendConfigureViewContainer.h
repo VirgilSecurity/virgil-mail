@@ -38,4 +38,6 @@
 
 @interface VirgilEmailSendConfigureViewContainer : NSViewController
 
+@property (nonatomic, copy) NSString * account;
+
 @end

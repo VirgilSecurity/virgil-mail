@@ -1060,7 +1060,7 @@
 					HD,
 					2/usr/local/lib,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
 				"OTHER_LDFLAGS[arch=*]" = (
 					"-Lvirgil-libs/lib",
@@ -1077,7 +1077,7 @@
 					"-Wl,-rpath,@loader_path/../Frameworks",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx10.10;
+				SDKROOT = macosx10.11;
 				VALID_ARCHS = x86_64;
 				VERSIONING_SYSTEM = "";
 				WRAPPER_EXTENSION = mailbundle;
@@ -1115,7 +1115,7 @@
 					HD,
 					2/usr/local/lib,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
 				"OTHER_LDFLAGS[arch=*]" = (
 					"-Lvirgil-libs/lib",
@@ -1132,7 +1132,7 @@
 					"-Wl,-rpath,@loader_path/../Frameworks",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx10.10;
+				SDKROOT = macosx10.11;
 				VALID_ARCHS = x86_64;
 				VERSIONING_SYSTEM = "";
 				WRAPPER_EXTENSION = mailbundle;
