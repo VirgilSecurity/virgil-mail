@@ -373,10 +373,19 @@ static NSString * _lastError = nil;
  */
 + (VirgilPrivateKey *) decryptedPrivateKey : (VirgilPrivateKey *) encryptedKey
                                            keyPassword : (NSString *) keyPassword {
+    VirgilPrivateKey * decryptedKey = nil;
     if ([VirgilPrivateKeyManager isCorrectPrivateKey : encryptedKey.key]) {
         return encryptedKey;
+    } else if ([VirgilPrivateKeyManager isCorrectPrivateKey : [encryptedKey.key stripBase64]]) {
+        decryptedKey = [[VirgilPrivateKey alloc] initAccount : encryptedKey.account
+                                               containerType : encryptedKey.containerType
+                                                  privateKey : [encryptedKey.key stripBase64]
+                                                 keyPassword : encryptedKey.keyPassword
+                                           containerPassword : encryptedKey.containerPassword];
+    } else {
+        decryptedKey = [VirgilPrivateKeyManager decryptKey:encryptedKey withPassword:keyPassword];
     }
-    VirgilPrivateKey * decryptedKey = [VirgilPrivateKeyManager decryptKey:encryptedKey withPassword:keyPassword];
+    
     if (nil == decryptedKey) return nil;
     
     if ([VirgilPrivateKeyManager isCorrectPrivateKey : decryptedKey.key]) {
@@ -618,7 +627,7 @@ static NSString * _lastError = nil;
     if (jsonDict) {
         NSArray * bundles = [jsonDict objectForKey:@"bundles"];
         NSDictionary * bundle = [bundles objectAtIndex:0];
-        NSString * privateKey = [(NSString *)[bundle objectForKey:@"private_key"] stripBase64];
+        NSString * privateKey = [bundle objectForKey:@"private_key"];
         
         NSDictionary * userDataDict = [bundle objectForKey : @"public_key"];
         NSArray * userDataAr = [userDataDict objectForKey : @"tickets"];
