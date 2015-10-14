@@ -410,9 +410,9 @@
 		D11174471B6805DD00DD9A39 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				D13F60531B6B6CB600508C79 /* VirgilProcessing */,
 				D1DDA90C1B91B1FF00002A2F /* Gui */,
 				D1CBA8491B7BC3F300217919 /* OutgoingMes */,
-				D13F60531B6B6CB600508C79 /* VirgilProcessing */,
 				D13F60491B6AB36400508C79 /* CommonMes */,
 				D13F60451B6A33AC00508C79 /* MailHeaders */,
 				D13F60311B6A1AD700508C79 /* IncommingMes */,

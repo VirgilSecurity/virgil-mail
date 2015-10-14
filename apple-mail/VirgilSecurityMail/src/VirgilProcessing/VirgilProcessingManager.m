@@ -50,6 +50,7 @@
 #import "VirgilPreferencesContainer.h"
 #import "VirgilKeyChainContainer.h"
 #import "VirgilKeyChain.h"
+#import "VirgilMain.h"
 #import "VirgilLog.h"
 
 #import <MessageStore.h>
@@ -62,6 +63,7 @@
 #import <MutableMessageHeaders.h>
 #import <MessageWriter.h>
 #import <MCAttachment.h>
+#import <MFAttachmentViewController.h>
 
 @implementation VirgilProcessingManager
 
@@ -417,6 +419,7 @@
         if (part == mainVirgilPart) continue;
         NSData * encryptedAttachement = [self getEncryptedAttachement:part];
         if (nil == encryptedAttachement) continue;
+        
         NSData * decryptedAttachement = [VirgilCryptoLibWrapper decryptData:encryptedAttachement
                                                                 publicKeyId:publicId
                                                                  privateKey:privateKey.key
@@ -712,8 +715,15 @@
     
     // Encrypt all attachments
     NSMutableArray * res = [[NSMutableArray alloc] init];
-    for (MCAttachment * attach in attachments) {
-        MCAttachment * encryptedAttach = [attach copy];
+    for (id attach in attachments) {
+        MCAttachment * encryptedAttach = nil;
+        if ([VirgilMain isElCapitan]) {
+            MFAttachmentViewController * attachController = (MFAttachmentViewController *) attach;
+            encryptedAttach = attachController.attachment;
+        } else {
+            encryptedAttach = [attach copy];
+        }
+        
         NSData * encryptedContent = [VirgilCryptoLibWrapper encryptData : encryptedAttach.originalData
                                                              publicKeys : [publicKeys copy]];
         if (nil != encryptedContent) {

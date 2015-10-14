@@ -4,14 +4,14 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2012 by Steve Nygard.
  */
 
-#import "NSObject.h"
+//#import "NSObject.h"
 
-#import "MCCIDURLProtocolDataProvider.h"
-#import "NSCopying.h"
+//#import "MCCIDURLProtocolDataProvider.h"
+//#import "NSCopying.h"
 
 @class DOMHTMLObjectElement, MCAttachment, NSArray, NSData, NSImage, NSMutableArray, NSString, NSURL;
 
-@interface MFAttachmentViewController : NSObject <NSCopying, MCCIDURLProtocolDataProvider>
+@interface MFAttachmentViewController : NSObject <NSCopying/*, MCCIDURLProtocolDataProvider*/>
 {
     NSMutableArray *_attachmentViews;
     BOOL _canBeDisplayedInline;
