@@ -95,7 +95,8 @@ using virgil::crypto::foundation::VirgilBase64;
         // Decrypt
         const VirgilByteArray _readyData(cipher.decryptWithKey(baData,
                                                                baPublicKeyId,
-                                                               baPrivateKey));
+                                                               baPrivateKey,
+                                                               baPrivateKeyPassword));
         return [[NSData alloc] initWithBytes:_readyData.data() length:_readyData.size()];
         
     } catch (std::exception& exception) {
