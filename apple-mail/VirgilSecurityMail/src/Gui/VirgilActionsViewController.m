@@ -51,6 +51,10 @@ static BOOL _cloudSelection = YES;
 
 @implementation VirgilActionsViewController
 
+- (void) reset {
+    [self setVisibleExportControls:NO];
+}
+
 - (IBAction)onExportKeyClicked:(id)sender {
     [self setVisibleExportControls:YES];
 }
@@ -252,6 +256,9 @@ static BOOL _cloudSelection = YES;
     @finally {}
     
     return fileName;
+}
+
+- (IBAction)onSourceChanged:(id)sender {
 }
 
 - (IBAction)onCreationDestChanged:(id)sender {

@@ -41,11 +41,26 @@
 #import "NSViewController+VirgilView.h"
 #import "VirgilLog.h"
 
-@implementation VirgilAccountsViewController
+@implementation VirgilAccountsViewController {
+    VirgilActionsViewController * _viewAccountPresent;
+    VirgilActionsViewController * _viewNoAccount;
+    VirgilActionsViewController * _viewGetKey;
+    VirgilActionsViewController * _viewWaitConfirmation;
+    VirgilActionsViewController * _viewNoStatus;
+}
 
 @synthesize items = _items;
 
 - (void)viewDidLoad {
+    NSStoryboard * storyboard = [self storyboard];
+    if (nil == storyboard) return;
+    
+    _viewAccountPresent = (VirgilActionsViewController *) [storyboard instantiateControllerWithIdentifier : @"viewAccountPresent"];
+    _viewNoAccount = (VirgilActionsViewController *) [storyboard instantiateControllerWithIdentifier : @"viewNoAccount"];
+    _viewGetKey = (VirgilActionsViewController *) [storyboard instantiateControllerWithIdentifier : @"viewGetKey"];
+    _viewWaitConfirmation = (VirgilActionsViewController *) [storyboard instantiateControllerWithIdentifier : @"viewWaitConfirmation"];
+    _viewNoStatus = (VirgilActionsViewController *) [storyboard instantiateControllerWithIdentifier : @"viewNoStatus"];
+    
     [super viewDidLoad];
     [self items];
 }
@@ -142,6 +157,7 @@
     VirgilActionsViewController * controller = (VirgilActionsViewController *)[self showAccountActions:selectedItem];
     controller.account = selectedItem.account;
     controller.delegate = self;
+    [controller reset];
     _selectedAccount = selectedItem.account;
 }
 
@@ -149,25 +165,20 @@
     _accountName.stringValue = accountItem.name;
     _accountEmail.stringValue = accountItem.account;
     
-    if (statusAllDone == accountItem.status) return [self switchEmbedViewTo : @"viewAccountPresent"];
-    else if (statusPublicKeyNotPresent == accountItem.status) return [self switchEmbedViewTo : @"viewNoAccount"];
-    else if (statusPublicKeyPresent == accountItem.status) return [self switchEmbedViewTo : @"viewGetKey"];
-    else if (statusWaitActivation == accountItem.status) return [self switchEmbedViewTo : @"viewWaitConfirmation"];
-    else if (statusUnknown == accountItem.status) return [self switchEmbedViewTo : @"viewNoStatus"];
+    if (statusAllDone == accountItem.status) return [self switchEmbedViewTo : _viewAccountPresent];
+    else if (statusPublicKeyNotPresent == accountItem.status) return [self switchEmbedViewTo : _viewNoAccount];
+    else if (statusPublicKeyPresent == accountItem.status) return [self switchEmbedViewTo : _viewGetKey];
+    else if (statusWaitActivation == accountItem.status) return [self switchEmbedViewTo : _viewWaitConfirmation];
+    else if (statusUnknown == accountItem.status) return [self switchEmbedViewTo : _viewNoStatus];
     
     return nil;
 }
 
-- (NSViewController *) switchEmbedViewTo : (NSString *)viewName {
-    NSStoryboard * storyboard = [self storyboard];
-    
-    if (nil == storyboard) return nil;
-    NSViewController * controller = [storyboard instantiateControllerWithIdentifier : viewName];
-    
+- (NSViewController *) switchEmbedViewTo : (NSViewController *)controller {
     if (nil == controller) return nil;
-    
     [[[_embedView subviews] lastObject] removeFromSuperview];
     [_embedView addSubview : controller.view];
+    [_embedView updateLayer];
     return controller;
 }
 

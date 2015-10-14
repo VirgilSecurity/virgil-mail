@@ -39,6 +39,8 @@
 
 @interface VirgilActionsViewController : NSViewController
 
+- (void) reset;
+
 @property (nonatomic) NSString * account;
 @property (nonatomic, weak) id <VirgilAccountsProtocol> delegate;
 
