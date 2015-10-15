@@ -553,11 +553,17 @@
     return res;
 }
 
-- (void) checkAccountForEncryption : (NSString *) account {
-    if (![VirgilPreferencesContainer isUseEncryption]) return;
+- (BOOL) canSendEmail : (NSString *) account {
+    if (![VirgilPreferencesContainer isUseEncryption]) return YES;
     VirgilKeyChainContainer * container = [VirgilKeyChain loadContainer:account];
-    if (container && container.privateKey) return;
-    [VirgilGui configureAccountForSend : account];
+    if (container && container.privateKey) return YES;
+    return NO;
+}
+
+- (void) checkAccountForEncryption : (NSString *) account {
+    if (![self canSendEmail:account]) {
+        [VirgilGui configureAccountForSend : account];
+    }
 }
 
 - (NSString *) getMyAccountFromMessage : (Message *)message {

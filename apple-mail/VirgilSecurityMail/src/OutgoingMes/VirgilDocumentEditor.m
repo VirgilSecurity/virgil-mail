@@ -38,6 +38,7 @@
 #import "VirgilMenu.h"
 #import "VirgilMain.h"
 #import "VirgilLog.h"
+#import "VirgilProcessingManager.h"
 #import "MailNotificationCenter.h"
 #import "MFError.h"
 #import "DocumentEditor.h"
@@ -85,6 +86,27 @@
     }
     
     [self checkAccount : nil];
+}
+
+- (void) MASend:(id)arg1 {
+    NSString * senderEmail;
+    
+    @try {
+        VirgilHeadersEditor * vhe = ((DocumentEditor *)self).headersEditor;
+        senderEmail = [vhe currentFrom];
+    }
+    @catch (NSException *exception) {}
+    @finally {}
+    
+    BOOL canSend = [[VirgilProcessingManager sharedInstance] canSendEmail:senderEmail];
+    
+    VLogInfo(@">>>>>>> MASend : %@ canSend : %hhd", senderEmail, canSend);
+    
+    if (canSend) {
+        [self MASend:arg1];
+    } else {
+        [self checkAccount:nil];
+    }
 }
 
 - (void) checkAccount : (NSNotification *)notification {

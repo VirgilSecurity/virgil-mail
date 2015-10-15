@@ -41,6 +41,8 @@
 - (void) MABackEndDidLoadInitialContent : (id)content;
 - (void) MADealloc;
 - (void) MAShow;
+- (void) MASend:(id)arg1;
+
 - (void) addMenu;
 - (void) didExitFullScreen : (NSNotification *)notification;
 - (void) hideMenu;

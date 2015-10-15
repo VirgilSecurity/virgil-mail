@@ -40,5 +40,6 @@
 
 - (void)MAChangeFromHeader:(id)arg1;
 - (void) checkAccount;
+- (NSString *) currentFrom;
 
 @end

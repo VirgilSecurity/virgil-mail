@@ -77,6 +77,7 @@
 - (VirgilAccountInfo *) accountInfo : (NSString *)account
                        checkInCloud : (BOOL)checkInCloud;
 
+- (BOOL) canSendEmail : (NSString *) account;
 - (void) checkAccountForEncryption : (NSString *) account;
 
 

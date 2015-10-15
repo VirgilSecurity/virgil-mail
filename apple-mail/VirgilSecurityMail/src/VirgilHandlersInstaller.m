@@ -55,9 +55,8 @@
              @"DocumentEditor": @[
                      @"backEndDidLoadInitialContent:",
                      @"dealloc",
-                     //@"backEnd:didCancelMessageDeliveryForEncryptionError:",
-                     //@"backEnd:didCancelMessageDeliveryForError:",
-                     @"show"
+                     @"show",
+                     @"send:"
                      ],
              @"NSWindow": @[
                      @"toggleFullScreen:"
