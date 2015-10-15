@@ -598,6 +598,10 @@
     return nil;
 }
 
+- (void) clearDecryptionCache {
+    [_decryptedMailContainer clear];
+}
+
 - (BOOL) isNeedToEncrypt {
     return [VirgilPreferencesContainer isUseEncryption];
 }

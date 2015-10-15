@@ -39,6 +39,7 @@
 
 @interface VirgilDecryptedMailContainer : NSObject
 
+- (void) clear;
 - (BOOL) isMailPresent:(id)email;
 
 - (void) setStatus:(DecryptStatus) status forEmail:(id)email;

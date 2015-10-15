@@ -102,8 +102,6 @@
     
     BOOL canSend = [[VirgilProcessingManager sharedInstance] canSendEmail:senderEmail];
     
-    VLogInfo(@">>>>>>> MASend : %@ canSend : %hhd", senderEmail, canSend);
-    
     if (canSend) {
         [self MASend:arg1];
     } else {

@@ -80,6 +80,8 @@
 - (BOOL) canSendEmail : (NSString *) account;
 - (void) checkAccountForEncryption : (NSString *) account;
 
+- (void) clearDecryptionCache;
+
 
 @property (readonly, retain) VirgilDecryptedMailContainer * decryptedMailContainer;
 

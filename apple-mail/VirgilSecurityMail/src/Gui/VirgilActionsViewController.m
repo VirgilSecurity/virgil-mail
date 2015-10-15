@@ -38,6 +38,7 @@
 #import "VirgilKeyManager.h"
 #import "VirgilKeyChain.h"
 #import "VirgilPrivateKeyManager.h"
+#import "VirgilProcessingManager.h"
 #import "VirgilValidator.h"
 #import "VirgilGui.h"
 #import "NSViewController+VirgilView.h"
@@ -90,6 +91,7 @@ static BOOL _cloudSelection = YES;
 - (IBAction)onRemoveKeyFromKeyChain:(id)sender {
     if (nil == _account) return;
     [VirgilKeyChain removeContainer : _account];
+    [[VirgilProcessingManager sharedInstance] clearDecryptionCache];
     [self delegateRefresh];
 }
 

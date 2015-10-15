@@ -50,6 +50,10 @@
     return [super init];
 }
 
+- (void) clear {
+    _mails = [[NSMutableDictionary alloc] init];
+}
+
 - (BOOL) isMailPresent : (id)email {
     return nil != [_mails valueForKey:[self emailHash:email]];
 }
@@ -87,6 +91,7 @@
 }
 
 - (void) clearOldMails {
+    VLogInfo(@"");
     @synchronized(self) {
         NSMutableArray * delAr = [NSMutableArray new];
         for (NSString * mailKey in _mails.allKeys) {
