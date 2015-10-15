@@ -72,6 +72,15 @@
                        atView : (NSView *) atView;
 
 /**
+ * @brief Show help message in popover view at left edge of neew view element
+ * @param helpText - text to show
+ * @param atView - NSView instance near which popover will be shown
+ * @return YES - success | NO - can't show need view
+ */
+- (BOOL) showCompactHelp  : (NSString *) helpText
+                   atView : (NSView *) atView;
+
+/**
  * @brief Close window (not view only) and send return code
  */
 - (void) closeWindow;

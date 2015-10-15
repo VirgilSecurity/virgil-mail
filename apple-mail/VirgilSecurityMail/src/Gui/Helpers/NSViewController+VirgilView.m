@@ -37,6 +37,7 @@
 #import "NSViewController+VirgilView.h"
 #import "VirgilReplaceAnimator.h"
 #import "VirgilErrorViewController.h"
+#import "VirgilHelpViewController.h"
 
 @implementation NSViewController (VirgilView)
 
@@ -97,6 +98,33 @@
         asPopoverRelativeToRect : atView.bounds
                          ofView : atView
                   preferredEdge : NSMaxXEdge
+                       behavior : NSPopoverBehaviorTransient];
+    return YES;
+}
+
+/**
+ * @brief Show help message in popover view at left edge of neew view element
+ * @param helpText - text to show
+ * @param atView - NSView instance near which popover will be shown
+ * @return YES - success | NO - can't show need view
+ */
+- (BOOL) showCompactHelp  : (NSString *) helpText
+                   atView : (NSView *) atView {
+    NSStoryboard * storyboard = [self storyboard];
+    
+    if (nil == storyboard) return NO;
+    VirgilHelpViewController * controller =
+    (VirgilHelpViewController*)[storyboard instantiateControllerWithIdentifier : @"viewHelp"];
+    
+    if (nil == controller) return NO;
+    
+    controller.textField.stringValue = helpText;
+    [controller updateViewConstraints];
+    
+    [self presentViewController : controller
+        asPopoverRelativeToRect : atView.bounds
+                         ofView : atView
+                  preferredEdge : NSMinXEdge
                        behavior : NSPopoverBehaviorTransient];
     return YES;
 }

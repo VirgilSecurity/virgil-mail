@@ -458,4 +458,44 @@ static BOOL _cloudSelection = YES;
     }
 }
 
+- (IBAction)onShowHelp_InProgress:(id)sender {
+    NSString * helpString = @"";
+    [self showCompactErrorView : helpString
+                        atView : sender];
+}
+
+- (IBAction)onShowHelp_CreateAccount:(id)sender {
+    NSString * helpString;
+    
+    BOOL useCloudStorage = NSOnState == [[_matrixField cellAtRow:0 column:0] state];
+    
+    if (useCloudStorage) {
+        helpString = @"Your private key will be safely stored in your Virgil account and can easily be restored.\n\n1. Create a password for your Virgil account.\n\n2. Create a password for your private key encryption. It will be used to decrypt secure messages sent to you by Virgil users.";
+    } else {
+        helpString = @"Save your private key in a secure local storage. It can’t be restored in case you lose or forget it.\n\nCreate a password for your private key encryption. It will be used to decrypt secure messages sent to you by Virgil users.";
+    }
+    
+    [self showCompactErrorView : helpString
+                        atView : sender];
+}
+
+- (IBAction)onShowHelp_LoadKey:(id)sender {
+    NSString * helpString = @"There is a Virgil account for this email but the private key is missing. Please select a storage type of your private key in order to finish your account configuration.";
+    [self showCompactErrorView : helpString
+                        atView : sender];
+}
+
+- (IBAction)onShowHelp_WaitConfirmation:(id)sender {
+    NSString * helpString = @"An email with a confirmation code has been sent. Please confirm the code from the email or resend confirmation if there is no email from VirgilSecurity.";
+    [self showCompactErrorView : helpString
+                        atView : sender];
+}
+
+- (IBAction)onShowHelp_KeysPresent:(id)sender {
+    NSString * helpString = @"A public and private key-pair has been generated for this account. Now you can:\n\n1. Send and receive encrypted emails from Virgil users.\n\n2. Export your private key to a file and save it locally on your machine.\n\n3. Remove your private key from Keychain if you need to clear your machine from personal data.\n\n";
+    [self showCompactErrorView : helpString
+                        atView : sender];
+}
+
+
 @end

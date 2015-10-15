@@ -701,25 +701,14 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V0k-Rd-IHt">
-                                <rect key="frame" x="18" y="20" width="266" height="17"/>
+                                <rect key="frame" x="18" y="20" width="283" height="17"/>
                                 <animations/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="There is no virgil keys for this email account." id="8vW-KB-2j7">
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="There are no virgil keys for this email account." id="8vW-KB-2j7">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Yob-m7-3ua">
-                                <rect key="frame" x="295" y="13" width="100" height="32"/>
-                                <animations/>
-                                <buttonCell key="cell" type="push" title="Configure" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="rgf-uK-xxz">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="onConfigureClicked:" target="A65-Cd-tD6" id="GDa-rS-drH"/>
-                                </connections>
-                            </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lpv-TZ-VeA">
                                 <rect key="frame" x="405" y="13" width="154" height="32"/>
                                 <animations/>
@@ -729,6 +718,17 @@
                                 </buttonCell>
                                 <connections>
                                     <action selector="onDisableEncryptionClicked:" target="A65-Cd-tD6" id="wWl-ai-QAJ"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Yob-m7-3ua">
+                                <rect key="frame" x="305" y="13" width="100" height="32"/>
+                                <animations/>
+                                <buttonCell key="cell" type="push" title="Configure" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="rgf-uK-xxz">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="onConfigureClicked:" target="A65-Cd-tD6" id="GDa-rS-drH"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -1271,6 +1271,9 @@ Gw
                                         <string>NSAllRomanInputSourcesLocaleIdentifier</string>
                                     </allowedInputSourceLocales>
                                 </secureTextFieldCell>
+                                <connections>
+                                    <outlet property="nextKeyView" destination="7vs-P9-6Qa" id="fhT-le-aXm"/>
+                                </connections>
                             </secureTextField>
                             <secureTextField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7vs-P9-6Qa">
                                 <rect key="frame" x="152" y="140" width="134" height="22"/>
@@ -1283,6 +1286,9 @@ Gw
                                         <string>NSAllRomanInputSourcesLocaleIdentifier</string>
                                     </allowedInputSourceLocales>
                                 </secureTextFieldCell>
+                                <connections>
+                                    <outlet property="nextKeyView" destination="iQN-Qe-eqE" id="wK4-pB-0Ho"/>
+                                </connections>
                             </secureTextField>
                             <secureTextField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kb0-er-C5u">
                                 <rect key="frame" x="152" y="83" width="134" height="22"/>
@@ -1295,6 +1301,9 @@ Gw
                                         <string>NSAllRomanInputSourcesLocaleIdentifier</string>
                                     </allowedInputSourceLocales>
                                 </secureTextFieldCell>
+                                <connections>
+                                    <outlet property="nextKeyView" destination="Gqw-3Q-iYc" id="7Id-M2-HFQ"/>
+                                </connections>
                             </secureTextField>
                             <secureTextField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iQN-Qe-eqE">
                                 <rect key="frame" x="0.0" y="83" width="137" height="22"/>
@@ -1307,6 +1316,9 @@ Gw
                                         <string>NSAllRomanInputSourcesLocaleIdentifier</string>
                                     </allowedInputSourceLocales>
                                 </secureTextFieldCell>
+                                <connections>
+                                    <outlet property="nextKeyView" destination="kb0-er-C5u" id="lDI-93-zYW"/>
+                                </connections>
                             </secureTextField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iIG-5P-x4V">
                                 <rect key="frame" x="-1" y="113" width="92" height="17"/>
@@ -1331,6 +1343,20 @@ Gw
                                         <action selector="onCreateKeysClicked:" target="n14-sO-duo" id="T5I-vw-HV3"/>
                                     </connections>
                                 </buttonCell>
+                                <connections>
+                                    <outlet property="nextKeyView" destination="R0h-7p-KNO" id="th7-Kz-RAn"/>
+                                </connections>
+                            </button>
+                            <button horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ub7-aI-OIf">
+                                <rect key="frame" x="263" y="17" width="25" height="25"/>
+                                <animations/>
+                                <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="iXZ-J9-lqJ">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="onShowHelp_CreateAccount:" target="n14-sO-duo" id="NfR-Zt-lqc"/>
+                                </connections>
                             </button>
                         </subviews>
                         <animations/>
@@ -1356,15 +1382,6 @@ Gw
                         <rect key="frame" x="0.0" y="0.0" width="286" height="259"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="N4q-6U-3UC">
-                                <rect key="frame" x="-2" y="242" width="290" height="17"/>
-                                <animations/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Waiting for confirmation code" id="9gj-f9-HB3">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f4L-dU-WjA">
                                 <rect key="frame" x="41" y="175" width="204" height="32"/>
                                 <animations/>
@@ -1380,11 +1397,31 @@ Gw
                                 <rect key="frame" x="23" y="184" width="16" height="16"/>
                                 <animations/>
                             </progressIndicator>
+                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HLi-pb-TCF">
+                                <rect key="frame" x="-2" y="211" width="290" height="48"/>
+                                <animations/>
+                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Wait for email with confirmation code please. Or you can ask for resend email." id="qLt-kk-KRb">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RHw-J1-36M">
+                                <rect key="frame" x="263" y="17" width="25" height="25"/>
+                                <animations/>
+                                <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="6T2-41-Ve5">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="onShowHelp_WaitConfirmation:" target="xa5-mg-cq8" id="Sri-VI-Zyw"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <animations/>
                     </view>
                     <connections>
-                        <outlet property="infoTextField" destination="N4q-6U-3UC" id="PNE-6G-7Ss"/>
+                        <outlet property="infoTextField" destination="HLi-pb-TCF" id="VHM-T3-iTC"/>
                     </connections>
                 </viewController>
                 <customObject id="Fve-9J-M8o" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -1419,6 +1456,9 @@ Gw
                                         <string>NSAllRomanInputSourcesLocaleIdentifier</string>
                                     </allowedInputSourceLocales>
                                 </secureTextFieldCell>
+                                <connections>
+                                    <outlet property="nextKeyView" destination="LXC-S3-a2i" id="na2-ES-R6d"/>
+                                </connections>
                             </secureTextField>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LXC-S3-a2i">
                                 <rect key="frame" x="378" y="13" width="58" height="32"/>
@@ -1429,6 +1469,7 @@ Gw
                                 </buttonCell>
                                 <connections>
                                     <action selector="onOkClicked:" target="pAn-7o-dwR" id="EOK-do-6Zi"/>
+                                    <outlet property="nextKeyView" destination="EF1-eC-ylz" id="I1T-rD-3Ka"/>
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EF1-eC-ylz">
@@ -1443,6 +1484,7 @@ Gw
                                 </buttonCell>
                                 <connections>
                                     <action selector="onCancelClicked:" target="pAn-7o-dwR" id="K9R-DQ-Uvc"/>
+                                    <outlet property="nextKeyView" destination="4Dw-kg-z35" id="kh7-En-5k2"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -1455,6 +1497,40 @@ Gw
                 <customObject id="bLt-ya-C9a" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="247" y="1223.5"/>
+        </scene>
+        <!--Virgil Help View Controller-->
+        <scene sceneID="pfs-lL-Xl5">
+            <objects>
+                <viewController storyboardIdentifier="viewHelp" id="NQd-5Q-pyv" customClass="VirgilHelpViewController" sceneMemberID="viewController">
+                    <view key="view" id="kST-AH-bcN">
+                        <rect key="frame" x="0.0" y="0.0" width="354" height="57"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W6W-ot-iaJ">
+                                <rect key="frame" x="18" y="20" width="318" height="17"/>
+                                <animations/>
+                                <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" alignment="left" title="Multiline Label" id="v8c-Wf-a9F">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="W6W-ot-iaJ" firstAttribute="top" secondItem="kST-AH-bcN" secondAttribute="top" constant="20" symbolic="YES" id="6gY-RD-BNn"/>
+                            <constraint firstAttribute="trailing" secondItem="W6W-ot-iaJ" secondAttribute="trailing" constant="20" symbolic="YES" id="D4y-fE-DwY"/>
+                            <constraint firstAttribute="bottom" secondItem="W6W-ot-iaJ" secondAttribute="bottom" constant="20" symbolic="YES" id="FXK-R3-qyf"/>
+                            <constraint firstItem="W6W-ot-iaJ" firstAttribute="leading" secondItem="kST-AH-bcN" secondAttribute="leading" constant="20" symbolic="YES" id="gui-i7-P4t"/>
+                        </constraints>
+                        <animations/>
+                    </view>
+                    <connections>
+                        <outlet property="textField" destination="W6W-ot-iaJ" id="VPV-yc-mXT"/>
+                    </connections>
+                </viewController>
+                <customObject id="bhw-48-aoN" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="199" y="1384.5"/>
         </scene>
         <!--Virgil Actions View Controller-->
         <scene sceneID="apX-Ie-hjo">
@@ -1499,6 +1575,7 @@ Gw
                                 </buttonCell>
                                 <connections>
                                     <action selector="onLoadKeyClicked:" target="LTV-Xl-4kz" id="91C-bo-s5q"/>
+                                    <outlet property="nextKeyView" destination="Dha-mL-Ls8" id="kQ7-Qt-d6z"/>
                                 </connections>
                             </button>
                             <secureTextField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dha-mL-Ls8">
@@ -1512,6 +1589,9 @@ Gw
                                         <string>NSAllRomanInputSourcesLocaleIdentifier</string>
                                     </allowedInputSourceLocales>
                                 </secureTextFieldCell>
+                                <connections>
+                                    <outlet property="nextKeyView" destination="RXM-XO-k6C" id="Xm3-vo-ab9"/>
+                                </connections>
                             </secureTextField>
                             <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="gVd-yD-rgx">
                                 <rect key="frame" x="0.0" y="112" width="16" height="16"/>
@@ -1526,6 +1606,17 @@ Gw
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
+                            <button horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GNy-Zv-Fyr">
+                                <rect key="frame" x="263" y="17" width="25" height="25"/>
+                                <animations/>
+                                <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="PHU-4z-NoZ">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="onShowHelp_LoadKey:" target="LTV-Xl-4kz" id="4MR-vY-czJ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <animations/>
                     </view>
@@ -1610,6 +1701,17 @@ Gw
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
+                            <button horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c9s-PE-5XQ">
+                                <rect key="frame" x="263" y="17" width="25" height="25"/>
+                                <animations/>
+                                <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="mTb-Hd-N3u">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="onShowHelp_InProgress:" target="QiA-bN-2if" id="eoZ-u4-VPm"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <animations/>
                     </view>
@@ -1626,15 +1728,6 @@ Gw
                         <rect key="frame" x="0.0" y="0.0" width="286" height="259"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ebM-MU-D3p">
-                                <rect key="frame" x="-2" y="225" width="290" height="34"/>
-                                <animations/>
-                                <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" title="Required keys are set" id="aTB-oq-Tyj">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
                             <secureTextField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qUM-kP-GoT">
                                 <rect key="frame" x="152" y="82" width="134" height="22"/>
                                 <animations/>
@@ -1646,6 +1739,9 @@ Gw
                                         <string>NSAllRomanInputSourcesLocaleIdentifier</string>
                                     </allowedInputSourceLocales>
                                 </secureTextFieldCell>
+                                <connections>
+                                    <outlet property="nextKeyView" destination="jAf-ka-0Aw" id="m48-do-dDe"/>
+                                </connections>
                             </secureTextField>
                             <secureTextField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wpq-qz-l9Z">
                                 <rect key="frame" x="0.0" y="82" width="137" height="22"/>
@@ -1658,6 +1754,9 @@ Gw
                                         <string>NSAllRomanInputSourcesLocaleIdentifier</string>
                                     </allowedInputSourceLocales>
                                 </secureTextFieldCell>
+                                <connections>
+                                    <outlet property="nextKeyView" destination="qUM-kP-GoT" id="tIh-Wd-aqE"/>
+                                </connections>
                             </secureTextField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TMj-ok-4sq">
                                 <rect key="frame" x="-1" y="112" width="176" height="17"/>
@@ -1680,6 +1779,7 @@ Gw
                                 </buttonCell>
                                 <connections>
                                     <action selector="onCancelExportClicked:" target="aOi-Ks-iIS" id="zoJ-3L-jPp"/>
+                                    <outlet property="nextKeyView" destination="bOb-n4-C6y" id="BGU-dY-ncj"/>
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jAf-ka-0Aw">
@@ -1691,6 +1791,7 @@ Gw
                                 </buttonCell>
                                 <connections>
                                     <action selector="onExportContinueClicked:" target="aOi-Ks-iIS" id="3RY-7P-I4X"/>
+                                    <outlet property="nextKeyView" destination="GP9-jF-AEr" id="6PD-98-gaD"/>
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bOb-n4-C6y">
@@ -1702,6 +1803,7 @@ Gw
                                 </buttonCell>
                                 <connections>
                                     <action selector="onRemoveKeyFromKeyChain:" target="aOi-Ks-iIS" id="rUo-S1-Ukx"/>
+                                    <outlet property="nextKeyView" destination="ERd-Rs-uic" id="bIo-yh-9ky"/>
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ERd-Rs-uic">
@@ -1713,8 +1815,29 @@ Gw
                                 </buttonCell>
                                 <connections>
                                     <action selector="onExportKeyClicked:" target="aOi-Ks-iIS" id="L1P-N4-pmC"/>
+                                    <outlet property="nextKeyView" destination="wpq-qz-l9Z" id="9Yz-pJ-e1W"/>
                                 </connections>
                             </button>
+                            <button horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ohp-Rf-Zzg">
+                                <rect key="frame" x="263" y="17" width="25" height="25"/>
+                                <animations/>
+                                <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="PDf-si-8dP">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="onShowHelp_KeysPresent:" target="aOi-Ks-iIS" id="3an-xZ-15r"/>
+                                </connections>
+                            </button>
+                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ebM-MU-D3p">
+                                <rect key="frame" x="-2" y="225" width="290" height="34"/>
+                                <animations/>
+                                <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" title="Virgil encryption can be used for this account" id="aTB-oq-Tyj">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
                         <animations/>
                     </view>
