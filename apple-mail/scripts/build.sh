@@ -88,7 +88,7 @@ function create_distribution_xml() {
 	echo '    <domains enable_localSystem="true"/>'  											>> "${DISTRIBUTION_XML}"
 	echo '    <options customize="never" require-scripts="false" rootVolumeOnly="true" />'		>> "${DISTRIBUTION_XML}"
 	echo '	<allowed-os-versions>'  															>> "${DISTRIBUTION_XML}"
-	echo '	    <os-version min="10.10" />'  													>> "${DISTRIBUTION_XML}"
+	echo '	    <os-version min="10.11" />'  													>> "${DISTRIBUTION_XML}"
 	echo '	</allowed-os-versions>'  															>> "${DISTRIBUTION_XML}"
 	echo '	<choices-outline>'  																>> "${DISTRIBUTION_XML}"
 	echo '    <line choice="default">'  														>> "${DISTRIBUTION_XML}"

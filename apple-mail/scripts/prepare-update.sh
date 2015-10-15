@@ -102,7 +102,7 @@ function prepare_update() {
 		echo "			<sparkle:releaseNotesLink>"																>> "${APPCAST_FILE}"
 		echo "				${RELEASE_NOTES_LINK}"																>> "${APPCAST_FILE}"
 		echo "			</sparkle:releaseNotesLink>"															>> "${APPCAST_FILE}"
-		echo "			<sparkle:minimumSystemVersion>10.10</sparkle:minimumSystemVersion>"						>> "${APPCAST_FILE}"
+		echo "			<sparkle:minimumSystemVersion>10.11</sparkle:minimumSystemVersion>"						>> "${APPCAST_FILE}"
 		echo "			<pubDate>$(date "+%a, %d %b %Y %H:%M:%S %Z")</pubDate>" 								>> "${APPCAST_FILE}"
 		echo "			<enclosure url=\"${DOWNLOAD_LINK}\"" 													>> "${APPCAST_FILE}"
 		echo "			sparkle:version=\"${CUR_VERSION}\""														>> "${APPCAST_FILE}"
