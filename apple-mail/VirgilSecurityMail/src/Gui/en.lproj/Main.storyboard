@@ -1132,23 +1132,54 @@ Gw
             <objects>
                 <viewController storyboardIdentifier="viewWellcome" id="zeA-gj-FfK" customClass="VirgilWellcomeViewController" sceneMemberID="viewController">
                     <view key="view" id="UjS-63-CwP">
-                        <rect key="frame" x="0.0" y="0.0" width="592" height="434"/>
+                        <rect key="frame" x="0.0" y="0.0" width="592" height="191"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kqN-Uz-Pdi">
-                                <rect key="frame" x="482" y="13" width="96" height="32"/>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kqN-Uz-Pdi">
+                                <rect key="frame" x="483" y="13" width="95" height="32"/>
                                 <animations/>
                                 <buttonCell key="cell" type="push" title="Continue" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="dB2-FH-1TI">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="onContinueClicked:" target="zeA-gj-FfK" id="TGT-RQ-JLt"/>
-                                    <segue destination="cfi-7J-uE1" kind="custom" customClass="VirgilReplaceSegue" id="Y8w-ZV-hQN"/>
+                                    <action selector="onContinueClicked:" target="zeA-gj-FfK" id="XK2-vs-VwV"/>
                                 </connections>
                             </button>
-                            <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GIQ-X9-vs5">
-                                <rect key="frame" x="280" y="14" width="83" height="32"/>
+                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RBN-st-nt2">
+                                <rect key="frame" x="18" y="60" width="556" height="85"/>
+                                <animations/>
+                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" id="k91-h8-Usl">
+                                    <font key="font" metaFont="system"/>
+                                    <string key="title">Protect your email communication with free, seamless end-to-end encryption using Virgil Mail plugin. Enhance your Mail client based on the Elliptic Curve Integrated Scheme (ECIES). 
+
+</string>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ASp-DB-j1P">
+                                <rect key="frame" x="18" y="153" width="157" height="18"/>
+                                <animations/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Welcome to Virgil Mail" id="d7R-V1-S13">
+                                    <font key="font" metaFont="systemBold" size="14"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button translatesAutoresizingMaskIntoConstraints="NO" id="mja-ba-aAu">
+                                <rect key="frame" x="366" y="22" width="106" height="18"/>
+                                <animations/>
+                                <buttonCell key="cell" type="check" title="Show on start" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="HW1-gD-xdt">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="onShowCheckboxChanged:" target="zeA-gj-FfK" id="5Yp-i6-hxW"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="GIQ-X9-vs5">
+                                <rect key="frame" x="14" y="13" width="82" height="32"/>
                                 <animations/>
                                 <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="fCK-oG-sNV">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -1161,50 +1192,18 @@ Gw
                                     <action selector="onCancelClicked:" target="zeA-gj-FfK" id="PNe-XQ-k42"/>
                                 </connections>
                             </button>
-                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RBN-st-nt2">
-                                <rect key="frame" x="18" y="325" width="556" height="63"/>
-                                <animations/>
-                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" id="k91-h8-Usl">
-                                    <font key="font" metaFont="system"/>
-                                    <string key="title">Protect your email communication with free, seamless end-to-end encryption using Virgil Mail plugin. Enhance your Mail client based on the Elliptic Curve Integrated Scheme (ECIES). 
-
-</string>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ASp-DB-j1P">
-                                <rect key="frame" x="18" y="396" width="159" height="18"/>
-                                <animations/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Welcome to Virgil Mail" id="d7R-V1-S13">
-                                    <font key="font" metaFont="systemBold" size="14"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                            <button misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mja-ba-aAu">
-                                <rect key="frame" x="363" y="22" width="108" height="18"/>
-                                <animations/>
-                                <buttonCell key="cell" type="check" title="Show on start" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="HW1-gD-xdt">
-                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="onShowCheckboxChanged:" target="zeA-gj-FfK" id="5Yp-i6-hxW"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="kqN-Uz-Pdi" secondAttribute="bottom" constant="20" symbolic="YES" id="Bup-Bz-2yf"/>
-                            <constraint firstAttribute="bottom" secondItem="mja-ba-aAu" secondAttribute="bottom" constant="20" symbolic="YES" id="N9N-lU-600"/>
                             <constraint firstAttribute="trailing" secondItem="kqN-Uz-Pdi" secondAttribute="trailing" constant="20" symbolic="YES" id="Nr0-DY-oTi"/>
-                            <constraint firstItem="kqN-Uz-Pdi" firstAttribute="leading" secondItem="GIQ-X9-vs5" secondAttribute="trailing" constant="12" symbolic="YES" id="Ugz-Ib-N7Y"/>
+                            <constraint firstItem="GIQ-X9-vs5" firstAttribute="leading" secondItem="UjS-63-CwP" secondAttribute="leading" constant="20" id="W4k-7K-LxG"/>
                             <constraint firstItem="ASp-DB-j1P" firstAttribute="leading" secondItem="UjS-63-CwP" secondAttribute="leading" constant="20" id="W6Z-Wn-gfN"/>
                             <constraint firstItem="ASp-DB-j1P" firstAttribute="top" secondItem="UjS-63-CwP" secondAttribute="top" constant="20" id="YZh-rE-R81"/>
                             <constraint firstItem="RBN-st-nt2" firstAttribute="leading" secondItem="UjS-63-CwP" secondAttribute="leading" constant="20" symbolic="YES" id="b92-MA-63g"/>
                             <constraint firstItem="RBN-st-nt2" firstAttribute="top" secondItem="ASp-DB-j1P" secondAttribute="bottom" constant="8" id="cAk-4S-kRL"/>
+                            <constraint firstAttribute="bottom" secondItem="mja-ba-aAu" secondAttribute="bottom" constant="24" id="eYq-nT-uD5"/>
                             <constraint firstAttribute="trailing" secondItem="RBN-st-nt2" secondAttribute="trailing" constant="20" symbolic="YES" id="ew5-1S-Goa"/>
-                            <constraint firstAttribute="bottom" secondItem="GIQ-X9-vs5" secondAttribute="bottom" constant="20" symbolic="YES" id="fay-gn-usb"/>
+                            <constraint firstAttribute="bottom" secondItem="GIQ-X9-vs5" secondAttribute="bottom" constant="20" id="tQl-QI-jJp"/>
                             <constraint firstItem="kqN-Uz-Pdi" firstAttribute="leading" secondItem="mja-ba-aAu" secondAttribute="trailing" constant="19" id="zsH-uF-UtC"/>
                         </constraints>
                         <animations/>
@@ -1212,7 +1211,7 @@ Gw
                 </viewController>
                 <customObject id="Sn2-7e-1az" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-830" y="409"/>
+            <point key="canvasLocation" x="-830" y="287.5"/>
         </scene>
         <!--Virgil Actions View Controller-->
         <scene sceneID="RaA-ja-hWO">

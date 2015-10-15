@@ -37,6 +37,7 @@
 #import "VirgilWellcomeViewController.h"
 #import "VirgilPreferencesContainer.h"
 #import "NSViewController+VirgilView.h"
+#import "VirgilGui.h"
 #import "VirgilLog.h"
 
 @implementation VirgilWellcomeViewController
@@ -47,6 +48,11 @@
 
 - (IBAction)onShowCheckboxChanged:(NSButton *)sender {
     [VirgilPreferencesContainer setNeedShowWellcome:(NSOnState == [sender state])];
+}
+
+- (IBAction)onContinueClicked:(id)sender {
+    [VirgilGui showAccountsFor:nil];
+    [self closeWindow];
 }
 
 - (void)viewDidLoad {

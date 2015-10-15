@@ -44,6 +44,8 @@
 #import <Message.h>
 #import <MimeBody.h>
 
+#import "MessageViewController.h"
+
 @implementation VirgilMessageViewController
 
 - (void)MASetRepresentedObject:(id)representedObject {
