@@ -76,6 +76,7 @@
     static BOOL catchNotificationsReady = NO;
     [self MAShow];
     
+#if 0
     if (NO == catchNotificationsReady) {
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
         [center addObserver : self
@@ -84,6 +85,7 @@
                      object : nil];
         catchNotificationsReady = YES;
     }
+#endif
     
     [self checkAccount : nil];
 }
