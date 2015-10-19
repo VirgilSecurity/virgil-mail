@@ -905,6 +905,9 @@
         htmlBody = [NSString stringWithFormat : container, [htmlCreator toHTML : body]] ;
     }
     
+    // Strip images from body
+    htmlBody = [htmlBody stringByReplacingOccurrencesOfString:@"<img[^>]*>" withString:@"" options:NSCaseInsensitiveSearch | NSRegularExpressionSearch range:NSMakeRange(0, [htmlBody length])];
+    
     VirgilDecryptedContent * decryptedContent =
             [[VirgilDecryptedContent alloc] initWithSubject : subject
                                                        body : body
