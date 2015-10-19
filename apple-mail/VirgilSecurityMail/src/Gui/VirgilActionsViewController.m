@@ -90,9 +90,21 @@ static BOOL _cloudSelection = YES;
 
 - (IBAction)onRemoveKeyFromKeyChain:(id)sender {
     if (nil == _account) return;
-    [VirgilKeyChain removeContainer : _account];
-    [[VirgilProcessingManager sharedInstance] clearDecryptionCache];
-    [self delegateRefresh];
+    
+    NSAlert *alert = [[NSAlert alloc] init];
+    [alert addButtonWithTitle:@"Ok"];
+    [alert addButtonWithTitle:@"Cancel"];
+    [alert setMessageText:@"Delete Virgil Key from KeyChain ?"];
+    [alert setInformativeText:@"Be carefull with current operation."];
+    [alert setAlertStyle:NSWarningAlertStyle];
+    
+    [alert beginSheetModalForWindow:self.view.window completionHandler:^(NSModalResponse returnCode) {
+        if (NSAlertFirstButtonReturn == returnCode) {
+            [VirgilKeyChain removeContainer : _account];
+            [[VirgilProcessingManager sharedInstance] clearDecryptionCache];
+            [self delegateRefresh];
+        }
+    }];
 }
 
 - (void)viewDidLoad {
