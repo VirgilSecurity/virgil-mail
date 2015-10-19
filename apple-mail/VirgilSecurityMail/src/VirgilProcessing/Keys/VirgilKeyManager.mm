@@ -114,7 +114,7 @@ static NSString * _lastError = nil;
         VirgilPublicKey * res = [[VirgilPublicKey alloc] initAccountID:nsAccountID
                                                            publicKeyID:nsKeyID
                                                              publicKey:nsKey
-                                                            userDataID:@""];
+                                                            userDataID:@"00000000-0000-0000-0000-000000000000"];
         if (nil == keyChainContainer) {
             keyChainContainer =
             [[VirgilKeyChainContainer alloc] initWithPrivateKey : nil
@@ -175,8 +175,6 @@ static NSString * _lastError = nil;
                                    privateKey : nsPrivateKey
                                   keyPassword : keyPassword
                             containerPassword : containerPassword];
-        
-        VLogInfo(@"keyPassword : <%@>   nsPrivateKey : %@", keyPassword, privateKeyInfo);
         
         // Register user
         Credentials credentials(_privateKey, _passwordData);
@@ -511,7 +509,12 @@ static NSString * _lastError = nil;
     }
     
     NSMutableDictionary * userDataDict = [NSMutableDictionary new];
-    [userDataDict setObject : container.publicKey.userDataID forKey:@"user_data_id"];
+    NSString * userDataID = @"00000000-0000-0000-0000-000000000000";
+    if (container.publicKey.userDataID && container.publicKey.userDataID.length) {
+        userDataID = container.publicKey.userDataID;
+    }
+    
+    [userDataDict setObject : userDataID forKey:@"user_data_id"];
     [userDataDict setObject : @"EmailId" forKey:@"class"];
     [userDataDict setObject : @"EmailId" forKey:@"type"];
     [userDataDict setObject : @"true" forKey:@"confirmed"];
@@ -534,11 +537,13 @@ static NSString * _lastError = nil;
     
     NSMutableDictionary * jsonDict = [NSMutableDictionary new];
     
+    NSString * isProtectedStr = (container.privateKey.keyPassword && container.privateKey.keyPassword.length) ? @"true" : @"false";
     [jsonDict setObject : bundles forKey:@"bundles"];
     [jsonDict setObject : [NSNumber numberWithInt:0] forKey:@"mode"];
     [jsonDict setObject : @"true" forKey:@"user_selected_store_mode"];
-    [jsonDict setObject : @"true" forKey:@"is_protected"];
+    [jsonDict setObject : isProtectedStr forKey:@"is_protected"];
     [jsonDict setObject : container.publicKey.accountID forKey:@"account_id"];
+    
 
     NSArray * jsonArray = [NSArray arrayWithObjects:jsonDict, nil];
     
@@ -546,6 +551,11 @@ static NSString * _lastError = nil;
     NSData * jsonData = [NSJSONSerialization dataWithJSONObject : jsonArray
                                                         options : 0
                                                           error : &error];
+    NSString * jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    jsonStr = [jsonStr stringByReplacingOccurrencesOfString:@"\"true\"" withString:@"true"];
+    jsonStr = [jsonStr stringByReplacingOccurrencesOfString:@"\"false\"" withString:@"false"];
+    jsonData = [jsonStr dataUsingEncoding:NSUTF8StringEncoding];
+    
     NSData * preparedData = nil;
     if (passwordForEncryption && passwordForEncryption.length) {
         preparedData = [VirgilCryptoLibWrapper encryptData : jsonData
@@ -553,6 +563,7 @@ static NSString * _lastError = nil;
     } else {
         preparedData = jsonData;
     }
+    
     NSString * base64Str = [preparedData base64EncodedStringWithSeparateLines : NO];
     
     return [[NSFileManager defaultManager] createFileAtPath:fileName

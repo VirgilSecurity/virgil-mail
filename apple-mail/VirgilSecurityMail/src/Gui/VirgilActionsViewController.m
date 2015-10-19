@@ -196,16 +196,18 @@ static BOOL _cloudSelection = YES;
     keyPass = _keyPassword.stringValue;
     keyPassConfirm = _keyPasswordConfirm.stringValue;
     
-    if (NO == [VirgilValidator simplePassword : keyPass]) {
-        [self showCompactErrorView : @"Password can't be empty, can't contains not latin letters."
-                            atView : _keyPassword];
-        return;
-    }
-    
-    if (NO == [keyPassConfirm isEqualToString : keyPass]) {
-        [self showCompactErrorView : @"Passwords shoud be equal in both fields."
-                            atView : _keyPasswordConfirm];
-        return;
+    if (keyPass.length || keyPassConfirm.length) {
+        if (NO == [VirgilValidator simplePassword : keyPass]) {
+            [self showCompactErrorView : @"Password can't be empty, can't contains not latin letters."
+                                atView : _keyPassword];
+            return;
+        }
+        
+        if (NO == [keyPassConfirm isEqualToString : keyPass]) {
+            [self showCompactErrorView : @"Passwords shoud be equal in both fields."
+                                atView : _keyPasswordConfirm];
+            return;
+        }
     }
     
     [self setProgressVisible:YES];

@@ -46,7 +46,9 @@
 
 - (NSString *) base64Wrap {
     NSData * data = [self dataUsingEncoding:NSUTF8StringEncoding];
-    return [data base64EncodedString];
+    NSString * res = [data base64EncodedString];
+    res = [[res componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]] componentsJoinedByString:@""];
+    return res;
 }
 
 @end
