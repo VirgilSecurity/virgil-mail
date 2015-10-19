@@ -124,6 +124,8 @@ NSString *VirgilMailMethodPrefix = @"MA";
     
     NSArray *bundleImageNames = @[@"encrypt_mail",
                                   @"menu",
+                                  @"square",
+                                  @"rect",
                                   @"encrypt_ok_small",
                                   @"encrypt_unknown_small",
                                   @"encrypt_wrong_small",

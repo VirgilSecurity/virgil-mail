@@ -53,7 +53,7 @@
         NSDictionary * toolbarItem = [NSDictionary dictionaryWithObjectsAndKeys:
                                   @"Virgil Security Menu", @"help",
                                   VIRGIL_ITEM_IDENTIFIER, @"identifier",
-                                  @"menu", @"image",
+                                  @"rect", @"image",
                                   @"9000", @"tag",
                                   @"Virgil Security Menu", @"title",
                                   @"Virgil Security", @"paletteLabel",
@@ -159,7 +159,7 @@
         [item setMinSize : _sz];
         [item setMaxSize : _sz];
         [item setLabel : _title];
-        [item setImage : [NSImage imageNamed:@"menu"]];
+        [item setImage : [NSImage imageNamed:@"rect"]];
         [item setTarget : self];
         [item setAction : @selector(onVirgilMenuClicked)];
 
