@@ -135,13 +135,13 @@ static BOOL _cloudSelection = YES;
         cloudPassConfirm = _cloudPasswordConfirm.stringValue;
         
         if (NO == [VirgilValidator simplePassword : cloudPass]) {
-            [self showCompactErrorView : @"Password can't be empty, can't contains not latin letters."
+            [self showCompactErrorView : @"Password can't be empty, can't contain not latin letters."
                                 atView : _cloudPassword];
             return;
         }
         
         if (NO == [cloudPassConfirm isEqualToString : cloudPass]) {
-            [self showCompactErrorView : @"Passwords shoud be equal in both fields."
+            [self showCompactErrorView : @"Passwords shoud match in both fields."
                                 atView : _cloudPasswordConfirm];
             return;
         }
@@ -152,13 +152,13 @@ static BOOL _cloudSelection = YES;
         keyPassConfirm = _keyPasswordConfirm.stringValue;
         
         if (NO == [VirgilValidator simplePassword : keyPass]) {
-            [self showCompactErrorView : @"Password can't be empty, can't contains not latin letters."
+            [self showCompactErrorView : @"Password can't be empty, can't contain not latin letters."
                                 atView : _keyPassword];
             return;
         }
         
         if (NO == [keyPassConfirm isEqualToString : keyPass]) {
-            [self showCompactErrorView : @"Passwords shoud be equal in both fields."
+            [self showCompactErrorView : @"Passwords shoud match in both fields."
                                 atView : _keyPasswordConfirm];
             return;
         }
@@ -210,13 +210,13 @@ static BOOL _cloudSelection = YES;
     
     if (keyPass.length || keyPassConfirm.length) {
         if (NO == [VirgilValidator simplePassword : keyPass]) {
-            [self showCompactErrorView : @"Password can't be empty, can't contains not latin letters."
+            [self showCompactErrorView : @"Password can't be empty, can't contain not latin letters."
                                 atView : _keyPassword];
             return;
         }
         
         if (NO == [keyPassConfirm isEqualToString : keyPass]) {
-            [self showCompactErrorView : @"Passwords shoud be equal in both fields."
+            [self showCompactErrorView : @"Passwords shoud match in both fields."
                                 atView : _keyPasswordConfirm];
             return;
         }
@@ -293,7 +293,7 @@ static BOOL _cloudSelection = YES;
     BOOL passwordValid = [VirgilValidator simplePassword : password];
     
     if ((useCloudStorage && !passwordValid) || (!useCloudStorage && password && !passwordValid)) {
-        [self showCompactErrorView : @"Password can't be empty, can't contains not latin letters."
+        [self showCompactErrorView : @"Password can't be empty, can't contain not latin letters."
                             atView : _cloudPassword];
         return;
     }
