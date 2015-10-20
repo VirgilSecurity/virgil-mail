@@ -941,7 +941,7 @@
 
 - (NSString *) baseMailPlain {
     return @"The message has been encrypted with Virgil Security Plugin.\n"
-    "Download Virgil Security Plugin. <https://virgilsecurity.com/downloads/>";
+    "Download Virgil Security Plugin. <https://virgilsecurity.com/apps/>";
 }
 
 - (NSString *) baseMailHTML {
@@ -970,7 +970,7 @@
     "The message has been encrypted with Virgil Mail Plugin.\n"
     "</h2>\n"
     "<h2 style='padding: 0px; margin: 0px; font-weight: normal; font-size: 18px; color: #1e2834;'>\n"
-    "<a href='https://virgilsecurity.com/downloads/'>Download Virgil Mail Plugin.</a>\n"
+    "<a href='https://virgilsecurity.com/apps/'>Download Virgil Mail Plugin.</a>\n"
     "</h2>\n"
     "<h3 style='padding: 0px; margin: 0px; \ncolor: #999999; padding-top: 70px; font-size: 14px; font-weight: normal;'>\n"
     "&copy; 2015 Virgil Security, Inc\n"
