@@ -230,6 +230,8 @@ function create_dmg() {
 				"${MAIL_BUNDLE_NAME} $CUR_VERSION"	\
 				"$CUR_VERSION"
 	check_errors $?
+	
+	cp "${DMG_RESULT}.dmg" "$DMG_PREPARE_FOLDER/${MAIL_BUNDLE_NAME}.dmg"
 };
 
 function build() {
