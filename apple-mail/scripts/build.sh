@@ -220,7 +220,8 @@ function create_dmg() {
 #	ARG_VERSION="${8}"
 #	ARG_TMP_DIR="./tmp"
 	
-	DMG_RESULT="$DMG_PREPARE_FOLDER/${MAIL_BUNDLE_NAME}-${CUR_VERSION}"
+	#DMG_RESULT="$DMG_PREPARE_FOLDER/${MAIL_BUNDLE_NAME}-${CUR_VERSION}"
+	DMG_RESULT="$DMG_PREPARE_FOLDER/${MAIL_BUNDLE_NAME}"
 	make_dmg 	"${DMG_PREPARE_FOLDER}"				\
 				"${DMG_PACK_FOLDER}" 				\
 				"${IMAGES_FOLDER}" 					\
@@ -231,7 +232,7 @@ function create_dmg() {
 				"$CUR_VERSION"
 	check_errors $?
 	
-	cp "${DMG_RESULT}.dmg" "$DMG_PREPARE_FOLDER/${MAIL_BUNDLE_NAME}.dmg"
+	#cp "${DMG_RESULT}.dmg" "$DMG_PREPARE_FOLDER/${MAIL_BUNDLE_NAME}.dmg"
 };
 
 function build() {
