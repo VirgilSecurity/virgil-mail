@@ -120,7 +120,8 @@ static BOOL _cloudSelection = YES;
 - (IBAction)onCreateKeysClicked:(id)sender {
     if (nil == _account) return;
     BOOL useCloudStorage = NSOnState == [[_matrixField cellAtRow:0 column:0] state];
-    BOOL useKeyPassword = YES;
+    BOOL useKeyPassword = (_keyPassword.stringValue && _keyPassword.stringValue.length) ||
+                            (_keyPasswordConfirm.stringValue && _keyPasswordConfirm.stringValue.length);
     
     _cloudSelection = useCloudStorage;
     
@@ -152,7 +153,7 @@ static BOOL _cloudSelection = YES;
         keyPassConfirm = _keyPasswordConfirm.stringValue;
         
         if (NO == [VirgilValidator simplePassword : keyPass]) {
-            [self showCompactErrorView : @"Password can't be empty, can't contain not latin letters."
+            [self showCompactErrorView : @"Passwords shoud match in both fields."
                                 atView : _keyPassword];
             return;
         }
