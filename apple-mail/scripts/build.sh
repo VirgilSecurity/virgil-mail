@@ -87,9 +87,13 @@ function create_distribution_xml() {
 	echo '    <organization>'${PKG_IDENTIFIER}'</organization>'  								>> "${DISTRIBUTION_XML}"
 	echo '    <domains enable_localSystem="true"/>'  											>> "${DISTRIBUTION_XML}"
 	echo '    <options customize="never" require-scripts="false" rootVolumeOnly="true" />'		>> "${DISTRIBUTION_XML}"
-	echo '	<allowed-os-versions>'  															>> "${DISTRIBUTION_XML}"
-	echo '	    <os-version min="10.11" />'  													>> "${DISTRIBUTION_XML}"
-	echo '	</allowed-os-versions>'  															>> "${DISTRIBUTION_XML}"
+	
+	echo '	<volume-check>'  																	>> "${DISTRIBUTION_XML}"
+	echo '		<allowed-os-versions>'  														>> "${DISTRIBUTION_XML}"
+	echo '	    	<os-version min="10.11" />'  												>> "${DISTRIBUTION_XML}"
+	echo '		</allowed-os-versions>'  														>> "${DISTRIBUTION_XML}"
+	echo '	</volume-check>' 																	>> "${DISTRIBUTION_XML}"
+	
 	echo '	<choices-outline>'  																>> "${DISTRIBUTION_XML}"
 	echo '    <line choice="default">'  														>> "${DISTRIBUTION_XML}"
 	echo '      <line choice="'${PKG_IDENTIFIER}'"/>'  											>> "${DISTRIBUTION_XML}"
