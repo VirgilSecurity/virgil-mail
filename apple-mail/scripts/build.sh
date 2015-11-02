@@ -82,15 +82,15 @@ function create_pkg_info_file() {
 function create_distribution_xml() {
 	echo -e "\n------------ Create distribution.xml ----------------"
 	echo '<?xml version="1.0" encoding="utf-8" standalone="yes"?>'  							> "${DISTRIBUTION_XML}"
-	echo '<installer-gui-script minSpecVersion="2">'  											>> "${DISTRIBUTION_XML}"
+	echo '<installer-gui-script minSpecVersion="1">'  											>> "${DISTRIBUTION_XML}"
 	echo '    <title>Virgil Security Mail</title>'  											>> "${DISTRIBUTION_XML}"
 	echo '    <organization>'${PKG_IDENTIFIER}'</organization>'  								>> "${DISTRIBUTION_XML}"
-	echo '    <domains enable_localSystem="true"/>'  											>> "${DISTRIBUTION_XML}"
+	#echo '    <domains enable_localSystem="true"/>'  											>> "${DISTRIBUTION_XML}"
 	echo '    <options customize="never" require-scripts="false" rootVolumeOnly="true" />'		>> "${DISTRIBUTION_XML}"
 	
 	echo '	<volume-check>'  																	>> "${DISTRIBUTION_XML}"
 	echo '		<allowed-os-versions>'  														>> "${DISTRIBUTION_XML}"
-	echo '	    	<os-version min="10.11" />'  												>> "${DISTRIBUTION_XML}"
+	echo '	    	<os-version min="10.11"/>'  												>> "${DISTRIBUTION_XML}"
 	echo '		</allowed-os-versions>'  														>> "${DISTRIBUTION_XML}"
 	echo '	</volume-check>' 																	>> "${DISTRIBUTION_XML}"
 	
@@ -108,6 +108,8 @@ function create_distribution_xml() {
 	echo '    <license    file="'${PKG_LICENSE_FILE}'"    mime-type="text/html" />'  			>> "${DISTRIBUTION_XML}"
 	echo '    <pkg-ref id="'${PKG_IDENTIFIER}'" version="'${CUR_VERSION}'"  onConclusion="none">tmp-Install%20Virgil%20Mail.pkg</pkg-ref>'	>> "${DISTRIBUTION_XML}"
 	echo '</installer-gui-script>'  															>> "${DISTRIBUTION_XML}"
+	
+	echo "${DISTRIBUTION_XML}"
 };
 
 function create_entitlements_info_file() {
