@@ -82,7 +82,7 @@ function create_pkg_info_file() {
 function create_distribution_xml() {
 	echo -e "\n------------ Create distribution.xml ----------------"
 	echo '<?xml version="1.0" encoding="utf-8" standalone="yes"?>'  							> "${DISTRIBUTION_XML}"
-	echo '<installer-gui-script minSpecVersion="1">'  											>> "${DISTRIBUTION_XML}"
+	echo '<installer-gui-script minSpecVersion="2">'  											>> "${DISTRIBUTION_XML}"
 	echo '    <title>Virgil Security Mail</title>'  											>> "${DISTRIBUTION_XML}"
 	echo '    <organization>'${PKG_IDENTIFIER}'</organization>'  								>> "${DISTRIBUTION_XML}"
 	echo '    <domains enable_localSystem="true"/>'  											>> "${DISTRIBUTION_XML}"
