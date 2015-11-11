@@ -19,6 +19,8 @@
 		4904354F1BC6BD1700083D16 /* VirgilActionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4904354E1BC6BD1700083D16 /* VirgilActionsViewController.m */; };
 		4907EC591BCE77170008A7E8 /* VirgilComposeWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4907EC571BCE77170008A7E8 /* VirgilComposeWindowController.m */; };
 		4907EC621BCE78060008A7E8 /* VirgilMailToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4907EC601BCE78060008A7E8 /* VirgilMailToolbar.m */; };
+		49330E5E1BF3D92700D5CF26 /* update-uuid.sh in Resources */ = {isa = PBXBuildFile; fileRef = 49330E5D1BF3D92700D5CF26 /* update-uuid.sh */; settings = {ASSET_TAGS = (); }; };
+		49330E601BF3DBDC00D5CF26 /* org.virgilsecurity.mail.update.uuid.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49330E5F1BF3DBDC00D5CF26 /* org.virgilsecurity.mail.update.uuid.plist */; settings = {ASSET_TAGS = (); }; };
 		493F96571BD57F0200EF1930 /* rect.png in Resources */ = {isa = PBXBuildFile; fileRef = 493F96531BD57F0200EF1930 /* rect.png */; settings = {ASSET_TAGS = (); }; };
 		493F96581BD57F0200EF1930 /* rect@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 493F96541BD57F0200EF1930 /* rect@2x.png */; settings = {ASSET_TAGS = (); }; };
 		493F96591BD57F0200EF1930 /* square.png in Resources */ = {isa = PBXBuildFile; fileRef = 493F96551BD57F0200EF1930 /* square.png */; settings = {ASSET_TAGS = (); }; };
@@ -162,6 +164,8 @@
 		4907EC581BCE77170008A7E8 /* VirgilComposeWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilComposeWindowController.h; path = VirgilSecurityMail/src/OutgoingMes/VirgilComposeWindowController.h; sourceTree = "<group>"; };
 		4907EC601BCE78060008A7E8 /* VirgilMailToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilMailToolbar.m; path = VirgilSecurityMail/src/OutgoingMes/VirgilMailToolbar.m; sourceTree = "<group>"; };
 		4907EC611BCE78060008A7E8 /* VirgilMailToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilMailToolbar.h; path = VirgilSecurityMail/src/OutgoingMes/VirgilMailToolbar.h; sourceTree = "<group>"; };
+		49330E5D1BF3D92700D5CF26 /* update-uuid.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = "update-uuid.sh"; path = "Resources/update-uuid.sh"; sourceTree = "<group>"; };
+		49330E5F1BF3DBDC00D5CF26 /* org.virgilsecurity.mail.update.uuid.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = org.virgilsecurity.mail.update.uuid.plist; path = Resources/org.virgilsecurity.mail.update.uuid.plist; sourceTree = "<group>"; };
 		493F96531BD57F0200EF1930 /* rect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = rect.png; path = Resources/rect.png; sourceTree = "<group>"; };
 		493F96541BD57F0200EF1930 /* rect@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "rect@2x.png"; path = "Resources/rect@2x.png"; sourceTree = "<group>"; };
 		493F96551BD57F0200EF1930 /* square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = square.png; path = Resources/square.png; sourceTree = "<group>"; };
@@ -419,6 +423,8 @@
 		D11174391B67FBEE00DD9A39 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				49330E5F1BF3DBDC00D5CF26 /* org.virgilsecurity.mail.update.uuid.plist */,
+				49330E5D1BF3D92700D5CF26 /* update-uuid.sh */,
 				49D0C2D71BB923BB00131ACB /* virgil-feedback.sh */,
 				D122635C1BA7061A0053B132 /* org.virgilsecurity.mail.update.plist */,
 				D111743A1B67FBEE00DD9A39 /* VirgilSecurityMail-Info.plist */,
@@ -784,10 +790,12 @@
 				49C821E01BBAA6A70031ED7F /* menu@2x.png in Resources */,
 				D122635A1BA6EEAB0053B132 /* VirgilUpdate.app in Resources */,
 				49D0C2D81BB923BB00131ACB /* virgil-feedback.sh in Resources */,
+				49330E5E1BF3D92700D5CF26 /* update-uuid.sh in Resources */,
 				493F96581BD57F0200EF1930 /* rect@2x.png in Resources */,
 				49C821DE1BBAA6A70031ED7F /* encrypt_mail.png in Resources */,
 				493F96571BD57F0200EF1930 /* rect.png in Resources */,
 				D122635D1BA7061A0053B132 /* org.virgilsecurity.mail.update.plist in Resources */,
+				49330E601BF3DBDC00D5CF26 /* org.virgilsecurity.mail.update.uuid.plist in Resources */,
 				49C821E51BBAC8C70031ED7F /* encrypt_unknown_small.png in Resources */,
 				49C821E41BBAC8C70031ED7F /* encrypt_ok_small.png in Resources */,
 				4904353E1BC56BFB00083D16 /* in_progress.png in Resources */,

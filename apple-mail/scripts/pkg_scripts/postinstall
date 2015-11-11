@@ -36,11 +36,6 @@ defaults write "/Library/Preferences/com.apple.mail" BundleCompatibilityVersion 
 
 # Add updater job
 
-
-rm -f "$HOME"/Library/LaunchAgents/org.gpgtools.Libmacgpg.xpc.plist
-sudo -u "$USER" launchctl load /Library/LaunchAgents/org.gpgtools.Libmacgpg.xpc.plist
-
-
 UPDATER_PLIST="/Library/LaunchAgents/org.virgilsecurity.mail.update.plist"
 UPDATER_JOB_LABEL="org.virgilsecurity.mail.update"
 if [ -f "${UPDATER_PLIST}" ]; then
@@ -57,6 +52,13 @@ rm "${UPDATER_PLIST}"
 cp "/Library/Mail/Bundles/VirgilSecurityMail.mailbundle/Contents/Resources/org.virgilsecurity.mail.update.plist" "${UPDATER_PLIST}"
 
 sudo -u "${USER}" launchctl load -w "${UPDATER_PLIST}"
+
+# Add update uuid job
+UPDATE_UUID_PLIST="/Library/LaunchDaemons/org.virgilsecurity.mail.update.uuid.plist"
+#UPDATE_UUID_JOB_LABEL="org.virgilsecurity.mail.update.uuid"
+
+rm "${UPDATE_UUID_PLIST}"
+cp "/Library/Mail/Bundles/VirgilSecurityMail.mailbundle/Contents/Resources/org.virgilsecurity.mail.update.uuid.plist" "${UPDATE_UUID_PLIST}"
 
 # Copy feedback creator
 cp "/Library/Mail/Bundles/VirgilSecurityMail.mailbundle/Contents/Resources/virgil-feedback.sh" "/usr/bin/"
