@@ -21,26 +21,25 @@ And encrypted mail attachments
 
 Virgil info contains base64 encoded string of a json serialized structure 
 
-```json
-	{
-		/* base64 string of encrypted mail data */
-		"EmailData" : "123abcd...", 
-		/* base64 string os sign of encrypted mail, created data with sender private  */
-		"Sign" : "acdef12345...", 
-		"Version" : "1.0.0.0", // string version of the email structure, default value is 1.0.0.0
-		"Sender" : "sender@email.address" // email address of the actual sender 
-	}
+```javascript
+{
+   
+    "EmailData" : "123abcd...", // base64 string of encrypted mail data.
+    "Sign" : "acdef12345...", // base64 string os sign of encrypted mail, created data with sender private.
+    "Version" : "1.0.0.0", // string version of the email structure, default value is 1.0.0.0
+    "Sender" : "sender@email.address" // email address of the actual sender 
+}
 ```
 
 
 EmailData is encrypted json object of following structure
-```json
-	{
-		"UniqueId" : "", // guid string for salt
-		"Body" : "", // plain text message body
-		"HtmlBody" : "", // html representation
-		"Subject" : "", // mail subject
-	} 
+```javascript
+{
+    "UniqueId" : "", // guid string for salt
+    "Body" : "", // plain text message body
+    "HtmlBody" : "", // html representation
+    "Subject" : "", // mail subject
+} 
 ```
 Encryption: 
 
