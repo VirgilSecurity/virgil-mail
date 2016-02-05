@@ -23,7 +23,6 @@ Virgil info contains base64 encoded string of a json serialized structure
 
 ```javascript
 {
-   
     "EmailData" : "123abcd...", // base64 string of encrypted mail data.
     "Sign" : "acdef12345...", // base64 string os sign of encrypted mail, created data with sender private.
     "Version" : "1.0.0.0", // string version of the email structure, default value is 1.0.0.0
