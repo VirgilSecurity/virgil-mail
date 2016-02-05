@@ -4,17 +4,17 @@ Encrypted mail consist of two parts
 
 Html preview with encrypted recepients/signs data in #virgil-info input
 
-	<html>
-		<body>
-			<p>The message has been encrypted with VirgilOutlook Add-In.</p>
-			<a href='https://virgilsecurity.com/downloads/' >Download Virgil Outlook Add-In.</a>
-
-			<div id='virgil-info' style='display: none'>
-				{MailData}
-			</div>
-
-		</body>
-	</html>
+```html
+<html>
+    <body>
+    	<p>The message has been encrypted with VirgilOutlook Add-In.</p>
+    	<a href='https://virgilsecurity.com/downloads/' >Download Virgil Outlook Add-In.</a>
+    	<div id='virgil-info' style='display: none'>
+    		{MailData}
+    	</div>
+    </body>
+</html>
+```
 	
 And encrypted mail attachments
 
