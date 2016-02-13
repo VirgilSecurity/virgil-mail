@@ -108,6 +108,10 @@
   -->
   <ItemGroup>
     <Reference Include="Accessibility" />
+    <Reference Include="HtmlAgilityPack, Version=1.4.9.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.4.9\lib\Net45\HtmlAgilityPack.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -129,6 +133,11 @@
       <HintPath>..\packages\Virgil.SDK.3.0.7.0\lib\portable-net45+win+wpa81+MonoAndroid10+xamarinios10+MonoTouch10\Virgil.SDK.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Virgil.SDK.Domain, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Virgil.SDK.Domain.1.0.0\lib\portable-net4+sl4+wp7+win8\Virgil.SDK.Domain.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Office.Tools.v4.0.Framework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -169,9 +178,24 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="Common\Bootstraper.cs" />
+    <Compile Include="Common\Constants.cs" />
+    <Compile Include="Integration\ComInteropExtensions.cs" />
+    <Compile Include="Integration\MailItemExtensions.cs" />
+    <Compile Include="Models\VirgilMail.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VirgilMailFormRegion.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="VirgilMailFormRegion.Designer.cs">
+      <DependentUpon>VirgilMailFormRegion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VirgilMailRibbon.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="VirgilMailRibbon.Designer.cs">
+      <DependentUpon>VirgilMailRibbon.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -182,14 +206,23 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="VirgilMailFormRegion.resx">
+      <DependentUpon>VirgilMailFormRegion.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VirgilMailRibbon.resx">
+      <DependentUpon>VirgilMailRibbon.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="ThisAddIn.cs">
       <SubType>Code</SubType>
@@ -205,7 +238,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Authentication\" />
-    <Folder Include="Integration\" />
     <Folder Include="Services\" />
   </ItemGroup>
   <PropertyGroup>
