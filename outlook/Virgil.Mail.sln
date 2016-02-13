@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Virgil.Mail", "Virgil.Mail\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Virgil.Mail.Tests", "Virgil.Mail.Tests\Virgil.Mail.Tests.csproj", "{07CC0A70-EC09-4CB6-906D-1694DF7FF582}"
 EndProject
+Project("{840C416C-B8F3-42BC-B0DD-F6BB14C9F8CB}") = "Virgil.Mail.Installer", "Virgil.Mail.Installer\Virgil.Mail.Installer.aiproj", "{6DE1427E-3AA4-4AF2-B34D-F07E572692B0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,8 +28,7 @@ Global
 		{1735D087-0EA6-4312-A9A0-80B8C6997488}.Debug|x86.Build.0 = Debug|x86
 		{1735D087-0EA6-4312-A9A0-80B8C6997488}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1735D087-0EA6-4312-A9A0-80B8C6997488}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1735D087-0EA6-4312-A9A0-80B8C6997488}.Release|x64.ActiveCfg = Release|x64
-		{1735D087-0EA6-4312-A9A0-80B8C6997488}.Release|x64.Build.0 = Release|x64
+		{1735D087-0EA6-4312-A9A0-80B8C6997488}.Release|x64.ActiveCfg = Release|Any CPU
 		{1735D087-0EA6-4312-A9A0-80B8C6997488}.Release|x86.ActiveCfg = Release|x86
 		{1735D087-0EA6-4312-A9A0-80B8C6997488}.Release|x86.Build.0 = Release|x86
 		{EC25DEED-3E40-40BB-9329-6AED27ABFE37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -54,6 +55,18 @@ Global
 		{07CC0A70-EC09-4CB6-906D-1694DF7FF582}.Release|x64.Build.0 = Release|Any CPU
 		{07CC0A70-EC09-4CB6-906D-1694DF7FF582}.Release|x86.ActiveCfg = Release|Any CPU
 		{07CC0A70-EC09-4CB6-906D-1694DF7FF582}.Release|x86.Build.0 = Release|Any CPU
+		{6DE1427E-3AA4-4AF2-B34D-F07E572692B0}.Debug|Any CPU.ActiveCfg = All
+		{6DE1427E-3AA4-4AF2-B34D-F07E572692B0}.Debug|Any CPU.Build.0 = All
+		{6DE1427E-3AA4-4AF2-B34D-F07E572692B0}.Debug|x64.ActiveCfg = All
+		{6DE1427E-3AA4-4AF2-B34D-F07E572692B0}.Debug|x64.Build.0 = All
+		{6DE1427E-3AA4-4AF2-B34D-F07E572692B0}.Debug|x86.ActiveCfg = All
+		{6DE1427E-3AA4-4AF2-B34D-F07E572692B0}.Debug|x86.Build.0 = All
+		{6DE1427E-3AA4-4AF2-B34D-F07E572692B0}.Release|Any CPU.ActiveCfg = All
+		{6DE1427E-3AA4-4AF2-B34D-F07E572692B0}.Release|Any CPU.Build.0 = All
+		{6DE1427E-3AA4-4AF2-B34D-F07E572692B0}.Release|x64.ActiveCfg = All
+		{6DE1427E-3AA4-4AF2-B34D-F07E572692B0}.Release|x64.Build.0 = All
+		{6DE1427E-3AA4-4AF2-B34D-F07E572692B0}.Release|x86.ActiveCfg = All
+		{6DE1427E-3AA4-4AF2-B34D-F07E572692B0}.Release|x86.Build.0 = All
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

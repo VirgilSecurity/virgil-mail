@@ -54,6 +54,7 @@
                     var value = Convert.FromBase64String(valueBase64);
                     var json = Encoding.UTF8.GetString(value);
                     var messageInfo = JsonConvert.DeserializeObject<VirgilMail>(json);
+                    messageInfo.Id = mailItem.EntryID;
 
                     return messageInfo;
                 }
