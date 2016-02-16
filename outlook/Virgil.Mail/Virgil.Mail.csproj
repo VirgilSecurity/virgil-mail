@@ -116,10 +116,13 @@
       <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -137,6 +140,7 @@
       <HintPath>..\packages\Virgil.SDK.Domain.1.0.0\lib\portable-net4+sl4+wp7+win8\Virgil.SDK.Domain.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="WindowsBase" />
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
@@ -185,6 +189,18 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Settings\RegisterAccount.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Settings\RegisterAccount.Designer.cs">
+      <DependentUpon>RegisterAccount.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\RegisterAccountView.xaml.cs">
+      <DependentUpon>RegisterAccountView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Viewer\Shell.xaml.cs">
+      <DependentUpon>Shell.xaml</DependentUpon>
+    </Compile>
     <Compile Include="VirgilMailFormRegion.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -205,7 +221,11 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Settings\RegisterAccount.resx">
+      <DependentUpon>RegisterAccount.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="VirgilMailFormRegion.resx">
       <DependentUpon>VirgilMailFormRegion.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -237,8 +257,20 @@
     <None Include="Virgil.Mail_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Authentication\" />
     <Folder Include="Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Settings\RegisterAccountView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Viewer\Shell.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon_512x512%402x.png" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

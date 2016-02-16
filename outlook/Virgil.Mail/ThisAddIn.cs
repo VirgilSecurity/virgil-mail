@@ -14,7 +14,15 @@
 
         private void OnAddInStartup(object sender, EventArgs e)
         {
+            this.Application.ItemSend += OnApplicationMailSend;
             this.ActiveExplorer.SelectionChange += this.OnExplorerSelectionChange;
+        }
+
+        private void OnApplicationMailSend(object item, ref bool cancel)
+        {
+            Outlook.MailItem mail = (Outlook.MailItem)item;
+            mail.MessageClass = Constants.VirgilMessageClass;
+            mail.HTMLBody = string.Format(Constants.EmailHtmlBodyTemplate, "Encrypted");
         }
 
         private void OnAddInShutdown(object sender, EventArgs e)

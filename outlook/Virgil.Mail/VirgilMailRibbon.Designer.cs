@@ -67,6 +67,7 @@
             // 
             this.button1.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.button1.Description = "sdadasd asdasdasd";
+            this.button1.Image = global::Virgil.Mail.Properties.Resources.icon_512x512_2x;
             this.button1.Label = "Virgil Keys";
             this.button1.Name = "button1";
             this.button1.ShowImage = true;
@@ -99,6 +100,7 @@
             // mailKeysButton
             // 
             this.mailKeysButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.mailKeysButton.Image = global::Virgil.Mail.Properties.Resources.icon_512x512_2x;
             this.mailKeysButton.Label = "Virgil Keys";
             this.mailKeysButton.Name = "mailKeysButton";
             this.mailKeysButton.ShowImage = true;

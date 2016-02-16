@@ -35,27 +35,31 @@
         private void InitializeComponent()
         {
             this.mailViewerHost = new System.Windows.Forms.Integration.ElementHost();
-            //this.mailViewer = new MailView();
+            this.mailViewer = new Virgil.Mail.Viewer.Shell();
             this.SuspendLayout();
             // 
             // mailViewerHost
             // 
+            this.mailViewerHost.Cursor = System.Windows.Forms.Cursors.Default;
             this.mailViewerHost.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mailViewerHost.Location = new System.Drawing.Point(0, 0);
+            this.mailViewerHost.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.mailViewerHost.Name = "mailViewerHost";
-            this.mailViewerHost.Size = new System.Drawing.Size(874, 695);
+            this.mailViewerHost.Size = new System.Drawing.Size(2331, 1657);
             this.mailViewerHost.TabIndex = 0;
             this.mailViewerHost.Text = "mailViewerHost";
-            //this.mailViewerHost.Child = this.mailViewer;
+            this.mailViewerHost.UseWaitCursor = true;
+            this.mailViewerHost.Child = this.mailViewer;
             // 
             // VirgilMailFormRegion
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this.mailViewerHost);
+            this.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.Name = "VirgilMailFormRegion";
-            this.Size = new System.Drawing.Size(874, 695);
+            this.Size = new System.Drawing.Size(2331, 1657);
             this.FormRegionShowing += new System.EventHandler(this.VirgilMailFormRegion_FormRegionShowing);
             this.FormRegionClosed += new System.EventHandler(this.VirgilMailFormRegion_FormRegionClosed);
             this.ResumeLayout(false);
@@ -82,6 +86,8 @@
         #endregion
 
         private System.Windows.Forms.Integration.ElementHost mailViewerHost;
+        private Virgil.Mail.Viewer.Shell mailViewer;
+
         //private MailView mailViewer;
 
 

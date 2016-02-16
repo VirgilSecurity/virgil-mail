@@ -1,6 +1,6 @@
 ﻿namespace Virgil.Mail
 {
-    //using Virgil.Mail.Presentation.Mail;
+    using Virgil.Mail.Common;    //using Virgil.Mail.Presentation.Mail;
 
     using Office = Microsoft.Office.Core;
     using Outlook = Microsoft.Office.Interop.Outlook;
@@ -11,8 +11,8 @@
 
         #region Form Region Factory
 
-        [Microsoft.Office.Tools.Outlook.FormRegionMessageClass("IPM.Note.VirgilMail")]
-        [Microsoft.Office.Tools.Outlook.FormRegionName("VirgilOutlook.VirgilMailFormRegion")]
+        [Microsoft.Office.Tools.Outlook.FormRegionMessageClass(Constants.VirgilMessageClass)]
+        [Microsoft.Office.Tools.Outlook.FormRegionName(Constants.VirgilMailFormRegionName)]
         public partial class VirgilMailFormRegionFactory
         {
             // Occurs before the form region is initialized.
