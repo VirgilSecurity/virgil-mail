@@ -5,6 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Virgil.Mail.Settings"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="400">
-    
+             d:DesignHeight="600" d:DesignWidth="400" Background="White" Padding="30">
+    <Grid>
+        <StackPanel VerticalAlignment="Top">
+            <Image Margin="50 50 50 30" Source="/Virgil.Mail;component/Resources/wizard-logo.png" />
+            <TextBlock Margin="0 0 0 5" FontSize="10" FontWeight="Bold"  Foreground="#414b54" TextWrapping="Wrap" Text="SELECT AN ACCOUNT TO USE FOR END TO END ENCRYPTION:" />
+            <ComboBox Padding="6 10" FontSize="14" />
+            <Button Margin="0,20,0,0" Background="#bb241d" Foreground="White" BorderThickness="0" FontWeight="Bold" FontSize="12" Content="Registration" Height="38" />
+        </StackPanel>
+        
+        <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Center" Text="www.virgilsecurity.com" />
+    </Grid>
 </UserControl>

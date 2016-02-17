@@ -14,6 +14,12 @@
 
         private void OnAddInStartup(object sender, EventArgs e)
         {
+            // initialize bootstrapper.
+
+            Bootstraper.Initialize(this.Application);
+
+            // subscrube to outlook events
+
             this.Application.ItemSend += OnApplicationMailSend;
             this.ActiveExplorer.SelectionChange += this.OnExplorerSelectionChange;
         }

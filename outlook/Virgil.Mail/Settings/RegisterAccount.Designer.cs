@@ -37,8 +37,9 @@
             // 
             this.elementHost1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.elementHost1.Location = new System.Drawing.Point(0, 0);
+            this.elementHost1.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.elementHost1.Name = "elementHost1";
-            this.elementHost1.Size = new System.Drawing.Size(731, 1062);
+            this.elementHost1.Size = new System.Drawing.Size(800, 1121);
             this.elementHost1.TabIndex = 0;
             this.elementHost1.Text = "elementHost1";
             this.elementHost1.Child = this.registerAccountView1;
@@ -48,14 +49,16 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(731, 1062);
+            this.ClientSize = new System.Drawing.Size(800, 1121);
             this.Controls.Add(this.elementHost1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(21, 17, 21, 17);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "RegisterAccount";
+            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Register Account";
             this.ResumeLayout(false);
 
         }

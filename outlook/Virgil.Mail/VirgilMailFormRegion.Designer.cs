@@ -45,7 +45,6 @@
             this.mailViewerHost.Location = new System.Drawing.Point(0, 0);
             this.mailViewerHost.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.mailViewerHost.Name = "mailViewerHost";
-            this.mailViewerHost.Size = new System.Drawing.Size(2331, 1657);
             this.mailViewerHost.TabIndex = 0;
             this.mailViewerHost.Text = "mailViewerHost";
             this.mailViewerHost.UseWaitCursor = true;

@@ -1,6 +1,6 @@
 ﻿namespace Virgil.Mail.Models
 {
-    public class VirgilMail
+    public class VirgilMailModel
     {
         public string Id { get; set; }
         public byte[] EmailData { get; set; }
