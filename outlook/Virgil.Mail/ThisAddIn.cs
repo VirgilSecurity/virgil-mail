@@ -1,6 +1,8 @@
 ﻿namespace Virgil.Mail
 {
     using System;
+    using System.Windows;
+
     using Virgil.Mail.Common;
     using Virgil.Mail.Integration;
 
@@ -12,29 +14,8 @@
 
         private Outlook.Explorer ActiveExplorer => this.Application.ActiveExplorer();
 
-        private void OnAddInStartup(object sender, EventArgs e)
-        {
-            // initialize bootstrapper.
-
-            Bootstraper.Initialize(this.Application);
-
-            // subscrube to outlook events
-
-            this.Application.ItemSend += OnApplicationMailSend;
-            this.ActiveExplorer.SelectionChange += this.OnExplorerSelectionChange;
-        }
-
         private void OnApplicationMailSend(object item, ref bool cancel)
         {
-            Outlook.MailItem mail = (Outlook.MailItem)item;
-            mail.MessageClass = Constants.VirgilMessageClass;
-            mail.HTMLBody = string.Format(Constants.EmailHtmlBodyTemplate, "Encrypted");
-        }
-
-        private void OnAddInShutdown(object sender, EventArgs e)
-        {
-            // Note: Outlook no longer raises this event. If you have code that 
-            // must run when Outlook shuts down, see http://go.microsoft.com/fwlink/?LinkId=506785
         }
 
         /// <summary>
@@ -54,6 +35,8 @@
                     return;
                 }
 
+                // ensure that selected item is Outlook Mail.
+
                 mail = selection[1] as Outlook.MailItem;
                 if (mail == null)
                 {
@@ -72,7 +55,8 @@
 
                 this.previousMailId = mail.EntryID;
 
-                // ensure that the message has predefined virgil mail class.
+                // ensure that the message class has been set as virgil mail,
+                // this requires to display custom reading pane for the mail item.               
 
                 if (mail.MessageClass == Constants.VirgilMessageClass)
                 {
@@ -81,15 +65,33 @@
 
                 mail.MarkAsVirgilMail();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.Message, "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {
                 selection.ReleaseCom();
                 mail.ReleaseCom();
             }
+        }
+
+        private void OnAddInStartup(object sender, EventArgs e)
+        {
+            // initialize bootstrapper.
+
+            Bootstraper.Initialize(this.Application);
+
+            // subscrube to outlook events
+
+            this.Application.ItemSend += OnApplicationMailSend;
+            this.ActiveExplorer.SelectionChange += this.OnExplorerSelectionChange;
+        }
+
+        private void OnAddInShutdown(object sender, EventArgs e)
+        {
+            // Note: Outlook no longer raises this event. If you have code that 
+            // must run when Outlook shuts down, see http://go.microsoft.com/fwlink/?LinkId=506785
         }
 
         #region VSTO generated code

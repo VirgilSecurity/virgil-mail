@@ -123,8 +123,10 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
@@ -146,6 +148,10 @@
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="WindowsFormsIntegration" />
+    <Reference Include="Xceed.Wpf.Toolkit, Version=2.6.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.6\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Office.Tools.v4.0.Framework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -186,10 +192,35 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="Accounts\AccountsView.xaml.cs">
+      <DependentUpon>AccountsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Accounts\AccountsViewModel.cs" />
+    <Compile Include="Accounts\AccountsWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Accounts\AccountsWindow.Designer.cs">
+      <DependentUpon>AccountsWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Bootstraper.cs" />
     <Compile Include="Common\Constants.cs" />
-    <Compile Include="Services\KeysStorage.cs" />
+    <Compile Include="Common\IAccountManager.cs" />
+    <Compile Include="Common\IPrivateKeyStorage.cs" />
+    <Compile Include="Common\IPasswordHolder.cs" />
+    <Compile Include="Common\IStorageProvider.cs" />
+    <Compile Include="Common\IWindowPresenter.cs" />
+    <Compile Include="Common\Models\VirgilKeyPairModel.cs" />
+    <Compile Include="Common\Models\VirgilRecipientModel.cs" />
+    <Compile Include="Common\Mvvm\ValidatableModel.cs" />
+    <Compile Include="Common\Models\UnregisteredAccountModel.cs" />
+    <Compile Include="Services\AccountManager.cs" />
+    <Compile Include="Storage\AccountStorageModel.cs" />
+    <Compile Include="Storage\IsolatedStorageProvider.cs" />
+    <Compile Include="Storage\StorageModel.cs" />
+    <Compile Include="Services\WindowPresenter.cs" />
+    <Compile Include="Storage\EncryptedStorage.cs" />
     <Compile Include="Common\IOutlookInteraction.cs" />
-    <Compile Include="Common\IKeysStorage.cs" />
+    <Compile Include="Common\IAccountStorage.cs" />
     <Compile Include="Common\IService.cs" />
     <Compile Include="Common\Mvvm\BoolToVisibilityConverter.cs" />
     <Compile Include="Common\Mvvm\EnumToVisibilityConverter.cs" />
@@ -199,8 +230,8 @@
     <Compile Include="Integration\ComInteropExtensions.cs" />
     <Compile Include="Integration\MailItemExtensions.cs" />
     <Compile Include="Integration\OutlookInteraction.cs" />
-    <Compile Include="Models\OutlookAccountModel.cs" />
-    <Compile Include="Models\VirgilMailModel.cs" />
+    <Compile Include="Integration\AccountIntegrationModel.cs" />
+    <Compile Include="Integration\OutlookVirgilMailIntegrationModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -211,6 +242,7 @@
     <Compile Include="Settings\RegisterAccount.Designer.cs">
       <DependentUpon>RegisterAccount.cs</DependentUpon>
     </Compile>
+    <Compile Include="Settings\RegisterAccountState.cs" />
     <Compile Include="Settings\RegisterAccountView.xaml.cs">
       <DependentUpon>RegisterAccountView.xaml</DependentUpon>
     </Compile>
@@ -230,6 +262,9 @@
     <Compile Include="VirgilMailRibbon.Designer.cs">
       <DependentUpon>VirgilMailRibbon.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Accounts\AccountsWindow.resx">
+      <DependentUpon>AccountsWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -271,10 +306,15 @@
       <DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
     </Compile>
     <AppDesigner Include="Properties\" />
-    <None Include="Virgil.Mail_TemporaryKey.pfx" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
+    <Resource Include="Resources\success.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Accounts\AccountsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Settings\RegisterAccountView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -290,6 +330,7 @@
   <ItemGroup>
     <Resource Include="Resources\wizard-logo.png" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -298,10 +339,10 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>Virgil.Mail_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>virgilcert2.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>49E2E9928CA7584677C6CE98AEFE8DB79C81A801</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>3FC6BF8D9CD93994BD238BB48D260BD0FD8572E5</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -6,8 +6,8 @@
     {
         private static IContainer container;
 
-        internal IOutlookInteraction Outlook => Get<IOutlookInteraction>();
-        internal IViewBuilder ViewBuilder => Get<IViewBuilder>();
+        internal static IOutlookInteraction Outlook => Get<IOutlookInteraction>();
+        internal static IWindowPresenter Windows => Get<IWindowPresenter>();
 
         private static TService Get<TService>() where TService : IService
         {

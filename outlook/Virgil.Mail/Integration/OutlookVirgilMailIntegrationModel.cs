@@ -1,6 +1,6 @@
-﻿namespace Virgil.Mail.Models
+﻿namespace Virgil.Mail.Integration
 {
-    public class VirgilMailModel
+    public class OutlookVirgilMailIntegrationModel
     {
         public string Id { get; set; }
         public byte[] EmailData { get; set; }

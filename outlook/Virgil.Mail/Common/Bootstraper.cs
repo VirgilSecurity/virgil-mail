@@ -6,9 +6,10 @@
     using Virgil.Mail.Integration;
     using Virgil.Mail.Services;
     using Virgil.Mail.Settings;
+    using Virgil.Mail.Accounts;
 
     using Outlook = Microsoft.Office.Interop.Outlook;
-    
+
     internal class Bootstraper
     {
         private static IContainer container;
@@ -29,11 +30,15 @@
             var builder = new ContainerBuilder();
             builder.RegisterInstance(new OutlookInteraction(application)).As<IOutlookInteraction>();
             builder.RegisterInstance(virgilHub).As<VirgilHub>();
-            builder.RegisterType<KeysStorage>().As<IKeysStorage>();
+            //builder.RegisterType<KeysStorage>().As<IStorage>();
 
+            
             builder.RegisterType<RegisterAccountView>();
             builder.RegisterType<RegisterAccountViewModel>();
-            
+
+            builder.RegisterType<AccountsView>();
+            builder.RegisterType<AccountsViewModel>();
+
             container = builder.Build();
 
             // workaround to register instances that require
@@ -41,8 +46,8 @@
 
             builder = new ContainerBuilder();
 
-            var viewBuilder = new ViewBuilder(container);
-            builder.RegisterInstance(viewBuilder).As<IViewBuilder>();
+            var viewBuilder = new WindowPresenter(container);
+            builder.RegisterInstance(viewBuilder).As<IWindowPresenter>();
 
             builder.Update(container);
 

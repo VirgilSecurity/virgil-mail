@@ -1,6 +1,6 @@
-﻿namespace Virgil.Mail.Settings
+﻿namespace Virgil.Mail.Accounts
 {
-    partial class RegisterAccount
+    partial class AccountsWindow
     {
         /// <summary>
         /// Required designer variable.
@@ -28,41 +28,39 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RegisterAccount));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AccountsWindow));
             this.ElementHost = new System.Windows.Forms.Integration.ElementHost();
             this.SuspendLayout();
             // 
-            // elementHost1
+            // ElementHost
             // 
             this.ElementHost.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ElementHost.Location = new System.Drawing.Point(0, 0);
-            this.ElementHost.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
-            this.ElementHost.Name = "elementHost1";
-            this.ElementHost.Size = new System.Drawing.Size(800, 1121);
+            this.ElementHost.Name = "ElementHost";
+            this.ElementHost.Size = new System.Drawing.Size(1642, 1093);
             this.ElementHost.TabIndex = 0;
             this.ElementHost.Text = "elementHost1";
+            this.ElementHost.Child = null;
             // 
-            // RegisterAccount
+            // AccountsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(800, 1121);
+            this.ClientSize = new System.Drawing.Size(1642, 1093);
             this.Controls.Add(this.ElementHost);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(21, 17, 21, 17);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "RegisterAccount";
-            this.ShowIcon = false;
+            this.Name = "AccountsWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Virgil Keys";
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        internal System.Windows.Forms.Integration.ElementHost ElementHost;
+        public System.Windows.Forms.Integration.ElementHost ElementHost;
     }
 }

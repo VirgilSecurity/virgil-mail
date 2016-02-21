@@ -1,10 +1,10 @@
 ﻿namespace Virgil.Mail.Common
 {
     using System.Collections.Generic;
-    using Virgil.Mail.Models;
+    using Virgil.Mail.Integration;
 
-    internal interface IOutlookInteraction : IService
+    public interface IOutlookInteraction : IService
     {
-        IEnumerable<OutlookAccountModel> GetOutlookAccounts();
+        IEnumerable<AccountIntegrationModel> GetOutlookAccounts();
     }
 }

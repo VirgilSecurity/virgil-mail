@@ -1,6 +1,6 @@
 ﻿namespace Virgil.Mail.Common
 {
-    internal interface IService
+    public interface IService
     {
     }
 }

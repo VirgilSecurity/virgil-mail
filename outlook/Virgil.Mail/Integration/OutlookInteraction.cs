@@ -6,7 +6,7 @@
 
     using Outlook = Microsoft.Office.Interop.Outlook;
 
-    using Virgil.Mail.Models;
+    using Virgil.Mail.Integration;
     using Virgil.Mail.Common;
 
     internal class OutlookInteraction : IOutlookInteraction
@@ -18,13 +18,13 @@
             this.application = application;
         }
 
-        public IEnumerable<OutlookAccountModel> GetOutlookAccounts()
+        public IEnumerable<AccountIntegrationModel> GetOutlookAccounts()
         {
             Outlook.NameSpace ns = null;
             Outlook.Accounts accounts = null;
             Outlook.Account account = null;
 
-            var result = new List<OutlookAccountModel>();
+            var result = new List<AccountIntegrationModel>();
 
             try
             {
@@ -36,10 +36,10 @@
 
                     if (result.All(it => it.Email != account.SmtpAddress))
                     {
-                        result.Add(new OutlookAccountModel
+                        result.Add(new AccountIntegrationModel
                         {
                             Email = account.SmtpAddress,
-                            UserName = account.UserName
+                            Description = account.UserName
                         });
                     }
 

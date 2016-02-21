@@ -7,8 +7,7 @@
 
     using HtmlAgilityPack;
     using Newtonsoft.Json;
-
-    using Virgil.Mail.Models;
+    
     using Virgil.Mail.Common;
 
     using Outlook = Microsoft.Office.Interop.Outlook;
@@ -35,12 +34,12 @@
         }
 
         /// <summary>
-        /// Parses the Outlook <see cref="Outlook.MailItem"/> to intermediate model <see cref="VirgilMailModel"/>
+        /// Parses the Outlook <see cref="Outlook.MailItem"/> to intermediate model <see cref="OutlookVirgilMailIntegrationModel"/>
         /// that represents a Virgil Mail required properties.
         /// </summary>
         /// <param name="mailItem">The Outlook mail to be parsed.</param>
-        /// <returns>Instance of <see cref="VirgilMailModel"/> object.</returns>
-        internal static VirgilMailModel Parse(this Outlook.MailItem mailItem)
+        /// <returns>Instance of <see cref="OutlookVirgilMailIntegrationModel"/> object.</returns>
+        internal static OutlookVirgilMailIntegrationModel Parse(this Outlook.MailItem mailItem)
         {
             var htmlDoc = new HtmlDocument();
             htmlDoc.LoadHtml(mailItem.HTMLBody);
@@ -53,7 +52,7 @@
                 {
                     var value = Convert.FromBase64String(valueBase64);
                     var json = Encoding.UTF8.GetString(value);
-                    var messageInfo = JsonConvert.DeserializeObject<VirgilMailModel>(json);
+                    var messageInfo = JsonConvert.DeserializeObject<OutlookVirgilMailIntegrationModel>(json);
                     messageInfo.Id = mailItem.EntryID;
 
                     return messageInfo;
