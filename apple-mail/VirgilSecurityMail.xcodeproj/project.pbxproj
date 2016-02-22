@@ -1121,10 +1121,11 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"VirgilSecurityMail/src/MailHeaders/**",
 					/usr/include/libxml2,
-					"virgil-libs/include",
 					"${PODS_ROOT}/Headers/Public",
 					"${PODS_ROOT}/Headers/Public/VirgilFoundation",
-					OSXSDK.framework/Headers,
+					"${PODS_ROOT}/Headers/Private/VirgilSDK",
+					"${PODS_ROOT}/Headers/Private/VirgilFoundation",
+					"${PODS_ROOT}/Headers/Private",
 				);
 				INFOPLIST_FILE = "VirgilSecurityMail/VirgilSecurityMail-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Mail/Bundles";
@@ -1170,10 +1171,11 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"VirgilSecurityMail/src/MailHeaders/**",
 					/usr/include/libxml2,
-					"virgil-libs/include",
 					"${PODS_ROOT}/Headers/Public",
 					"${PODS_ROOT}/Headers/Public/VirgilFoundation",
-					OSXSDK.framework/Headers,
+					"${PODS_ROOT}/Headers/Private/VirgilSDK",
+					"${PODS_ROOT}/Headers/Private/VirgilFoundation",
+					"${PODS_ROOT}/Headers/Private",
 				);
 				INFOPLIST_FILE = "VirgilSecurityMail/VirgilSecurityMail-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Mail/Bundles";
