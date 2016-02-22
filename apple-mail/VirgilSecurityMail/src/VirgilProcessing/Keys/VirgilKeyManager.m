@@ -38,6 +38,7 @@
 #import "VirgilKeyChain.h"
 #import "VirgilLog.h"
 #import "VirgilGui.h"
+#import "VirgilServiceConfigStg.h"
 #import "NSData+Base64.h"
 #import "NSString+Base64.h"
 
@@ -79,7 +80,10 @@
 
 - (id) init{
     _lastError = nil;
-    _client = [[VSSClient alloc] initWithApplicationToken:@"eyJpZCI6Ijc1MmMyMzM3LTM0YTYtNGRhOS04NzUwLTZhMjZlYWUzOWU2NSIsImFwcGxpY2F0aW9uX2NhcmRfaWQiOiIxMDEwMDBiNS02MDRlLTQ1ZWMtODMzMi00MWFmOTE1MGYzYWUiLCJ0dGwiOi0xLCJjdGwiOi0xLCJwcm9sb25nIjowfQ==.MIGZMA0GCWCGSAFlAwQCAgUABIGHMIGEAkBd0GMYg9I2H/cQz7jbL1EPJLLUnWePpGfc5LyjNgidAq9z/4rYDFRYyv6wPKJDx6KysCqLIWgH2YfmMTCtBYL1AkArX14rnAYP63brY3QMP01z2c/zf3K06O+jr9eDshETGRxIoumhqTcbRP/00KjBlEGb8Ip7KX0wo/vPYNpzqf91"];
+    _client =
+    [[VSSClient alloc] initWithApplicationToken : @"eyJpZCI6Ijc1MmMyMzM3LTM0YTYtNGRhOS04NzUwLTZhMjZlYWUzOWU2NSIsImFwcGxpY2F0aW9uX2NhcmRfaWQiOiIxMDEwMDBiNS02MDRlLTQ1ZWMtODMzMi00MWFmOTE1MGYzYWUiLCJ0dGwiOi0xLCJjdGwiOi0xLCJwcm9sb25nIjowfQ==.MIGZMA0GCWCGSAFlAwQCAgUABIGHMIGEAkBd0GMYg9I2H/cQz7jbL1EPJLLUnWePpGfc5LyjNgidAq9z/4rYDFRYyv6wPKJDx6KysCqLIWgH2YfmMTCtBYL1AkArX14rnAYP63brY3QMP01z2c/zf3K06O+jr9eDshETGRxIoumhqTcbRP/00KjBlEGb8Ip7KX0wo/vPYNpzqf91"
+                                  serviceConfig : [VirgilServiceConfigStg new]];
+    
     dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
     [_client setupClientWithCompletionHandler:^(NSError * _Nullable error) {
         dispatch_semaphore_signal(semaphore);
@@ -261,7 +265,6 @@
                               password : privateKey.keyPassword];
     [_client deleteCardWithCardId : cardId
                          identity : identity
-                       signerCard : nil
                        privateKey : vssPrivKey
                 completionHandler : ^(NSError * _Nullable error) {
                     if (error == nil) {
@@ -305,12 +308,9 @@
                                                        withCode : code];
     if (identity == nil) return NO;
     
-    if ([self deleteCardWithCardId : keyChainContainer.publicKey.actionID
-                          identity : identity
-                        privateKey : keyChainContainer.privateKey]) {
-        
-    }
-    return NO;
+    return [self deleteCardWithCardId : keyChainContainer.publicKey.cardID
+                             identity : identity
+                           privateKey : keyChainContainer.privateKey];
 }
 
 /**
@@ -323,6 +323,23 @@
     
     if (keyChainContainer != nil) {
         keyChainContainer.isWaitForDeletion = NO;
+        [VirgilKeyChain saveContainer : keyChainContainer
+                           forAccount : account];
+        return YES;
+    }
+    return NO;
+}
+
+/**
+ * @brief Terminate provate key request
+ * @param account - email
+ * @return YES - success | NO - error occured, get error with [VirgilKeyManager lastError]
+ */
+- (BOOL) terminatePrivateKeyRequest : (NSString *)account {
+    VirgilKeyChainContainer * keyChainContainer = [VirgilKeyChain loadContainer : account];
+    
+    if (keyChainContainer != nil) {
+        keyChainContainer.isWaitPrivateKey = NO;
         [VirgilKeyChain saveContainer : keyChainContainer
                            forAccount : account];
         return YES;

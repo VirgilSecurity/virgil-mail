@@ -902,7 +902,7 @@
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="hUr-yD-p0S">
-                                    <rect key="frame" x="1" y="294" width="250" height="15"/>
+                                    <rect key="frame" x="1" y="-14" width="0.0" height="15"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="ZGy-Or-joI">
@@ -1806,6 +1806,16 @@ Gw
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xLC-mc-dnt">
+                                <rect key="frame" x="41" y="113" width="204" height="32"/>
+                                <buttonCell key="cell" type="push" title="Stop Private Key request " bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="drr-IP-tn6">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="onStopPrivateKeyRequest:" target="Avm-2d-p8j" id="3xo-UU-qcl"/>
+                                </connections>
+                            </button>
                         </subviews>
                     </view>
                     <connections>

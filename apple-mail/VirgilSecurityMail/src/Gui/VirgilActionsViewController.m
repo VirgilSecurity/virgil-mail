@@ -535,6 +535,13 @@ static BOOL _cloudSelection = YES;
     });
 }
 
+- (IBAction)onStopPrivateKeyRequest:(id)sender {
+    [[VirgilKeyManager sharedInstance] terminatePrivateKeyRequest:_account];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self delegateRefresh];
+    });
+}
+
 - (void) delegateRefresh {
     if (_delegate) {
         [_delegate askRefresh];

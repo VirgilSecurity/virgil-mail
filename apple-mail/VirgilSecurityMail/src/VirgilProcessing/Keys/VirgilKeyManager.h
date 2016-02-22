@@ -83,6 +83,13 @@
 - (BOOL) terminateAccountDeletion : (NSString *)account;
 
 /**
+ * @brief Terminate provate key request
+ * @param account - email
+ * @return YES - success | NO - error occured, get error with [VirgilKeyManager lastError]
+ */
+- (BOOL) terminatePrivateKeyRequest : (NSString *)account;
+
+/**
  * @brief Confirm account deletion with received (by email) code
  * @param account - email
  * @param code - code from email
