@@ -192,6 +192,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="Accounts\AccountsManager.cs" />
     <Compile Include="Accounts\AccountsView.xaml.cs">
       <DependentUpon>AccountsView.xaml</DependentUpon>
     </Compile>
@@ -202,30 +203,30 @@
     <Compile Include="Accounts\AccountsWindow.Designer.cs">
       <DependentUpon>AccountsWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Common\Bootstraper.cs" />
+    <Compile Include="Bootstraper.cs" />
     <Compile Include="Common\Constants.cs" />
-    <Compile Include="Common\IAccountManager.cs" />
+    <Compile Include="Common\IAccountsManager.cs" />
+    <Compile Include="Common\IAccountsStorage.cs" />
     <Compile Include="Common\IPrivateKeyStorage.cs" />
     <Compile Include="Common\IPasswordHolder.cs" />
     <Compile Include="Common\IStorageProvider.cs" />
     <Compile Include="Common\IWindowPresenter.cs" />
-    <Compile Include="Common\Models\VirgilKeyPairModel.cs" />
-    <Compile Include="Common\Models\VirgilRecipientModel.cs" />
-    <Compile Include="Common\Mvvm\ValidatableModel.cs" />
-    <Compile Include="Common\Models\UnregisteredAccountModel.cs" />
-    <Compile Include="Services\AccountManager.cs" />
+    <Compile Include="Models\VirgilAccountModel.cs" />
+    <Compile Include="Models\VirgilKeyPairModel.cs" />
+    <Compile Include="Models\VirgilRecipientModel.cs" />
+    <Compile Include="Mvvm\ValidatableModel.cs" />
+    <Compile Include="Models\UnregisteredAccountModel.cs" />
+    <Compile Include="Accounts\AccountsStorage.cs" />
     <Compile Include="Storage\AccountStorageModel.cs" />
     <Compile Include="Storage\IsolatedStorageProvider.cs" />
     <Compile Include="Storage\StorageModel.cs" />
     <Compile Include="Services\WindowPresenter.cs" />
-    <Compile Include="Storage\EncryptedStorage.cs" />
     <Compile Include="Common\IOutlookInteraction.cs" />
-    <Compile Include="Common\IAccountStorage.cs" />
     <Compile Include="Common\IService.cs" />
-    <Compile Include="Common\Mvvm\BoolToVisibilityConverter.cs" />
-    <Compile Include="Common\Mvvm\EnumToVisibilityConverter.cs" />
-    <Compile Include="Common\Mvvm\RelayCommand.cs" />
-    <Compile Include="Common\Mvvm\ViewModel.cs" />
+    <Compile Include="Mvvm\BoolToVisibilityConverter.cs" />
+    <Compile Include="Mvvm\EnumToVisibilityConverter.cs" />
+    <Compile Include="Mvvm\RelayCommand.cs" />
+    <Compile Include="Mvvm\ViewModel.cs" />
     <Compile Include="Common\ServiceLocator.cs" />
     <Compile Include="Integration\ComInteropExtensions.cs" />
     <Compile Include="Integration\MailItemExtensions.cs" />
@@ -306,6 +307,7 @@
       <DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
     </Compile>
     <AppDesigner Include="Properties\" />
+    <None Include="Virgil.Mail_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\success.png" />
@@ -339,10 +341,10 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>virgilcert2.pfx</ManifestKeyFile>
+    <ManifestKeyFile>Virgil.Mail_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>3FC6BF8D9CD93994BD238BB48D260BD0FD8572E5</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>95E60C955B5C83BC9E332643A0A515C4AC785A26</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

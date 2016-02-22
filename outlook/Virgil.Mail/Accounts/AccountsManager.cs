@@ -1,10 +1,10 @@
-﻿namespace Virgil.Mail.Services
+﻿namespace Virgil.Mail.Accounts
 {
-    using System;
     using System.Collections.Generic;
-
+    using System.Linq;
     using Virgil.Mail.Common;
     using Virgil.Mail.Common.Models;
+    using Virgil.Mail.Models;
 
     internal class AccountsManager : IAccountsManager
     {
@@ -20,10 +20,13 @@
         public IEnumerable<VirgilAccountModel> GetAccounts()
         {
             var outlookAccounts = this.outlook.GetOutlookAccounts();
-            outlookAccounts.Select(oa => new {
-                OutlookAccount = oa,
-                VirgilAccount = this.storage.HasAccount this.storage.GetAccounts()
-            })
+            var virgilAccountModels = outlookAccounts.Select(it => new VirgilAccountModel
+            {
+                OutlookAccountDescription = it.Description,
+                OutlookAccountEmail = it.Email
+            });
+
+            return virgilAccountModels;
         }
     }
 }

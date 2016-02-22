@@ -1,8 +1,8 @@
 ﻿namespace Virgil.Mail.Common
 {
     using System.Collections.Generic;
-
-    using Virgil.Mail.Common.Models;
+    
+    using Virgil.Mail.Models;
 
     public interface IAccountsManager : IService
     {

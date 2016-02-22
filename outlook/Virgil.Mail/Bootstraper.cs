@@ -1,12 +1,14 @@
-﻿namespace Virgil.Mail.Common
+﻿namespace Virgil.Mail
 {
     using Autofac;
 
-    using Virgil.SDK.Infrastructure;
+    using Virgil.Mail.Accounts;
+    using Virgil.Mail.Common;
     using Virgil.Mail.Integration;
     using Virgil.Mail.Services;
     using Virgil.Mail.Settings;
-    using Virgil.Mail.Accounts;
+    using Virgil.Mail.Storage;
+    using Virgil.SDK.Infrastructure;
 
     using Outlook = Microsoft.Office.Interop.Outlook;
 
@@ -30,9 +32,12 @@
             var builder = new ContainerBuilder();
             builder.RegisterInstance(new OutlookInteraction(application)).As<IOutlookInteraction>();
             builder.RegisterInstance(virgilHub).As<VirgilHub>();
-            //builder.RegisterType<KeysStorage>().As<IStorage>();
+            builder.RegisterType<IsolatedStorageProvider>().As<IStorageProvider>();
+            builder.RegisterType<AccountsManager>().As<IAccountsManager>();
+            builder.RegisterType<AccountsStorage>().As<IAccountsStorage>();
 
-            
+
+
             builder.RegisterType<RegisterAccountView>();
             builder.RegisterType<RegisterAccountViewModel>();
 

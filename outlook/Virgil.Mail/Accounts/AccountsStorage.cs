@@ -1,20 +1,21 @@
-﻿namespace Virgil.Mail.Storage
+﻿namespace Virgil.Mail.Accounts
 {
     using System;
-    using System.Linq;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Security.Cryptography;
 
     using Newtonsoft.Json;
 
     using Virgil.Mail.Common;
+    using Virgil.Mail.Storage;
 
     internal class AccountsStorage : IAccountsStorage
     {   
         private readonly IStorageProvider storageProvider;
         private static readonly byte[] Entropy = { 91, 83, 7, 36, 1, 15, 123 };
 
-        internal AccountsStorage(IStorageProvider storageProvider)
+        public AccountsStorage(IStorageProvider storageProvider)
         {
             this.storageProvider = storageProvider;
         }
