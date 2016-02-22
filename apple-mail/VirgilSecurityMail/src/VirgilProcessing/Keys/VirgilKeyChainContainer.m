@@ -36,9 +36,11 @@
 
 #import "VirgilKeyChainContainer.h"
 
-#define kPrivateKey     @"PrivateKey"
-#define kPublicKey      @"PublicKey"
-#define kIsActive       @"IsActive"
+#define kPrivateKey         @"PrivateKey"
+#define kPublicKey          @"PublicKey"
+#define kIsActive           @"IsActive"
+#define kIsWaitPrivateKey   @"IsWaitPrivateKey"
+#define kIsWaitForDeletion  @"IsWaitForDeletion"
 
 @implementation VirgilKeyChainContainer
 
@@ -51,17 +53,23 @@
         _privateKey = nil;
         _publicKey = nil;
         _isActive = YES;
+        _isWaitPrivateKey = NO;
+        _isWaitForDeletion = NO;
     }
     return self;
 }
 
-- (id) initWithPrivateKey : (VirgilPrivateKey *)a_privateKey
-             andPublicKey : (VirgilPublicKey *)a_publicKey
-                 isActive : (BOOL)a_isActive {
+- (id) initWithPrivateKey : (VirgilPrivateKey *)privateKey
+             andPublicKey : (VirgilPublicKey *)publicKey
+                 isActive : (BOOL)isActive
+         isWaitPrivateKey : (BOOL)isWaitPrivateKey
+        isWaitForDeletion : (BOOL)isWaitForDeletion {
     if ([super init]) {
-        _privateKey = a_privateKey;
-        _publicKey = a_publicKey;
-        _isActive = a_isActive;
+        _privateKey = privateKey;
+        _publicKey = publicKey;
+        _isActive = isActive;
+        _isWaitPrivateKey = isWaitPrivateKey;
+        _isWaitForDeletion = isWaitForDeletion;
     }
     return self;
 }
@@ -70,15 +78,21 @@
     [encoder encodeObject : _privateKey forKey : kPrivateKey];
     [encoder encodeObject : _publicKey forKey : kPublicKey];
     [encoder encodeBool : _isActive forKey : kIsActive];
+    [encoder encodeBool : _isWaitPrivateKey forKey : kIsWaitPrivateKey];
+    [encoder encodeBool : _isWaitForDeletion forKey : kIsWaitForDeletion];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {
     VirgilPrivateKey * privateKey = [decoder decodeObjectForKey : kPrivateKey];
     VirgilPublicKey * publicKey = [decoder decodeObjectForKey : kPublicKey];
     BOOL active = [decoder decodeBoolForKey : kIsActive];
+    BOOL waitPrivateKey = [decoder decodeBoolForKey : kIsWaitPrivateKey];
+    BOOL waitForDeletion = [decoder decodeBoolForKey : kIsWaitForDeletion];
     return [self initWithPrivateKey : privateKey
                        andPublicKey : publicKey
-                           isActive : active];
+                           isActive : active
+                   isWaitPrivateKey : waitPrivateKey
+                  isWaitForDeletion : waitForDeletion];
 }
 
 - (NSString *) description {
@@ -88,6 +102,8 @@
     [res appendFormat:@"privateKey : %@\n", [_privateKey description]];
     [res appendFormat:@"publicKey : %@\n", [_publicKey description]];
     [res appendFormat:@"isActive : %hhd\n", _isActive];
+    [res appendFormat:@"isWaitPrivateKey : %hhd\n", _isWaitPrivateKey];
+    [res appendFormat:@"isWaitForDeletion : %hhd\n", _isWaitForDeletion];
     [res appendString:@"} \n"];
     return res;
 }

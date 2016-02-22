@@ -47,6 +47,8 @@ typedef NS_ENUM(NSInteger, ConfirmationState) {
 
 @interface VirgilEmailConfirmViewController : NSViewController
 
+- (void) setTitle : (NSString *)title;
+
 - (void) setConfirmationCode : (NSString *) confirmationCode
                   forAccount : (NSString *) account
                 resultObject : (id)resultObject

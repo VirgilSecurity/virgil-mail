@@ -46,18 +46,18 @@
 
 @interface VirgilKeyManager : NSObject
 
++ (VirgilKeyManager *) sharedInstance;
+
 /**
  * @brief Create key pair, register at Key service
  * @param account - email
  * @param keyPassword - password for keys encryption
  * @param containerType - container type {easy, normal, paranoic}
- * @param containerPassword - Container's password
  * @return YES - success | NO - error occured, get error with [VirgilKeyManager lastError]
  */
-+ (BOOL) createAccount : (NSString *) account
+- (BOOL) createAccount : (NSString *) account
            keyPassword : (NSString *) keyPassword
-         containerType : (VirgilContainerType) containerType
-     containerPassword : (NSString *) containerPassword;
+         containerType : (VirgilContainerType) containerType;
 
 /**
  * @brief Confirm account creation with received (by email) code
@@ -65,15 +65,47 @@
  * @param code - code from email
  * @return YES - success | NO - error occured, get error with [VirgilKeyManager lastError]
  */
-+ (BOOL) confirmAccountCreation : (NSString *) account
+- (BOOL) confirmAccountCreation : (NSString *) account
                            code : (NSString *) code;
 
 /**
- * @brief Resend confirmation email
+ * @brief Request account deletion
  * @param account - email
  * @return YES - success | NO - error occured, get error with [VirgilKeyManager lastError]
  */
-+ (BOOL) resendConfirmEMail : (NSString *) account;
+- (BOOL) requestAccountDeletion : (NSString *)account;
+
+/**
+ * @brief Terminate account deletion
+ * @param account - email
+ * @return YES - success | NO - error occured, get error with [VirgilKeyManager lastError]
+ */
+- (BOOL) terminateAccountDeletion : (NSString *)account;
+
+/**
+ * @brief Confirm account deletion with received (by email) code
+ * @param account - email
+ * @param code - code from email
+ * @return YES - success | NO - error occured, get error with [VirgilKeyManager lastError]
+ */
+- (BOOL) confirmAccountDeletion : (NSString *) account
+                           code : (NSString *) code;
+
+/**
+ * @brief Confirm private key request with received (by email) code
+ * @param account - email
+ * @param code - code from email
+ * @return YES - success | NO - error occured, get error with [VirgilKeyManager lastError]
+ */
+- (BOOL) confirmPrivateKeyRequest : (NSString *) account
+                             code : (NSString *) code;
+
+/**
+ * @brief Resend confirmation email for account creation
+ * @param account - email
+ * @return YES - success | NO - error occured, get error with [VirgilKeyManager lastError]
+ */
+- (BOOL) resendConfirmEMail : (NSString *) account;
 
 /**
  * @brief Resend confirmation email
@@ -81,7 +113,7 @@
  * @param privateKey - private key
  * @return YES - success | NO - error occured, get error with [VirgilKeyManager lastError]
  */
-+ (BOOL) resendConfirmEMail : (VirgilPublicKey *) publicKey
+- (BOOL) resendConfirmEMail : (VirgilPublicKey *) publicKey
                  privateKey : (VirgilPrivateKey *) privateKey;
 
 /**
@@ -89,27 +121,14 @@
  * @param account - email
  * @return VirgilPublicKey - instance | nil - error occured, get error with [VirgilKeyManager lastError]
  */
-+ (VirgilPublicKey *) getPublicKey : (NSString *) account;
+- (VirgilPublicKey *) getPublicKey : (NSString *) account;
 
 /**
- * @brief Get private key by account (email) and container password from Private Keys Service without decryption
+ * @brief Request private key by account (email) from Private Keys Service
  * @param account - email
- * @param containerPassword - password to Private Keys Service' container
- * @return VirgilPrivateKey - instance | nil - error occured, get error with [VirgilKeyManager lastError]
+ * @return boolean YES if resuest was sent correctly
  */
-
-+ (VirgilPrivateKey *) getEncryptedPrivateKeyFromCloud : (NSString *) account
-                                     containerPassword : (NSString *) containerPassword;
-
-/**
- * @brief Encrypt private key by password
- * @param encryptedKey - encrypted private key
- * @param keyPassword - password for private key decryption
- * @return VirgilPrivateKey - decrypted private key | nil - error occured, get error with [VirgilKeyManager lastError]
- */
-+ (VirgilPrivateKey *) decryptedPrivateKey : (VirgilPrivateKey *) encryptedKey
-                               keyPassword : (NSString *) keyPassword;
-
+- (BOOL) requestPrivateKeyFromCloud : (NSString *) account;
 
 /**
  * @brief Set private key for account
@@ -117,9 +136,8 @@
  * @param account - account
  * @return BOOL YES - set done | NO - error was occured
  */
-+ (BOOL) setPrivateKey : (VirgilPrivateKey *) key
+- (BOOL) setPrivateKey : (VirgilPrivateKey *) key
             forAccount : (NSString *) account;
-
 
 /**
  * @brief Export account to file
@@ -128,7 +146,7 @@
  * @param passwordForEncryption - password which used to encrypt result file
  * @return BOOL YES - set done | NO - error was occured
  */
-+ (BOOL) exportAccountData : (NSString *) account
+- (BOOL) exportAccountData : (NSString *) account
                     toFile : (NSString *) fileName
               withPassword : (NSString *) passwordForEncryption;
 
@@ -140,13 +158,29 @@
  * @param passwordForDecryption - password which used to decrypt source file
  * @return container with loaded data
  */
-+ (VirgilKeyChainContainer *) importAccountData : (NSString *) account
+- (VirgilKeyChainContainer *) importAccountData : (NSString *) account
                                        fromFile : (NSString *) fileName
                                    withPassword : (NSString *) passwordForDecryption;
+
+- (BOOL) prepareAndSaveLoadedPrivateKey : (NSString *) base64PrivateKey
+                          containerType : (VirgilContainerType) containerType
+                                account : (NSString *) account;
+
+/**
+ * @brief Check is correct private key.
+ * @return boolean is key correct
+ */
++ (BOOL) isCorrectPrivateKey : (NSString *) privateKey;
+
+/**
+ * @brief Check is correct encrypted private key.
+ * @return boolean is key correct
+ */
++ (BOOL) isCorrectEncryptedPrivateKey : (NSString *) privateKey;
 
 /**
  * @brief Get last error user friendly string
  */
-+ (NSString *) lastError;
+- (NSString *) lastError;
 
 @end

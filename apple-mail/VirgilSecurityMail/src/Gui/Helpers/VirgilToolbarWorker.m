@@ -100,6 +100,8 @@
 
 @implementation VirgilToolbarDelegate
 
+@synthesize defaultDelegate = _defaultDelegate;
+
 + (VirgilToolbarDelegate *) sharedInstance {
     static VirgilToolbarDelegate * singletonObject = nil;
     static dispatch_once_t onceToken;

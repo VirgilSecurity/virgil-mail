@@ -37,7 +37,6 @@
 #import "VirgilActionsViewController.h"
 #import "VirgilKeyManager.h"
 #import "VirgilKeyChain.h"
-#import "VirgilPrivateKeyManager.h"
 #import "VirgilProcessingManager.h"
 #import "VirgilValidator.h"
 #import "VirgilGui.h"
@@ -88,23 +87,62 @@ static BOOL _cloudSelection = YES;
     _btnExport.enabled = !visible;
 }
 
-- (IBAction)onRemoveKeyFromKeyChain:(id)sender {
-    if (nil == _account) return;
-    
+- (void) noteOfWarningToUser : (NSString *) warningMessage
+           completionHandler : (void(^)(BOOL isOkButtonClicked))completionHandler {
     NSAlert *alert = [[NSAlert alloc] init];
     [alert addButtonWithTitle:@"Ok"];
     [alert addButtonWithTitle:@"Cancel"];
-    [alert setMessageText:@"Delete Virgil Key from KeyChain ?"];
+    [alert setMessageText:warningMessage];
     [alert setInformativeText:@"Be carefull with current operation."];
     [alert setAlertStyle:NSWarningAlertStyle];
     
-    [alert beginSheetModalForWindow:self.view.window completionHandler:^(NSModalResponse returnCode) {
-        if (NSAlertFirstButtonReturn == returnCode) {
-            [VirgilKeyChain removeContainer : _account];
-            [[VirgilProcessingManager sharedInstance] clearDecryptionCache];
-            [self delegateRefresh];
-        }
-    }];
+    [alert beginSheetModalForWindow : self.view.window
+                  completionHandler : ^(NSModalResponse returnCode) {
+                      if (completionHandler != nil) {
+                          completionHandler(NSAlertFirstButtonReturn == returnCode);
+                      }
+                  }];
+}
+
+- (IBAction)onAccountRemove:(id)sender {
+    if (nil == _account) return;
+    
+    [self noteOfWarningToUser : @"Delete Virgil Keys completely ?"
+            completionHandler : ^(BOOL isOkButtonClicked) {
+                [self setProgressVisible:YES];
+                [self preventUserActivity:YES];
+                
+                @try {
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                        __block BOOL res = [[VirgilKeyManager sharedInstance] requestAccountDeletion:_account];
+                        
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self externalActionDone];
+                            if (res) {
+                                [[VirgilProcessingManager sharedInstance] clearDecryptionCache];
+                                [self delegateRefresh];
+                            } else {
+                                [self showErrorView : [[VirgilKeyManager sharedInstance] lastError]];
+                            }
+                        });
+                    });
+                    
+                }
+                @catch (NSException *exception) {
+                    [self externalActionDone];
+                }
+            }];
+}
+
+- (IBAction)onRemoveKeyFromKeyChain:(id)sender {
+    if (nil == _account) return;
+    
+    [self noteOfWarningToUser :  @"Delete Virgil Key from KeyChain ?"
+            completionHandler : ^(BOOL isOkButtonClicked) {
+                [VirgilKeyChain removeContainer : _account];
+                [[VirgilProcessingManager sharedInstance] clearDecryptionCache];
+                [self delegateRefresh];
+            }];
 }
 
 - (void)viewDidLoad {
@@ -112,6 +150,10 @@ static BOOL _cloudSelection = YES;
     if (_matrixField) {
         [[_matrixField cellAtRow:0 column:0] setState:(_cloudSelection ? NSOnState : NSOffState)];
         [[_matrixField cellAtRow:1 column:0] setState:(_cloudSelection ? NSOffState : NSOnState)];
+        if (_keyPassword && !_keyPasswordConfirm) {
+            _keyPassword.hidden = YES;
+            _keyPassword.enabled = NO;
+        }
     }
     
     [self setVisibleExportControls:NO];
@@ -125,28 +167,8 @@ static BOOL _cloudSelection = YES;
     
     _cloudSelection = useCloudStorage;
     
-    NSString * cloudPass = nil;
-    NSString * cloudPassConfirm = nil;
-    
     NSString * keyPass = nil;
     NSString * keyPassConfirm = nil;
-    
-    if (useCloudStorage) {
-        cloudPass = _cloudPassword.stringValue;
-        cloudPassConfirm = _cloudPasswordConfirm.stringValue;
-        
-        if (NO == [VirgilValidator simplePassword : cloudPass]) {
-            [self showCompactErrorView : @"Password can't be empty, can't contain not latin letters."
-                                atView : _cloudPassword];
-            return;
-        }
-        
-        if (NO == [cloudPassConfirm isEqualToString : cloudPass]) {
-            [self showCompactErrorView : @"Passwords shoud match in both fields."
-                                atView : _cloudPasswordConfirm];
-            return;
-        }
-    }
     
     if (useKeyPassword) {
         keyPass = _keyPassword.stringValue;
@@ -170,25 +192,19 @@ static BOOL _cloudSelection = YES;
     [self preventUserActivity:YES];
     
     @try {
-        VirgilContainerType containerType = VirgilContainerUnknown;
-        if (useCloudStorage) {
-            containerType = useKeyPassword ? VirgilContainerNormal : VirgilContainerEasy;
-        } else {
-            containerType = VirgilContainerParanoic;
-        }
+        VirgilContainerType containerType = useCloudStorage ? VirgilContainerNormal : VirgilContainerParanoic;
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            BOOL res = [VirgilKeyManager createAccount : _account
+            BOOL res = [[VirgilKeyManager sharedInstance] createAccount : _account
                                            keyPassword : keyPass
-                                         containerType : containerType
-                                     containerPassword : cloudPass];
+                                         containerType : containerType];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self externalActionDone];
                 if (res) {
                     [self delegateRefresh];
                 } else {
-                    [self showErrorView : [VirgilKeyManager lastError]];
+                    [self showErrorView : [[VirgilKeyManager sharedInstance] lastError]];
                 }
             });
         });
@@ -231,7 +247,7 @@ static BOOL _cloudSelection = YES;
             NSString * fileName = [self exportFileName];
             if (!fileName) return;
             
-            BOOL res = [VirgilKeyManager exportAccountData : _account
+            BOOL res = [[VirgilKeyManager sharedInstance] exportAccountData : _account
                                                     toFile : fileName
                                               withPassword : keyPass];
             
@@ -240,7 +256,7 @@ static BOOL _cloudSelection = YES;
                 if (res) {
                     [self setVisibleExportControls:NO];
                 } else {
-                    [self showErrorView : [VirgilKeyManager lastError]];
+                    [self showErrorView : [[VirgilKeyManager sharedInstance] lastError]];
                 }
             });
         });
@@ -276,13 +292,54 @@ static BOOL _cloudSelection = YES;
 }
 
 - (IBAction)onSourceChanged:(id)sender {
+    NSButtonCell *selCell = [sender selectedCell];
+    BOOL isCloudStorage = 1000 == [selCell tag];
+    _keyPassword.hidden = isCloudStorage;
+    _keyPassword.enabled = !isCloudStorage;
 }
 
 - (IBAction)onCreationDestChanged:(id)sender {
-    NSButtonCell *selCell = [sender selectedCell];
-    BOOL isCloudStorage = 1000 == [selCell tag];
-    _cloudPassword.hidden = !isCloudStorage;
-    _cloudPasswordConfirm.hidden = !isCloudStorage;
+}
+
+- (NSDictionary*) loadKeyFromFileWithPassword:(NSString *)password {
+    NSString * errorStr = @"";
+    VirgilPrivateKey * encryptedKey = nil;
+    BOOL loadDone = NO;
+    BOOL loadStoppedByUser = NO;
+    BOOL loadStoppedByError = NO;
+    // Load key from file
+    NSDictionary * resDict = [self importKeyWithPassword:password];
+    
+    loadStoppedByUser = [[resDict objectForKey:@"stoppedByUser"] boolValue];
+    
+    if (!loadStoppedByUser) {
+        VirgilKeyChainContainer * container = nil;
+        if ([[resDict objectForKey:@"resBool"] boolValue]) {
+            container = [resDict objectForKey:@"resContainer"];
+        }
+        
+        if (container) {
+            encryptedKey = container.privateKey;
+        } else {
+            errorStr = [resDict objectForKey:@"errorStr"];
+            loadStoppedByError = YES;
+        }
+        
+        if (NO == loadStoppedByUser && NO == loadStoppedByError) {
+            if (nil == encryptedKey) {
+                errorStr = @"Can't find need key or wrong password";
+            } else {
+                NSString * normalizedKeyString = [container.privateKey.key stripBase64];
+                loadDone =
+                [[VirgilKeyManager sharedInstance] prepareAndSaveLoadedPrivateKey : normalizedKeyString
+                                                                           containerType : VirgilContainerParanoic
+                                                                                 account : container.privateKey.account];
+            }
+        }
+    }
+    
+    return @{@"loadDoneBool" : [NSNumber numberWithBool:loadDone],
+             @"errorString" : errorStr};
 }
 
 - (IBAction)onLoadKeyClicked:(id)sender {
@@ -290,92 +347,39 @@ static BOOL _cloudSelection = YES;
     // Get params from GUI
     BOOL useCloudStorage = NSOnState == [[_matrixField cellAtRow:0 column:0] state];
     
-    NSString * password = _cloudPassword.stringValue.length ? _cloudPassword.stringValue : nil;
-    BOOL passwordValid = [VirgilValidator simplePassword : password];
+    NSString * password = _keyPassword.stringValue.length ? _keyPassword.stringValue : nil;
+    BOOL passwordValid = (password == nil) ? YES : [VirgilValidator simplePassword : password];
     
-    if ((useCloudStorage && !passwordValid) || (!useCloudStorage && password && !passwordValid)) {
-        [self showCompactErrorView : @"Password can't be empty, can't contain not latin letters."
-                            atView : _cloudPassword];
+    if (!useCloudStorage && !passwordValid) {
+        [self showCompactErrorView : @"Password can't contain not latin letters."
+                            atView : _keyPassword];
         return;
     }
     
     [self setProgressVisible:YES];
     [self preventUserActivity:YES];
     
+    // Do long term manipulation asynchronously
     @try {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             NSString * errorStr = nil;
-            VirgilPrivateKey * encryptedKey = nil;
-            BOOL loadStoppedByUser = NO;
-            BOOL loadStoppedByError = NO;
-            if (useCloudStorage) {
-                
-                // Load key from cloud
-                encryptedKey = [VirgilKeyManager getEncryptedPrivateKeyFromCloud:_account containerPassword:password];
-            } else {
-                
-                // Load key from file
-                NSDictionary * resDict = [self importKeyWithPassword:password];
-                
-                VLogInfo(@"importKeyWithPassword res : %@", resDict);
-                
-                loadStoppedByUser = [[resDict objectForKey:@"stoppedByUser"] boolValue];
-                
-                if (!loadStoppedByUser) {
-                    VirgilKeyChainContainer * container = nil;
-                    if ([[resDict objectForKey:@"resBool"] boolValue]) {
-                        container = [resDict objectForKey:@"resContainer"];
-                    }
-                    
-                    if (container) {
-                        encryptedKey = container.privateKey;
-                    } else {
-                        errorStr = [resDict objectForKey:@"errorStr"];
-                        loadStoppedByError = YES;
-                    }
-                }
+            BOOL successfull = NO;
+            
+            if (useCloudStorage) { // Load private key from cloud
+                successfull = [[VirgilKeyManager sharedInstance] requestPrivateKeyFromCloud:_account];
+                errorStr = successfull ? nil : @"Can't request private key.";
+            
+            } else { // Load private key from file
+                NSDictionary * resDict = [self loadKeyFromFileWithPassword:password];
+                successfull = [[resDict objectForKey:@"loadDoneBool"] boolValue];
+                errorStr = [resDict objectForKey:@"errorString"];
             }
             
-            VirgilPrivateKey * decryptedKey = nil;
-            
-            
-            BOOL loadDone = NO;
-            if (NO == loadStoppedByUser && NO == loadStoppedByError) {
-                if (nil == encryptedKey) {
-                    errorStr = @"Can't find need key or wrong password";
-                } else {
-                    
-                    // Check is need to ask for private key password
-                    NSString * normalizedKeyString = [encryptedKey.key stripBase64];
-                    if ([VirgilPrivateKeyManager isCorrectEncryptedPrivateKey : normalizedKeyString]) {
-                        NSString * userPassword = [VirgilGui getUserPassword];
-                    
-                        if (nil != userPassword) {
-                            decryptedKey = [[VirgilPrivateKey alloc] initAccount : _account
-                                                                   containerType : (useCloudStorage ? VirgilContainerNormal : VirgilContainerParanoic)
-                                                                      privateKey : normalizedKeyString
-                                                                     keyPassword : userPassword
-                                                               containerPassword : password];
-                            [VirgilKeyManager setPrivateKey : decryptedKey
-                                                 forAccount : _account];
-                            loadDone = YES;
-                        }
-                    } else {
-                        // Decrypt private key with account password
-                        decryptedKey = [VirgilKeyManager decryptedPrivateKey:encryptedKey keyPassword:password];
-                        if (nil == decryptedKey) {
-                            errorStr = @"Can't decrypt private key";
-                        } else {
-                            loadDone = YES;
-                        }
-                    }
-                }
-            }
-            
+            // Update GUI
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self externalActionDone];
-                if (NO == loadDone) {
-                    if (nil != errorStr) {
+                if (NO == successfull) {
+                    if (nil != errorStr && [errorStr length]) {
                         [self showErrorView : errorStr];
                     }
                 } else {
@@ -383,7 +387,6 @@ static BOOL _cloudSelection = YES;
                 }
             });
         });
-        
     }
     @catch (NSException *exception) {
         [self externalActionDone];
@@ -423,9 +426,9 @@ static BOOL _cloudSelection = YES;
     BOOL boolRes = NO;
     
     if (loadDone) {
-        VirgilKeyChainContainer * container = [VirgilKeyManager importAccountData : _account
-                                                                         fromFile : fileName
-                                                                     withPassword : password];
+        VirgilKeyChainContainer * container = [[VirgilKeyManager sharedInstance] importAccountData : _account
+                                                                                          fromFile : fileName
+                                                                                      withPassword : password];
         if (container) {
             boolRes = YES;
             [res setObject:container forKey:@"resContainer"];
@@ -434,8 +437,8 @@ static BOOL _cloudSelection = YES;
     
     [res setObject:[NSNumber numberWithBool:boolRes] forKey:@"resBool"];
     [res setObject:[NSNumber numberWithBool:stoppedByUser] forKey:@"stoppedByUser"];
-    if ([VirgilKeyManager lastError]) {
-        [res setObject:[VirgilKeyManager lastError] forKey:@"errorStr"];
+    if ([[VirgilKeyManager sharedInstance] lastError]) {
+        [res setObject:[[VirgilKeyManager sharedInstance] lastError] forKey:@"errorStr"];
     }
     
     return [res copy];
@@ -447,7 +450,7 @@ static BOOL _cloudSelection = YES;
     
     @try {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            BOOL res = [VirgilKeyManager resendConfirmEMail : _account];
+            BOOL res = [[VirgilKeyManager sharedInstance] resendConfirmEMail : _account];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self externalActionDone];
@@ -455,7 +458,7 @@ static BOOL _cloudSelection = YES;
                     //[self delegateRefresh];
                     _infoTextField.stringValue = @"Please wait for email with confirmation code";
                 } else {
-                    [self showErrorView : [VirgilKeyManager lastError]];
+                    [self showErrorView : [[VirgilKeyManager sharedInstance] lastError]];
                 }
                 [self setProgressVisible:NO];
                 [self preventUserActivity:NO];
@@ -467,6 +470,69 @@ static BOOL _cloudSelection = YES;
         [self externalActionDone];
     }
     @finally {}
+}
+
+- (IBAction)onResendConfirmationForPrivateKey:(id)sender {
+    [self setProgressVisible:YES];
+    [self preventUserActivity:YES];
+    
+    @try {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            BOOL res = [[VirgilKeyManager sharedInstance] requestPrivateKeyFromCloud:_account];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self externalActionDone];
+                if (res) {
+                    //[self delegateRefresh];
+                    _infoTextField.stringValue = @"Please wait for email with confirmation code";
+                } else {
+                    [self showErrorView : [[VirgilKeyManager sharedInstance] lastError]];
+                }
+                [self setProgressVisible:NO];
+                [self preventUserActivity:NO];
+            });
+        });
+        
+    }
+    @catch (NSException *exception) {
+        [self externalActionDone];
+    }
+    @finally {}
+}
+
+- (IBAction)onResendDeleteRequest:(id)sender {
+    [self setProgressVisible:YES];
+    [self preventUserActivity:YES];
+    
+    @try {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            BOOL res = [[VirgilKeyManager sharedInstance] requestAccountDeletion:_account];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self externalActionDone];
+                if (res) {
+                    //[self delegateRefresh];
+                    _infoTextField.stringValue = @"Please wait for email with confirmation code";
+                } else {
+                    [self showErrorView : [[VirgilKeyManager sharedInstance] lastError]];
+                }
+                [self setProgressVisible:NO];
+                [self preventUserActivity:NO];
+            });
+        });
+        
+    }
+    @catch (NSException *exception) {
+        [self externalActionDone];
+    }
+    @finally {}
+}
+
+- (IBAction)onStopDeletion:(id)sender {
+    [[VirgilKeyManager sharedInstance] terminateAccountDeletion:_account];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self delegateRefresh];
+    });
 }
 
 - (void) delegateRefresh {

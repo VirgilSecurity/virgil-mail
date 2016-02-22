@@ -41,6 +41,7 @@
 #import <OutgoingMessage.h>
 #import "VirgilDecryptedMailContainer.h"
 #import "VirgilAccountInfo.h"
+#import "VirgilDataTypes.h"
 
 #define VIRGIL_MAIL_INFO_ATTACH @"virgilsecurity.mailinfo"
 #define WIN_MAIL_DATA_ATTACH @"winmail.dat"
@@ -72,6 +73,8 @@
 // Helper work with keys
 - (NSString *) confirmationCodeFromEmail : (Message *) message;
 - (BOOL) accountNeedsConfirmation : (NSString *)account;
+- (BOOL) accountNeedsPrivateKey : (NSString *)account;
+- (BOOL) accountNeedsDeletion : (NSString *)account;
 - (NSString *) getMyAccountFromMessage : (Message *)message;
 
 - (VirgilAccountInfo *) accountInfo : (NSString *)account

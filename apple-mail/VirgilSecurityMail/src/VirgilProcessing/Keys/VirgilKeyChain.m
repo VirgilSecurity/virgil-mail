@@ -37,7 +37,7 @@
 #import "VirgilKeyChain.h"
 #import "VirgilKeychainWrapper.h"
 
-#define kVirgilService  @"VirgilSecurityMail"
+#define kVirgilService  @"VirgilSecurityMail_v3"
 
 @implementation VirgilKeyChain
 
@@ -65,7 +65,8 @@
 
 + (void) removeContainer : (NSString *) account {
     if (account) {
-        [VirgilKeychainWrapper remove:kVirgilService account:account];
+        [VirgilKeychainWrapper remove : kVirgilService
+                              account : account];
     }
 }
 

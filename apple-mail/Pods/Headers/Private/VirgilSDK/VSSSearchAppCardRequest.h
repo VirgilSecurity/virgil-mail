@@ -1,0 +1,1 @@
+../../../VirgilSDK/Classes/Networking/Requests/Keys/VSSSearchAppCardRequest.h

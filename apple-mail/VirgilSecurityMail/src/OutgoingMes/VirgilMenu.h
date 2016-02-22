@@ -70,7 +70,6 @@ enum MenuElement {
 @property (nonatomic, weak) id <VirgilMenuViewDelegate> delegate;
 
 - (id) init;
-- (void) configureMenu : (NSArray *)elements;
 - (void) elementSelected : (id)sender;
 - (void) prepareForFullScreen : (NSWindow *)window;
 - (void) prepareForNormalView : (NSWindow *)window;

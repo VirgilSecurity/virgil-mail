@@ -42,8 +42,7 @@
 - (id) initAccount : (NSString *)a_account
      containerType : (VirgilContainerType)a_containerType
         privateKey : (NSString *)a_key
-       keyPassword : (NSString *)a_keyPassword
- containerPassword : (NSString *)a_containerPassword;
+       keyPassword : (NSString *)a_keyPassword;
 
 // NSCoder
 - (void) encodeWithCoder : (NSCoder *)encoder;
@@ -54,5 +53,4 @@
 @property VirgilContainerType containerType;
 @property (retain) NSString * key;
 @property (retain) NSString * keyPassword;
-@property (retain) NSString * containerPassword;
 @end

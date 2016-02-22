@@ -41,13 +41,17 @@
 @interface VirgilKeyChainContainer : NSObject <NSCoding>
 
 - (id) init;
-- (id) initWithPrivateKey : (VirgilPrivateKey *)a_privateKey
-             andPublicKey : (VirgilPublicKey *)a_publicKey
-                 isActive : (BOOL)a_isActive;
+- (id) initWithPrivateKey : (VirgilPrivateKey *)privateKey
+             andPublicKey : (VirgilPublicKey *)publicKey
+                 isActive : (BOOL)isActive
+         isWaitPrivateKey : (BOOL)isWaitPrivateKey
+        isWaitForDeletion : (BOOL)isWaitForDeletion;
 
 @property (retain, readonly) VirgilPrivateKey * privateKey;
 @property (retain, readonly) VirgilPublicKey * publicKey;
 @property (readonly) BOOL isActive;
+@property BOOL isWaitPrivateKey;
+@property BOOL isWaitForDeletion;
 
 // NSCoder
 - (void) encodeWithCoder : (NSCoder *)encoder;

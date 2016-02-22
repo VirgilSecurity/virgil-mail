@@ -39,6 +39,8 @@ typedef NS_ENUM(NSInteger, AccountStatus) {
     
     statusAllDone,
     statusWaitActivation,
+    statusWaitPrivateKey,
+    statusWaitDeletion,
     statusPublicKeyPresent,
     statusPublicKeyNotPresent
 };

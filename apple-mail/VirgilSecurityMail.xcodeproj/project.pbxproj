@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		406F80CDC8FB8507E75CA722 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C380A1941DE75E4EB3861AA6 /* Pods.framework */; };
 		490435301BC53E3E00083D16 /* VirgilAccountItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 4904352F1BC53E3E00083D16 /* VirgilAccountItem.m */; };
 		490435381BC5652100083D16 /* account.png in Resources */ = {isa = PBXBuildFile; fileRef = 490435371BC5652100083D16 /* account.png */; };
 		4904353D1BC56BFB00083D16 /* attention.png in Resources */ = {isa = PBXBuildFile; fileRef = 490435391BC56BFB00083D16 /* attention.png */; };
@@ -19,14 +20,18 @@
 		4904354F1BC6BD1700083D16 /* VirgilActionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4904354E1BC6BD1700083D16 /* VirgilActionsViewController.m */; };
 		4907EC591BCE77170008A7E8 /* VirgilComposeWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4907EC571BCE77170008A7E8 /* VirgilComposeWindowController.m */; };
 		4907EC621BCE78060008A7E8 /* VirgilMailToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4907EC601BCE78060008A7E8 /* VirgilMailToolbar.m */; };
-		49330E5E1BF3D92700D5CF26 /* update-uuid.sh in Resources */ = {isa = PBXBuildFile; fileRef = 49330E5D1BF3D92700D5CF26 /* update-uuid.sh */; settings = {ASSET_TAGS = (); }; };
-		49330E601BF3DBDC00D5CF26 /* org.virgilsecurity.mail.update.uuid.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49330E5F1BF3DBDC00D5CF26 /* org.virgilsecurity.mail.update.uuid.plist */; settings = {ASSET_TAGS = (); }; };
-		493F96571BD57F0200EF1930 /* rect.png in Resources */ = {isa = PBXBuildFile; fileRef = 493F96531BD57F0200EF1930 /* rect.png */; settings = {ASSET_TAGS = (); }; };
-		493F96581BD57F0200EF1930 /* rect@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 493F96541BD57F0200EF1930 /* rect@2x.png */; settings = {ASSET_TAGS = (); }; };
-		493F96591BD57F0200EF1930 /* square.png in Resources */ = {isa = PBXBuildFile; fileRef = 493F96551BD57F0200EF1930 /* square.png */; settings = {ASSET_TAGS = (); }; };
-		493F965A1BD57F0200EF1930 /* square@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 493F96561BD57F0200EF1930 /* square@2x.png */; settings = {ASSET_TAGS = (); }; };
-		4948BC321BCFB7F300D30AB7 /* VirgilHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4948BC311BCFB7F300D30AB7 /* VirgilHelpViewController.m */; settings = {ASSET_TAGS = (); }; };
-		4948BC351BCFD4D600D30AB7 /* VirgilComposeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4948BC341BCFD4D600D30AB7 /* VirgilComposeViewController.m */; settings = {ASSET_TAGS = (); }; };
+		49330E5E1BF3D92700D5CF26 /* update-uuid.sh in Resources */ = {isa = PBXBuildFile; fileRef = 49330E5D1BF3D92700D5CF26 /* update-uuid.sh */; };
+		49330E601BF3DBDC00D5CF26 /* org.virgilsecurity.mail.update.uuid.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49330E5F1BF3DBDC00D5CF26 /* org.virgilsecurity.mail.update.uuid.plist */; };
+		493F96571BD57F0200EF1930 /* rect.png in Resources */ = {isa = PBXBuildFile; fileRef = 493F96531BD57F0200EF1930 /* rect.png */; };
+		493F96581BD57F0200EF1930 /* rect@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 493F96541BD57F0200EF1930 /* rect@2x.png */; };
+		493F96591BD57F0200EF1930 /* square.png in Resources */ = {isa = PBXBuildFile; fileRef = 493F96551BD57F0200EF1930 /* square.png */; };
+		493F965A1BD57F0200EF1930 /* square@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 493F96561BD57F0200EF1930 /* square@2x.png */; };
+		4948BC321BCFB7F300D30AB7 /* VirgilHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4948BC311BCFB7F300D30AB7 /* VirgilHelpViewController.m */; };
+		4948BC351BCFD4D600D30AB7 /* VirgilComposeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4948BC341BCFD4D600D30AB7 /* VirgilComposeViewController.m */; };
+		494EE26A1C7615D400AE6EF5 /* VirgilSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494EE2681C76152E00AE6EF5 /* VirgilSDK.framework */; };
+		494EE26C1C7615D500AE6EF5 /* VirgilFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494EE26B1C7615D500AE6EF5 /* VirgilFoundation.framework */; };
+		494EE26F1C7615F900AE6EF5 /* VirgilFoundation.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 494EE26D1C7615F900AE6EF5 /* VirgilFoundation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		494EE2701C7615F900AE6EF5 /* VirgilSDK.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 494EE26E1C7615F900AE6EF5 /* VirgilSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		49740B621BC5000800000D5E /* VirgilAccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49740B611BC5000800000D5E /* VirgilAccountsViewController.m */; };
 		499D24E11BCEC67500AFA42B /* VirgilEmailSendConfigureViewContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 499D24DF1BCEC67500AFA42B /* VirgilEmailSendConfigureViewContainer.m */; };
 		49C821DE1BBAA6A70031ED7F /* encrypt_mail.png in Resources */ = {isa = PBXBuildFile; fileRef = 49C821DB1BBAA6A70031ED7F /* encrypt_mail.png */; };
@@ -75,18 +80,14 @@
 		D15362B41B6C0335000215F9 /* HTMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = D15362B11B6C0335000215F9 /* HTMLNode.m */; };
 		D15362B51B6C0335000215F9 /* HTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D15362B31B6C0335000215F9 /* HTMLParser.m */; };
 		D15362BA1B6C48EB000215F9 /* VirgilEncryptedContent.m in Sources */ = {isa = PBXBuildFile; fileRef = D15362B91B6C48EB000215F9 /* VirgilEncryptedContent.m */; };
-		D15362C11B6F3555000215F9 /* VirgilCryptoLibWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = D15362C01B6F3555000215F9 /* VirgilCryptoLibWrapper.mm */; };
 		D15362C51B6F62E4000215F9 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = D15362C41B6F62E4000215F9 /* NSData+Base64.m */; };
 		D194C9791BA6595B00483413 /* Sparkle.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = D14D64991BA3A71C00B47D22 /* Sparkle.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D1CBA84C1B7BC43900217919 /* VirgilDocumentEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = D1CBA84B1B7BC43900217919 /* VirgilDocumentEditor.m */; };
 		D1CBA84F1B7BC55300217919 /* VirgilMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = D1CBA84E1B7BC55300217919 /* VirgilMenu.m */; };
 		D1CBA8521B7BD8B900217919 /* VirgilNSWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = D1CBA8511B7BD8B900217919 /* VirgilNSWindow.m */; };
 		D1CBA85F1B7D45C200217919 /* VirgilComposeBackEnd.m in Sources */ = {isa = PBXBuildFile; fileRef = D1CBA85E1B7D45C200217919 /* VirgilComposeBackEnd.m */; };
-		D1DDA9001B91A34100002A2F /* VirgilHelpers.mm in Sources */ = {isa = PBXBuildFile; fileRef = D1DDA8F51B91A34100002A2F /* VirgilHelpers.mm */; };
-		D1DDA9011B91A34100002A2F /* VirgilKeyManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = D1DDA8F71B91A34100002A2F /* VirgilKeyManager.mm */; };
+		D1DDA9011B91A34100002A2F /* VirgilKeyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DDA8F71B91A34100002A2F /* VirgilKeyManager.m */; };
 		D1DDA9021B91A34100002A2F /* VirgilPrivateKey.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DDA8F91B91A34100002A2F /* VirgilPrivateKey.m */; };
-		D1DDA9031B91A34100002A2F /* VirgilPrivateKeyEndpoints.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DDA8FB1B91A34100002A2F /* VirgilPrivateKeyEndpoints.m */; };
-		D1DDA9041B91A34100002A2F /* VirgilPrivateKeyManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = D1DDA8FD1B91A34100002A2F /* VirgilPrivateKeyManager.mm */; };
 		D1DDA9051B91A34100002A2F /* VirgilPublicKey.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DDA8FF1B91A34100002A2F /* VirgilPublicKey.m */; };
 		D1DDA9081B91B05300002A2F /* VirgilErrorCodesParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DDA9071B91B05300002A2F /* VirgilErrorCodesParser.m */; };
 		D1DDA90B1B91B1EA00002A2F /* VirgilValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DDA90A1B91B1EA00002A2F /* VirgilValidator.m */; };
@@ -97,7 +98,6 @@
 		D1DDA9261B91B22F00002A2F /* VirgilReplaceAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DDA9201B91B22F00002A2F /* VirgilReplaceAnimator.m */; };
 		D1DDA9271B91B22F00002A2F /* VirgilReplaceSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DDA9221B91B22F00002A2F /* VirgilReplaceSegue.m */; };
 		D1DDA92A1B91B2B000002A2F /* NSViewController+VirgilView.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DDA9291B91B2B000002A2F /* NSViewController+VirgilView.m */; };
-		D1DDA92D1B91B32600002A2F /* VirgilNetRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DDA92C1B91B32600002A2F /* VirgilNetRequest.m */; };
 		D1DDA9391B91BAF600002A2F /* VirgilGui.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DDA9381B91BAF600002A2F /* VirgilGui.m */; };
 		D1E7CAC11B73FC9E00F4EC4F /* VirgilClassNameResolver.m in Sources */ = {isa = PBXBuildFile; fileRef = D1E7CAC01B73FC9E00F4EC4F /* VirgilClassNameResolver.m */; };
 		D1E7CAC71B7688D400F4EC4F /* VirgilDecryptedContent.m in Sources */ = {isa = PBXBuildFile; fileRef = D1E7CAC61B7688D400F4EC4F /* VirgilDecryptedContent.m */; };
@@ -136,9 +136,11 @@
 		D194C9731BA6558A00483413 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = "$(CONTENTS_FOLDER_PATH)/XPCServices";
-			dstSubfolderSpec = 16;
+			dstPath = "";
+			dstSubfolderSpec = 10;
 			files = (
+				494EE26F1C7615F900AE6EF5 /* VirgilFoundation.framework in CopyFiles */,
+				494EE2701C7615F900AE6EF5 /* VirgilSDK.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -174,6 +176,10 @@
 		4948BC311BCFB7F300D30AB7 /* VirgilHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilHelpViewController.m; path = VirgilSecurityMail/src/Gui/VirgilHelpViewController.m; sourceTree = "<group>"; };
 		4948BC331BCFD4D600D30AB7 /* VirgilComposeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilComposeViewController.h; path = VirgilSecurityMail/src/OutgoingMes/VirgilComposeViewController.h; sourceTree = "<group>"; };
 		4948BC341BCFD4D600D30AB7 /* VirgilComposeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilComposeViewController.m; path = VirgilSecurityMail/src/OutgoingMes/VirgilComposeViewController.m; sourceTree = "<group>"; };
+		494EE2681C76152E00AE6EF5 /* VirgilSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VirgilSDK.framework; path = "../../../Library/Developer/Xcode/DerivedData/VirgilSecurityMail-bzsnpoziwlkpzafdyijrkskvxhtg/Build/Products/Debug/VirgilSDK.framework"; sourceTree = "<group>"; };
+		494EE26B1C7615D500AE6EF5 /* VirgilFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VirgilFoundation.framework; path = "../../../Library/Developer/Xcode/DerivedData/VirgilSecurityMail-bzsnpoziwlkpzafdyijrkskvxhtg/Build/Products/Debug/VirgilFoundation.framework"; sourceTree = "<group>"; };
+		494EE26D1C7615F900AE6EF5 /* VirgilFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = VirgilFoundation.framework; path = "/Users/kutashenko/Library/Developer/Xcode/DerivedData/VirgilSecurityMail-bzsnpoziwlkpzafdyijrkskvxhtg/Build/Products/Debug/VirgilFoundation.framework"; sourceTree = "<absolute>"; };
+		494EE26E1C7615F900AE6EF5 /* VirgilSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = VirgilSDK.framework; path = "/Users/kutashenko/Library/Developer/Xcode/DerivedData/VirgilSecurityMail-bzsnpoziwlkpzafdyijrkskvxhtg/Build/Products/Debug/VirgilSDK.framework"; sourceTree = "<absolute>"; };
 		49740B601BC5000800000D5E /* VirgilAccountsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilAccountsViewController.h; path = VirgilSecurityMail/src/Gui/VirgilAccountsViewController.h; sourceTree = "<group>"; };
 		49740B611BC5000800000D5E /* VirgilAccountsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilAccountsViewController.m; path = VirgilSecurityMail/src/Gui/VirgilAccountsViewController.m; sourceTree = "<group>"; };
 		499D24DF1BCEC67500AFA42B /* VirgilEmailSendConfigureViewContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilEmailSendConfigureViewContainer.m; path = VirgilSecurityMail/src/Gui/VirgilEmailSendConfigureViewContainer.m; sourceTree = "<group>"; };
@@ -219,6 +225,8 @@
 		49FBE6A91BBA86C5001EC529 /* VirgilMessageListObjectProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilMessageListObjectProxy.h; path = VirgilSecurityMail/src/CommonMes/VirgilMessageListObjectProxy.h; sourceTree = "<group>"; };
 		49FBE6AA1BBA86C5001EC529 /* VirgilMessageListObjectProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilMessageListObjectProxy.m; path = VirgilSecurityMail/src/CommonMes/VirgilMessageListObjectProxy.m; sourceTree = "<group>"; };
 		49FBE6AC1BBA9C8F001EC529 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		980CF8AA6C5FFEEEEA692550 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		C380A1941DE75E4EB3861AA6 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D10400AC1BA84DB3003FC484 /* VirgilMail.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = VirgilMail.icns; path = Resources/VirgilMail.icns; sourceTree = "<group>"; };
 		D10400B11BA85578003FC484 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		D11174331B67FBEE00DD9A39 /* VirgilSecurityMail.mailbundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VirgilSecurityMail.mailbundle; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -259,8 +267,6 @@
 		D15362B31B6C0335000215F9 /* HTMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTMLParser.m; path = VirgilSecurityMail/src/Helpers/HTMLParser/HTMLParser.m; sourceTree = "<group>"; };
 		D15362B61B6C43AD000215F9 /* VirgilEncryptedContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilEncryptedContent.h; path = VirgilSecurityMail/src/VirgilProcessing/VirgilEncryptedContent.h; sourceTree = "<group>"; };
 		D15362B91B6C48EB000215F9 /* VirgilEncryptedContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilEncryptedContent.m; path = VirgilSecurityMail/src/VirgilProcessing/VirgilEncryptedContent.m; sourceTree = "<group>"; };
-		D15362BF1B6F3555000215F9 /* VirgilCryptoLibWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilCryptoLibWrapper.h; path = VirgilSecurityMail/src/VirgilProcessing/VirgilCryptoLibWrapper.h; sourceTree = "<group>"; };
-		D15362C01B6F3555000215F9 /* VirgilCryptoLibWrapper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VirgilCryptoLibWrapper.mm; path = VirgilSecurityMail/src/VirgilProcessing/VirgilCryptoLibWrapper.mm; sourceTree = "<group>"; };
 		D15362C31B6F62E4000215F9 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+Base64.h"; path = "VirgilSecurityMail/src/Helpers/Base64/NSData+Base64.h"; sourceTree = "<group>"; };
 		D15362C41B6F62E4000215F9 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+Base64.m"; path = "VirgilSecurityMail/src/Helpers/Base64/NSData+Base64.m"; sourceTree = "<group>"; };
 		D1CBA84A1B7BC43900217919 /* VirgilDocumentEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilDocumentEditor.h; path = VirgilSecurityMail/src/OutgoingMes/VirgilDocumentEditor.h; sourceTree = "<group>"; };
@@ -271,16 +277,10 @@
 		D1CBA8511B7BD8B900217919 /* VirgilNSWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilNSWindow.m; path = VirgilSecurityMail/src/OutgoingMes/VirgilNSWindow.m; sourceTree = "<group>"; };
 		D1CBA85D1B7D45C200217919 /* VirgilComposeBackEnd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilComposeBackEnd.h; path = VirgilSecurityMail/src/OutgoingMes/VirgilComposeBackEnd.h; sourceTree = "<group>"; };
 		D1CBA85E1B7D45C200217919 /* VirgilComposeBackEnd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilComposeBackEnd.m; path = VirgilSecurityMail/src/OutgoingMes/VirgilComposeBackEnd.m; sourceTree = "<group>"; };
-		D1DDA8F41B91A34000002A2F /* VirgilHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilHelpers.h; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilHelpers.h; sourceTree = "<group>"; };
-		D1DDA8F51B91A34100002A2F /* VirgilHelpers.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VirgilHelpers.mm; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilHelpers.mm; sourceTree = "<group>"; };
 		D1DDA8F61B91A34100002A2F /* VirgilKeyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilKeyManager.h; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilKeyManager.h; sourceTree = "<group>"; };
-		D1DDA8F71B91A34100002A2F /* VirgilKeyManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VirgilKeyManager.mm; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilKeyManager.mm; sourceTree = "<group>"; };
+		D1DDA8F71B91A34100002A2F /* VirgilKeyManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilKeyManager.m; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilKeyManager.m; sourceTree = "<group>"; };
 		D1DDA8F81B91A34100002A2F /* VirgilPrivateKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilPrivateKey.h; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilPrivateKey.h; sourceTree = "<group>"; };
 		D1DDA8F91B91A34100002A2F /* VirgilPrivateKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilPrivateKey.m; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilPrivateKey.m; sourceTree = "<group>"; };
-		D1DDA8FA1B91A34100002A2F /* VirgilPrivateKeyEndpoints.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilPrivateKeyEndpoints.h; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilPrivateKeyEndpoints.h; sourceTree = "<group>"; };
-		D1DDA8FB1B91A34100002A2F /* VirgilPrivateKeyEndpoints.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilPrivateKeyEndpoints.m; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilPrivateKeyEndpoints.m; sourceTree = "<group>"; };
-		D1DDA8FC1B91A34100002A2F /* VirgilPrivateKeyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilPrivateKeyManager.h; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilPrivateKeyManager.h; sourceTree = "<group>"; };
-		D1DDA8FD1B91A34100002A2F /* VirgilPrivateKeyManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VirgilPrivateKeyManager.mm; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilPrivateKeyManager.mm; sourceTree = "<group>"; };
 		D1DDA8FE1B91A34100002A2F /* VirgilPublicKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilPublicKey.h; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilPublicKey.h; sourceTree = "<group>"; };
 		D1DDA8FF1B91A34100002A2F /* VirgilPublicKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilPublicKey.m; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilPublicKey.m; sourceTree = "<group>"; };
 		D1DDA9061B91B05300002A2F /* VirgilErrorCodesParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilErrorCodesParser.h; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilErrorCodesParser.h; sourceTree = "<group>"; };
@@ -301,8 +301,6 @@
 		D1DDA9221B91B22F00002A2F /* VirgilReplaceSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilReplaceSegue.m; path = VirgilSecurityMail/src/Gui/Helpers/VirgilReplaceSegue.m; sourceTree = "<group>"; };
 		D1DDA9281B91B2B000002A2F /* NSViewController+VirgilView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSViewController+VirgilView.h"; path = "VirgilSecurityMail/src/Gui/Helpers/NSViewController+VirgilView.h"; sourceTree = "<group>"; };
 		D1DDA9291B91B2B000002A2F /* NSViewController+VirgilView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSViewController+VirgilView.m"; path = "VirgilSecurityMail/src/Gui/Helpers/NSViewController+VirgilView.m"; sourceTree = "<group>"; };
-		D1DDA92B1B91B32600002A2F /* VirgilNetRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilNetRequest.h; path = VirgilSecurityMail/src/Helpers/VirgilNetRequest.h; sourceTree = "<group>"; };
-		D1DDA92C1B91B32600002A2F /* VirgilNetRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilNetRequest.m; path = VirgilSecurityMail/src/Helpers/VirgilNetRequest.m; sourceTree = "<group>"; };
 		D1DDA9371B91BAF600002A2F /* VirgilGui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilGui.h; path = VirgilSecurityMail/src/Gui/VirgilGui.h; sourceTree = "<group>"; };
 		D1DDA9381B91BAF600002A2F /* VirgilGui.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilGui.m; path = VirgilSecurityMail/src/Gui/VirgilGui.m; sourceTree = "<group>"; };
 		D1E7CABF1B73FC9E00F4EC4F /* VirgilClassNameResolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilClassNameResolver.h; path = VirgilSecurityMail/src/Helpers/VirgilClassNameResolver.h; sourceTree = "<group>"; };
@@ -322,6 +320,7 @@
 		D1FA262A1B999B0F003335BB /* VirgilKeyChain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilKeyChain.m; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilKeyChain.m; sourceTree = "<group>"; };
 		D1FA262C1B999D33003335BB /* VirgilKeyChainContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilKeyChainContainer.h; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilKeyChainContainer.h; sourceTree = "<group>"; };
 		D1FA262D1B999D33003335BB /* VirgilKeyChainContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilKeyChainContainer.m; path = VirgilSecurityMail/src/VirgilProcessing/Keys/VirgilKeyChainContainer.m; sourceTree = "<group>"; };
+		EB7897BBA56D055A5DD81BF4 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -333,6 +332,9 @@
 				D1FA26281B9993BE003335BB /* Security.framework in Frameworks */,
 				D13F60481B6A3ADD00508C79 /* AppKit.framework in Frameworks */,
 				D11174371B67FBEE00DD9A39 /* CoreFoundation.framework in Frameworks */,
+				406F80CDC8FB8507E75CA722 /* Pods.framework in Frameworks */,
+				494EE26C1C7615D500AE6EF5 /* VirgilFoundation.framework in Frameworks */,
+				494EE26A1C7615D400AE6EF5 /* VirgilSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -385,6 +387,7 @@
 				D14D64751BA3A41000B47D22 /* VirgilUpdate */,
 				D11174351B67FBEE00DD9A39 /* Frameworks */,
 				D11174341B67FBEE00DD9A39 /* Products */,
+				ED796B1CEBE3DB95DD4F1E4D /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -400,12 +403,17 @@
 		D11174351B67FBEE00DD9A39 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				494EE26D1C7615F900AE6EF5 /* VirgilFoundation.framework */,
+				494EE26E1C7615F900AE6EF5 /* VirgilSDK.framework */,
+				494EE26B1C7615D500AE6EF5 /* VirgilFoundation.framework */,
+				494EE2681C76152E00AE6EF5 /* VirgilSDK.framework */,
 				49FBE6AC1BBA9C8F001EC529 /* QuartzCore.framework */,
 				D14D64991BA3A71C00B47D22 /* Sparkle.framework */,
 				D1FA26271B9993BE003335BB /* Security.framework */,
 				D14ACD9F1B97702500A8E164 /* WebKit.framework */,
 				D13F60471B6A3ADD00508C79 /* AppKit.framework */,
 				D11174361B67FBEE00DD9A39 /* CoreFoundation.framework */,
+				C380A1941DE75E4EB3861AA6 /* Pods.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -467,8 +475,6 @@
 				D1E7CAC01B73FC9E00F4EC4F /* VirgilClassNameResolver.m */,
 				D1DDA9091B91B1EA00002A2F /* VirgilValidator.h */,
 				D1DDA90A1B91B1EA00002A2F /* VirgilValidator.m */,
-				D1DDA92B1B91B32600002A2F /* VirgilNetRequest.h */,
-				D1DDA92C1B91B32600002A2F /* VirgilNetRequest.m */,
 				D14ACD911B974AE700A8E164 /* VirgilPreferencesHelper.h */,
 				D14ACD921B974AE700A8E164 /* VirgilPreferencesHelper.m */,
 				D1FA26241B98E6E2003335BB /* VirgilKeychainWrapper.h */,
@@ -519,8 +525,6 @@
 				D13F605B1B6B6D6200508C79 /* VirgilProcessingManager.m */,
 				D15362B61B6C43AD000215F9 /* VirgilEncryptedContent.h */,
 				D15362B91B6C48EB000215F9 /* VirgilEncryptedContent.m */,
-				D15362BF1B6F3555000215F9 /* VirgilCryptoLibWrapper.h */,
-				D15362C01B6F3555000215F9 /* VirgilCryptoLibWrapper.mm */,
 				D1F7207F1B73E892007C8955 /* VirgilDecryptedMail.h */,
 				D1F720801B73E892007C8955 /* VirgilDecryptedMail.m */,
 				49E32F981BC24D6500A37F42 /* VirgilDecryptedMailContainer.h */,
@@ -581,16 +585,10 @@
 			children = (
 				D1DDA9061B91B05300002A2F /* VirgilErrorCodesParser.h */,
 				D1DDA9071B91B05300002A2F /* VirgilErrorCodesParser.m */,
-				D1DDA8F41B91A34000002A2F /* VirgilHelpers.h */,
-				D1DDA8F51B91A34100002A2F /* VirgilHelpers.mm */,
 				D1DDA8F61B91A34100002A2F /* VirgilKeyManager.h */,
-				D1DDA8F71B91A34100002A2F /* VirgilKeyManager.mm */,
+				D1DDA8F71B91A34100002A2F /* VirgilKeyManager.m */,
 				D1DDA8F81B91A34100002A2F /* VirgilPrivateKey.h */,
 				D1DDA8F91B91A34100002A2F /* VirgilPrivateKey.m */,
-				D1DDA8FA1B91A34100002A2F /* VirgilPrivateKeyEndpoints.h */,
-				D1DDA8FB1B91A34100002A2F /* VirgilPrivateKeyEndpoints.m */,
-				D1DDA8FC1B91A34100002A2F /* VirgilPrivateKeyManager.h */,
-				D1DDA8FD1B91A34100002A2F /* VirgilPrivateKeyManager.mm */,
 				D1DDA8FE1B91A34100002A2F /* VirgilPublicKey.h */,
 				D1DDA8FF1B91A34100002A2F /* VirgilPublicKey.m */,
 				D1FA26291B999B0F003335BB /* VirgilKeyChain.h */,
@@ -691,6 +689,15 @@
 			name = Helpers;
 			sourceTree = "<group>";
 		};
+		ED796B1CEBE3DB95DD4F1E4D /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				980CF8AA6C5FFEEEEA692550 /* Pods.debug.xcconfig */,
+				EB7897BBA56D055A5DD81BF4 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -698,12 +705,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D11174411B67FBEE00DD9A39 /* Build configuration list for PBXNativeTarget "VirgilSecurityMail" */;
 			buildPhases = (
+				9171A9332F91D540E6B93F1B /* Check Pods Manifest.lock */,
 				D111742F1B67FBEE00DD9A39 /* Sources */,
 				D11174301B67FBEE00DD9A39 /* Frameworks */,
 				D11174311B67FBEE00DD9A39 /* Resources */,
 				D194C9731BA6558A00483413 /* CopyFiles */,
 				D13F60441B6A2C9E00508C79 /* ShellScript */,
 				D10400B21BA855FB003FC484 /* Fix version info */,
+				4558FF68351E395DDC13BD43 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -818,6 +827,36 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		4558FF68351E395DDC13BD43 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9171A9332F91D540E6B93F1B /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		D10400AF1BA85309003FC484 /* Fix version info */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -872,7 +911,6 @@
 				490435301BC53E3E00083D16 /* VirgilAccountItem.m in Sources */,
 				49C821FC1BBD70620031ED7F /* VirgilBannerContainerViewController.m in Sources */,
 				49C821FF1BBDD1680031ED7F /* VirgilDynamicVariables.m in Sources */,
-				D1DDA9041B91A34100002A2F /* VirgilPrivateKeyManager.mm in Sources */,
 				D14ACD9E1B976BA100A8E164 /* VirgilPreferences.m in Sources */,
 				D1E7CAC11B73FC9E00F4EC4F /* VirgilClassNameResolver.m in Sources */,
 				D1DDA9241B91B22F00002A2F /* NSBezierPath_KBAdditions.m in Sources */,
@@ -882,8 +920,6 @@
 				4904354F1BC6BD1700083D16 /* VirgilActionsViewController.m in Sources */,
 				49C821F61BBC830A0031ED7F /* VirgilHeadersEditor.m in Sources */,
 				49CD50201BB40436007B0E23 /* HTMLConverter.m in Sources */,
-				D1DDA92D1B91B32600002A2F /* VirgilNetRequest.m in Sources */,
-				D15362C11B6F3555000215F9 /* VirgilCryptoLibWrapper.mm in Sources */,
 				D15362C51B6F62E4000215F9 /* NSData+Base64.m in Sources */,
 				49C9B2761BB568DB001B86F0 /* VirgilLog.m in Sources */,
 				D13F605C1B6B6D6200508C79 /* VirgilProcessingManager.m in Sources */,
@@ -891,7 +927,6 @@
 				49C821F91BBD524D0031ED7F /* VirgilMessageViewController.m in Sources */,
 				D1DDA9021B91A34100002A2F /* VirgilPrivateKey.m in Sources */,
 				49CD501D1BB3DD89007B0E23 /* NSString+QuotedPrintable.m in Sources */,
-				D1DDA9001B91A34100002A2F /* VirgilHelpers.mm in Sources */,
 				D15362BA1B6C48EB000215F9 /* VirgilEncryptedContent.m in Sources */,
 				49DBE3FB1BCBF22D002B4A0D /* VirgilGetPassword.m in Sources */,
 				D15362B51B6C0335000215F9 /* HTMLParser.m in Sources */,
@@ -923,14 +958,13 @@
 				4907EC591BCE77170008A7E8 /* VirgilComposeWindowController.m in Sources */,
 				490435431BC56D5400083D16 /* VirgilAccountInfo.m in Sources */,
 				D1F720811B73E892007C8955 /* VirgilDecryptedMail.m in Sources */,
-				D1DDA9031B91A34100002A2F /* VirgilPrivateKeyEndpoints.m in Sources */,
 				D1DDA9391B91BAF600002A2F /* VirgilGui.m in Sources */,
 				D1CBA84F1B7BC55300217919 /* VirgilMenu.m in Sources */,
 				49D0C2ED1BB9B8ED00131ACB /* VirgilHeaderViewController.m in Sources */,
 				D13F602F1B6A1A9600508C79 /* JRLPSwizzle.m in Sources */,
 				499D24E11BCEC67500AFA42B /* VirgilEmailSendConfigureViewContainer.m in Sources */,
 				49E32F9A1BC24D6600A37F42 /* VirgilDecryptedMailContainer.m in Sources */,
-				D1DDA9011B91A34100002A2F /* VirgilKeyManager.mm in Sources */,
+				D1DDA9011B91A34100002A2F /* VirgilKeyManager.m in Sources */,
 				D1FA26261B98E6E2003335BB /* VirgilKeychainWrapper.m in Sources */,
 				D1DDA9151B91B21700002A2F /* VirgilEmailConfirmViewController.m in Sources */,
 			);
@@ -1067,6 +1101,7 @@
 		};
 		D11174421B67FBEE00DD9A39 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 980CF8AA6C5FFEEEEA692550 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_MODULES_AUTOLINK = YES;
@@ -1087,25 +1122,18 @@
 					"VirgilSecurityMail/src/MailHeaders/**",
 					/usr/include/libxml2,
 					"virgil-libs/include",
+					"${PODS_ROOT}/Headers/Public",
+					"${PODS_ROOT}/Headers/Public/VirgilFoundation",
+					OSXSDK.framework/Headers,
 				);
 				INFOPLIST_FILE = "VirgilSecurityMail/VirgilSecurityMail-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Mail/Bundles";
-				LIBRARY_SEARCH_PATHS = (
-					/usr/local/lib/,
-					/Volumes/Macintosh,
-					HD,
-					2/usr/local/lib,
-				);
+				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
 				"OTHER_LDFLAGS[arch=*]" = (
-					"-Lvirgil-libs/lib",
 					"-lcurl",
 					"-lxml2",
-					"-lvirgil",
-					"-lvirgil_sdk_keys",
-					"-lrestless",
-					"-lmbedtls",
 					"-lssl",
 					"-lcrypto",
 					"-lldap",
@@ -1122,6 +1150,7 @@
 		};
 		D11174431B67FBEE00DD9A39 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EB7897BBA56D055A5DD81BF4 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_MODULES_AUTOLINK = YES;
@@ -1142,25 +1171,18 @@
 					"VirgilSecurityMail/src/MailHeaders/**",
 					/usr/include/libxml2,
 					"virgil-libs/include",
+					"${PODS_ROOT}/Headers/Public",
+					"${PODS_ROOT}/Headers/Public/VirgilFoundation",
+					OSXSDK.framework/Headers,
 				);
 				INFOPLIST_FILE = "VirgilSecurityMail/VirgilSecurityMail-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Mail/Bundles";
-				LIBRARY_SEARCH_PATHS = (
-					/usr/local/lib/,
-					/Volumes/Macintosh,
-					HD,
-					2/usr/local/lib,
-				);
+				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
 				"OTHER_LDFLAGS[arch=*]" = (
-					"-Lvirgil-libs/lib",
 					"-lcurl",
 					"-lxml2",
-					"-lvirgil",
-					"-lvirgil_sdk_keys",
-					"-lrestless",
-					"-lmbedtls",
 					"-lssl",
 					"-lcrypto",
 					"-lldap",

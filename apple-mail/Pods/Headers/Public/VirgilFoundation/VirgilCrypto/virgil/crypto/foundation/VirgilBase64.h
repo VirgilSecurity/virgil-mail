@@ -1,0 +1,1 @@
+../../../../../../../VirgilFoundation/Frameworks/osx/VirgilCrypto.framework/Versions/A/Headers/virgil/crypto/foundation/VirgilBase64.h

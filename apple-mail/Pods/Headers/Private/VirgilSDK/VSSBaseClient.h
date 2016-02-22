@@ -1,0 +1,1 @@
+../../../VirgilSDK/Classes/Networking/Client/VSSBaseClient.h

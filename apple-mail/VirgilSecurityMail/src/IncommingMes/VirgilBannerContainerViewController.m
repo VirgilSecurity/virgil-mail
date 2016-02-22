@@ -145,7 +145,7 @@
     if (nil != oldTextField) {
         if (![viewController isExistsDynVar:BANNER_TEXT_FIELD]) [viewController setDynVar:BANNER_TEXT_FIELD value:oldTextField];
         
-        NSString * account = [bannerController.representedObject dynVar:@"ConfirmationAccount"];
+        //NSString * account = [bannerController.representedObject dynVar:@"ConfirmationAccount"];
         NSString * message = @"Virgil confirmation code";
         NSTextField * newTextField = [[NSTextField alloc] initWithFrame:NSMakeRect(50, 2, 200, 25)];
         [newTextField setFont:oldTextField.font];
@@ -176,10 +176,10 @@
     NSString * code = [((BannerContainerViewController*)self).representedObject dynVar:@"ConfirmationCode"];
     NSString * account = [((BannerContainerViewController*)self).representedObject dynVar:@"ConfirmationAccount"];
     if (nil == account | nil == code) return;
-    [VirgilGui confirmAccount : account
-             confirmationCode : code
-                 resultObject : self
-                  resultBlock : ^(id arg1, BOOL isOk) {
+    [VirgilGui confirmAction : account
+            confirmationCode : code
+                resultObject : self
+                 resultBlock : ^(id arg1, BOOL isOk) {
                       if (isOk) {
                           @try {
                               [self performSelectorOnMainThread : @selector(clearVirgilBanner)

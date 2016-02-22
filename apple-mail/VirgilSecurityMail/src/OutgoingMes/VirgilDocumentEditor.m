@@ -73,7 +73,6 @@
 }
 
 - (void) MAShow {
-    static BOOL catchNotificationsReady = NO;
     [self MAShow];
     
 #if 0

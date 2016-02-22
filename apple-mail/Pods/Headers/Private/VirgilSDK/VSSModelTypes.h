@@ -1,0 +1,1 @@
+../../../VirgilSDK/Classes/Models/VSSModelTypes.h

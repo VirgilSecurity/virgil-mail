@@ -45,6 +45,7 @@
 #import "VirgilKeyChainContainer.h"
 #import "VirgilKeyChain.h"
 #import "VirgilLog.h"
+#import "VirgilProcessingManager.h"
 
 static BOOL _accountsVisible = NO;
 static BOOL _configureForSendVisible = NO;
@@ -232,10 +233,10 @@ static BOOL _configureForSendVisible = NO;
     }
 }
 
-+ (void) confirmAccount : account
-       confirmationCode : code
-           resultObject : (id)resultObject
-            resultBlock : (void (^)(id arg1, BOOL isOk))resultBlock {
++ (void) confirmAction : account
+      confirmationCode : code
+          resultObject : (id)resultObject
+           resultBlock : (void (^)(id arg1, BOOL isOk))resultBlock {
     NSWindow * containerWindow = [[NSApplication sharedApplication] mainWindow];
     if (nil == containerWindow) {
         resultBlock(resultObject, NO);
@@ -260,6 +261,16 @@ static BOOL _configureForSendVisible = NO;
         NSWindowController * windowControler = [storyBoard instantiateInitialController];
         if (nil == windowControler) return;
         
+        BOOL needAccountCreateConfirmation = [[VirgilProcessingManager sharedInstance] accountNeedsConfirmation:account];
+        BOOL needPrivKeyRequestConfirmation = [[VirgilProcessingManager sharedInstance] accountNeedsPrivateKey:account];
+        BOOL needDeletionConfirmation = [[VirgilProcessingManager sharedInstance] accountNeedsDeletion:account];
+        if (!needAccountCreateConfirmation &&
+            !needPrivKeyRequestConfirmation &&
+            !needDeletionConfirmation) {
+            resultBlock(resultObject, NO);
+            return;
+        }
+        
         VirgilEmailConfirmViewController * controller =
         (VirgilEmailConfirmViewController*)[storyBoard instantiateControllerWithIdentifier : @"viewEmailConfirm"];
         
@@ -267,6 +278,18 @@ static BOOL _configureForSendVisible = NO;
             resultBlock(resultObject, NO);
             return;
         }
+        
+        NSString * title;
+        
+        if (needAccountCreateConfirmation) {
+            title = @"Virgil Security Sign Up Confirmation";
+        } else if (needDeletionConfirmation) {
+            title = @"Virgil Security Delete Confirmation";
+        } else {
+            title = @"Virgil Private Key request Confirmation";
+        }
+        
+        [controller setTitle : title];
         
         [controller setConfirmationCode : code
                              forAccount : account

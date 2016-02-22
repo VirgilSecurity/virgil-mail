@@ -40,7 +40,6 @@
 #define kContainerType      @"ContainerType"
 #define kKey                @"Key"
 #define kKeyPassword        @"KeyPassword"
-#define kContainerPassword  @"ContainerPassword"
 
 @implementation VirgilPrivateKey
 + (id) alloc {
@@ -53,7 +52,6 @@
         self.containerType = VirgilContainerUnknown;
         self.key = @"";
         self.keyPassword = @"";
-        self.containerPassword = @"";
     }
     return self;
 }
@@ -61,14 +59,12 @@
 - (id) initAccount : (NSString *)a_account
      containerType : (VirgilContainerType)a_containerType
         privateKey : (NSString *)a_key
-       keyPassword : (NSString *)a_keyPassword
- containerPassword : (NSString *)a_containerPassword {
+       keyPassword : (NSString *)a_keyPassword {
     if ([super init]) {
         self.account = [[NSString alloc] initWithString : a_account];
         self.containerType = a_containerType;
         self.key = [[NSString alloc] initWithString : a_key];
         self.keyPassword = (nil == a_keyPassword) ? nil : [[NSString alloc] initWithString : a_keyPassword];
-        self.containerPassword = (nil == a_containerPassword) ? nil : [[NSString alloc] initWithString : a_containerPassword];
     }
     return self;
 }
@@ -78,7 +74,6 @@
     [encoder encodeInt : (int)self.containerType forKey : kContainerType];
     [encoder encodeObject : self.key forKey : kKey];
     [encoder encodeObject : self.keyPassword forKey : kKeyPassword];
-    [encoder encodeObject : self.containerPassword forKey : kContainerPassword];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {
@@ -86,12 +81,10 @@
     VirgilContainerType a_containerType = (VirgilContainerType)[decoder decodeIntForKey : kContainerType];
     NSString * a_key = [decoder decodeObjectForKey : kKey];
     NSString * a_keyPassword = [decoder decodeObjectForKey : kKeyPassword];
-    NSString * a_containerPassword = [decoder decodeObjectForKey : kContainerPassword];
     return [self initAccount : a_account
                containerType : a_containerType
                   privateKey : a_key
-                 keyPassword : a_keyPassword
-           containerPassword : a_containerPassword];
+                 keyPassword : a_keyPassword];
 }
 
 // TODO: Remove it !
@@ -102,7 +95,6 @@
     [res appendFormat:@"account : %@\n", self.account];
     [res appendFormat:@"containerType : %ld\n", (long)self.containerType];
     [res appendFormat:@"keyPassword : %@\n", self.keyPassword];
-    [res appendFormat:@"containerPassword : %@\n", self.containerPassword];
     [res appendFormat:@"key : %@\n", self.key];
     [res appendString:@"} \n"];
     return res;

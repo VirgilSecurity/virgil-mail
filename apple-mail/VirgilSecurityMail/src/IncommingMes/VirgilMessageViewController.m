@@ -57,7 +57,9 @@
     
     NSString * myAccount = [[VirgilProcessingManager sharedInstance] getMyAccountFromMessage:message];
     BOOL accountNeedsConfirmation = [[VirgilProcessingManager sharedInstance] accountNeedsConfirmation:myAccount];
-    if (YES == accountNeedsConfirmation) {
+    BOOL accountNeedsPrivateKey = [[VirgilProcessingManager sharedInstance] accountNeedsPrivateKey:myAccount];
+    BOOL accountNeedsDeletion = [[VirgilProcessingManager sharedInstance] accountNeedsDeletion:myAccount];
+    if (accountNeedsConfirmation || accountNeedsPrivateKey || accountNeedsDeletion) {
         NSString * confirmationCode = [[VirgilProcessingManager sharedInstance] confirmationCodeFromEmail:message];
         if (nil != confirmationCode) {
             [self needShowConfirmationAccept:myAccount code:confirmationCode object:representedObject];

@@ -37,9 +37,9 @@
 #import "VirgilProcessingManager.h"
 #import <string.h>
 #import "HTMLParser.h"
-#import "VirgilCryptoLibWrapper.h"
 #import "VirgilDecryptedMail.h"
 #import "NSData+Base64.h"
+#import "NSString+Base64.h"
 #import "HTMLConverter.h"
 #import "VirgilEncryptedContent.h"
 #import "VirgilDecryptedContent.h"
@@ -52,6 +52,8 @@
 #import "VirgilKeyChain.h"
 #import "VirgilMain.h"
 #import "VirgilLog.h"
+#import "VSSCryptor.h"
+#import "VSSSigner.h"
 
 #import <MessageStore.h>
 #import <MailAccount.h>
@@ -241,10 +243,10 @@
                                  privateKey : (NSString *) privateKey
                          privateKeyPassword : (NSString *) privateKeyPassword {
     
-    NSData * decryptedJsonData = [VirgilCryptoLibWrapper decryptData:content.emailData
-                                                         publicKeyId:publicKeyId
-                                                          privateKey:privateKey
-                                                  privateKeyPassword:privateKeyPassword];
+    NSData * decryptedJsonData = [[VSSCryptor new] decryptData : content.emailData
+                                                   publicKeyId : publicKeyId
+                                                    privateKey : [privateKey dataUsingEncoding:NSUTF8StringEncoding]
+                                                   keyPassword : privateKeyPassword];
     
     if (nil == decryptedJsonData) return nil;
     
@@ -381,9 +383,9 @@
         return NO;
     }
     
-    BOOL signatureCorrect = [VirgilCryptoLibWrapper isSignatureCorrect : encryptedContent.signature
-                                                                  data : encryptedContent.emailData
-                                                             publicKey : senderPublicKey];
+    BOOL signatureCorrect = [[VSSSigner new] verifySignature : encryptedContent.signature
+                                                        data : encryptedContent.emailData
+                                                   publicKey : [senderPublicKey dataUsingEncoding:NSUTF8StringEncoding]];
     if (NO == signatureCorrect) {
         VLogError(@"Wrong signature !");
         [_decryptedMailContainer setStatus:decryptError forEmail:message];
@@ -420,10 +422,10 @@
         NSData * encryptedAttachement = [self getEncryptedAttachement:part];
         if (nil == encryptedAttachement) continue;
         
-        NSData * decryptedAttachement = [VirgilCryptoLibWrapper decryptData:encryptedAttachement
-                                                                publicKeyId:publicId
-                                                                 privateKey:privateKey.key
-                                                         privateKeyPassword:privateKey.keyPassword];
+        NSData * decryptedAttachement = [[VSSCryptor new] decryptData : encryptedAttachement
+                                                          publicKeyId : publicId
+                                                           privateKey : [privateKey.key dataUsingEncoding:NSUTF8StringEncoding]
+                                                          keyPassword : privateKey.keyPassword];
         if (nil == decryptedAttachement) continue;
         [_decryptedMailContainer addAttachement : decryptedAttachement
                                      attachHash : [part attachmentFilename]
@@ -495,6 +497,28 @@
     return YES;
 }
 
+- (BOOL) accountNeedsPrivateKey : (NSString *)account {
+    if (nil == account) return  NO;
+    
+    VirgilKeyChainContainer * container = [VirgilKeyChain loadContainer : account];
+    if (nil == container) return NO;
+    if (!container.isActive) return NO;
+    if (nil != container.privateKey) return NO;
+    
+    return container.isWaitPrivateKey;
+}
+
+- (BOOL) accountNeedsDeletion : (NSString *)account {
+    if (nil == account) return  NO;
+    
+    VirgilKeyChainContainer * container = [VirgilKeyChain loadContainer : account];
+    if (nil == container) return NO;
+    if (!container.isActive) return NO;
+    if (nil == container.privateKey) return NO;
+    
+    return container.isWaitForDeletion;
+}
+
 - (MimePart *) topLevelPartByAnyPart : (MimePart *)part {
     MimePart * res = (MimePart *)part;
     while ([res parentPart] != nil) {
@@ -537,13 +561,17 @@
     VirgilKeyChainContainer * container = [VirgilKeyChain loadContainer : account];
     if (container) {
         if (nil != container.privateKey) {
-            res.status = container.isActive ? statusAllDone : statusWaitActivation;
+            if (container.isActive) {
+                res.status = container.isWaitForDeletion ? statusWaitDeletion : statusAllDone;
+            } else {
+                res.status = statusWaitActivation;
+            }
         } else {
-            res.status = statusPublicKeyPresent;
+            res.status = container.isWaitPrivateKey ? statusWaitPrivateKey : statusPublicKeyPresent;
         }
     } else {
         if (YES == checkInCloud) {
-            VirgilPublicKey * publicKey = [VirgilKeyManager getPublicKey : account];
+            VirgilPublicKey * publicKey = [[VirgilKeyManager sharedInstance] getPublicKey : account];
             res.status = (nil == publicKey) ? statusPublicKeyNotPresent : statusPublicKeyPresent;
         } else {
             res.status = statusUnknown;
@@ -632,7 +660,7 @@
     
     VirgilPublicKey * publicKey = container.publicKey;
     if (nil == container || nil == publicKey) {
-        publicKey = [VirgilKeyManager getPublicKey : account];
+        publicKey = [[VirgilKeyManager sharedInstance] getPublicKey : account];
     }
     
     if (nil == publicKey) return nil;
@@ -642,7 +670,9 @@
     container =
         [[VirgilKeyChainContainer alloc] initWithPrivateKey : privateKey
                                                andPublicKey : publicKey
-                                                   isActive : isActive];
+                                                   isActive : isActive
+                                           isWaitPrivateKey : NO
+                                          isWaitForDeletion : NO];
     
     [VirgilKeyChain saveContainer : container
                        forAccount : account];
@@ -671,7 +701,7 @@
     // Get all public keys
     NSMutableArray * publicKeys = [[NSMutableArray alloc] init];
     
-    VirgilPublicKey * publicKeyForSender = [VirgilKeyManager getPublicKey : fixedSender];
+    VirgilPublicKey * publicKeyForSender = [[VirgilKeyManager sharedInstance] getPublicKey : fixedSender];
     if (nil == publicKeyForSender) return nil;
     [publicKeys addObject : publicKeyForSender];
     
@@ -680,20 +710,27 @@
     
     for (NSString * receiverEmail in receivers) {
         NSString * fixedReceiver = [self getEmailFromFullName : receiverEmail];
-        VirgilPublicKey * publicKey = [VirgilKeyManager getPublicKey : fixedReceiver];
+        VirgilPublicKey * publicKey = [[VirgilKeyManager sharedInstance] getPublicKey : fixedReceiver];
         if (nil != publicKey) {
             [publicKeys addObject : publicKey];
         }
     }
     
     // Encrypt email data
-    NSData * encryptedEmailBody = [VirgilCryptoLibWrapper encryptData : jsonData
-                                                           publicKeys : [publicKeys copy]];
+    
+    VSSCryptor * cryptor = [VSSCryptor new];
+    
+    for (VirgilPublicKey * key in publicKeys) {
+        [cryptor addKeyRecepient : key.publicKeyID
+                       publicKey : [key.publicKey dataUsingEncoding:NSUTF8StringEncoding]];
+    }
+    NSData * encryptedEmailBody = [cryptor encryptData : jsonData
+                                      embedContentInfo : @YES];
     
     // Create signature
-    NSData * signature = [VirgilCryptoLibWrapper signatureForData : encryptedEmailBody
-                                                   withPrivateKey : container.privateKey.key
-                                                privatKeyPassword : container.privateKey.keyPassword];
+    NSData * signature = [[VSSSigner new] signData : encryptedEmailBody
+                                        privateKey : [container.privateKey.key dataUsingEncoding:NSUTF8StringEncoding]
+                                       keyPassword : container.privateKey.keyPassword];
     VirgilEncryptedContent * encryptedContent =
             [[VirgilEncryptedContent alloc] initWithEmailData : encryptedEmailBody
                                                     signature : signature
@@ -723,11 +760,11 @@
     NSMutableArray * publicKeys = [[NSMutableArray alloc] init];
     for (NSString * receiverEmail in receivers) {
         NSString * fixedReceiver = [self getEmailFromFullName : receiverEmail];
-        VirgilPublicKey * publicKey = [VirgilKeyManager getPublicKey : fixedReceiver];
+        VirgilPublicKey * publicKey = [[VirgilKeyManager sharedInstance] getPublicKey : fixedReceiver];
         [publicKeys addObject : publicKey];
     }
     
-    VirgilPublicKey * publicKeyForSender = [VirgilKeyManager getPublicKey : fixedSender];
+    VirgilPublicKey * publicKeyForSender = [[VirgilKeyManager sharedInstance] getPublicKey : fixedSender];
     [publicKeys addObject : publicKeyForSender];
     
     // Encrypt all attachments
@@ -741,8 +778,16 @@
             encryptedAttach = [attach copy];
         }
         
-        NSData * encryptedContent = [VirgilCryptoLibWrapper encryptData : encryptedAttach.originalData
-                                                             publicKeys : [publicKeys copy]];
+        VSSCryptor * cryptor = [VSSCryptor new];
+        
+        for (VirgilPublicKey * key in publicKeys) {
+            [cryptor addKeyRecepient : key.publicKeyID
+                           publicKey : [key.publicKey dataUsingEncoding:NSUTF8StringEncoding]];
+        }
+        
+        NSData * encryptedContent = [cryptor encryptData : encryptedAttach.originalData
+                                        embedContentInfo : @YES];
+        
         if (nil != encryptedContent) {
             NSString * base64Str = [encryptedContent base64EncodedString];
             encryptedAttach.originalData = [base64Str dataUsingEncoding : NSUTF8StringEncoding];

@@ -36,10 +36,11 @@
 
 #import "VirgilPublicKey.h"
 
-#define kAccountID      @"AccountID"
+#define kCardID         @"CardID"
 #define kPublicKeyID    @"PublicKeyID"
 #define kPublicKey      @"PublicKey"
-#define kUserDataID     @"UserDataID"
+#define kIdentityID     @"IdentityID"
+#define kActionID       @"ActionID"
 
 @implementation VirgilPublicKey : NSObject
 
@@ -49,52 +50,53 @@
 
 - (id) init {
     if ([super init]) {
-        self.accountID = @"";
+        self.cardID = @"";
         self.publicKeyID = @"";
         self.publicKey = @"";
-        self.userDataID = @"";
+        self.identityID = @"";
+        self.actionID = @"";
     }
     return self;
 }
 
-- (id) initAccountID:(NSString *)a_accountID
-         publicKeyID:(NSString *)a_publicKeyID
-           publicKey:(NSString *)a_publicKey
-          userDataID:(NSString *)a_userDataID{
+- (id) initCardID : (NSString *)a_cardID
+         publicKeyID : (NSString *)a_publicKeyID
+           publicKey : (NSString *)a_publicKey
+          identityID : (NSString *)a_identityID {
     if ([super init]) {
-        self.accountID = [[NSString alloc] initWithString:a_accountID];
+        self.cardID = [[NSString alloc] initWithString:a_cardID];
         self.publicKeyID = [[NSString alloc] initWithString:a_publicKeyID];
         self.publicKey = [[NSString alloc] initWithString:a_publicKey];
-        self.userDataID = [[NSString alloc] initWithString:a_userDataID];
+        self.identityID = [[NSString alloc] initWithString:a_identityID];
     }
     return self;
 }
 
 - (void) encodeWithCoder:(NSCoder *)encoder {
-    [encoder encodeObject : self.accountID forKey : kAccountID];
+    [encoder encodeObject : self.cardID forKey : kCardID];
     [encoder encodeObject : self.publicKeyID forKey : kPublicKeyID];
     [encoder encodeObject : self.publicKey forKey : kPublicKey];
-    [encoder encodeObject : self.userDataID forKey : kUserDataID];
+    [encoder encodeObject : self.identityID forKey : kIdentityID];
+    [encoder encodeObject : self.actionID forKey : kActionID];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {
-    NSString * a_accountID = [decoder decodeObjectForKey : kAccountID];
-    NSString * a_publicKeyID = [decoder decodeObjectForKey : kPublicKeyID];
-    NSString * a_publicKey = [decoder decodeObjectForKey : kPublicKey];
-    NSString * a_userDataID = [decoder decodeObjectForKey : kUserDataID];
-    return [self initAccountID : a_accountID
-                   publicKeyID : a_publicKeyID
-                     publicKey : a_publicKey
-                    userDataID : a_userDataID];
+    self.cardID = [decoder decodeObjectForKey : kCardID];
+    self.publicKeyID = [decoder decodeObjectForKey : kPublicKeyID];
+    self.publicKey = [decoder decodeObjectForKey : kPublicKey];
+    self.identityID = [decoder decodeObjectForKey : kIdentityID];
+    self.actionID = [decoder decodeObjectForKey : kActionID];
+    return self;
 }
 
 - (NSString *) description {
     NSMutableString * res = [[NSMutableString alloc] init];
     [res appendString:@"VirgilPublicKey : \n"];
     [res appendString:@"{ \n"];
-    [res appendFormat:@"accountID : %@\n", self.accountID];
-    [res appendFormat:@"userDataID : %@\n", self.userDataID];
+    [res appendFormat:@"cardID : %@\n", self.cardID];
+    [res appendFormat:@"identityID : %@\n", self.identityID];
     [res appendFormat:@"publicKeyID : %@\n", self.publicKeyID];
+    [res appendFormat:@"actionID : %@\n", self.actionID];
     [res appendFormat:@"publicKey : %@\n", self.publicKey];
     [res appendString:@"} \n"];
     return res;

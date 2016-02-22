@@ -102,7 +102,7 @@ static NSArray *_entityReferences;
     NSMutableString *html = [[NSMutableString alloc] init];
 
     // Number of characters.
-    int len = [text length];
+    NSUInteger len = [text length];
 
     for (int i = 0; i < len; ++i)
     {
@@ -387,8 +387,8 @@ static NSArray *_entityReferences;
 
 - (BOOL)string:(NSString *)string from:(int)index hasPrefix:(NSString *)prefix
 {
-    int stringLen = [string length];
-    int prefixLen = [prefix length];
+    NSUInteger stringLen = [string length];
+    NSUInteger prefixLen = [prefix length];
 
     if ((stringLen - index) < prefixLen)
     {

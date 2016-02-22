@@ -41,6 +41,7 @@
 #import "VirgilGui.h"
 #import "VirgilProcessingManager.h"
 #import "VirgilLog.h"
+#import "VirgilKeyChain.h"
 
 #define TAG_BTN_CANCEL 8000
 #define TAG_BTN_OK 8001
@@ -49,9 +50,10 @@
 #define TAG_TEXT_INFO 8003
 
 static NSString * curAccount = nil;
+NSString * windowTitle = @"";
 
 @interface VirgilEmailConfirmViewController ()
-
+@property (weak) IBOutlet NSTextField *titleField;
 @end
 
 @implementation VirgilEmailConfirmViewController
@@ -59,6 +61,11 @@ static NSString * curAccount = nil;
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setCurrentState:confirmInAction];
+    _titleField.stringValue = windowTitle;
+}
+
+- (void) setTitle : (NSString *)title {
+    windowTitle = title;
 }
 
 - (void) setConfirmationCode : (NSString *) confirmationCode
@@ -70,14 +77,11 @@ static NSString * curAccount = nil;
     
     @try {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            if (![[VirgilProcessingManager sharedInstance] accountNeedsConfirmation:account]) {
-                resultBlock(resultObject, YES);
-                [self performSelectorOnMainThread : @selector(closeWindow)
-                                       withObject : nil
-                                    waitUntilDone : NO];
-            } else {
-                BOOL res =  [VirgilKeyManager confirmAccountCreation : account
-                                                                code : confirmationCode];
+            
+            // Confirm account creation
+            if ([[VirgilProcessingManager sharedInstance] accountNeedsConfirmation:account]) {
+                BOOL res = [[VirgilKeyManager sharedInstance] confirmAccountCreation : account
+                                                                                 code : confirmationCode];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (res) {
                         [self setCurrentState:confirmDone];
@@ -86,6 +90,44 @@ static NSString * curAccount = nil;
                     }
                     resultBlock(resultObject, res);
                 });
+                
+                
+            // Confirm private key request
+            } else if ([[VirgilProcessingManager sharedInstance] accountNeedsPrivateKey:account]) {
+                
+                // Request private key password
+                BOOL res = [[VirgilKeyManager sharedInstance] confirmPrivateKeyRequest : account
+                                                                                  code : confirmationCode];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (res) {
+                        [self setCurrentState:confirmDone];
+                    } else {
+                        [self setCurrentState:confirmError];
+                    }
+                    resultBlock(resultObject, res);
+                });
+                
+            // Confirm account deletion
+            } else if ([[VirgilProcessingManager sharedInstance] accountNeedsDeletion:account]) {
+                BOOL res = [[VirgilKeyManager sharedInstance] confirmAccountDeletion : account
+                                                                                code : confirmationCode];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (res) {
+                        [VirgilKeyChain removeContainer : account];
+                        [self setCurrentState:confirmDone];
+                    } else {
+                        [self setCurrentState:confirmError];
+                    }
+                    resultBlock(resultObject, res);
+                });
+                
+                
+            // There is no need action for confirmation
+            } else {
+                resultBlock(resultObject, YES);
+                [self performSelectorOnMainThread : @selector(closeWindow)
+                                       withObject : nil
+                                    waitUntilDone : NO];
             }
         });
         
@@ -109,7 +151,18 @@ static NSString * curAccount = nil;
     
     @try {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [VirgilKeyManager resendConfirmEMail : curAccount];
+            if ([[VirgilProcessingManager sharedInstance] accountNeedsConfirmation:curAccount]) {
+                [[VirgilKeyManager sharedInstance] resendConfirmEMail : curAccount];
+            }
+            
+            if ([[VirgilProcessingManager sharedInstance] accountNeedsPrivateKey:curAccount]) {
+                [[VirgilKeyManager sharedInstance] requestPrivateKeyFromCloud :curAccount];
+            }
+            
+            if ([[VirgilProcessingManager sharedInstance] accountNeedsDeletion:curAccount]) {
+                [[VirgilKeyManager sharedInstance] requestAccountDeletion:curAccount];
+            }
+            
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self closeWindow];
             });
@@ -148,7 +201,7 @@ static NSString * curAccount = nil;
         [self setProgressVisible:NO];
         [self preventUserActivity:NO];
         if (nil != infoField) {
-            infoField.stringValue = @"Account confirmation was finished successfuly.";
+            infoField.stringValue = @"Confirmation was finished successfuly.";
         }
         [self setButtonVisible:YES forTag:TAG_BTN_OK];
         [self setButtonVisible:NO forTag:TAG_BTN_CANCEL];
@@ -173,7 +226,7 @@ static NSString * curAccount = nil;
         [self setProgressVisible:NO];
         [self preventUserActivity:NO];
         if (nil != infoField) {
-            infoField.stringValue = @"Account confirmation error!";
+            infoField.stringValue = @"Confirmation error!";
         }
         [self setButtonVisible:NO forTag:TAG_BTN_OK];
         [self setButtonVisible:YES forTag:TAG_BTN_CANCEL];

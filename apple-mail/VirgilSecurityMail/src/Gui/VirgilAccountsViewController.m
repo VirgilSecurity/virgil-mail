@@ -46,6 +46,8 @@
     VirgilActionsViewController * _viewNoAccount;
     VirgilActionsViewController * _viewGetKey;
     VirgilActionsViewController * _viewWaitConfirmation;
+    VirgilActionsViewController * _viewWaitPrivateKey;
+    VirgilActionsViewController * _viewWaitDeletion;
     VirgilActionsViewController * _viewNoStatus;
 }
 
@@ -59,6 +61,8 @@
     _viewNoAccount = (VirgilActionsViewController *) [storyboard instantiateControllerWithIdentifier : @"viewNoAccount"];
     _viewGetKey = (VirgilActionsViewController *) [storyboard instantiateControllerWithIdentifier : @"viewGetKey"];
     _viewWaitConfirmation = (VirgilActionsViewController *) [storyboard instantiateControllerWithIdentifier : @"viewWaitConfirmation"];
+    _viewWaitPrivateKey = (VirgilActionsViewController *) [storyboard instantiateControllerWithIdentifier : @"viewWaitConfirmationPrivKey"];
+    _viewWaitDeletion = (VirgilActionsViewController *) [storyboard instantiateControllerWithIdentifier : @"viewWaitDeletion"];
     _viewNoStatus = (VirgilActionsViewController *) [storyboard instantiateControllerWithIdentifier : @"viewNoStatus"];
     
     [super viewDidLoad];
@@ -88,6 +92,8 @@
     else if (statusPublicKeyNotPresent == info.status) item.accountImage = [NSImage imageNamed:@"problem"];
     else if (statusPublicKeyPresent == info.status) item.accountImage = [NSImage imageNamed:@"attention"];
     else if (statusWaitActivation == info.status) item.accountImage = [NSImage imageNamed:@"attention"];
+    else if (statusWaitPrivateKey == info.status) item.accountImage = [NSImage imageNamed:@"attention"];
+    else if (statusWaitDeletion == info.status) item.accountImage = [NSImage imageNamed:@"ok"];
     return item;
 }
 
@@ -165,10 +171,14 @@
     _accountName.stringValue = accountItem.name;
     _accountEmail.stringValue = accountItem.account;
     
+    NSLog(@"        %@ : status = %ld", accountItem.account, (long)accountItem.status);
+    
     if (statusAllDone == accountItem.status) return [self switchEmbedViewTo : _viewAccountPresent];
     else if (statusPublicKeyNotPresent == accountItem.status) return [self switchEmbedViewTo : _viewNoAccount];
     else if (statusPublicKeyPresent == accountItem.status) return [self switchEmbedViewTo : _viewGetKey];
     else if (statusWaitActivation == accountItem.status) return [self switchEmbedViewTo : _viewWaitConfirmation];
+    else if (statusWaitPrivateKey == accountItem.status) return [self switchEmbedViewTo : _viewWaitPrivateKey];
+    else if (statusWaitDeletion == accountItem.status) return [self switchEmbedViewTo : _viewWaitDeletion];
     else if (statusUnknown == accountItem.status) return [self switchEmbedViewTo : _viewNoStatus];
     
     return nil;
@@ -193,7 +203,8 @@
             break;
         }
     }
-    [self tableViewSelectionDidChange:nil];
+    [self tableViewSelectionDidChange : [NSNotification notificationWithName : @"empty notification"
+                                                                      object : nil]];
 }
 
 

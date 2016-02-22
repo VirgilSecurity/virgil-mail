@@ -42,9 +42,8 @@
  */
 typedef NS_ENUM(NSInteger, VirgilContainerType) {
     VirgilContainerUnknown = -1,
-    
-    VirgilContainerEasy = 0,
-    VirgilContainerNormal,
+
+    VirgilContainerNormal = 0,
     VirgilContainerParanoic
 };
 
