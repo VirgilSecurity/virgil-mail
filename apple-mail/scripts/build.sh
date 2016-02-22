@@ -57,8 +57,7 @@ function prepare() {
 
 function build_project() {
 	echo -e "\n------------------ XCode build ----------------------"
-	#xcodebuild -project ${SCRIPT_FOLDER}/../VirgilSecurityMail.xcodeproj -arch x86_64 -configuration Release
-	xcodebuild -workspace ${SCRIPT_FOLDER}/../VirgilSecurityMail.xcworkspace -scheme VirgilSecurityMail  -arch x86_64 -configuration Release
+	xcodebuild -project ${SCRIPT_FOLDER}/../VirgilSecurityMail.xcodeproj -arch x86_64 -configuration Release
 	check_errors $?
 }
 

@@ -28,6 +28,8 @@
 		38F1B781D00A2E1E78BD5C226A35A5F0 /* VSSDeletePrivateKeyRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E1C942B2B89BE3F9B03D43727DE1949 /* VSSDeletePrivateKeyRequest.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		396402D05EE1C9A5F9BE6FBFAD7E7672 /* VSSPublicKey.h in Headers */ = {isa = PBXBuildFile; fileRef = 69139312059BD96C17DCACDC75EF971D /* VSSPublicKey.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4704A8C846B68F6C41D3A6F658539087 /* VSSBaseModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 77A9664E9EE0EA47FE6BED60916BFE4E /* VSSBaseModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		497655111C7BAFAB003057F7 /* VirgilFoundation.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = C7C677C08FA542262226F4479CCF4D5E /* VirgilFoundation.framework */; };
+		497655121C7BAFAB003057F7 /* VirgilSDK.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 861018E56B1F3F0B6399935205FD0485 /* VirgilSDK.framework */; };
 		497E36A2097BC05EBAED8BC81CE0DBA8 /* VirgilSDK-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 456F60F5369D07A39159CACBB28CE719 /* VirgilSDK-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49E850A9E5D75956E4A88FC37BD9DB3A /* VSSVirgilVersion.mm in Sources */ = {isa = PBXBuildFile; fileRef = A7E6EEAC72D8B2447CE1C694C3B65360 /* VSSVirgilVersion.mm */; };
 		4C40FA786D3B891BC07122EDB2372B1D /* VSSRequestContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 3500330A385D15A7BC32B1541E923C3B /* VSSRequestContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -137,6 +139,20 @@
 			remoteInfo = VirgilFoundation;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		497655101C7BAF93003057F7 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "${SRCROOT}/../VirgilSecurityMail/Frameworks";
+			dstSubfolderSpec = 0;
+			files = (
+				497655111C7BAFAB003057F7 /* VirgilFoundation.framework in CopyFiles */,
+				497655121C7BAFAB003057F7 /* VirgilSDK.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		01CCDD7A344CC3CCE25379A1112695AF /* VSSDeleteCardRequest.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = VSSDeleteCardRequest.m; path = Classes/Networking/Requests/Keys/VSSDeleteCardRequest.m; sourceTree = "<group>"; };
@@ -601,6 +617,7 @@
 				E7DF798A782163329EFC3362091B368D /* Sources */,
 				B9EE6BCFFC9178BFAA000C1EE5CBEF88 /* Frameworks */,
 				5B847669067502AC12E254B076C8B1C5 /* Headers */,
+				497655101C7BAF93003057F7 /* CopyFiles */,
 			);
 			buildRules = (
 			);
