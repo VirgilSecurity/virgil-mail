@@ -1298,22 +1298,9 @@ Gw
                         <rect key="frame" x="0.0" y="0.0" width="286" height="259"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f4L-dU-WjA">
-                                <rect key="frame" x="41" y="148" width="204" height="32"/>
-                                <buttonCell key="cell" type="push" title="Resend confirmation email" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Rkr-JY-fda">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="onResendConfirmationClicked:" target="xa5-mg-cq8" id="j61-R7-6KV"/>
-                                </connections>
-                            </button>
-                            <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="9E1-oe-OML">
-                                <rect key="frame" x="23" y="157" width="16" height="16"/>
-                            </progressIndicator>
                             <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HLi-pb-TCF">
-                                <rect key="frame" x="-2" y="181" width="290" height="48"/>
-                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Wait for email with confirmation code please. Or you can ask for resend email." id="qLt-kk-KRb">
+                                <rect key="frame" x="-2" y="169" width="290" height="58"/>
+                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Wait for email with confirmation code please. Or you can ask for resend email.  (Current window can be closed)" id="qLt-kk-KRb">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -1337,6 +1324,19 @@ Gw
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f4L-dU-WjA">
+                                <rect key="frame" x="38" y="126" width="204" height="32"/>
+                                <buttonCell key="cell" type="push" title="Resend confirmation email" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Rkr-JY-fda">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="onResendConfirmationClicked:" target="xa5-mg-cq8" id="j61-R7-6KV"/>
+                                </connections>
+                            </button>
+                            <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="9E1-oe-OML">
+                                <rect key="frame" x="20" y="135" width="16" height="16"/>
+                            </progressIndicator>
                         </subviews>
                     </view>
                     <connections>
@@ -1767,27 +1767,6 @@ Gw
                         <rect key="frame" x="0.0" y="0.0" width="286" height="259"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="v8q-AW-yVp">
-                                <rect key="frame" x="41" y="146" width="204" height="32"/>
-                                <buttonCell key="cell" type="push" title="Resend confirmation email" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Fk5-PD-Xst">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="onResendConfirmationForPrivateKey:" target="Avm-2d-p8j" id="g9e-3Z-4zI"/>
-                                </connections>
-                            </button>
-                            <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="F7E-Bu-7kn">
-                                <rect key="frame" x="23" y="155" width="16" height="16"/>
-                            </progressIndicator>
-                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="36u-HD-04g">
-                                <rect key="frame" x="-2" y="179" width="290" height="48"/>
-                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Wait for email with confirmation code please. Or you can ask for resend email." id="AIP-jo-hHR">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
                             <button horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6FC-ed-uv6">
                                 <rect key="frame" x="263" y="17" width="25" height="25"/>
                                 <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="83V-X7-kab">
@@ -1806,8 +1785,21 @@ Gw
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="v8q-AW-yVp">
+                                <rect key="frame" x="38" y="128" width="204" height="32"/>
+                                <buttonCell key="cell" type="push" title="Resend confirmation email" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Fk5-PD-Xst">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="onResendConfirmationForPrivateKey:" target="Avm-2d-p8j" id="g9e-3Z-4zI"/>
+                                </connections>
+                            </button>
+                            <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="F7E-Bu-7kn">
+                                <rect key="frame" x="20" y="137" width="16" height="16"/>
+                            </progressIndicator>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xLC-mc-dnt">
-                                <rect key="frame" x="41" y="113" width="204" height="32"/>
+                                <rect key="frame" x="38" y="95" width="204" height="32"/>
                                 <buttonCell key="cell" type="push" title="Stop Private Key request " bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="drr-IP-tn6">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -1816,11 +1808,16 @@ Gw
                                     <action selector="onStopPrivateKeyRequest:" target="Avm-2d-p8j" id="3xo-UU-qcl"/>
                                 </connections>
                             </button>
+                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="m9d-4U-VnS">
+                                <rect key="frame" x="-2" y="169" width="290" height="58"/>
+                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Wait for email with confirmation code please. Or you can ask for resend email.  (Current window can be closed)" id="CRo-Fo-0nw">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
                     </view>
-                    <connections>
-                        <outlet property="infoTextField" destination="36u-HD-04g" id="ltN-uE-sJ4"/>
-                    </connections>
                 </viewController>
                 <customObject id="sAz-iq-EbB" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1835,7 +1832,7 @@ Gw
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Yl-jF-QpM">
-                                <rect key="frame" x="41" y="146" width="204" height="32"/>
+                                <rect key="frame" x="38" y="127" width="204" height="32"/>
                                 <buttonCell key="cell" type="push" title="Resend confirmation email" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="JTj-2a-6GL">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -1845,16 +1842,8 @@ Gw
                                 </connections>
                             </button>
                             <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="d3w-3n-cgu">
-                                <rect key="frame" x="23" y="155" width="16" height="16"/>
+                                <rect key="frame" x="20" y="136" width="16" height="16"/>
                             </progressIndicator>
-                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3sv-rx-YWr">
-                                <rect key="frame" x="-2" y="179" width="290" height="48"/>
-                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Wait for email with confirmation code please. Or you can ask for resend email." id="Bcz-mq-RgO">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
                             <button horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6X3-GY-JV6">
                                 <rect key="frame" x="263" y="17" width="25" height="25"/>
                                 <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="0Ie-k9-WID">
@@ -1874,7 +1863,7 @@ Gw
                                 </textFieldCell>
                             </textField>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2TO-nf-8ua">
-                                <rect key="frame" x="41" y="115" width="204" height="32"/>
+                                <rect key="frame" x="38" y="96" width="204" height="32"/>
                                 <buttonCell key="cell" type="push" title="Stop deletion" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="zzZ-Hg-60l">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -1883,11 +1872,16 @@ Gw
                                     <action selector="onStopDeletion:" target="aJr-7q-cS5" id="DVk-iE-EDH"/>
                                 </connections>
                             </button>
+                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1I0-EA-aIR">
+                                <rect key="frame" x="-2" y="169" width="290" height="58"/>
+                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Wait for email with confirmation code please. Or you can ask for resend email.  (Current window can be closed)" id="pjj-x7-dSq">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
                     </view>
-                    <connections>
-                        <outlet property="infoTextField" destination="3sv-rx-YWr" id="FyI-64-M6W"/>
-                    </connections>
                 </viewController>
                 <customObject id="WeJ-em-2PI" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
