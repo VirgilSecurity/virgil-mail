@@ -4,9 +4,9 @@
 
     using Virgil.Mail.Accounts;
     using Virgil.Mail.Common;
+    using Virgil.Mail.Crypto;
+    using Virgil.Mail.Dialogs;
     using Virgil.Mail.Integration;
-    using Virgil.Mail.Services;
-    using Virgil.Mail.Settings;
     using Virgil.Mail.Storage;
     using Virgil.SDK.Infrastructure;
 
@@ -31,18 +31,19 @@
 
             var builder = new ContainerBuilder();
             builder.RegisterInstance(new OutlookInteraction(application)).As<IOutlookInteraction>();
+            builder.RegisterInstance(new MailObserver(application)).As<IMailObserver>();
             builder.RegisterInstance(virgilHub).As<VirgilHub>();
             builder.RegisterType<IsolatedStorageProvider>().As<IStorageProvider>();
             builder.RegisterType<AccountsManager>().As<IAccountsManager>();
-            builder.RegisterType<AccountsStorage>().As<IAccountsStorage>();
-
-
+            builder.RegisterType<VirgilCryptoProvider>().As<IVirgilCryptoProvider>();
+            builder.RegisterType<EncryptedKeyValueStorage>().As<IEncryptedKeyValueStorage>();
 
             builder.RegisterType<RegisterAccountView>();
             builder.RegisterType<RegisterAccountViewModel>();
-
             builder.RegisterType<AccountsView>();
             builder.RegisterType<AccountsViewModel>();
+            builder.RegisterType<AccountSettingsView>();
+            builder.RegisterType<AccountSettingsViewModel>();
 
             container = builder.Build();
 
@@ -51,8 +52,8 @@
 
             builder = new ContainerBuilder();
 
-            var viewBuilder = new WindowPresenter(container);
-            builder.RegisterInstance(viewBuilder).As<IWindowPresenter>();
+            var viewBuilder = new DialogPresenter(container);
+            builder.RegisterInstance(viewBuilder).As<IDialogPresenter>();
 
             builder.Update(container);
 

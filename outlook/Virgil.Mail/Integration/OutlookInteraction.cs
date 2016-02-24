@@ -5,8 +5,7 @@
     using System.Runtime.InteropServices;
 
     using Outlook = Microsoft.Office.Interop.Outlook;
-
-    using Virgil.Mail.Integration;
+    
     using Virgil.Mail.Common;
 
     internal class OutlookInteraction : IOutlookInteraction
@@ -16,6 +15,18 @@
         public OutlookInteraction(Outlook.Application application)
         {
             this.application = application;
+        }
+
+        public void MarkMailAsRead(string mailId)
+        {
+            Outlook.NameSpace nameSpace = this.application.GetNamespace("MAPI");
+            Outlook.MailItem mail = (Outlook.MailItem)nameSpace.GetItemFromID(mailId);
+            
+            mail.UnRead = false;
+            mail.Save();
+
+            nameSpace.ReleaseCom();
+            mail.ReleaseCom();
         }
 
         public IEnumerable<AccountIntegrationModel> GetOutlookAccounts()

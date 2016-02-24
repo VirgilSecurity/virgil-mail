@@ -6,5 +6,6 @@
     public interface IOutlookInteraction : IService
     {
         IEnumerable<AccountIntegrationModel> GetOutlookAccounts();
+        void MarkMailAsRead(string mailId);
     }
 }

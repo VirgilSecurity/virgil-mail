@@ -5,7 +5,7 @@
     using System.Windows;
     using System.Windows.Data;
 
-    [ValueConversion(typeof(bool), typeof(Visibility))]
+    [ValueConversion(typeof (bool), typeof (Visibility))]
     public sealed class BoolToVisibilityConverter : IValueConverter
     {
         public Visibility TrueValue { get; set; }
@@ -28,7 +28,7 @@
 
             if (!(value is bool))
                 return null;
-            return (bool)value ? this.TrueValue : this.FalseValue;
+            return (bool) value ? this.TrueValue : this.FalseValue;
         }
 
         public object ConvertBack(object value, Type targetType,

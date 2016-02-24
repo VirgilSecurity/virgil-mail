@@ -21,7 +21,7 @@
         
         private void mailKeysButton_Click(object sender, RibbonControlEventArgs e)
         {
-            ServiceLocator.Windows.ShowAccounts();
+            ServiceLocator.Dialogs.ShowAccounts();
         }
 
         private void ExceptionHandler(Exception exception)

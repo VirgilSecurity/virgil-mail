@@ -1,11 +1,11 @@
-﻿namespace Virgil.Mail.Settings
+﻿namespace Virgil.Mail.Dialogs
 {
     using System.Drawing;
     using System.Windows.Forms;
 
-    public partial class RegisterAccount : Form
+    public partial class ShellWindow : Form
     {
-        public RegisterAccount()
+        public ShellWindow()
         {
             this.InitializeComponent();
 

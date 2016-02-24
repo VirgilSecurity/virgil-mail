@@ -1,14 +1,10 @@
 ﻿namespace Virgil.Mail.Viewer
 {
-    using System.Windows.Controls;
-    
-    public partial class Shell : UserControl
+    public partial class Shell
     {
         public Shell()
         {
             this.InitializeComponent();
-            var dialog = new Settings.RegisterAccount();
-            dialog.ShowDialog();
         }
     }
 }

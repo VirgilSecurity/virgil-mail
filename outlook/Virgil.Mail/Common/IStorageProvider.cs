@@ -2,7 +2,8 @@
 {
     public interface IStorageProvider : IService
     {
-        string Load();
-        void Save(string data);
+        bool Remove(string key);
+        string this[string key] { get; set; }
+        void Add(string key, string value);
     }
 }

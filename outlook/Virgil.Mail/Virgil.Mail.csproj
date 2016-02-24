@@ -126,6 +126,22 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Reactive.Core, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rx-Core.2.2.5\lib\net45\System.Reactive.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rx-Interfaces.2.2.5\lib\net45\System.Reactive.Interfaces.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reactive.Linq, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rx-Linq.2.2.5\lib\net45\System.Reactive.Linq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rx-PlatformServices.2.2.5\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Security" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
@@ -192,35 +208,42 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="Accounts\AccountSettingsView.xaml.cs">
+      <DependentUpon>AccountSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Accounts\AccountSettingsViewModel.cs" />
     <Compile Include="Accounts\AccountsManager.cs" />
     <Compile Include="Accounts\AccountsView.xaml.cs">
       <DependentUpon>AccountsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Accounts\AccountsViewModel.cs" />
-    <Compile Include="Accounts\AccountsWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Accounts\AccountsWindow.Designer.cs">
-      <DependentUpon>AccountsWindow.cs</DependentUpon>
-    </Compile>
     <Compile Include="Bootstraper.cs" />
     <Compile Include="Common\Constants.cs" />
     <Compile Include="Common\IAccountsManager.cs" />
-    <Compile Include="Common\IAccountsStorage.cs" />
-    <Compile Include="Common\IPrivateKeyStorage.cs" />
+    <Compile Include="Common\IEncryptedKeyValueStorage.cs" />
+    <Compile Include="Common\IMailObserver.cs" />
+    <Compile Include="Common\IVirgilCryptoProvider.cs" />
     <Compile Include="Common\IPasswordHolder.cs" />
     <Compile Include="Common\IStorageProvider.cs" />
-    <Compile Include="Common\IWindowPresenter.cs" />
-    <Compile Include="Models\VirgilAccountModel.cs" />
+    <Compile Include="Common\IDialogPresenter.cs" />
+    <Compile Include="Mvvm\NotBoolConverter.cs" />
+    <Compile Include="Storage\EncryptedKeyValueStorage.cs" />
+    <Compile Include="Crypto\VirgilCryptoProvider.cs" />
+    <Compile Include="Dialogs\DialogPresenter.cs" />
+    <Compile Include="Dialogs\ShellWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\ShellWindow.Designer.cs">
+      <DependentUpon>ShellWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Integration\MailObserver.cs" />
+    <Compile Include="Models\OutlookMailModel.cs" />
+    <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\VirgilKeyPairModel.cs" />
     <Compile Include="Models\VirgilRecipientModel.cs" />
     <Compile Include="Mvvm\ValidatableModel.cs" />
     <Compile Include="Models\UnregisteredAccountModel.cs" />
-    <Compile Include="Accounts\AccountsStorage.cs" />
-    <Compile Include="Storage\AccountStorageModel.cs" />
     <Compile Include="Storage\IsolatedStorageProvider.cs" />
-    <Compile Include="Storage\StorageModel.cs" />
-    <Compile Include="Services\WindowPresenter.cs" />
     <Compile Include="Common\IOutlookInteraction.cs" />
     <Compile Include="Common\IService.cs" />
     <Compile Include="Mvvm\BoolToVisibilityConverter.cs" />
@@ -237,17 +260,11 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Settings\RegisterAccount.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Settings\RegisterAccount.Designer.cs">
-      <DependentUpon>RegisterAccount.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Settings\RegisterAccountState.cs" />
-    <Compile Include="Settings\RegisterAccountView.xaml.cs">
+    <Compile Include="Accounts\RegisterAccountState.cs" />
+    <Compile Include="Accounts\RegisterAccountView.xaml.cs">
       <DependentUpon>RegisterAccountView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Settings\RegisterAccountViewModel.cs" />
+    <Compile Include="Accounts\RegisterAccountViewModel.cs" />
     <Compile Include="Viewer\Shell.xaml.cs">
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
@@ -263,8 +280,8 @@
     <Compile Include="VirgilMailRibbon.Designer.cs">
       <DependentUpon>VirgilMailRibbon.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Accounts\AccountsWindow.resx">
-      <DependentUpon>AccountsWindow.cs</DependentUpon>
+    <EmbeddedResource Include="Dialogs\ShellWindow.resx">
+      <DependentUpon>ShellWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -276,9 +293,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Settings\RegisterAccount.resx">
-      <DependentUpon>RegisterAccount.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="VirgilMailFormRegion.resx">
       <DependentUpon>VirgilMailFormRegion.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -313,11 +327,15 @@
     <Resource Include="Resources\success.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Accounts\AccountSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Accounts\AccountsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Settings\RegisterAccountView.xaml">
+    <Page Include="Accounts\RegisterAccountView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

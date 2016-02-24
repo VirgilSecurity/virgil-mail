@@ -1,6 +1,6 @@
-﻿namespace Virgil.Mail.Accounts
+﻿namespace Virgil.Mail.Dialogs
 {
-    partial class AccountsWindow
+    partial class ShellWindow
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AccountsWindow));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ShellWindow));
             this.ElementHost = new System.Windows.Forms.Integration.ElementHost();
             this.SuspendLayout();
             // 
@@ -36,25 +36,23 @@
             // 
             this.ElementHost.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ElementHost.Location = new System.Drawing.Point(0, 0);
-            this.ElementHost.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.ElementHost.Margin = new System.Windows.Forms.Padding(1);
             this.ElementHost.Name = "ElementHost";
-            this.ElementHost.Size = new System.Drawing.Size(616, 458);
             this.ElementHost.TabIndex = 0;
             this.ElementHost.Text = "elementHost1";
             this.ElementHost.Child = null;
             // 
-            // AccountsWindow
+            // ShellWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(616, 458);
             this.Controls.Add(this.ElementHost);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.Margin = new System.Windows.Forms.Padding(1);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "AccountsWindow";
+            this.Name = "ShellWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Virgil Mail Keys";
             this.ResumeLayout(false);

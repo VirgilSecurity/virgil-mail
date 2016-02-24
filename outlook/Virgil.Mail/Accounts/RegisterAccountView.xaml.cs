@@ -1,14 +1,12 @@
-﻿namespace Virgil.Mail.Settings
+﻿namespace Virgil.Mail.Accounts
 {
-    using System.Windows.Controls;
-    
-    public partial class RegisterAccountView : UserControl
+    public partial class RegisterAccountView
     {
         public RegisterAccountView()
         {
             this.InitializeComponent();
-            this.password.PasswordChanged += OnPasswordChanged;
-            this.confirmPassword.PasswordChanged += OnConfirmPasswordChanged;
+            this.password.PasswordChanged += this.OnPasswordChanged;
+            this.confirmPassword.PasswordChanged += this.OnConfirmPasswordChanged;
         }
 
         private void OnPasswordChanged(object sender, System.Windows.RoutedEventArgs e)

@@ -30,7 +30,12 @@
         {
             InternalReleaseCom(comObject);
         }
-        
+
+        internal static void ReleaseCom(this Outlook.Items comObject)
+        {
+            InternalReleaseCom(comObject);
+        }
+
         private static void InternalReleaseCom(object comObject)
         {
             if (comObject != null)
