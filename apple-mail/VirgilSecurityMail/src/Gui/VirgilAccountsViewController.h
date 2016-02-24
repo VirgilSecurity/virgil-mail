@@ -51,4 +51,6 @@
 
 - (void) askRefresh;
 
++ (void) askRefresh;
+
 @end

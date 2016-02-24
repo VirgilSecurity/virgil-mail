@@ -42,6 +42,7 @@
 #import "VirgilProcessingManager.h"
 #import "VirgilLog.h"
 #import "VirgilKeyChain.h"
+#import "VirgilAccountsViewController.h"
 
 #define TAG_BTN_CANCEL 8000
 #define TAG_BTN_OK 8001
@@ -129,8 +130,8 @@ NSString * windowTitle = @"";
                                        withObject : nil
                                     waitUntilDone : NO];
             }
+            [VirgilAccountsViewController askRefresh];
         });
-        
     }
     @catch (NSException *exception) {
         [self externalActionDone];

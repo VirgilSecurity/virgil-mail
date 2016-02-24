@@ -41,6 +41,9 @@
 #import "NSViewController+VirgilView.h"
 #import "VirgilLog.h"
 
+static NSLock * accessLock;
+static VirgilAccountsViewController * currentController = nil;
+
 @implementation VirgilAccountsViewController {
     VirgilActionsViewController * _viewAccountPresent;
     VirgilActionsViewController * _viewNoAccount;
@@ -67,7 +70,16 @@
     
     [super viewDidLoad];
     [self items];
+    
+    [VirgilAccountsViewController safeAction:^{
+        currentController = self;
+    }];
 }
+
+- (void) dealloc {
+    [VirgilAccountsViewController safeAction:^{
+        currentController = nil;
+    }];}
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
     return  self.items.count;
@@ -171,8 +183,6 @@
     _accountName.stringValue = accountItem.name;
     _accountEmail.stringValue = accountItem.account;
     
-    NSLog(@"        %@ : status = %ld", accountItem.account, (long)accountItem.status);
-    
     if (statusAllDone == accountItem.status) return [self switchEmbedViewTo : _viewAccountPresent];
     else if (statusPublicKeyNotPresent == accountItem.status) return [self switchEmbedViewTo : _viewNoAccount];
     else if (statusPublicKeyPresent == accountItem.status) return [self switchEmbedViewTo : _viewGetKey];
@@ -214,6 +224,22 @@
     [self items];
     [_arrayController setContent:_items];
     [self selectAccount:updateAccount];
+}
+
++ (void) askRefresh {
+    [VirgilAccountsViewController safeAction:^{
+        if (currentController != nil) {
+            [currentController performSelectorOnMainThread : @selector(askRefresh)
+                                                withObject : currentController
+                                             waitUntilDone : NO];
+        }
+    }];
+}
+
++ (void) safeAction : (void(^)())action {
+    [accessLock lock];
+    action();
+    [accessLock unlock];
 }
 
 @end
