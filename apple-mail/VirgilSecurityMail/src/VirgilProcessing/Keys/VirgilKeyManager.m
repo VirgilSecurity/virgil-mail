@@ -51,6 +51,10 @@
 #import "VSSModelCommons.h"
 #import "VSSCryptor.h"
 
+#if !defined(VIRGIL_STAGING_SERVICES)
+#define VIRGIL_STAGING_SERVICES
+#endif
+
 @interface VirgilKeyManager ()
 
 //! _lastError - contains user friendly error string
@@ -81,8 +85,13 @@
 - (id) init{
     _lastError = nil;
     _client =
+#if defined(VIRGIL_STAGING_SERVICES)
     [[VSSClient alloc] initWithApplicationToken : @"eyJpZCI6Ijc1MmMyMzM3LTM0YTYtNGRhOS04NzUwLTZhMjZlYWUzOWU2NSIsImFwcGxpY2F0aW9uX2NhcmRfaWQiOiIxMDEwMDBiNS02MDRlLTQ1ZWMtODMzMi00MWFmOTE1MGYzYWUiLCJ0dGwiOi0xLCJjdGwiOi0xLCJwcm9sb25nIjowfQ==.MIGZMA0GCWCGSAFlAwQCAgUABIGHMIGEAkBd0GMYg9I2H/cQz7jbL1EPJLLUnWePpGfc5LyjNgidAq9z/4rYDFRYyv6wPKJDx6KysCqLIWgH2YfmMTCtBYL1AkArX14rnAYP63brY3QMP01z2c/zf3K06O+jr9eDshETGRxIoumhqTcbRP/00KjBlEGb8Ip7KX0wo/vPYNpzqf91"
                                   serviceConfig : [VirgilServiceConfigStg new]];
+#else
+    [[VSSClient alloc] initWithApplicationToken : @"eyJpZCI6IjU4Y2YxMTQzLTNhOTEtNGEzOS04Y2RkLTI2N2FlNWFiZTliMiIsImFwcGxpY2F0aW9uX2NhcmRfaWQiOiI0Mjc3ZDNjYy05YzdmLTQzNWMtYmNmYy0wNjE1YzkxZTg4ZmUiLCJ0dGwiOi0xLCJjdGwiOi0xLCJwcm9sb25nIjowfQ==.MIGZMA0GCWCGSAFlAwQCAgUABIGHMIGEAkBzWJSyG43LBzfPusOg4XG4xYG5xPqXjfOi+/ax1xgzMNqrVhTxrNWoeOFh8FnAqcD5vkakSqqMPB7oztd2Fsw9AkAJCa5DAxNvbwL9fpT88VKNPAmrVClKj8n8lJbZWSIIpNBrbY/bDze3pmY/7YyJsgo9JdzGq8B8FXk2d3BZXowM"
+                                  serviceConfig : nil];
+#endif
     
     dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
     [_client setupClientWithCompletionHandler:^(NSError * _Nullable error) {
