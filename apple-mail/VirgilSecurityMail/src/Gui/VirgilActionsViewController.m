@@ -63,9 +63,6 @@ static BOOL _cloudSelection = YES;
     [self setVisibleExportControls:NO];
 }
 
-- (IBAction)onRemoveKeyFromCloud:(id)sender {
-}
-
 - (void) setVisibleExportControls : (BOOL) visible {
     if (nil == _btnCancel) return;
     
@@ -98,8 +95,10 @@ static BOOL _cloudSelection = YES;
     
     [alert beginSheetModalForWindow : self.view.window
                   completionHandler : ^(NSModalResponse returnCode) {
-                      if (completionHandler != nil) {
-                          completionHandler(NSAlertFirstButtonReturn == returnCode);
+                      if (NSAlertFirstButtonReturn == returnCode) {
+                          if (completionHandler != nil) {
+                              completionHandler(NSAlertFirstButtonReturn == returnCode);
+                          }
                       }
                   }];
 }
@@ -245,7 +244,13 @@ static BOOL _cloudSelection = YES;
     @try {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             NSString * fileName = [self exportFileName];
-            if (!fileName) return;
+            if (!fileName) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self externalActionDone];
+                    [self setVisibleExportControls:NO];
+                });
+                return;
+            }
             
             BOOL res = [[VirgilKeyManager sharedInstance] exportAccountData : _account
                                                     toFile : fileName
