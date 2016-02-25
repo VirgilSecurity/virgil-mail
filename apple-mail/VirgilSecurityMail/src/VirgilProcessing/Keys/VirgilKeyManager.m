@@ -732,43 +732,23 @@
         [self setErrorString:errorString];
         return NO;
     }
-    
-    NSMutableDictionary * userDataDict = [NSMutableDictionary new];
-    NSString * userDataID = @"00000000-0000-0000-0000-000000000000";
-    if (container.publicKey.identityID && container.publicKey.identityID.length) {
-        userDataID = container.publicKey.identityID;
-    }
-    
-    [userDataDict setObject : userDataID forKey:@"user_data_id"];
-    [userDataDict setObject : @"EmailId" forKey:@"class"];
-    [userDataDict setObject : @"EmailId" forKey:@"type"];
-    [userDataDict setObject : @"true" forKey:@"confirmed"];
-    [userDataDict setObject : container.privateKey.account forKey:@"value"];
-    
-    NSArray * userDataArray = [NSArray arrayWithObjects:[userDataDict copy], nil];
+    NSMutableDictionary * idntityDict = [NSMutableDictionary new];
+    [idntityDict setObject : container.privateKey.account forKey:@"value"];
+    [idntityDict setObject : @"email" forKey:@"type"];
     
     NSMutableDictionary * publicKeyDict = [NSMutableDictionary new];
-    [publicKeyDict setObject : userDataArray forKey:@"tickets"];
-    [publicKeyDict setObject : container.publicKey.publicKeyID forKey:@"public_key_id"];
-    [publicKeyDict setObject : [container.publicKey.publicKey base64Wrap] forKey:@"public_key"];
-    
-    NSString * isUploaded = (VirgilContainerParanoic == container.privateKey.containerType) ? @"false" : @"true";
-    NSMutableDictionary * bundle = [NSMutableDictionary new];
-    [bundle setObject : [publicKeyDict copy] forKey:@"public_key"];
-    [bundle setObject : [container.privateKey.key base64Wrap] forKey:@"private_key"];
-    [bundle setObject : isUploaded forKey:@"uploaded"];
+    [publicKeyDict setObject : container.publicKey.publicKeyID forKey:@"id"];
+    [publicKeyDict setObject : [container.publicKey.publicKey base64Wrap] forKey:@"value"];
 
-    NSArray * bundles = [NSArray arrayWithObjects:[bundle copy], nil];
+    NSMutableDictionary * cardDict = [NSMutableDictionary new];
+    [cardDict setObject : container.publicKey.cardID forKey:@"id"];
+    [cardDict setObject : idntityDict forKey:@"identity"];
+    [cardDict setObject : publicKeyDict forKey:@"public_key"];
     
     NSMutableDictionary * jsonDict = [NSMutableDictionary new];
+    [jsonDict setObject : cardDict forKey:@"card"];
+    [jsonDict setObject : [container.privateKey.key base64Wrap] forKey:@"private_key"];
     
-    NSString * isProtectedStr = (container.privateKey.keyPassword && container.privateKey.keyPassword.length) ? @"true" : @"false";
-    [jsonDict setObject : bundles forKey:@"bundles"];
-    [jsonDict setObject : [NSNumber numberWithInt:0] forKey:@"mode"];
-    [jsonDict setObject : @"true" forKey:@"user_selected_store_mode"];
-    [jsonDict setObject : isProtectedStr forKey:@"is_protected"];
-    [jsonDict setObject : container.publicKey.cardID forKey:@"account_id"];
-
     NSArray * jsonArray = [NSArray arrayWithObjects:jsonDict, nil];
     
     NSError * error;
@@ -864,21 +844,11 @@
     
     
     if (jsonDict) {
-        NSArray * bundles = [jsonDict objectForKey:@"bundles"];
-        NSDictionary * bundle = [bundles objectAtIndex:0];
-        NSString * privateKey = [bundle objectForKey:@"private_key"];
+        NSString * privateKey = [jsonDict objectForKey:@"private_key"];
         
-        NSDictionary * userDataDict = [bundle objectForKey : @"public_key"];
-        NSArray * userDataAr = [userDataDict objectForKey : @"tickets"];
-        
-        NSString * importAccount = nil;
-        for (NSDictionary * dict in userDataAr) {
-            NSString * type = [dict objectForKey:@"type"];
-            if ([type isEqualTo:@"EmailId"]) {
-                importAccount = [dict objectForKey:@"value"];
-                break;
-            }
-        }
+        NSDictionary * cardDict = [jsonDict objectForKey:@"card"];
+        NSDictionary * identityDict = [cardDict objectForKey:@"identity"];
+        NSString * importAccount = [identityDict objectForKey:@"value"];
         
         if ([importAccount isEqualTo:account]) {
             VirgilKeyChainContainer * keyChainContainer = [VirgilKeyChain loadContainer : account];
@@ -887,7 +857,7 @@
                 [[VirgilPrivateKey alloc] initAccount : account
                                         containerType : VirgilContainerNormal
                                            privateKey : privateKey
-                                          keyPassword : nil // TODO: Need password request
+                                          keyPassword : nil // Password will be requested later
                  ];
                 VirgilKeyChainContainer * updatedConteiner =
                  [[VirgilKeyChainContainer alloc] initWithPrivateKey : updatedPrivateKey

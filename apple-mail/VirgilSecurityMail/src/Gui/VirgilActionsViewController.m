@@ -45,7 +45,7 @@
 #import "NSString+Base64.h"
 #import "VirgilLog.h"
 
-#define VIRGILKEY_EXTENTION @"virgilkey"
+#define VIRGILKEY_EXTENTION @"vcard"
 
 static BOOL _cloudSelection = YES;
 
