@@ -17,7 +17,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-
+        
         <Image
             Grid.Row="0"
             Margin="0 30" 
@@ -113,26 +113,103 @@
 
             </StackPanel>
 
-            <!--<StackPanel
-            Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=Done}" >
-                <Image
-                Grid.Row="0"
-                Margin="0 30 0 0"
-                Width="100"
-                Source="/Virgil.Mail;component/Resources/success.png" />
+            <StackPanel
+                Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=DownloadKeyPair}" >
 
-            </StackPanel>-->
+                <TextBlock 
+                    TextWrapping="Wrap" 
+                    Text="Your account is already created please select an option to getting your key.">
+                </TextBlock>
+                <RadioButton 
+                    Margin="0 10 0 2" 
+                    IsChecked="{Binding IsVirgilStorage, Mode=TwoWay}" 
+                    GroupName="DownloadKeyOption"
+                    Content="Download from Virgil Security services"
+                    VerticalContentAlignment="Center" />
+                <TextBlock 
+                    FontSize="10" 
+                    Foreground="Gray" 
+                    TextWrapping="Wrap"
+                    Margin="20 0 0 0" 
+                    Text="Use this option if your key has been previously uploaded to Virgil Security services." />
+                <RadioButton 
+                    Margin="0 10 0 2" 
+                    x:Name="fromFileRadioButton"
+                    GroupName="DownloadKeyOption"
+                    Content="Select from a file on your computer"
+                    VerticalContentAlignment="Center" />
+                <TextBlock 
+                    FontSize="10" 
+                    Foreground="Gray" 
+                    TextWrapping="Wrap"
+                    Margin="20 0 0 0" 
+                    Text="Use this option if you previously exported your key to the file. " />
+                <Grid Margin="0 5 0 0" IsEnabled="{Binding IsChecked, ElementName=fromFileRadioButton}" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox 
+                        IsReadOnly="True"
+                        IsReadOnlyCaretVisible="False"
+                        Text="{Binding FilePath}"
+                        Background="Transparent"
+                        Padding="5 4" />
+                    <Button 
+                        Grid.Column="1" 
+                        Margin="-1 0 0 0" 
+                        Padding="7 0" 
+                        Command="{Binding BrowseFileCommand}"
+                        Content="..." />
+                </Grid>
+
+            </StackPanel>
+
+
+
+            <StackPanel
+                Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=Done}" >
+                <Image
+                    Margin="0 30 0 0"
+                    Width="100"
+                    Source="/Virgil.Mail;component/Resources/success.png" />
+            </StackPanel>
         </Grid>
 
         <Border 
             Grid.Row="2" 
-            BorderThickness="0 1 0 0" 
-            Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" 
-            Padding="20 20">
+            BorderThickness="0" 
+            Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
             <Grid>
-                <Button MinWidth="90" Content="Generate and Publish" Command="{Binding CreateCommand}" Padding="0 3" Background="White" />
+                <Button 
+                    Margin="20" 
+                    MinWidth="90" 
+                    Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=GenerateKeyPair}"
+                    Content="Generate and Publish" 
+                    Command="{Binding CreateCommand}" 
+                    Padding="0 3" 
+                    Background="White" />
+                <Button 
+                    Margin="20" 
+                    MinWidth="90" 
+                    Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=DownloadKeyPair}"
+                    Content="Accept" 
+                    Command="{Binding CreateCommand}" 
+                    Padding="0 3" 
+                    Background="White" />
             </Grid>
         </Border>
 
+        <Border 
+            Grid.Row="0"
+            Background="#DC3023"
+            VerticalAlignment="Top"
+            Opacity=".9"
+            Padding="20"
+            MaxHeight="70"
+            Visibility="{Binding HasErrors, Converter={StaticResource BoolToVisibility}}">
+            <TextBlock TextWrapping="Wrap" Foreground="White" Text="{Binding FirstErrorMessage}"></TextBlock>
+        </Border>
+        
     </Grid>
 </UserControl>

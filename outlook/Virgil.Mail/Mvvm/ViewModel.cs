@@ -1,18 +1,12 @@
-namespace Virgil.Mail.Common.Mvvm
+namespace Virgil.Mail.Mvvm
 {
     using System;
-    using System.ComponentModel;
-    using System.Runtime.CompilerServices;
 
-    using Virgil.Mail.Properties;
-
-    public class ViewModel : ValidatableModel, INotifyPropertyChanged
+    public class ViewModel : ValidatableModel
     {
         private Enum state;
         private string stateText;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
+        
         public Enum State
         {
             get
@@ -39,25 +33,15 @@ namespace Virgil.Mail.Common.Mvvm
             }
         }
 
-        public void ChangeStateText(string stateText)
+        public void ChangeStateText(string newStateText)
         {
-            this.StateText = stateText;
+            this.StateText = newStateText;
         }
 
-        public void ChangeState(Enum state, string stateText = null)
+        public void ChangeState(Enum newState, string newStateText = null)
         {
-            this.State = state;
-            this.StateText = stateText;
-        }
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            var handler = this.PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            this.State = newState;
+            this.StateText = newStateText;
         }
     }
 }

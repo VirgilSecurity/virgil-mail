@@ -1,5 +1,6 @@
 namespace Virgil.Mail.Dialogs
 {
+    using System.IO;
     using System.Drawing;
     using System.Windows.Forms;
 
@@ -86,6 +87,46 @@ namespace Virgil.Mail.Dialogs
             view.DataContext = viewModel;
 
             shell.ShowDialog();
+        }
+
+        public void SaveFile(string fileName, string content, string extension)
+        {
+            var saveFileDialog = new SaveFileDialog
+            {
+                FileName = $"{fileName}.{extension}",
+                Filter = $"{extension} files (*.{extension})|*.{extension}|All files (*.*)|*.*"
+            };
+
+            if (saveFileDialog.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+
+            var stream = saveFileDialog.OpenFile();
+            var streamWriter = new StreamWriter(stream);
+
+            streamWriter.Write(content);
+            streamWriter.Close();
+        }
+
+        public string OpenFile(string extension)
+        {
+            var openFileDialog = new OpenFileDialog
+            {
+                Filter = $"{extension} files (*.{extension})|*.{extension}|All files (*.*)|*.*",
+            };
+            
+            if (openFileDialog.ShowDialog() != DialogResult.OK)
+            {
+                return null;
+            }
+
+            return openFileDialog.FileName;
+        }
+
+        public bool ShowConfirmation(string caption, string message)
+        {
+            return MessageBox.Show(message, caption, MessageBoxButtons.YesNo) == DialogResult.Yes;
         }
     }
 }

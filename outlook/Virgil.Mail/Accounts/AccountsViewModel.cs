@@ -6,6 +6,7 @@
     using Virgil.Mail.Common;
     using Virgil.Mail.Common.Mvvm;
     using Virgil.Mail.Models;
+    using Virgil.Mail.Mvvm;
 
     public class AccountsViewModel : ViewModel
     {

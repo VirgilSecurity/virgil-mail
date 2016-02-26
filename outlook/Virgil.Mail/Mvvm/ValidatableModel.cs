@@ -1,62 +1,93 @@
-namespace Virgil.Mail.Common.Mvvm
+namespace Virgil.Mail.Mvvm
 {
     using System;
+    using System.Linq;
     using System.Collections;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
-    using System.Linq;
+    using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
+    using Virgil.Mail.Properties;
 
-    public class ValidatableModel : INotifyDataErrorInfo
+    public class ValidatableModel : INotifyDataErrorInfo, INotifyPropertyChanged
     {
-        private ConcurrentDictionary<string, List<string>> errors =
+        private readonly ConcurrentDictionary<string, List<string>> errors =
             new ConcurrentDictionary<string, List<string>>();
 
+        private readonly ConcurrentStack<ValidationRule> validationRules = 
+            new ConcurrentStack<ValidationRule>();
+
+        private readonly object @lock = new object();
+
         public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
-
-        public void OnErrorsChanged(string propertyName)
-        {
-            var handler = ErrorsChanged;
-            if (handler != null)
-                handler(this, new DataErrorsChangedEventArgs(propertyName));
-        }
-
+        
         public IEnumerable GetErrors(string propertyName)
         {
             List<string> errorsForName;
-            errors.TryGetValue(propertyName, out errorsForName);
+            this.errors.TryGetValue(propertyName, out errorsForName);
+
             return errorsForName;
         }
-
+        
         public bool HasErrors
         {
-            get { return errors.Any(kv => kv.Value != null && kv.Value.Count > 0); }
+            get { return this.errors.Any(kv => kv.Value != null && kv.Value.Count > 0); }
+        }
+
+        public string FirstErrorMessage
+        {
+            get
+            {
+                if (this.errors.Any())
+                {
+                    return this.errors[this.errors.Keys.First()][0];
+                }
+
+                return null;
+            }
+        }
+
+        public void AddValidationRule(Func<bool> rule, string errorMessage)
+        {
+            this.validationRules.Push(new ValidationRule
+            {
+                Validator = rule,
+                ErrorMessage = errorMessage
+            });
+        }
+
+        public void AddCustomError(string errorMessage)
+        {
+            this.errors.TryAdd($"CustomError", new List<string> { errorMessage });
+            this.RaisePropertyChanged("HasErrors");
+            this.RaisePropertyChanged("FirstErrorMessage");
         }
 
         public Task ValidateAsync()
         {
-            return Task.Run(() => Validate());
+            return Task.Run(() => this.Validate());
         }
-
-        private object @lock = new object();
+        
         public void Validate()
         {
-            lock (@lock)
+            lock (this.@lock)
             {
+                this.ClearErrors();
+
                 var validationContext = new ValidationContext(this, null, null);
                 var validationResults = new List<ValidationResult>();
 
                 Validator.TryValidateObject(this, validationContext, validationResults, true);
 
-                foreach (var kv in errors.ToList())
+                foreach (var kv in this.errors.ToList())
                 {
                     if (validationResults.All(r => r.MemberNames.All(m => m != kv.Key)))
                     {
                         List<string> outLi;
-                        errors.TryRemove(kv.Key, out outLi);
-                        OnErrorsChanged(kv.Key);
+                        this.errors.TryRemove(kv.Key, out outLi);
+                        this.OnErrorsChanged(kv.Key);
                     }
                 }
 
@@ -69,15 +100,51 @@ namespace Virgil.Mail.Common.Mvvm
                 {
                     var messages = prop.Select(r => r.ErrorMessage).ToList();
 
-                    if (errors.ContainsKey(prop.Key))
+                    if (this.errors.ContainsKey(prop.Key))
                     {
                         List<string> outLi;
-                        errors.TryRemove(prop.Key, out outLi);
+                        this.errors.TryRemove(prop.Key, out outLi);
                     }
-                    errors.TryAdd(prop.Key, messages);
-                    OnErrorsChanged(prop.Key);
+                    this.errors.TryAdd(prop.Key, messages);
+                    this.OnErrorsChanged(prop.Key);
+                    this.RaisePropertyChanged("HasErrors");
+                    this.RaisePropertyChanged("FirstErrorMessage");
+                }
+
+                foreach (var validationRule in this.validationRules)
+                {
+                    if (!validationRule.Validator())
+                    {
+                        var ruleNumber = this.validationRules.ToList().IndexOf(validationRule);
+                        this.errors.TryAdd($"ValidationRule{ruleNumber}", new List<string> { validationRule.ErrorMessage });
+
+                        this.RaisePropertyChanged("HasErrors");
+                        this.RaisePropertyChanged("FirstErrorMessage");
+                    }
                 }
             }
+        }
+
+        public void ClearErrors()
+        {
+            this.errors.Clear();
+            this.RaisePropertyChanged("HasErrors");
+            this.RaisePropertyChanged("FirstErrorMessage");
+        }
+
+        public void OnErrorsChanged(string propertyName)
+        {
+            var handler = this.ErrorsChanged;
+            handler?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = this.PropertyChanged;
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

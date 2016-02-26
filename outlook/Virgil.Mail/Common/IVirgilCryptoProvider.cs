@@ -5,5 +5,6 @@
     public interface IVirgilCryptoProvider : IService
     {
         VirgilKeyPairModel CreateKeyPair(string identity, string password = null);
+        byte[] GetPrivateKey(string identity);
     }
 }

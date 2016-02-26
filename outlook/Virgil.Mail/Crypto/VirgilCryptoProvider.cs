@@ -1,6 +1,7 @@
 ﻿namespace Virgil.Mail.Crypto
 {
     using System.Text;
+
     using Virgil.Crypto;
 
     using Virgil.Mail.Common;
@@ -30,6 +31,12 @@
 
             this.keysStorage.Set(identity, keyPairModel);
             return keyPairModel;
+        }
+
+        public byte[] GetPrivateKey(string identity)
+        {
+            var privateKey = this.keysStorage.Get<VirgilKeyPairModel>(identity).PrivateKey;
+            return privateKey;
         }
     }
 }

@@ -17,73 +17,82 @@
             this.outlook = outlook;
             this.storage = storage;
         }
-
+        
         public AccountModel GetAccount(string identity)
         {
-            var accounts = this.GetAccounts();
+            var accounts = this.GetMergedAccounts();
             var account = accounts
                 .SingleOrDefault(a => a.OutlookAccountEmail.Equals(identity, StringComparison.CurrentCultureIgnoreCase));
 
             return account;
         }
 
+        public void Remove(string outlookAccountEmail)
+        {
+            var accounts = this.GetMergedAccounts();
+            var newAccounts = accounts
+                .Where(it => !it.OutlookAccountEmail.Equals(outlookAccountEmail, StringComparison.CurrentCultureIgnoreCase))
+                .ToList();
+
+            this.AcceptChanges(newAccounts);
+        }
+
+        public void UpdateAccount(AccountModel accountModel)
+        {
+            var accounts = this.GetMergedAccounts();
+            var account = accounts.Single(a => a.OutlookAccountEmail.Equals(accountModel.OutlookAccountEmail, 
+                StringComparison.CurrentCultureIgnoreCase));
+
+            account.VirgilCardId = accountModel.VirgilCardId;
+            account.VirgilCardHash = accountModel.VirgilCardHash;
+            account.VirgilCardCustomData = account.VirgilCardCustomData;
+            account.VirgilPublicKey = account.VirgilPublicKey;
+            account.VirgilPublicKeyId = account.VirgilPublicKeyId;
+
+            this.AcceptChanges(accounts);
+        }
+
         public IEnumerable<AccountModel> GetAccounts()
         {
+            return this.GetMergedAccounts();
+        }
+        
+        private IList<AccountModel> GetMergedAccounts()
+        {
+            // getting all Outlook registered accounts from 
+            // interaction API
             var outlookAccounts = this.outlook.GetOutlookAccounts().ToList();
-            var storedAccounts = this.storage.Get<IEnumerable<AccountModel>>("Accounts");
 
-            // ensure that storage has not nullable collection.
-            if (storedAccounts == null)
-            {
-                this.storage.Set("Accounts", new List<AccountModel>());
-                storedAccounts = this.storage.Get<IEnumerable<AccountModel>>("Accounts");
-            }
+            // ensure that storage collaction is not null.
+            var storedAccounts = this.storage.Get<IList<AccountModel>>("Accounts") 
+                ?? new List<AccountModel>();
             
-            var accounts = storedAccounts.ToList();
-
+            var accounts = new List<AccountModel>(storedAccounts);
+            
+            // merge stored accounts with Outlook accounts
             foreach (var outlookAccount in outlookAccounts)
             {
-                if (accounts.Any(a => a.OutlookAccountEmail.Equals(outlookAccount.Email, 
+                if (accounts.Any(a => a.OutlookAccountEmail.Equals(outlookAccount.Email,
                     StringComparison.CurrentCultureIgnoreCase)))
                 {
                     continue;
                 }
-
-                accounts.Add(new AccountModel
-                {
-                    OutlookAccountEmail = outlookAccount.Email, 
-                    OutlookAccountDescription = outlookAccount.Description
-                });
-            }
-            
-            return accounts;
-        }
-
-        public void UpdateAccount(string identity, Guid cardId, string cardHash, Dictionary<string, string> cardCustomData)
-        {
-            var storedAccounts = this.storage.Get<IEnumerable<AccountModel>>("Accounts").ToList();
-            var updatingAccount = storedAccounts
-                .SingleOrDefault(it => it.OutlookAccountEmail.Equals(identity, StringComparison.CurrentCultureIgnoreCase));
-
-            if (updatingAccount == null)
-            {
-                var outlookAccount = this.outlook.GetOutlookAccounts()
-                    .Single(it => it.Email.Equals(identity, StringComparison.CurrentCultureIgnoreCase));
-
-                updatingAccount = new AccountModel
+                
+                var accountModel = new AccountModel
                 {
                     OutlookAccountEmail = outlookAccount.Email,
                     OutlookAccountDescription = outlookAccount.Description
                 };
 
-                storedAccounts.Add(updatingAccount);
+                accounts.Add(accountModel);
             }
 
-            updatingAccount.VirgilCardId = cardId;
-            updatingAccount.VirgilCardHash = cardHash;
-            updatingAccount.VirgilCardCustomData = cardCustomData;
-            
-            this.storage.Set("Accounts", storedAccounts);
+            return accounts;
+        }
+
+        private void AcceptChanges(IList<AccountModel> accounts)
+        {
+            this.storage.Set("Accounts", accounts);
         }
     }
 }

@@ -7,7 +7,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="440" Background="White">
     <UserControl.Resources>
-        <mvvm:NotBoolConverter x:Key="NotBool" />
+        <mvvm:BoolToVisibilityConverter x:Key="BoolToVisibility" />
+        <mvvm:BoolToVisibilityConverter x:Key="NotBoolToVisibility" TrueValue="Collapsed" FalseValue="Visible" />
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -24,40 +25,48 @@
                 <DataTemplate>
                     <Button 
                         Margin="0 0 0 5"
+                        Height="55"
                         HorizontalContentAlignment="Stretch"
                         VerticalContentAlignment="Stretch"
-                        IsEnabled="{Binding IsRegistered, Converter={StaticResource NotBool}}"
                         CommandParameter="{Binding}"
                         Command="{Binding DataContext.ManageAccountCommand, RelativeSource={RelativeSource AncestorType=ItemsControl, Mode=FindAncestor}}">
-                        <Grid Margin="10">
+                        <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <TextBlock 
-                                Grid.Column="0" 
-                                Grid.Row="0" 
-                                Margin="0 0 0 3"
-                                FontWeight="Bold"
-                                FontSize="12"
+                            <StackPanel 
+                                Margin="10 0 0 0" 
+                                Grid.Column="0"
+                                Orientation="Vertical"
                                 HorizontalAlignment="Left"
-                                Text="{Binding OutlookAccountDescription}" />
-                            <TextBlock 
-                                Grid.Column="0" 
-                                Grid.Row="1" 
-                                HorizontalAlignment="Left"
-                                Text="{Binding OutlookAccountEmail}" />
-                            <TextBlock 
+                                VerticalAlignment="Center">
+                                <TextBlock
+                                    Margin="0 0 0 3"
+                                    FontWeight="Bold"
+                                    FontSize="12"
+                                    HorizontalAlignment="Left"
+                                    Text="{Binding OutlookAccountDescription}" />
+                                <TextBlock 
+                                    HorizontalAlignment="Left"
+                                    Text="{Binding OutlookAccountEmail}" />
+                            </StackPanel>
+                            <Image
                                 Grid.Column="1" 
-                                Grid.Row="0" 
-                                Grid.RowSpan="2" 
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center" 
-                                Text="{Binding Status}" />
+                                Margin="0 0 10 0"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Right"
+                                Height="28"
+                                Visibility="{Binding IsRegistered, Converter={StaticResource NotBoolToVisibility}}"
+                                Source="/Virgil.Mail;component/Resources/add.png" />
+                            <Image
+                                Grid.Column="1" 
+                                Margin="0 0 10 0"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Right"
+                                Height="28"
+                                Visibility="{Binding IsRegistered, Converter={StaticResource BoolToVisibility}}"
+                                Source="/Virgil.Mail;component/Resources/gear.png" />
                         </Grid>
                     </Button>
                 </DataTemplate>
@@ -69,7 +78,7 @@
             Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" 
             Padding="20 20">
             <Grid>
-                <Button MinWidth="90" Content="Export all..." Padding="0 3" HorizontalAlignment="Left" Background="White" />
+                <Button MinWidth="90" Visibility="Hidden" Content="Export all..." Padding="0 3" HorizontalAlignment="Left" Background="White" />
             </Grid>
         </Border>
     </Grid>

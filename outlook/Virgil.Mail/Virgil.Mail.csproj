@@ -227,6 +227,7 @@
     <Compile Include="Common\IStorageProvider.cs" />
     <Compile Include="Common\IDialogPresenter.cs" />
     <Compile Include="Mvvm\NotBoolConverter.cs" />
+    <Compile Include="Mvvm\ValidationRule.cs" />
     <Compile Include="Storage\EncryptedKeyValueStorage.cs" />
     <Compile Include="Crypto\VirgilCryptoProvider.cs" />
     <Compile Include="Dialogs\DialogPresenter.cs" />
@@ -350,7 +351,10 @@
   <ItemGroup>
     <Resource Include="Resources\wizard-logo.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\add.png" />
+    <Resource Include="Resources\gear.png" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -359,10 +363,11 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>Virgil.Mail_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>95E60C955B5C83BC9E332643A0A515C4AC785A26</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>1E198D4EC0D6C713B73ABD2BA6BA2E82D19EFB17</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

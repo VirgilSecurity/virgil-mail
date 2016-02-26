@@ -7,6 +7,8 @@
     {
         public Guid VirgilCardId { get; set; }
         public string VirgilCardHash { get; set; }
+        public Guid VirgilPublicKeyId { get; set; }
+        public byte[] VirgilPublicKey { get; set; }
         public IDictionary<string, string> VirgilCardCustomData { get; set; }
 
         public string OutlookAccountDescription { get; set; }
