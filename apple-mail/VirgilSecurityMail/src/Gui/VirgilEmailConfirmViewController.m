@@ -69,20 +69,25 @@ NSString * windowTitle = @"";
     windowTitle = title;
 }
 
-- (void) setConfirmationCode : (NSString *) confirmationCode
+- (BOOL) setConfirmationCode : (NSString *) confirmationCode
                   forAccount : (NSString *) account
+            confirmationGUID : (NSString *) confirmationGUID
                 resultObject : (id)resultObject
                  resultBlock : (void (^)(id arg1, BOOL isOk))resultBlock {
     [self setCurrentState:confirmInAction];
     curAccount = account;
     
+    if (![[VirgilProcessingManager sharedInstance] isCorrectconfirmationGUID : confirmationGUID
+                                                                     account : account]) {
+        return NO;
+    }
     @try {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             
             // Confirm account creation
             if ([[VirgilProcessingManager sharedInstance] accountNeedsConfirmation:account]) {
                 BOOL res = [[VirgilKeyManager sharedInstance] confirmAccountCreation : account
-                                                                                 code : confirmationCode];
+                                                                                code : confirmationCode];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (res) {
                         [self setCurrentState:confirmDone];
@@ -137,6 +142,64 @@ NSString * windowTitle = @"";
         [self externalActionDone];
     }
     @finally {}
+    return YES;
+}
+
++ (BOOL) setConfirmationCodeNoUI : (NSString *) confirmationCode
+                      forAccount : (NSString *) account
+                confirmationGUID : (NSString *) confirmationGUID
+                    resultObject : (id)resultObject
+                     resultBlock : (void (^)(id arg1, BOOL isOk))resultBlock {
+    curAccount = account;
+    
+    if (![[VirgilProcessingManager sharedInstance] isCorrectconfirmationGUID : confirmationGUID
+                                                                     account : account]) {
+        return NO;
+    }
+    @try {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            
+            // Confirm account creation
+            if ([[VirgilProcessingManager sharedInstance] accountNeedsConfirmation:account]) {
+                BOOL res = [[VirgilKeyManager sharedInstance] confirmAccountCreation : account
+                                                                                code : confirmationCode];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    resultBlock(resultObject, res);
+                });
+                
+                
+                // Confirm private key request
+            } else if ([[VirgilProcessingManager sharedInstance] accountNeedsPrivateKey:account]) {
+                
+                // Request private key password
+                BOOL res = [[VirgilKeyManager sharedInstance] confirmPrivateKeyRequest : account
+                                                                                  code : confirmationCode];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    resultBlock(resultObject, res);
+                });
+                
+                // Confirm account deletion
+            } else if ([[VirgilProcessingManager sharedInstance] accountNeedsDeletion:account]) {
+                BOOL res = [[VirgilKeyManager sharedInstance] confirmAccountDeletion : account
+                                                                                code : confirmationCode];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    resultBlock(resultObject, res);
+                });
+                
+                
+                // There is no need action for confirmation
+            } else {
+                resultBlock(resultObject, YES);
+                [self performSelectorOnMainThread : @selector(closeWindow)
+                                       withObject : nil
+                                    waitUntilDone : NO];
+            }
+            [VirgilAccountsViewController askRefresh];
+        });
+    }
+    @catch (NSException *exception) {}
+    @finally {}
+    return YES;
 }
 
 - (IBAction)onCancel:(id)sender {
@@ -202,7 +265,7 @@ NSString * windowTitle = @"";
         [self setProgressVisible:NO];
         [self preventUserActivity:NO];
         if (nil != infoField) {
-            infoField.stringValue = @"Confirmation was finished successfuly.";
+            infoField.stringValue = @"Finished successfuly.";
         }
         [self setButtonVisible:YES forTag:TAG_BTN_OK];
         [self setButtonVisible:NO forTag:TAG_BTN_CANCEL];
@@ -212,7 +275,7 @@ NSString * windowTitle = @"";
         [self setProgressVisible:YES];
         [self preventUserActivity:YES];
         if (nil != infoField) {
-            infoField.stringValue = @"Sending request for resend confirmation code ...";
+            infoField.stringValue = @"Repeating ...";
         }
     } else if (confirmResendDone == _state) {
         [self setProgressVisible:NO];
@@ -227,7 +290,7 @@ NSString * windowTitle = @"";
         [self setProgressVisible:NO];
         [self preventUserActivity:NO];
         if (nil != infoField) {
-            infoField.stringValue = @"Confirmation error!";
+            infoField.stringValue = @"Error!";
         }
         [self setButtonVisible:NO forTag:TAG_BTN_OK];
         [self setButtonVisible:YES forTag:TAG_BTN_CANCEL];

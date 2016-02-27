@@ -4,7 +4,7 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2012 by Steve Nygard.
  */
 
-#import "NSObject.h"
+//#import "NSObject.h"
 
 @class ActivityViewerMailSound, NSBackgroundActivityScheduler, NSDate, NSOperationQueue, NSUserDefaults;
 
@@ -29,7 +29,7 @@
 @property(nonatomic) NSBackgroundActivityScheduler *fetchActivity; // @synthesize fetchActivity=_fetchActivity;
 @property(readonly, nonatomic) NSOperationQueue *automaticFetchQueue; // @synthesize automaticFetchQueue=_automaticFetchQueue;
 @property(nonatomic) BOOL automaticFetchingShouldBeDisabled; // @synthesize automaticFetchingShouldBeDisabled=_automaticFetchingShouldBeDisabled;
-- (void).cxx_destruct;
+//- (void).cxx_destruct;
 - (void)_webAuthenticationCompleted:(id)arg1;
 - (void)_aosAccountMigratedExternally:(id)arg1;
 - (void)_mailAccountsChangedExternally:(id)arg1;

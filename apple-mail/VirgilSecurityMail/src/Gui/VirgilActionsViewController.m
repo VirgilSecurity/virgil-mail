@@ -47,12 +47,47 @@
 
 #define VIRGILKEY_EXTENTION @"vcard"
 
-static BOOL _cloudSelection = YES;
+#define kCheckInterval      2
+#define kCheckTimesLimit    15
+
+static NSLock * accessLock;
+static VirgilActionsViewController * currentController = nil;
 
 @implementation VirgilActionsViewController
 
+BOOL _cloudSelection = YES;
+NSTimer * _periodicMailChecker = nil;
+NSInteger _checkCounter = 0;
+
++ (void) startMailCheck {
+    [VirgilActionsViewController stopMailCheck];
+    _periodicMailChecker = [NSTimer scheduledTimerWithTimeInterval : kCheckInterval
+                                                            target : NSClassFromString(@"VirgilActionsViewController")
+                                                          selector : @selector(mailCheckAction)
+                                                          userInfo : nil
+                                                           repeats : YES];
+}
+
++ (void) stopMailCheck {
+    if (_periodicMailChecker != nil) {
+        [_periodicMailChecker invalidate];
+    }
+    _checkCounter = 0;
+}
+
++ (void) mailCheckAction {
+    _checkCounter++;
+    if (_checkCounter < (kCheckTimesLimit / kCheckInterval)) {
+        [[VirgilProcessingManager sharedInstance] checkNewMail];
+    } else {
+        [VirgilActionsViewController stopMailCheck];
+        [VirgilActionsViewController actionDone];
+    }
+}
+
 - (void) reset {
     [self setVisibleExportControls:NO];
+    [self externalActionDone];
 }
 
 - (IBAction)onExportKeyClicked:(id)sender {
@@ -108,19 +143,17 @@ static BOOL _cloudSelection = YES;
     
     [self noteOfWarningToUser : @"Delete Virgil Keys completely ?"
             completionHandler : ^(BOOL isOkButtonClicked) {
-                [self setProgressVisible:YES];
-                [self preventUserActivity:YES];
+                [self externalActionStart];
                 
                 @try {
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                         __block BOOL res = [[VirgilKeyManager sharedInstance] requestAccountDeletion:_account];
                         
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            [self externalActionDone];
                             if (res) {
-                                [[VirgilProcessingManager sharedInstance] clearDecryptionCache];
-                                [self delegateRefresh];
+                                [VirgilActionsViewController startMailCheck];
                             } else {
+                                [self externalActionDone];
                                 [self showErrorView : [[VirgilKeyManager sharedInstance] lastError]];
                             }
                         });
@@ -156,6 +189,16 @@ static BOOL _cloudSelection = YES;
     }
     
     [self setVisibleExportControls:NO];
+    
+    [VirgilActionsViewController safeAction:^{
+        currentController = self;
+    }];
+}
+
+- (void) dealloc {
+    [VirgilActionsViewController safeAction:^{
+        currentController = nil;
+    }];
 }
 
 - (IBAction)onCreateKeysClicked:(id)sender {
@@ -187,8 +230,7 @@ static BOOL _cloudSelection = YES;
     }
     
     
-    [self setProgressVisible:YES];
-    [self preventUserActivity:YES];
+    [self externalActionStart];
     
     @try {
         VirgilContainerType containerType = useCloudStorage ? VirgilContainerNormal : VirgilContainerParanoic;
@@ -199,10 +241,10 @@ static BOOL _cloudSelection = YES;
                                          containerType : containerType];
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self externalActionDone];
                 if (res) {
-                    [self delegateRefresh];
+                    [VirgilActionsViewController startMailCheck];
                 } else {
+                    [self externalActionDone];
                     [self showErrorView : [[VirgilKeyManager sharedInstance] lastError]];
                 }
             });
@@ -238,8 +280,7 @@ static BOOL _cloudSelection = YES;
         }
     }
     
-    [self setProgressVisible:YES];
-    [self preventUserActivity:YES];
+    [self externalActionStart];
     
     @try {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -253,8 +294,8 @@ static BOOL _cloudSelection = YES;
             }
             
             BOOL res = [[VirgilKeyManager sharedInstance] exportAccountData : _account
-                                                    toFile : fileName
-                                              withPassword : keyPass];
+                                                                     toFile : fileName
+                                                               withPassword : keyPass];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self externalActionDone];
@@ -361,8 +402,7 @@ static BOOL _cloudSelection = YES;
         return;
     }
     
-    [self setProgressVisible:YES];
-    [self preventUserActivity:YES];
+    [self externalActionStart];
     
     // Do long term manipulation asynchronously
     @try {
@@ -382,13 +422,22 @@ static BOOL _cloudSelection = YES;
             
             // Update GUI
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self externalActionDone];
-                if (NO == successfull) {
-                    if (nil != errorStr && [errorStr length]) {
-                        [self showErrorView : errorStr];
+                if (useCloudStorage) {
+                    if (successfull) {
+                        [VirgilActionsViewController startMailCheck];
+                    } else {
+                        [self externalActionDone];
+                        [self showErrorView : [[VirgilKeyManager sharedInstance] lastError]];
                     }
                 } else {
-                    [self delegateRefresh];
+                    [self externalActionDone];
+                    if (NO == successfull) {
+                        if (nil != errorStr && [errorStr length]) {
+                            [self showErrorView : errorStr];
+                        }
+                    } else {
+                        [self delegateRefresh];
+                    }
                 }
             });
         });
@@ -450,23 +499,19 @@ static BOOL _cloudSelection = YES;
 }
 
 - (IBAction)onResendConfirmationClicked:(id)sender {
-    [self setProgressVisible:YES];
-    [self preventUserActivity:YES];
+    [self externalActionStart];
     
     @try {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             BOOL res = [[VirgilKeyManager sharedInstance] resendConfirmEMail : _account];
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self externalActionDone];
                 if (res) {
-                    //[self delegateRefresh];
-                    _infoTextField.stringValue = @"Please wait for email with confirmation code";
+                    [VirgilActionsViewController startMailCheck];
                 } else {
+                    [self externalActionDone];
                     [self showErrorView : [[VirgilKeyManager sharedInstance] lastError]];
                 }
-                [self setProgressVisible:NO];
-                [self preventUserActivity:NO];
             });
         });
         
@@ -478,23 +523,19 @@ static BOOL _cloudSelection = YES;
 }
 
 - (IBAction)onResendConfirmationForPrivateKey:(id)sender {
-    [self setProgressVisible:YES];
-    [self preventUserActivity:YES];
+    [self externalActionStart];
     
     @try {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             BOOL res = [[VirgilKeyManager sharedInstance] requestPrivateKeyFromCloud:_account];
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self externalActionDone];
                 if (res) {
-                    //[self delegateRefresh];
-                    _infoTextField.stringValue = @"Please wait for email with confirmation code";
+                    [VirgilActionsViewController startMailCheck];
                 } else {
+                    [self externalActionDone];
                     [self showErrorView : [[VirgilKeyManager sharedInstance] lastError]];
                 }
-                [self setProgressVisible:NO];
-                [self preventUserActivity:NO];
             });
         });
         
@@ -506,23 +547,19 @@ static BOOL _cloudSelection = YES;
 }
 
 - (IBAction)onResendDeleteRequest:(id)sender {
-    [self setProgressVisible:YES];
-    [self preventUserActivity:YES];
+    [self externalActionStart];
     
     @try {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             BOOL res = [[VirgilKeyManager sharedInstance] requestAccountDeletion:_account];
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self externalActionDone];
                 if (res) {
-                    //[self delegateRefresh];
-                    _infoTextField.stringValue = @"Please wait for email with confirmation code";
+                    [VirgilActionsViewController startMailCheck];
                 } else {
+                    [self externalActionDone];
                     [self showErrorView : [[VirgilKeyManager sharedInstance] lastError]];
                 }
-                [self setProgressVisible:NO];
-                [self preventUserActivity:NO];
             });
         });
         
@@ -592,5 +629,25 @@ static BOOL _cloudSelection = YES;
                         atView : sender];
 }
 
++ (void) safeAction : (void(^)())action {
+    [accessLock lock];
+    action();
+    [accessLock unlock];
+}
+
++ (void) actionDone {
+    [VirgilActionsViewController stopMailCheck];
+    [VirgilActionsViewController safeAction:^{
+        if (currentController != nil) {
+            [currentController performSelectorOnMainThread : @selector(externalActionDone)
+                                                withObject : currentController
+                                             waitUntilDone : YES];
+            
+            [currentController performSelectorOnMainThread : @selector(delegateRefresh)
+                                                withObject : currentController
+                                             waitUntilDone : NO];
+        }
+    }];
+}
 
 @end

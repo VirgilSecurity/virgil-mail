@@ -71,11 +71,16 @@
 - (DecryptStatus) getDecriptionStatusForMessage : (Message *)message;
 
 // Helper work with keys
-- (NSString *) confirmationCodeFromEmail : (Message *) message;
+- (NSString *) confirmationCodeFromText : (NSString *) text;
+- (NSString *) confirmActionFromText : (NSString *) text;
+- (NSString *) confirmGUIDFromText : (NSString *) text;
+- (BOOL) isCorrectconfirmationGUID : (NSString *)guid
+                           account : (NSString *)account;
 - (BOOL) accountNeedsConfirmation : (NSString *)account;
 - (BOOL) accountNeedsPrivateKey : (NSString *)account;
 - (BOOL) accountNeedsDeletion : (NSString *)account;
 - (NSString *) getMyAccountFromMessage : (Message *)message;
+- (NSString *) getMyAccountByConfirmGUID : (NSString *)confirmGUID;
 
 - (VirgilAccountInfo *) accountInfo : (NSString *)account
                        checkInCloud : (BOOL)checkInCloud;
@@ -84,6 +89,8 @@
 - (void) checkAccountForEncryption : (NSString *) account;
 
 - (void) clearDecryptionCache;
+
+- (void) checkNewMail;
 
 
 @property (readonly, retain) VirgilDecryptedMailContainer * decryptedMailContainer;

@@ -51,6 +51,7 @@
 #import "VirgilKeyChainContainer.h"
 #import "VirgilKeyChain.h"
 #import "VirgilMain.h"
+#import "VirgilMessageViewer.h"
 #import "VirgilLog.h"
 #import "VSSCryptor.h"
 #import "VSSSigner.h"
@@ -461,29 +462,52 @@
     return res;
 }
 
-- (NSString *) confirmationCodeFromEmail : (Message *) message {
-    if (nil == message) return nil;
-    MimePart * topMimePart = ((MimeBody *)message.messageBody).topLevelPart;
-    if (nil == topMimePart) return nil;
+- (NSString *) confirmationCodeFromText : (NSString *) text {
+    if (nil == text) return nil;
+    if (![text containsString : @"confirmation_code"]) return nil;
     
-    NSString * receiver = [self getMyAccountFromMessage:message];
-    if (nil == message || nil == receiver) return nil;
-    VLogInfo(@"isRead = %hhd", [message isRead]);
-    
-    if (![topMimePart.subtype isEqualTo:@"html"]) return nil;
-    
-    NSData *bodyData = [topMimePart bodyData];
-    NSString* strBody = [[NSString alloc] initWithData:bodyData encoding:NSUTF8StringEncoding];
-    
-    if (nil == strBody) return NO;
-    if (![strBody containsString : @"confirmation code is"]) return nil;
-    
-    NSRange range = [strBody rangeOfString:@"font-weight: bold;\">"];
+    NSString * searchStr = @"<input type=\"hidden\" name=\"confirmation_code\" id=\"confirmation_code\" value=\"";
+    NSRange range = [text rangeOfString:searchStr];
     if (NSNotFound == range.location) return nil;
-    NSString * rightPart = [strBody substringFromIndex : range.location + 20];
-    range = [rightPart rangeOfString:@"</b>"];
+    NSString * rightPart = [text substringFromIndex : range.location + searchStr.length];
+    range = [rightPart rangeOfString:@"\">"];
     if (NSNotFound == range.location) return nil;
     return [rightPart substringToIndex:range.location];
+}
+
+- (NSString *) confirmActionFromText : (NSString *) text {
+    if (nil == text) return nil;
+    if (![text containsString : @"parameter_1"]) return nil;
+    
+    NSString * searchStr = @"<input type=\"hidden\" name=\"parameter_1\" id=\"parameter_1\" value=\"";
+    NSRange range = [text rangeOfString:searchStr];
+    if (NSNotFound == range.location) return nil;
+    NSString * rightPart = [text substringFromIndex : range.location + searchStr.length];
+    range = [rightPart rangeOfString:@"\">"];
+    if (NSNotFound == range.location) return nil;
+    return [rightPart substringToIndex:range.location];
+}
+
+- (NSString *) confirmGUIDFromText : (NSString *) text {
+    if (nil == text) return nil;
+    if (![text containsString : @"parameter_2"]) return nil;
+    
+    NSString * searchStr = @"<input type=\"hidden\" name=\"parameter_2\" id=\"parameter_2\" value=\"";
+    NSRange range = [text rangeOfString:searchStr];
+    if (NSNotFound == range.location) return nil;
+    NSString * rightPart = [text substringFromIndex : range.location + searchStr.length];
+    range = [rightPart rangeOfString:@"\">"];
+    if (NSNotFound == range.location) return nil;
+    return [rightPart substringToIndex:range.location];
+}
+
+- (BOOL) isCorrectconfirmationGUID : (NSString *)guid
+                           account : (NSString *)account {
+    if (nil == account || nil == guid) return  NO;
+    
+    VirgilKeyChainContainer * container = [VirgilKeyChain loadContainer : account];
+    if (nil == container) return NO;
+    return [guid isEqualToString:container.publicKey.confirmID];
 }
 
 - (BOOL) accountNeedsConfirmation : (NSString *)account {
@@ -626,8 +650,26 @@
     return nil;
 }
 
+- (NSString *) getMyAccountByConfirmGUID : (NSString *)confirmGUID {
+    if (confirmGUID == nil) return nil;
+    for (NSString * account in [VirgilProcessingManager accountsList]) {
+        VirgilKeyChainContainer * container = [VirgilKeyChain loadContainer:account];
+        if (container != nil) {
+            NSLog(@"%@ - %@", account, container.publicKey.confirmID);
+            if ([confirmGUID isEqualToString:container.publicKey.confirmID]) {
+                return account;
+            }
+        }
+    }
+    return nil;
+}
+
 - (void) clearDecryptionCache {
     [_decryptedMailContainer clear];
+}
+
+- (void) checkNewMail {
+    [VirgilMessageViewer checkNewMail];
 }
 
 - (BOOL) isNeedToEncrypt {

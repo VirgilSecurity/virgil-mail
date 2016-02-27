@@ -41,6 +41,8 @@
 
 - (void) reset;
 
++ (void) actionDone;
+
 @property (nonatomic) NSString * account;
 @property (nonatomic, weak) id <VirgilAccountsProtocol> delegate;
 

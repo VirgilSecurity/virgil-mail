@@ -1029,9 +1029,9 @@ Gw
                                     </objectValues>
                                 </comboBoxCell>
                             </comboBox>
-                            <button verticalHuggingPriority="750" misplaced="YES" tag="8002" translatesAutoresizingMaskIntoConstraints="NO" id="kyP-ay-E0Q">
-                                <rect key="frame" x="256" y="13" width="202" height="32"/>
-                                <buttonCell key="cell" type="push" title="Resend confirmation code" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ABk-ks-qNk">
+                            <button verticalHuggingPriority="750" tag="8002" translatesAutoresizingMaskIntoConstraints="NO" id="kyP-ay-E0Q">
+                                <rect key="frame" x="368" y="13" width="90" height="32"/>
+                                <buttonCell key="cell" type="push" title="Repeate" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ABk-ks-qNk">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -1041,7 +1041,7 @@ Gw
                             </button>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" tag="8003" translatesAutoresizingMaskIntoConstraints="NO" id="8kM-Bs-YTs">
                                 <rect key="frame" x="59" y="60" width="378" height="17"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="GLV-v2-jtG">
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Label" id="GLV-v2-jtG">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -1050,8 +1050,16 @@ Gw
                             <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="hkR-3U-BBP">
                                 <rect key="frame" x="32" y="60" width="16" height="16"/>
                             </progressIndicator>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2uB-N8-149">
+                                <rect key="frame" x="151" y="97" width="170" height="19"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="&lt;Confirmation Title&gt;" id="v1J-Vk-fX2">
+                                    <font key="font" metaFont="systemBold" size="16"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                             <button verticalHuggingPriority="750" misplaced="YES" tag="8001" translatesAutoresizingMaskIntoConstraints="NO" id="qij-sU-sPS">
-                                <rect key="frame" x="198" y="13" width="58" height="32"/>
+                                <rect key="frame" x="207" y="13" width="58" height="32"/>
                                 <buttonCell key="cell" type="push" title="Ok" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="pVK-QW-JlK">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -1061,20 +1069,12 @@ Gw
                                     <outlet property="nextKeyView" destination="BKC-t8-b4Z" id="div-Z9-7zQ"/>
                                 </connections>
                             </button>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2uB-N8-149">
-                                <rect key="frame" x="151" y="97" width="170" height="19"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="&lt;Confirmation Title&gt;" id="v1J-Vk-fX2">
-                                    <font key="font" metaFont="systemBold" size="16"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
                         </subviews>
                         <constraints>
                             <constraint firstItem="2uB-N8-149" firstAttribute="top" secondItem="p8i-e9-kW8" secondAttribute="top" constant="20" id="EzR-Eb-5mH"/>
                             <constraint firstItem="qij-sU-sPS" firstAttribute="top" secondItem="hkR-3U-BBP" secondAttribute="bottom" constant="20" symbolic="YES" id="GR2-UG-WBl"/>
-                            <constraint firstItem="kyP-ay-E0Q" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="qij-sU-sPS" secondAttribute="trailing" constant="5" id="NNW-Tp-X0i"/>
                             <constraint firstItem="2uB-N8-149" firstAttribute="centerX" secondItem="p8i-e9-kW8" secondAttribute="centerX" id="Pcs-FN-LjY"/>
+                            <constraint firstAttribute="trailing" secondItem="8kM-Bs-YTs" secondAttribute="trailing" constant="37" id="Txh-BE-vlg"/>
                             <constraint firstItem="BKC-t8-b4Z" firstAttribute="top" secondItem="hkR-3U-BBP" secondAttribute="bottom" constant="20" symbolic="YES" id="X1o-Y3-BF9"/>
                             <constraint firstItem="8kM-Bs-YTs" firstAttribute="top" secondItem="2uB-N8-149" secondAttribute="bottom" constant="20" id="Yci-eF-K0P"/>
                             <constraint firstItem="8kM-Bs-YTs" firstAttribute="leading" secondItem="hkR-3U-BBP" secondAttribute="trailing" constant="8" symbolic="YES" id="cuN-jJ-kmU"/>
@@ -1082,8 +1082,8 @@ Gw
                             <constraint firstItem="BKC-t8-b4Z" firstAttribute="leading" secondItem="p8i-e9-kW8" secondAttribute="leading" constant="20" symbolic="YES" id="esv-nb-va4"/>
                             <constraint firstAttribute="trailing" secondItem="kyP-ay-E0Q" secondAttribute="trailing" constant="20" symbolic="YES" id="jK5-GU-8GA"/>
                             <constraint firstItem="kyP-ay-E0Q" firstAttribute="top" secondItem="hkR-3U-BBP" secondAttribute="bottom" constant="20" symbolic="YES" id="kQh-aP-MNs"/>
-                            <constraint firstItem="qij-sU-sPS" firstAttribute="leading" secondItem="BKC-t8-b4Z" secondAttribute="trailing" constant="113" id="uFD-zg-xsb"/>
                             <constraint firstItem="hkR-3U-BBP" firstAttribute="top" secondItem="2uB-N8-149" secondAttribute="bottom" constant="20" id="vhj-cQ-aEm"/>
+                            <constraint firstItem="qij-sU-sPS" firstAttribute="centerX" secondItem="p8i-e9-kW8" secondAttribute="centerX" id="zNm-dp-5iB"/>
                         </constraints>
                     </view>
                     <connections>
@@ -1326,7 +1326,7 @@ Gw
                             </textField>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f4L-dU-WjA">
                                 <rect key="frame" x="38" y="126" width="204" height="32"/>
-                                <buttonCell key="cell" type="push" title="Resend confirmation email" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Rkr-JY-fda">
+                                <buttonCell key="cell" type="push" title="Repeate creation" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Rkr-JY-fda">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -1787,7 +1787,7 @@ Gw
                             </textField>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="v8q-AW-yVp">
                                 <rect key="frame" x="38" y="128" width="204" height="32"/>
-                                <buttonCell key="cell" type="push" title="Resend confirmation email" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Fk5-PD-Xst">
+                                <buttonCell key="cell" type="push" title="Repeate" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Fk5-PD-Xst">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -1800,7 +1800,7 @@ Gw
                             </progressIndicator>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xLC-mc-dnt">
                                 <rect key="frame" x="38" y="95" width="204" height="32"/>
-                                <buttonCell key="cell" type="push" title="Stop Private Key request " bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="drr-IP-tn6">
+                                <buttonCell key="cell" type="push" title="Stop" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="drr-IP-tn6">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -1833,7 +1833,7 @@ Gw
                         <subviews>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Yl-jF-QpM">
                                 <rect key="frame" x="38" y="127" width="204" height="32"/>
-                                <buttonCell key="cell" type="push" title="Resend confirmation email" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="JTj-2a-6GL">
+                                <buttonCell key="cell" type="push" title="Repeate" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="JTj-2a-6GL">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -1864,7 +1864,7 @@ Gw
                             </textField>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2TO-nf-8ua">
                                 <rect key="frame" x="38" y="96" width="204" height="32"/>
-                                <buttonCell key="cell" type="push" title="Stop deletion" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="zzZ-Hg-60l">
+                                <buttonCell key="cell" type="push" title="Stop" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="zzZ-Hg-60l">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>

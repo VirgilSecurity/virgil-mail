@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Virgil Security Inc.
+ * Copyright (C) 2016 Virgil Security Inc.
  *
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  *
@@ -34,13 +34,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "VirgilMessageView.h"
-#import "VirgilLog.h"
+#import "VirgilMessageViewer.h"
+#import <MessageViewer.h>
 
-@implementation VirgilMessageView
+MessageViewer * messageViewer = nil;
 
-- (id)MA_borderColor {
-    return [self MA_borderColor];
+@implementation VirgilMessageViewer
+
++ (void)MA_registerNewViewer:(id)arg1 {
+    messageViewer = arg1;
+    NSLog(@"MA_registerNewViewer");
+    [self MA_registerNewViewer:arg1];
+}
+
++ (BOOL)checkNewMail {
+    if (messageViewer == nil) return NO;
+    [messageViewer checkNewMail:nil];
+    return YES;
 }
 
 @end

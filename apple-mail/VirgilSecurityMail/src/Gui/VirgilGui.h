@@ -46,8 +46,10 @@
 + (void) showWellcome;
 + (void) showAccountsFor : (NSString *) account;
 
-+ (void) confirmAction : account
-      confirmationCode : code
++ (void) confirmAction : (NSString *)account
+      confirmationCode : (NSString *)code
+                action : (NSString *)action
+      confirmationGUID : (NSString *)confirmationGUID
           resultObject : (id)resultObject
            resultBlock : (void (^)(id arg1, BOOL isOk))resultBlock;
 

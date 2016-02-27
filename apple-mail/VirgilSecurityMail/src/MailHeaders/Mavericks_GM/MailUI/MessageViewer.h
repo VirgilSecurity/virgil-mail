@@ -4,7 +4,7 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2012 by Steve Nygard.
  */
 
-#import "NSResponder.h"
+/*#import "NSResponder.h"
 
 #import "FlaggedStatusToolbarItemDelegate.h"
 #import "MCActivityTarget.h"
@@ -21,13 +21,13 @@
 #import "NSWindowDelegate.h"
 #import "SGTSearchFieldQueryScopeDelegate.h"
 #import "SearchScopeDelegate.h"
-
+*/
 @class ActivityViewController, ContentSplitViewController, FavoritesBarView, FlaggedStatusToolbarItem, FullScreenWindowController, MCInvocationQueue, MCSafeBoolCache, MailBarContainerView, MailSplitView, MailToolbar, MailboxPaneBottomView, MailboxesOutlineViewController, MailboxesSplitViewController, MessageListContainerView, MessageViewerLazyPopUpButton, MessageViewerSearchField, NSAnimation, NSArray, NSDictionary, NSLayoutConstraint, NSMenu, NSMenuItem, NSMutableArray, NSNumber, NSSet, NSString, NSTextField, NSTimer, NSToolbarItem, NSView, NSWindow, RichMessageListSortView, TableViewManager, ViewingPaneViewController;
 
-@interface MessageViewer : NSResponder <FlaggedStatusToolbarItemDelegate, MessageViewerSearchFieldFocusDelegate, NSToolbarDelegate, MailboxesOutlineViewControllerDelegate, MailTableViewDelegateDelegate, MCActivityTarget, MessageTransferDelegate, MVMailboxSelectionOwner, MVTerminationHandler, NSAnimationDelegate, NSSpeechSynthesizerDelegate, NSUserInterfaceValidations, NSWindowDelegate, SearchScopeDelegate, SGTSearchFieldQueryScopeDelegate>
+@interface MessageViewer /*: NSResponder <FlaggedStatusToolbarItemDelegate, MessageViewerSearchFieldFocusDelegate, NSToolbarDelegate, MailboxesOutlineViewControllerDelegate, MailTableViewDelegateDelegate, MCActivityTarget, MessageTransferDelegate, MVMailboxSelectionOwner, MVTerminationHandler, NSAnimationDelegate, NSSpeechSynthesizerDelegate, NSUserInterfaceValidations, NSWindowDelegate, SearchScopeDelegate, SGTSearchFieldQueryScopeDelegate>*/
 {
-    id <MessageMall> _messageMall;
-    MessageViewerSearchField *_searchField;
+    //id <MessageMall> _messageMall;
+    //MessageViewerSearchField *_searchField;
     NSToolbarItem *_searchViewItem;
     MailToolbar *_toolbar;
     NSDictionary *_toolbarItems;

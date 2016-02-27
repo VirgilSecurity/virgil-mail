@@ -79,7 +79,8 @@ static VirgilAccountsViewController * currentController = nil;
 - (void) dealloc {
     [VirgilAccountsViewController safeAction:^{
         currentController = nil;
-    }];}
+    }];
+}
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
     return  self.items.count;
@@ -216,7 +217,6 @@ static VirgilAccountsViewController * currentController = nil;
     [self tableViewSelectionDidChange : [NSNotification notificationWithName : @"empty notification"
                                                                       object : nil]];
 }
-
 
 - (void) askRefresh {
     NSString * updateAccount = _selectedAccount;

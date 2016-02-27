@@ -49,10 +49,17 @@ typedef NS_ENUM(NSInteger, ConfirmationState) {
 
 - (void) setTitle : (NSString *)title;
 
-- (void) setConfirmationCode : (NSString *) confirmationCode
+- (BOOL) setConfirmationCode : (NSString *) confirmationCode
                   forAccount : (NSString *) account
+            confirmationGUID : (NSString *) confirmationGUID
                 resultObject : (id)resultObject
                  resultBlock : (void (^)(id arg1, BOOL isOk))resultBlock;
+
++ (BOOL) setConfirmationCodeNoUI : (NSString *) confirmationCode
+                      forAccount : (NSString *) account
+                confirmationGUID : (NSString *) confirmationGUID
+                    resultObject : (id)resultObject
+                     resultBlock : (void (^)(id arg1, BOOL isOk))resultBlock;
 
 @property (readonly) ConfirmationState state;
 

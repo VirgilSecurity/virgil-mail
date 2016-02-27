@@ -40,10 +40,10 @@
 }
 
 - (id) init;
-- (id) initCardID : (NSString *)a_cardID
-      publicKeyID : (NSString *)a_publicKeyID
-        publicKey : (NSString *)a_publicKey
-       identityID : (NSString *)a_identityID;
+- (id) initCardID : (NSString *)cardID
+      publicKeyID : (NSString *)publicKeyID
+        publicKey : (NSString *)publicKey
+       identityID : (NSString *)identityID;
 
 // NSCoder
 - (void) encodeWithCoder : (NSCoder *)encoder;
@@ -55,5 +55,6 @@
 @property (retain) NSString * publicKey;
 @property (retain) NSString * identityID;
 @property (retain) NSString * actionID;
+@property (retain) NSString * confirmID;
 
 @end

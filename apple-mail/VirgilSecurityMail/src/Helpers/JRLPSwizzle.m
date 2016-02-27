@@ -143,7 +143,7 @@
 + (BOOL)jrlp_addMethod:(SEL)selector fromClass:(Class)class error:(NSError **)error {
     Method method = class_getInstanceMethod(class, selector);
     if (method == NULL) {
-        SetNSError(error, @"method %@ doesn't exit in class: %@", NSStringFromSelector(selector), [self class]);
+        SetNSError(error, @"method %@ doesn't exist in class: %@", NSStringFromSelector(selector), [self class]);
         return NO;
     }
     class_addMethod(self, selector, method_getImplementation(method), method_getTypeEncoding(method));

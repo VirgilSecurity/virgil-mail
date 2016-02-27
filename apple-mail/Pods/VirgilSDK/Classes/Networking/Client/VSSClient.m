@@ -422,7 +422,7 @@
     [self send:request];
 }
 
-- (void)verifyIdentityWithType:(VSSIdentityType)type value:(NSString *)value completionHandler:(void(^)(GUID *actionId, NSError *error))completionHandler {
+- (void)verifyIdentityWithType:(VSSIdentityType)type value:(NSString *)value extraFields:(NSDictionary *)extra completionHandler:(void(^)(GUID *actionId, NSError *error))completionHandler {
     if (type == VSSIdentityTypeUnknown || value.length == 0) {
         if (completionHandler != nil) {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -449,7 +449,7 @@
     
     VSSCard *sCard = [self.serviceCards[kVSSServiceIDIdentity] as:[VSSCard class]];
     VSSRequestContextExtended *context = [[VSSRequestContextExtended alloc] initWithServiceUrl:[self.serviceConfig serviceURLForServiceID:kVSSServiceIDIdentity] serviceCard:sCard requestEncrypt:@NO responseVerify:@YES privateKey:nil cardId:nil password:nil];
-    VSSVerifyIdentityRequest *request = [[VSSVerifyIdentityRequest alloc] initWithContext:context type:type value:value];
+    VSSVerifyIdentityRequest *request = [[VSSVerifyIdentityRequest alloc] initWithContext:context type:type value:value extraFields:extra];
     request.completionHandler = handler;
     [self send:request];
 }

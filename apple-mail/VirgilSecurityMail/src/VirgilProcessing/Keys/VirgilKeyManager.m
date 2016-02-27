@@ -161,7 +161,7 @@
     return resPubKey;
 }
 
-- (GUID *) requestIdentityVerificationForAccount : (NSString *)account {
+- (GUID *) requestIdentityVerificationForAccount : (NSString *)account extraFields:(NSDictionary *)extra {
     if (nil == account) {
         [self setErrorString : @"wrong params for account creation"];
         return nil;
@@ -174,6 +174,7 @@
     
     [_client verifyIdentityWithType : VSSIdentityTypeEmail
                               value : account
+                        extraFields : extra
                   completionHandler : ^(GUID * _Nullable actionId, NSError * _Nullable error) {
                       if (error == nil) {
                           res = actionId;
@@ -198,7 +199,11 @@
            keyPassword : (NSString *) keyPassword
          containerType : (VirgilContainerType) containerType {
     
-    GUID * actionId = [self requestIdentityVerificationForAccount:account];
+    NSString * confirmID = [[[NSUUID UUID] UUIDString] lowercaseString];
+    NSDictionary * extra = @{@"parameter_1" : kCreateAction,
+                             @"parameter_2" : confirmID};
+    GUID * actionId = [self requestIdentityVerificationForAccount : account
+                                                      extraFields : extra];
     
     if (actionId == nil) return NO;
     
@@ -221,6 +226,7 @@
                               publicKey : pubKey
                              identityID : @"000"];
     publicKeyInfo.actionID = actionId;
+    publicKeyInfo.confirmID = confirmID;
     
     VirgilKeyChainContainer * container =
     [[VirgilKeyChainContainer alloc] initWithPrivateKey : privateKeyInfo
@@ -240,13 +246,18 @@
  * @return YES - success | NO - error occured, get error with [VirgilKeyManager lastError]
  */
 - (BOOL) requestAccountDeletion : (NSString *)account {
-    GUID * actionId = [self requestIdentityVerificationForAccount:account];
-    if (actionId == nil) return NO;
+    NSString * confirmID = [[[NSUUID UUID] UUIDString] lowercaseString];
+    NSDictionary * extra = @{@"parameter_1" : kDeleteAction,
+                             @"parameter_2" : confirmID};
+    GUID * actionID = [self requestIdentityVerificationForAccount : account
+                                                      extraFields : extra];
+    if (actionID == nil) return NO;
     
     VirgilKeyChainContainer * keyChainContainer = [VirgilKeyChain loadContainer : account];
     
     if (keyChainContainer != nil) {
-        keyChainContainer.publicKey.actionID = actionId;
+        keyChainContainer.publicKey.actionID = actionID;
+        keyChainContainer.publicKey.confirmID = confirmID;
         keyChainContainer.isWaitForDeletion = YES;
         [VirgilKeyChain saveContainer : keyChainContainer
                            forAccount : account];
@@ -653,13 +664,18 @@
         return NO;
     }
     
-    GUID * actionId = [self requestIdentityVerificationForAccount:account];
-    if (actionId == nil) return NO;
+    NSString * confirmID = [[[NSUUID UUID] UUIDString] lowercaseString];
+    NSDictionary * extra = @{@"parameter_1" : kKeyRequestAction,
+                             @"parameter_2" : confirmID};
+    GUID * actionID = [self requestIdentityVerificationForAccount : account
+                                                      extraFields : extra];
+    if (actionID == nil) return NO;
     
     VirgilKeyChainContainer * keyChainContainer = [VirgilKeyChain loadContainer : account];
     
     if (keyChainContainer != nil) {
-        keyChainContainer.publicKey.actionID = actionId;
+        keyChainContainer.publicKey.actionID = actionID;
+        keyChainContainer.publicKey.confirmID = confirmID;
         keyChainContainer.isWaitPrivateKey = YES;
         [VirgilKeyChain saveContainer : keyChainContainer
                            forAccount : account];

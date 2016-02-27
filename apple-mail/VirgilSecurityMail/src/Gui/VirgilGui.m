@@ -46,6 +46,7 @@
 #import "VirgilKeyChain.h"
 #import "VirgilLog.h"
 #import "VirgilProcessingManager.h"
+#import "VirgilActionsViewController.h"
 
 static BOOL _accountsVisible = NO;
 static BOOL _configureForSendVisible = NO;
@@ -233,33 +234,29 @@ static BOOL _configureForSendVisible = NO;
     }
 }
 
-+ (void) confirmAction : account
-      confirmationCode : code
++ (void) confirmAction : (NSString *)account
+      confirmationCode : (NSString *)code
+                action : (NSString *)action
+      confirmationGUID : (NSString *)confirmationGUID
           resultObject : (id)resultObject
            resultBlock : (void (^)(id arg1, BOOL isOk))resultBlock {
-    NSWindow * containerWindow = [[NSApplication sharedApplication] mainWindow];
-    if (nil == containerWindow) {
-        resultBlock(resultObject, NO);
-        return;
-    }
-        
-    NSBundle * bundle = [VirgilGui getVirgilBundle];
-    if (nil == bundle) {
-        resultBlock(resultObject, NO);
-        return;
-    }
     
+    NSException * e = [NSException exceptionWithName : @"CantUseUI"
+                                              reason : @"Can't Use UI"
+                                            userInfo : nil];
     @try {
-        NSStoryboard * storyBoard =
-        [NSStoryboard storyboardWithName : @"Main"
-                                  bundle : bundle];
-        if (nil == storyBoard) {
-            resultBlock(resultObject, NO);
-            return;
-        }
+        NSWindow * containerWindow = [[NSApplication sharedApplication] mainWindow];
+        if (nil == containerWindow) @throw e;
+            
+        NSBundle * bundle = [VirgilGui getVirgilBundle];
+        if (nil == bundle) @throw e;
+    
+        NSStoryboard * storyBoard = [NSStoryboard storyboardWithName : @"Main"
+                                                              bundle : bundle];
+        if (nil == storyBoard) @throw e;
         
         NSWindowController * windowControler = [storyBoard instantiateInitialController];
-        if (nil == windowControler) return;
+        if (nil == windowControler) @throw e;
         
         BOOL needAccountCreateConfirmation = [[VirgilProcessingManager sharedInstance] accountNeedsConfirmation:account];
         BOOL needPrivKeyRequestConfirmation = [[VirgilProcessingManager sharedInstance] accountNeedsPrivateKey:account];
@@ -273,45 +270,60 @@ static BOOL _configureForSendVisible = NO;
         
         VirgilEmailConfirmViewController * controller =
         (VirgilEmailConfirmViewController*)[storyBoard instantiateControllerWithIdentifier : @"viewEmailConfirm"];
-        
-        if (nil == controller) {
-            resultBlock(resultObject, NO);
-            return;
-        }
+        if (nil == controller) @throw e;
         
         NSString * title;
         
         if (needAccountCreateConfirmation) {
-            title = @"Virgil Security Sign Up Confirmation";
+            title = @"Virgil Security Sign Up processing";
         } else if (needDeletionConfirmation) {
-            title = @"Virgil Security Delete Confirmation";
+            title = @"Virgil Security Delete processing";
         } else {
-            title = @"Virgil Private Key request Confirmation";
+            title = @"Virgil Private Key request processing";
         }
         
         [controller setTitle : title];
         
-        [controller setConfirmationCode : code
-                             forAccount : account
-                           resultObject : resultObject
-                            resultBlock : resultBlock];
-        
         [windowControler setContentViewController:controller];
-        
         NSWindow * controllerWindow = [windowControler window];
         
-        if (nil == controllerWindow) {
-            resultBlock(resultObject, NO);
-            return;
-        }
+        if (nil == controllerWindow) @throw e;
+        
+        
+        if (![controller setConfirmationCode : code
+                                  forAccount : account
+                            confirmationGUID : confirmationGUID
+                                resultObject : resultObject
+                                 resultBlock : ^(id arg1, BOOL isOk) {
+                                     [VirgilActionsViewController actionDone];
+                                     resultBlock(arg1, isOk);
+                                 }]) {
+                                     resultBlock(resultObject, NO);
+                                 }
+        
+        
         
         [controllerWindow setStyleMask:[controllerWindow styleMask] & ~NSResizableWindowMask];
         
-        [containerWindow beginSheet : controllerWindow
-                  completionHandler : ^(NSModalResponse returnCode) {
-                  }];
+        [containerWindow beginCriticalSheet : controllerWindow
+                          completionHandler : ^(NSModalResponse returnCode) {
+                          }];
     }
     @catch (NSException *exception) {
+        if ([exception.name isEqualToString:e.name]) {
+            if (![VirgilEmailConfirmViewController setConfirmationCodeNoUI : code
+                                                                forAccount : account
+                                                          confirmationGUID : confirmationGUID
+                                                              resultObject : resultObject
+                                                               resultBlock : ^(id arg1, BOOL isOk) {
+                                                                   [VirgilActionsViewController actionDone];
+                                                                   resultBlock(arg1, isOk);
+                                                               }]) {
+                                                                   resultBlock(resultObject, NO);
+                                                               }
+        } else {
+            resultBlock(resultObject, NO);
+        }
     }
     @finally {
     }

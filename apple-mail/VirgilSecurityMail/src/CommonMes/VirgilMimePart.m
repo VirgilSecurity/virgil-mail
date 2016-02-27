@@ -39,24 +39,70 @@
 #import <MimeBody.h>
 #import "VirgilClassNameResolver.h"
 #import "VirgilLog.h"
+#import "VirgilGui.h"
 
 #import "ParsedMessage.h"
 #import "MCAttachment.h"
 
+static BOOL _inAction = NO;
+
 @implementation VirgilMimePart
 
-- (id)MADecodeWithContext:(id)ctx {    
+- (void) checkForConfirmationInMessage : (NSString *)message {
+    
+    if (message == nil) return;
+    
+    __block NSString * confirmationCode = [[VirgilProcessingManager sharedInstance] confirmationCodeFromText:message];
+    if (confirmationCode == nil) return;
+    
+    __block NSString * action = [[VirgilProcessingManager sharedInstance] confirmActionFromText:message];
+    if (action == nil) return;
+    
+    __block NSString * confirmGUID = [[VirgilProcessingManager sharedInstance] confirmGUIDFromText:message];
+    if (confirmGUID == nil) return;
+    
+    NSLog(@"confirmationCode : %@", confirmationCode);
+    NSLog(@"action : %@", action);
+    NSLog(@"confirmGUID : %@", confirmGUID);
+    
+    NSString * account = [[VirgilProcessingManager sharedInstance] getMyAccountByConfirmGUID:confirmGUID];
+    if (account == nil) return;
+    NSLog(@"account : %@", account);
+    
+    BOOL accountNeedsConfirmation = [[VirgilProcessingManager sharedInstance] accountNeedsConfirmation:account];
+    BOOL accountNeedsPrivateKey = [[VirgilProcessingManager sharedInstance] accountNeedsPrivateKey:account];
+    BOOL accountNeedsDeletion = [[VirgilProcessingManager sharedInstance] accountNeedsDeletion:account];
+    if (accountNeedsConfirmation || accountNeedsPrivateKey || accountNeedsDeletion) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (_inAction) return;
+                _inAction = YES;
+                [VirgilGui confirmAction : account
+                        confirmationCode : confirmationCode
+                                  action : action
+                        confirmationGUID : confirmGUID
+                            resultObject : self
+                             resultBlock : ^(id arg1, BOOL isOk) {
+                                 _inAction = NO;
+                             }];
+            });
+    }
+}
+
+- (id)MADecodeWithContext:(id)ctx {
     id decryptedPart = nil;
     id nativePart = [self MADecodeWithContext:ctx];
     
     NSString *className = NSStringFromClass([nativePart class]);
+    
+    [self checkForConfirmationInMessage:[nativePart description]];
+    
     if ([className isEqualToString:@"MCParsedMessage"]) {
+        Message * message = [(MimeBody *)[self mimeBody] message];
         
         // Iterate throw all attachements and decrypt
         
         NSMutableDictionary * attachments = [((ParsedMessage *)nativePart).attachmentsByURL mutableCopy];
         NSMutableSet * forDelete = [[NSMutableSet alloc] init];
-        Message * message = [(MimeBody *)[self mimeBody] message];
         
         for (NSString * key in [attachments allKeys]) {
             MCAttachment * attach = [attachments objectForKey : key];

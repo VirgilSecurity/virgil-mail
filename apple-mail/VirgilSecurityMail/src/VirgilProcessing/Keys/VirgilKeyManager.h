@@ -40,6 +40,10 @@
 #import "VirgilDataTypes.h"
 #import "VirgilKeyChainContainer.h"
 
+#define kCreateAction       @"create_action"
+#define kDeleteAction       @"delete_action"
+#define kKeyRequestAction   @"key_request_action"
+
 /**
  * @brief Class for working with Private and Public keys
  */

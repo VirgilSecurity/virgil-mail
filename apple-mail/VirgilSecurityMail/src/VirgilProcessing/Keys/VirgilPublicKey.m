@@ -41,6 +41,7 @@
 #define kPublicKey      @"PublicKey"
 #define kIdentityID     @"IdentityID"
 #define kActionID       @"ActionID"
+#define kConfirmID      @"ConfirmID"
 
 @implementation VirgilPublicKey : NSObject
 
@@ -55,19 +56,20 @@
         self.publicKey = @"";
         self.identityID = @"";
         self.actionID = @"";
+        self.confirmID = @"";
     }
     return self;
 }
 
-- (id) initCardID : (NSString *)a_cardID
-         publicKeyID : (NSString *)a_publicKeyID
-           publicKey : (NSString *)a_publicKey
-          identityID : (NSString *)a_identityID {
+- (id) initCardID : (NSString *)cardID
+         publicKeyID : (NSString *)publicKeyID
+           publicKey : (NSString *)publicKey
+          identityID : (NSString *)identityID {
     if ([super init]) {
-        self.cardID = [[NSString alloc] initWithString:a_cardID];
-        self.publicKeyID = [[NSString alloc] initWithString:a_publicKeyID];
-        self.publicKey = [[NSString alloc] initWithString:a_publicKey];
-        self.identityID = [[NSString alloc] initWithString:a_identityID];
+        self.cardID = [[NSString alloc] initWithString:cardID];
+        self.publicKeyID = [[NSString alloc] initWithString:publicKeyID];
+        self.publicKey = [[NSString alloc] initWithString:publicKey];
+        self.identityID = [[NSString alloc] initWithString:identityID];
     }
     return self;
 }
@@ -78,6 +80,7 @@
     [encoder encodeObject : self.publicKey forKey : kPublicKey];
     [encoder encodeObject : self.identityID forKey : kIdentityID];
     [encoder encodeObject : self.actionID forKey : kActionID];
+    [encoder encodeObject : self.confirmID forKey : kConfirmID];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {
@@ -86,6 +89,7 @@
     self.publicKey = [decoder decodeObjectForKey : kPublicKey];
     self.identityID = [decoder decodeObjectForKey : kIdentityID];
     self.actionID = [decoder decodeObjectForKey : kActionID];
+    self.confirmID = [decoder decodeObjectForKey : kConfirmID];
     return self;
 }
 
@@ -97,6 +101,7 @@
     [res appendFormat:@"identityID : %@\n", self.identityID];
     [res appendFormat:@"publicKeyID : %@\n", self.publicKeyID];
     [res appendFormat:@"actionID : %@\n", self.actionID];
+    [res appendFormat:@"confirmID : %@\n", self.confirmID];
     [res appendFormat:@"publicKey : %@\n", self.publicKey];
     [res appendString:@"} \n"];
     return res;

@@ -158,6 +158,11 @@
     }
 }
 
+- (void) externalActionStart {
+    [self setProgressVisible:YES];
+    [self preventUserActivity:YES];
+}
+
 - (void) externalActionDone {
     [self setProgressVisible:NO];
     [self preventUserActivity:NO];

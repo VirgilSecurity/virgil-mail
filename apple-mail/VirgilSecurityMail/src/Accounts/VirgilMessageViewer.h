@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Virgil Security Inc.
+ * Copyright (C) 2016 Virgil Security Inc.
  *
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  *
@@ -36,8 +36,14 @@
 
 #import <Foundation/Foundation.h>
 
-@interface VirgilMessageView : NSObject
+@interface VirgilMessageViewer : NSObject
 
-- (id)MA_borderColor;
++ (void)MA_registerNewViewer:(id)arg1;
 
++ (BOOL)checkNewMail;
+
+@end
+
+@interface VirgilMessageViewer (NativeMessageViewerMethods)
+- (void)checkNewMail:(id)arg1;
 @end

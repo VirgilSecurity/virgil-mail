@@ -18,6 +18,7 @@ extern NSString * __nonnull const kVSSModelIsConfirmed;
 extern NSString * __nonnull const kVSSModelIdentity;
 extern NSString * __nonnull const kVSSModelHash;
 extern NSString * __nonnull const kVSSModelData;
+extern NSString * __nonnull const kVSSModelExtraFields;
 
 extern NSString * __nonnull const kVSSModelPublicKey;
 extern NSString * __nonnull const kVSSModelCards;

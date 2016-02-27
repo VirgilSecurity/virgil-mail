@@ -73,12 +73,6 @@
              @"NSToolbar": @[
                         @"configureToolbarItems"
                      ],
-             //@"MessageView": @[
-             //           @"_borderColor"
-             //        ],
-             @"MessageViewController": @[
-                        @"setRepresentedObject:"
-                     ],
              @"HeaderViewController":@[
                         @"_updateTextStorageWithHardInvalidation:"
                      ],
@@ -90,10 +84,10 @@
              @"HeadersEditor": @[
                         @"changeFromHeader:"
                      ],
-             @"BannerContainerViewController": @[
-                        @"updateBannerDisplay",
-                        @"setRepresentedObject:"
-                     ]
+             @"MessageViewer": @[
+                     @"newDefaultMessageViewer",
+                     @"_registerNewViewer:"
+                     ],
              };
 }
 

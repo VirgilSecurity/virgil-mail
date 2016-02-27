@@ -18,6 +18,7 @@ NSString *const kVSSModelIsConfirmed = @"is_confirmed";
 NSString *const kVSSModelIdentity = @"identity";
 NSString *const kVSSModelHash = @"hash";
 NSString *const kVSSModelData = @"data";
+NSString *const kVSSModelExtraFields = @"extra_fields";
 
 NSString *const kVSSModelPublicKey = @"public_key";
 NSString *const kVSSModelCards = @"virgil_cards";
