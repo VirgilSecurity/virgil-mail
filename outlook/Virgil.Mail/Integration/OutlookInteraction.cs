@@ -29,6 +29,17 @@
             mail.ReleaseCom();
         }
 
+        public void DeleteMail(string mailId)
+        {
+            Outlook.NameSpace nameSpace = this.application.GetNamespace("MAPI");
+            Outlook.MailItem mail = (Outlook.MailItem)nameSpace.GetItemFromID(mailId);
+
+            mail.Delete();
+
+            nameSpace.ReleaseCom();
+            mail.ReleaseCom();
+        }
+
         public IEnumerable<AccountIntegrationModel> GetOutlookAccounts()
         {
             Outlook.NameSpace ns = null;

@@ -7,5 +7,6 @@
     {
         IEnumerable<AccountIntegrationModel> GetOutlookAccounts();
         void MarkMailAsRead(string mailId);
+        void DeleteMail(string mailId);
     }
 }

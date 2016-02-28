@@ -83,7 +83,7 @@
         {
             this.account = accountModel;
 
-            this.IsPrivateKeyHasPassword = this.account.IsPrivateKeyHasPassword;
+            this.IsPrivateKeyHasPassword = this.cryptoProvider.HasPrivateKeyPassword(this.account.VirgilCardId);
             this.IsPrivateKeyPasswordNeedToStore = this.account.IsPrivateKeyPasswordNeedToStore;
 
             if (this.account.IsVirgilPrivateKeyStorage && !this.account.LastPrivateKeySyncDateTime.HasValue)
