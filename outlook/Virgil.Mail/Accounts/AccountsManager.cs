@@ -49,6 +49,11 @@
             account.VirgilPublicKey = account.VirgilPublicKey;
             account.VirgilPublicKeyId = account.VirgilPublicKeyId;
 
+            account.IsVirgilPrivateKeyStorage = accountModel.IsVirgilPrivateKeyStorage;
+            account.IsPrivateKeyHasPassword = accountModel.IsPrivateKeyHasPassword;
+            account.IsPrivateKeyPasswordNeedToStore = accountModel.IsPrivateKeyPasswordNeedToStore;
+            account.LastPrivateKeySyncDateTime = accountModel.LastPrivateKeySyncDateTime;
+
             this.AcceptChanges(accounts);
         }
 

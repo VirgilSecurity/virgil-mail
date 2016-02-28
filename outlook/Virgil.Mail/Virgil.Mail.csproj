@@ -154,12 +154,8 @@
       <HintPath>..\packages\Virgil.Crypto.1.2.2.45\lib\portable-net4+sl4+wp7+win8+wpa81\Virgil.Crypto.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Virgil.SDK, Version=3.0.7.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Virgil.SDK.3.0.7.0\lib\portable-net45+win+wpa81+MonoAndroid10+xamarinios10+MonoTouch10\Virgil.SDK.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Virgil.SDK.Domain, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Virgil.SDK.Domain.1.0.0\lib\portable-net4+sl4+wp7+win8\Virgil.SDK.Domain.dll</HintPath>
+    <Reference Include="Virgil.SDK, Version=3.0.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Virgil.SDK.3.0.8.0\lib\portable-net45+win+wpa81+MonoAndroid10+xamarinios10+MonoTouch10\Virgil.SDK.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="WindowsBase" />
@@ -208,6 +204,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="Accounts\AccountSettingsState.cs" />
     <Compile Include="Accounts\AccountSettingsView.xaml.cs">
       <DependentUpon>AccountSettingsView.xaml</DependentUpon>
     </Compile>
@@ -222,14 +219,16 @@
     <Compile Include="Common\IAccountsManager.cs" />
     <Compile Include="Common\IEncryptedKeyValueStorage.cs" />
     <Compile Include="Common\IMailObserver.cs" />
-    <Compile Include="Common\IVirgilCryptoProvider.cs" />
+    <Compile Include="Common\IPrivateKeysStorage.cs" />
     <Compile Include="Common\IPasswordHolder.cs" />
     <Compile Include="Common\IStorageProvider.cs" />
     <Compile Include="Common\IDialogPresenter.cs" />
+    <Compile Include="Dialogs\Dialog.cs" />
+    <Compile Include="Dialogs\DialogBuilder.cs" />
     <Compile Include="Mvvm\NotBoolConverter.cs" />
     <Compile Include="Mvvm\ValidationRule.cs" />
     <Compile Include="Storage\EncryptedKeyValueStorage.cs" />
-    <Compile Include="Crypto\VirgilCryptoProvider.cs" />
+    <Compile Include="Storage\PrivateKeysStorage.cs" />
     <Compile Include="Dialogs\DialogPresenter.cs" />
     <Compile Include="Dialogs\ShellWindow.cs">
       <SubType>Form</SubType>
@@ -240,7 +239,7 @@
     <Compile Include="Integration\MailObserver.cs" />
     <Compile Include="Models\OutlookMailModel.cs" />
     <Compile Include="Models\AccountModel.cs" />
-    <Compile Include="Models\VirgilKeyPairModel.cs" />
+    <Compile Include="Models\PrivateKeyStorageModel.cs" />
     <Compile Include="Models\VirgilRecipientModel.cs" />
     <Compile Include="Mvvm\ValidatableModel.cs" />
     <Compile Include="Models\UnregisteredAccountModel.cs" />
@@ -322,7 +321,6 @@
       <DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
     </Compile>
     <AppDesigner Include="Properties\" />
-    <None Include="Virgil.Mail_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\success.png" />
@@ -355,6 +353,10 @@
     <Resource Include="Resources\add.png" />
     <Resource Include="Resources\gear.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\pass.png" />
+  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

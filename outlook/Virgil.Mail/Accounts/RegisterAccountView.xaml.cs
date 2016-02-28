@@ -13,7 +13,7 @@
         {
             this.watermarkPassword.Visibility = System.Windows.Visibility.Hidden;
 
-            ((RegisterAccountViewModel)this.DataContext).Password = this.password.SecurePassword;
+            ((RegisterAccountViewModel)this.DataContext).Password = this.password.Password;
             if (this.password.Password.Length == 0)
             {
                 this.watermarkPassword.Visibility = System.Windows.Visibility.Visible;
@@ -24,7 +24,7 @@
         {
             this.watermarkConfirmPassword.Visibility = System.Windows.Visibility.Hidden;
 
-            ((RegisterAccountViewModel)this.DataContext).ConfirmPassword = this.confirmPassword.SecurePassword;
+            ((RegisterAccountViewModel)this.DataContext).ConfirmPassword = this.confirmPassword.Password;
             if (this.confirmPassword.Password.Length == 0)
             {
                 this.watermarkConfirmPassword.Visibility = System.Windows.Visibility.Visible;

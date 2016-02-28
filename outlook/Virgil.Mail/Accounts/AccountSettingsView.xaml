@@ -2,30 +2,63 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mvvm="clr-namespace:Virgil.Mail.Common.Mvvm"
              mc:Ignorable="d" 
-             d:DesignHeight="400" d:DesignWidth="285" Background="White">
+             d:DesignHeight="400" d:DesignWidth="290" Background="White">
+    <UserControl.Resources>
+        <mvvm:BoolToVisibilityConverter x:Key="BoolToVisibility" />
+        <mvvm:BoolToVisibilityConverter x:Key="NotBoolToVisibility" TrueValue="Collapsed" FalseValue="Visible" />
+        <mvvm:EnumToVisibilityConverter x:Key="EnumToVisibility" />
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        <Border 
+            Grid.Row="0"
+            Background="#DC3023"
+            VerticalAlignment="Top"
+            Opacity=".9"
+            Padding="20"
+            MaxHeight="70"
+            Visibility="{Binding HasErrors, Converter={StaticResource BoolToVisibility}}">
+            <TextBlock TextWrapping="Wrap" Foreground="White" Text="{Binding FirstErrorMessage}"></TextBlock>
+        </Border>
         <Image
             Grid.Row="0"
             Margin="0 30" 
             Width="150"
             Source="/Virgil.Mail;component/Resources/wizard-logo.png" />
+        <!-- Progress Indicator -->
+        <StackPanel 
+                Grid.Row="1"
+                Margin="20 30 20 0" 
+                Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=Processing}"
+                VerticalAlignment="Top" >
+            <TextBlock 
+                    HorizontalAlignment="Center" 
+                    Text="{Binding StateText}"
+                    Margin="0 0 0 10" />
+            <ProgressBar 
+                    IsIndeterminate="True" 
+                    Height="10" 
+                    Width="200" />
+        </StackPanel>
         <StackPanel
             Grid.Row="1"
+            Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=Settings}"
             Margin="20 0 20 10" >
             <TextBlock 
                 TextWrapping="Wrap" 
                 Text="Update your account's private key settings">
             </TextBlock>
             <CheckBox 
+                IsEnabled="{Binding IsPrivateKeyHasPassword }"
                 Margin="0 10 0 2" 
-                IsChecked="{Binding IsVirgilStorage, Mode=TwoWay}" 
+                IsChecked="{Binding IsPrivateKeyPasswordNeedToStore, Mode=TwoWay}" 
                 Content="Save private key password"
                 VerticalContentAlignment="Center" />
             <TextBlock 
@@ -34,38 +67,43 @@
                 TextWrapping="Wrap"
                 Margin="20 0 0 0" 
                 Text="That option will allows you to do not enter every time password on crypto operations." />
-            <CheckBox 
-                Margin="0 10 0 2" 
-                IsChecked="{Binding IsVirgilStorage, Mode=TwoWay}" 
-                Content="Keep my private key on Virgil services"
-                VerticalContentAlignment="Center" />
-            <TextBlock 
-                FontSize="10" 
-                Foreground="Gray" 
-                TextWrapping="Wrap"
-                Margin="20 0 0 0" 
-                Text="Your private key will be safely stored in your Virgil Security account and can easily be synchronized to another device." />
         </StackPanel>
-
-        <Button 
-            Grid.Row="1" 
-            VerticalAlignment="Bottom" 
-            MinWidth="90" 
-            Margin="20 0 20 10"
-            Content="Delete" 
-            Command="{Binding RemoveCommand}" 
-            Padding="0 3" 
-            Background="#BB241D" 
-            BorderBrush="#BB241D" 
-            Foreground="White" />
         
         <Border 
             Grid.Row="2" 
             BorderThickness="0 1 0 0" 
+            Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=Settings}"
             Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" 
             Padding="20 20">
             <StackPanel>
-                <Button MinWidth="90" Content="Export Key..." Command="{Binding ExportCommand}" Padding="0 3" Background="White" />
+                <Button 
+                    Content="Export Private Key..." 
+                    Command="{Binding ExportCommand}" 
+                    Padding="0 3" 
+                    Background="White" />
+                <Button 
+                    Margin="0 5 0 0"
+                    Visibility="{Binding CanUploadToCloud, Converter={StaticResource BoolToVisibility}}"
+                    Content="Upload Private Key to Virgil Services" 
+                    Command="{Binding UploadPrivateKeyToCloudCommand}" 
+                    Padding="0 3" 
+                    Background="White"  />
+                <Button 
+                    Margin="0 5 0 0"
+                    Content="Remove Private Key from Virgil Services" 
+                    Visibility="{Binding CanUploadToCloud, Converter={StaticResource NotBoolToVisibility}}"
+                    Command="{Binding RemovePrivateKeyFromCloudCommand}" 
+                    Padding="0 3" 
+                    Background="White"  />
+                <Button 
+                    VerticalAlignment="Bottom" 
+                    Margin="0 5 0 0"
+                    Content="Delete" 
+                    Command="{Binding RemoveCommand}" 
+                    Padding="0 3" 
+                    BorderBrush="#BB241D" 
+                    Background="White"
+                    Foreground="#BB241D" />
             </StackPanel>
         </Border>
     </Grid>

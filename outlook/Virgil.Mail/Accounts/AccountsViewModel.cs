@@ -29,6 +29,8 @@
 
         internal void Initialize()
         {
+            this.Accounts.Clear();
+
             var accounts = this.accountsManager.GetAccounts().ToList();
             accounts.ForEach(this.Accounts.Add);
         }
@@ -38,10 +40,13 @@
             if (!accountModel.IsRegistered)
             {
                 this.dialogPresenter.ShowRegisterAccount(accountModel);
-                return;
             }
-
-            this.dialogPresenter.ShowAccountSettings(accountModel);
+            else
+            {
+                this.dialogPresenter.ShowAccountSettings(accountModel);
+            }
+            
+            this.Initialize();
         }
     }
 }
