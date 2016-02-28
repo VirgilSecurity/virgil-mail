@@ -1,12 +1,11 @@
-﻿using System.Threading.Tasks;
-
-namespace Virgil.Mail.Accounts
+﻿namespace Virgil.Mail.Accounts
 {
     using System;
     using System.Linq;
     using System.IO;
     using System.Text;
     using System.ComponentModel;
+    using System.Threading.Tasks;
     using System.Text.RegularExpressions;
 
     using Newtonsoft.Json;
