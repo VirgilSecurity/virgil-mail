@@ -43,7 +43,7 @@
                 this.mailViewerHost.Child = view;
             }
 
-            this.viewModel.MailChanged(mail);
+            this.viewModel.Initialize(mail);
         }
         // Occurs when the form region is closed.
         // Use this.OutlookItem to get a reference to the current Outlook item.

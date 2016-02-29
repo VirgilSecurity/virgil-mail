@@ -1,10 +1,10 @@
 ﻿namespace Virgil.Mail.Viewer
 {
-    public enum EncryptedMailStatus
+    public enum EncryptedMailState
     {
-        Processing,
         EncryptionFailed,
         ReadMail,
-        WaitPassword
+        WaitPassword,
+        NotRegistered
     }
 }

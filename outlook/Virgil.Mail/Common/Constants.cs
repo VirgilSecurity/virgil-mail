@@ -12,7 +12,7 @@
             <html>
             <body>
             	<p>The message has been encrypted with Virgil Mail Add-In.</p>
-            	<a href='https://virgilsecurity.com/downloads/' >Download Virgil Mail Add-In.</a>            	
+            	<a href='https://virgilsecurity.com/downloads' >Download Virgil Mail Add-In.</a>            	
             	<input id='virgil-info' type='hidden' value='{0}' />
             </body>
             </html>";

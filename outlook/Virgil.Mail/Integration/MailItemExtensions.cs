@@ -45,18 +45,16 @@
             htmlDoc.LoadHtml(mailItem.HTMLBody);
 
             var virgilElem = htmlDoc.GetElementbyId(Constants.VirgilHtmlBodyElementId);
-            if (virgilElem != null)
-            {
-                var valueBase64 = virgilElem.GetAttributeValue("value", "");
-                if (!string.IsNullOrWhiteSpace(valueBase64))
-                {
-                    var value = Convert.FromBase64String(valueBase64);
-                    var json = Encoding.UTF8.GetString(value);
-                    var messageInfo = JsonConvert.DeserializeObject<OutlookVirgilMailIntegrationModel>(json);
-                    messageInfo.Id = mailItem.EntryID;
+            var valueBase64 = virgilElem?.GetAttributeValue("value", "");
 
-                    return messageInfo;
-                }
+            if (!string.IsNullOrWhiteSpace(valueBase64))
+            {
+                var value = Convert.FromBase64String(valueBase64);
+                var json = Encoding.UTF8.GetString(value);
+                var messageInfo = JsonConvert.DeserializeObject<OutlookVirgilMailIntegrationModel>(json);
+                messageInfo.Id = mailItem.EntryID;
+
+                return messageInfo;
             }
 
             return null;
@@ -67,19 +65,21 @@
         /// </summary>
         internal static void MarkAsVirgilMail(this Outlook.MailItem mailItem)
         {
-            if (!mailItem.MessageClass.Equals(Constants.VirgilMessageClass))
+            if (mailItem.MessageClass.Equals(Constants.VirgilMessageClass))
             {
-                // check if an email contains a body that represents a virgil mail
-                // encrypted structure.
+                return;
+            }
 
-                if (mailItem.IsVirgilMail())
-                {
-                    mailItem.MessageClass = Constants.VirgilMessageClass;
-                    mailItem.Save();
-                }
+            // check if an email contains a body that represents a virgil mail
+            // encrypted structure.
+
+            if (mailItem.IsVirgilMail())
+            {
+                mailItem.MessageClass = Constants.VirgilMessageClass;
+                mailItem.Save();
             }
         }
-                
+
         /// <summary>
         /// Extracts the mail outlook account address.
         /// </summary>

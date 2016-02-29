@@ -8,53 +8,24 @@
              mc:Ignorable="d" 
              Background="White">
     <UserControl.Resources>
-        <mvvm:BoolToVisibilityConverter x:Key="BoolToVisibility" />
         <mvvm:EnumToVisibilityConverter x:Key="EnumToVisibility" />
     </UserControl.Resources>
     <Grid>
         <Grid 
-            Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=Processing}">
-            <StackPanel 
-                VerticalAlignment="Center" 
-                HorizontalAlignment="Center" 
-                Orientation="Vertical">
-                <TextBlock Text="Decrypting..." />
-                <ProgressBar 
-                    IsIndeterminate="True" 
-                    Height="10" 
-                    Width="200" />
-            </StackPanel>
+            Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=EncryptionFailed}">
+            <viewer:EncryptionFailedPartialView />
         </Grid>
         <Grid 
-            Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=ReadMail}">
+            Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=NotRegistered}">
+            <viewer:NotRegisteredAccountPartialView />
         </Grid>
         <Grid 
             Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=WaitPassword}">
-            <StackPanel 
-                VerticalAlignment="Center" 
-                HorizontalAlignment="Center" 
-                Width="300"
-                Orientation="Vertical" >
-                <TextBlock
-                    TextWrapping="Wrap" >
-                    <Run Text="Enter account's private key password to decrypt this email"></Run>
-                </TextBlock>
-                <Grid 
-                    Background="White" 
-                    Margin="0 10" >
-                    <TextBlock 
-                        Name="watermarkPassword" 
-                        Padding="6 0" 
-                        Foreground="Silver" 
-                        VerticalAlignment="Center" 
-                        Text="Password"  />
-                   <PasswordBox 
-                        Name="password"
-                        Background="Transparent"
-                        Padding="5 4" />
-                </Grid>
-                <Button Content="Decrypt" Command="{Binding DecryptCommand}"  />
-            </StackPanel>
+            <viewer:WaitPasswordPartialView />
+        </Grid>
+        <Grid 
+            Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=ReadMail}">
+            <viewer:ReadMailPartialView />
         </Grid>
     </Grid>
 </UserControl>

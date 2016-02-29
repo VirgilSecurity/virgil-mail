@@ -281,12 +281,24 @@
       <DependentUpon>RegisterAccountView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Accounts\RegisterAccountViewModel.cs" />
-    <Compile Include="Viewer\EncryptedMailStatus.cs" />
+    <Compile Include="Viewer\EncryptedMailState.cs" />
     <Compile Include="Viewer\EncryptedMailView.xaml.cs">
       <DependentUpon>EncryptedMailView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Viewer\EncryptedMailViewer.cs" />
     <Compile Include="Viewer\EncryptedMailViewModel.cs" />
+    <Compile Include="Viewer\EncryptionFailedPartialView.xaml.cs">
+      <DependentUpon>EncryptionFailedPartialView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Viewer\ReadMailPartialView.xaml.cs">
+      <DependentUpon>ReadMailPartialView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Viewer\WaitPasswordPartialView.xaml.cs">
+      <DependentUpon>WaitPasswordPartialView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Viewer\NotRegisteredAccountPartialView.xaml.cs">
+      <DependentUpon>NotRegisteredAccountPartialView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="VirgilMailFormRegion.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -365,9 +377,25 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Viewer\EncryptionFailedPartialView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Viewer\ReadMailPartialView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Viewer\WaitPasswordPartialView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Viewer\NotRegisteredAccountPartialView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icon_512x512%402x.png" />
+    <Resource Include="Resources\icon_512x512%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\wizard-logo.png" />

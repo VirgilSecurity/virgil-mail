@@ -12,7 +12,7 @@
     {
         private string previousMailId;
 
-        private Outlook.Explorer ActiveExplorer => this.Application.ActiveExplorer();
+        private Outlook.Explorer ActiveExplorer;
         
         /// <summary>
         /// Occurs when outlook tries to send new message.
@@ -53,6 +53,7 @@
             catch (Exception ex)
             {
                 cancel = true;
+                MessageBox.Show(ex.Message, "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {
@@ -120,6 +121,8 @@
 
         private void OnAddInStartup(object sender, EventArgs e)
         {
+            this.ActiveExplorer = this.Application.ActiveExplorer();
+
             // initialize bootstrapper.
 
             Bootstraper.Initialize(this.Application);
@@ -128,15 +131,8 @@
 
             this.Application.ItemSend += this.OnApplicationMailSend;
             this.ActiveExplorer.SelectionChange += this.OnExplorerSelectionChange;
-
-            this.Application.Explorers.NewExplorer += this.ExplorersOnNewExplorer;
         }
-
-        private void ExplorersOnNewExplorer(Outlook.Explorer explorer)
-        {
-            throw new NotImplementedException();
-        }
-
+        
         private void OnAddInShutdown(object sender, EventArgs e)
         {
             // Note: Outlook no longer raises this event. If you have code that 
