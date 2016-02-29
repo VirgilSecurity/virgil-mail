@@ -182,8 +182,8 @@ static BOOL _configureForSendVisible = NO;
         
         [controllerWindow setStyleMask:[controllerWindow styleMask] & ~NSResizableWindowMask];
         
-        [containerWindow beginSheet : controllerWindow
-                  completionHandler : ^(NSModalResponse returnCode) {
+        [containerWindow beginCriticalSheet : controllerWindow
+                          completionHandler : ^(NSModalResponse returnCode) {
                   }];
     }
     @catch (NSException *exception) {
@@ -329,7 +329,8 @@ static BOOL _configureForSendVisible = NO;
     }
 }
 
-+ (NSString *) getUserPassword {
++ (NSString *) getUserPasswordForKeyPair : (NSString *)publicKey
+                              privateKey : (NSString *)privateKey {
     NSWindow * containerWindow = [[NSApplication sharedApplication] mainWindow];
     if (nil == containerWindow) return nil;
     
@@ -349,9 +350,12 @@ static BOOL _configureForSendVisible = NO;
             
             VirgilGetPassword * controller =
             (VirgilGetPassword*)[storyBoard instantiateControllerWithIdentifier : @"viewGetPassword"];
+            if (nil == controller) return;
+            
+            [controller setKeyPair : publicKey
+                        privateKey : privateKey];
             
             [windowControler setContentViewController:controller];
-            if (nil == controller) return;
             
             NSWindow * controllerWindow = [windowControler window];
             if (nil == controllerWindow) return;

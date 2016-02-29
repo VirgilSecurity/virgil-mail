@@ -35,20 +35,38 @@
  */
 
 #import "VirgilGetPassword.h"
+#import "VirgilKeyManager.h"
+#import "VirgilGui.h"
 #import "NSViewController+VirgilView.h"
 
 static NSString * _password = nil;
 
 @implementation VirgilGetPassword
 
+NSString * _publicKey = nil;
+NSString * _privateKey = nil;
+
 - (IBAction)onOkClicked:(id)sender {
     _password = _passwordField.stringValue;
-    [self closeWindow];
+    if ([VirgilKeyManager isCorrectKeys : _publicKey
+                             privateKey : _privateKey
+                               password : _password]) {
+        [self closeWindow];
+    } else {
+        [VirgilGui showError:@"Wrong password for key"];
+        _passwordField.stringValue = @"";
+    }
 }
 
 - (IBAction)onCancelClicked:(id)sender {
     _password = nil;
     [self closeWindow];
+}
+
+- (void) setKeyPair : (NSString *)publicKey
+         privateKey : (NSString *)privateKey {
+    _publicKey = publicKey;
+    _privateKey = privateKey;
 }
 
 + (NSString *) password {

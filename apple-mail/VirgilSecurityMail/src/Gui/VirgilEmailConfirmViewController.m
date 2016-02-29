@@ -292,9 +292,9 @@ NSString * windowTitle = @"";
         if (nil != infoField) {
             infoField.stringValue = @"Error!";
         }
-        [self setButtonVisible:NO forTag:TAG_BTN_OK];
-        [self setButtonVisible:YES forTag:TAG_BTN_CANCEL];
-        [self setButtonVisible:YES forTag:TAG_BTN_RESEND];
+        [self setButtonVisible:YES forTag:TAG_BTN_OK];
+        [self setButtonVisible:NO forTag:TAG_BTN_CANCEL];
+        [self setButtonVisible:NO forTag:TAG_BTN_RESEND];
     }
 }
 

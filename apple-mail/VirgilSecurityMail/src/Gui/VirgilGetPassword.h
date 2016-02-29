@@ -40,6 +40,9 @@
 
 + (NSString *) password;
 
+- (void) setKeyPair : (NSString *)publicKey
+         privateKey : (NSString *)privateKey;
+
 @property (nonatomic, weak) IBOutlet NSTextField * passwordField;
 
 @end

@@ -53,7 +53,8 @@
           resultObject : (id)resultObject
            resultBlock : (void (^)(id arg1, BOOL isOk))resultBlock;
 
-+ (NSString *) getUserPassword;
++ (NSString *) getUserPasswordForKeyPair : (NSString *)publicKey
+                              privateKey : (NSString *)privateKey;
 
 + (void) showError : (NSString *) error;
 + (void) showMessage : (NSString *) message;

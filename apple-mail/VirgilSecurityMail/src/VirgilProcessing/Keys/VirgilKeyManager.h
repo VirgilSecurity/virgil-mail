@@ -189,6 +189,10 @@
  */
 + (BOOL) isCorrectEncryptedPrivateKey : (NSString *) privateKey;
 
++ (BOOL) isCorrectKeys : (NSString *)publicKey
+            privateKey : (NSString *)privateKey
+              password : (NSString *)password;
+
 /**
  * @brief Get last error user friendly string
  */

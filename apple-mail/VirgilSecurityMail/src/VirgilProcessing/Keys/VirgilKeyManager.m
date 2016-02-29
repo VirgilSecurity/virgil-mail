@@ -905,9 +905,13 @@
     NSString * userPassword = nil;
     
     if ([VirgilKeyManager isCorrectEncryptedPrivateKey : key]) {
-        userPassword = [VirgilGui getUserPassword];
-        if (nil != userPassword) {
-            res = YES;
+        VirgilKeyChainContainer * keyChainContainer = [VirgilKeyChain loadContainer : account];
+        if (keyChainContainer != nil) {
+            userPassword = [VirgilGui getUserPasswordForKeyPair : keyChainContainer.publicKey.publicKey
+                                                     privateKey : key];
+            if (nil != userPassword) {
+                res = YES;
+            }
         }
     }
     
@@ -933,6 +937,36 @@
 + (BOOL) isCorrectPrivateKey : (NSString *) privateKey {
     if (!privateKey) return NO;
     return [privateKey containsString:@"-----BEGIN EC PRIVATE KEY-----"];
+}
+
++ (BOOL) isCorrectKeys : (NSString *)publicKey
+            privateKey : (NSString *)privateKey
+              password : (NSString *)password {
+    
+    if (nil == publicKey || nil == privateKey) return NO;
+    
+    NSString * tmpPublicKeyId = @"00000000000";
+    NSString * testString = @"test data";
+    
+    VSSCryptor * cryptor = [VSSCryptor new];
+    
+    [cryptor addKeyRecepient : tmpPublicKeyId
+                   publicKey : [publicKey dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    NSData * encryptedData = [cryptor encryptData : [testString dataUsingEncoding:NSUTF8StringEncoding]
+                                 embedContentInfo : @YES];
+    
+    if (encryptedData == nil) return NO;
+    
+    NSData * decryptedData = [[VSSCryptor new] decryptData : encryptedData
+                                               publicKeyId : tmpPublicKeyId
+                                                privateKey : [privateKey dataUsingEncoding:NSUTF8StringEncoding]
+                                               keyPassword : password];
+    
+    NSString * decryptedString = [[NSString alloc] initWithData : decryptedData
+                                                       encoding : NSUTF8StringEncoding];
+    
+    return [testString isEqualToString:decryptedString];
 }
 
 /**

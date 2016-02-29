@@ -1357,6 +1357,7 @@ Gw
                                     </allowedInputSourceLocales>
                                 </secureTextFieldCell>
                                 <connections>
+                                    <action selector="performClick:" target="LXC-S3-a2i" id="kek-HI-VBD"/>
                                     <outlet property="nextKeyView" destination="LXC-S3-a2i" id="na2-ES-R6d"/>
                                 </connections>
                             </secureTextField>
