@@ -4,7 +4,6 @@
 
     using Virgil.Mail.Accounts;
     using Virgil.Mail.Common;
-    using Virgil.Mail.Crypto;
     using Virgil.Mail.Dialogs;
     using Virgil.Mail.Integration;
     using Virgil.Mail.Storage;
@@ -23,7 +22,7 @@
             var config = VirgilConfig.UseAccessToken(Constants.VirgilAccessToken)
                 .WithCustomIdentityServiceUri(new System.Uri("https://identity-stg.virgilsecurity.com"))
                 .WithCustomPublicServiceUri(new System.Uri("https://keys-stg.virgilsecurity.com"))
-                .WithCustomPrivateServiceUri(new System.Uri("https://private-keys-stg.virgilsecurity.com"));
+                .WithCustomPrivateServiceUri(new System.Uri("https://keys-private-stg.virgilsecurity.com"));
 
             var virgilHub = VirgilHub.Create(config);
 
@@ -35,7 +34,7 @@
             builder.RegisterInstance(virgilHub).As<VirgilHub>();
             builder.RegisterType<IsolatedStorageProvider>().As<IStorageProvider>();
             builder.RegisterType<AccountsManager>().As<IAccountsManager>();
-            builder.RegisterType<VirgilCryptoProvider>().As<IVirgilCryptoProvider>();
+            builder.RegisterType<PrivateKeysStorage>().As<IPrivateKeysStorage>();
             builder.RegisterType<EncryptedKeyValueStorage>().As<IEncryptedKeyValueStorage>();
 
             builder.RegisterType<RegisterAccountView>();

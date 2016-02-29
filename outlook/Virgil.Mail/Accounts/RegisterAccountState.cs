@@ -2,6 +2,7 @@
 {
     public enum RegisterAccountState
     {
+        PrivateKeyPassword,
         GenerateKeyPair,
         DownloadKeyPair,
         Processing,

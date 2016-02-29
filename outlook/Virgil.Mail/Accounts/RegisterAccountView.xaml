@@ -8,7 +8,6 @@
              d:DesignHeight="400" d:DesignWidth="285" Background="White">
     <UserControl.Resources>
         <mvvm:BoolToVisibilityConverter x:Key="BoolToVisibility" />
-        <mvvm:BoolToVisibilityConverter x:Key="NotBoolToVisibility" TrueValue="Collapsed" FalseValue="Visible" />
         <mvvm:EnumToVisibilityConverter x:Key="EnumToVisibility" />
     </UserControl.Resources>
     <Grid>
@@ -69,7 +68,7 @@
                     x:Name="keyPasswordCheckBox"
                     Margin="0 5" 
                     IsChecked="{Binding HasPassword, Mode=TwoWay}" 
-                    Content="Protect my private key with a password"
+                    Content="Protect my private key with a password (recommended)"
                     VerticalContentAlignment="Center" />
 
                 <TextBlock 
@@ -165,14 +164,18 @@
 
             </StackPanel>
 
-
-
             <StackPanel
+                Orientation="Vertical"
                 Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=Done}" >
                 <Image
-                    Margin="0 30 0 0"
-                    Width="100"
+                    Margin="0 30 0 20"
+                    Width="70"
                     Source="/Virgil.Mail;component/Resources/success.png" />
+                <TextBlock 
+                    TextWrapping="Wrap" 
+                    FontSize="14"
+                    HorizontalAlignment="Center"
+                    Text="{Binding StateText}" />
             </StackPanel>
         </Grid>
 
@@ -193,8 +196,8 @@
                     Margin="20" 
                     MinWidth="90" 
                     Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=DownloadKeyPair}"
-                    Content="Accept" 
-                    Command="{Binding CreateCommand}" 
+                    Content="Import" 
+                    Command="{Binding ImportCommand}" 
                     Padding="0 3" 
                     Background="White" />
             </Grid>

@@ -1,7 +1,6 @@
 namespace Virgil.Mail.Dialogs
 {
     using System.IO;
-    using System.Drawing;
     using System.Windows.Forms;
 
     using Autofac;
@@ -18,29 +17,17 @@ namespace Virgil.Mail.Dialogs
         {
             this.container = container;
         }
-
+        
         public void ShowRegisterAccount(AccountModel accountModel)
         {
             var view = this.container.Resolve<RegisterAccountView>();
             var viewModel = this.container.Resolve<RegisterAccountViewModel>();
 
-            var shell = new ShellWindow
-            {
-                ClientSize = new Size(285, 400),
-                FormBorderStyle = FormBorderStyle.FixedDialog,
-                MaximizeBox = false,
-                MinimizeBox = false,
-                Text = @"Register Account",
-                StartPosition = FormStartPosition.CenterScreen,
-                ElementHost = { Child = view },
-                ShowIcon = false,
-                ShowInTaskbar = false
-            };
-            
             viewModel.Initialize(accountModel);
-            view.DataContext = viewModel;
 
-            shell.ShowDialog();
+            var dialog = DialogBuilder.Build(view, viewModel, "Register Account", 290, 400, false);
+
+            dialog.Show();
         }
 
         public void ShowAccounts()
@@ -48,21 +35,11 @@ namespace Virgil.Mail.Dialogs
             var view = this.container.Resolve<AccountsView>();
             var viewModel = this.container.Resolve<AccountsViewModel>();
 
-            var shell = new ShellWindow
-            {
-                ClientSize = new Size(420, 460),
-                FormBorderStyle = FormBorderStyle.FixedDialog,
-                MaximizeBox = false,
-                MinimizeBox = false,
-                Text = @"Virgil Mail Keys",
-                StartPosition = FormStartPosition.CenterScreen,
-                ElementHost = { Child = view }
-            };
-
             viewModel.Initialize();
-            view.DataContext = viewModel;
 
-            shell.ShowDialog();
+            var dialog = DialogBuilder.Build(view, viewModel, "Virgil Mail Keys", 370, 450);
+            
+            dialog.Show();
         }
 
         public void ShowAccountSettings(AccountModel accountModel)
@@ -70,23 +47,11 @@ namespace Virgil.Mail.Dialogs
             var view = this.container.Resolve<AccountSettingsView>();
             var viewModel = this.container.Resolve<AccountSettingsViewModel>();
 
-            var shell = new ShellWindow
-            {
-                ClientSize = new Size(285, 400),
-                FormBorderStyle = FormBorderStyle.FixedDialog,
-                MaximizeBox = false,
-                MinimizeBox = false,
-                Text = @"Settings",
-                StartPosition = FormStartPosition.CenterScreen,
-                ElementHost = { Child = view },
-                ShowIcon = false,
-                ShowInTaskbar = false
-            };
-
             viewModel.Initialize(accountModel);
-            view.DataContext = viewModel;
 
-            shell.ShowDialog();
+            var dialog = DialogBuilder.Build(view, viewModel, "Settings", 290, 400, false);
+
+            dialog.Show();
         }
 
         public void SaveFile(string fileName, string content, string extension)
@@ -113,7 +78,7 @@ namespace Virgil.Mail.Dialogs
         {
             var openFileDialog = new OpenFileDialog
             {
-                Filter = $"{extension} files (*.{extension})|*.{extension}|All files (*.*)|*.*",
+                Filter = $"{extension} files (*.{extension})|*.{extension}|All files (*.*)|*.*"
             };
             
             if (openFileDialog.ShowDialog() != DialogResult.OK)

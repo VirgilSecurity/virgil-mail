@@ -1,11 +1,13 @@
 namespace Virgil.Mail.Mvvm
 {
     using System;
+    using System.ComponentModel;
 
     public class ViewModel : ValidatableModel
     {
         private Enum state;
         private string stateText;
+        private Action closeAction;
         
         public Enum State
         {
@@ -33,6 +35,8 @@ namespace Virgil.Mail.Mvvm
             }
         }
 
+        public object Result { get; set; }
+
         public void ChangeStateText(string newStateText)
         {
             this.StateText = newStateText;
@@ -42,6 +46,21 @@ namespace Virgil.Mail.Mvvm
         {
             this.State = newState;
             this.StateText = newStateText;
+        }
+
+        public void SetCloseAction(Action action)
+        {
+            this.closeAction = action;
+        }
+
+        public void Close()
+        {
+            this.closeAction?.Invoke();
+        }
+
+        public virtual void OnMandatoryClosing(object sender, CancelEventArgs cancelEventArgs)
+        {
+            cancelEventArgs.Cancel = false;
         }
     }
 }

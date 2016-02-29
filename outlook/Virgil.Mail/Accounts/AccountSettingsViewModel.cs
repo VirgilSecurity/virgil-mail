@@ -15,16 +15,19 @@
     public class AccountSettingsViewModel : ViewModel
     {
         private readonly IDialogPresenter dialogPresenter;
-        private readonly IVirgilCryptoProvider cryptoProvider;
+        private readonly IPrivateKeysStorage cryptoProvider;
         private readonly IAccountsManager accountsManager;
         private readonly VirgilHub virgilHub;
 
         private AccountModel account;
+        private bool isPrivateKeyPasswordNeedToStore;
+        private bool isPrivateKeyHasPassword;
+        private bool canUploadToCloud;
 
         public AccountSettingsViewModel
         (
             IDialogPresenter dialogPresenter, 
-            IVirgilCryptoProvider cryptoProvider,
+            IPrivateKeysStorage cryptoProvider,
             IAccountsManager accountsManager,
             VirgilHub virgilHub
         )
@@ -36,24 +39,146 @@
 
             this.ExportCommand = new RelayCommand(this.Export);
             this.RemoveCommand = new RelayCommand(this.Remove);
+            this.RemovePrivateKeyFromCloudCommand = new RelayCommand(this.RemovePrivateKeyFromCloud);
+            this.UploadPrivateKeyToCloudCommand = new RelayCommand(this.UploadPrivateKeyToCloud);
         }
-        
+
+        public ICommand RemovePrivateKeyFromCloudCommand { get; set; }
+        public ICommand UploadPrivateKeyToCloudCommand { get; set; }
         public ICommand ExportCommand { get; private set; }
         public ICommand RemoveCommand { get; private set; }
 
+        public bool IsPrivateKeyPasswordNeedToStore
+        {
+            get { return this.isPrivateKeyPasswordNeedToStore; }
+            set
+            {
+                this.isPrivateKeyPasswordNeedToStore = value;
+                this.RaisePropertyChanged();
+            }
+        }
+
+        public bool IsPrivateKeyHasPassword
+        {
+            get { return this.isPrivateKeyHasPassword; }
+            set
+            {
+                this.RaisePropertyChanged();
+                this.isPrivateKeyHasPassword = value;
+            }
+        }
+
+        public bool CanUploadToCloud
+        {
+            get { return this.canUploadToCloud; }
+            set
+            {
+                
+                this.canUploadToCloud = value;
+                this.RaisePropertyChanged();
+            }
+        }
+        
         public void Initialize(AccountModel accountModel)
         {
             this.account = accountModel;
+
+            this.IsPrivateKeyHasPassword = this.cryptoProvider.HasPrivateKeyPassword(this.account.VirgilCardId);
+            this.IsPrivateKeyPasswordNeedToStore = this.account.IsPrivateKeyPasswordNeedToStore;
+
+            if (this.account.IsVirgilPrivateKeyStorage && !this.account.LastPrivateKeySyncDateTime.HasValue)
+            {
+                this.CanUploadToCloud = true;
+                return;
+            }
+
+            if (!this.account.IsVirgilPrivateKeyStorage)
+            {
+                this.CanUploadToCloud = true;
+            }
+
+            this.ChangeState(AccountSettingsState.Settings);
         }
 
         private void Remove()
         {
             var result = this.dialogPresenter.ShowConfirmation("Delete Account Keys",
                 "Are you sure you want to delete an account's key?");
-
+            
             if (result)
             {
                 this.accountsManager.Remove(this.account.OutlookAccountEmail);
+                this.Close();
+            }
+        }
+
+        private async void UploadPrivateKeyToCloud()
+        {
+            this.ClearErrors();
+
+            try
+            {
+                this.ChangeState(AccountSettingsState.Processing, "Uploading Private Key....");
+
+                var privateKey = this.cryptoProvider.GetPrivateKey(this.account.VirgilCardId);
+
+                string privateKeyPassword = null;
+                if (Crypto.VirgilKeyPair.IsPrivateKeyEncrypted(privateKey))
+                {
+
+                }
+
+                await this.virgilHub.PrivateKeys.Stash(this.account.VirgilCardId, privateKey, privateKeyPassword);
+
+                this.CanUploadToCloud = false;
+
+                this.account.IsVirgilPrivateKeyStorage = true;
+                this.account.LastPrivateKeySyncDateTime = DateTime.Now;
+
+                this.accountsManager.UpdateAccount(this.account);
+            }
+            catch (Exception ex)
+            {
+                this.AddCustomError(ex.Message);
+            }
+            finally
+            {
+                this.ChangeState(AccountSettingsState.Settings);
+            }
+        }
+
+        private async void RemovePrivateKeyFromCloud()
+        {
+            this.ClearErrors();
+
+            try
+            {
+                this.ChangeState(AccountSettingsState.Processing, "Removing Private Key....");
+
+                var privateKey = this.cryptoProvider.GetPrivateKey(this.account.VirgilCardId);
+
+                string privateKeyPassword = null;
+                if (Crypto.VirgilKeyPair.IsPrivateKeyEncrypted(privateKey))
+                {
+
+                }
+
+                await this.virgilHub.PrivateKeys.Destroy(this.account.VirgilCardId, privateKey, privateKeyPassword);
+
+                this.CanUploadToCloud = true;
+
+                this.account.IsVirgilPrivateKeyStorage = false;
+                this.account.LastPrivateKeySyncDateTime = null;
+
+                this.accountsManager.UpdateAccount(this.account);
+            }
+            catch (Exception ex)
+            {
+                this.AddCustomError(ex.Message);
+            }
+            finally
+            {
+                this.ChangeState(AccountSettingsState.Settings);
             }
         }
 
@@ -75,7 +200,7 @@
                         value = this.account.VirgilPublicKey
                     }
                 },
-                private_key = this.cryptoProvider.GetPrivateKey(this.account.OutlookAccountEmail)
+                private_key = this.cryptoProvider.GetPrivateKey(this.account.VirgilCardId)
             };
 
             var exportJson = JsonConvert.SerializeObject(exportObject);
