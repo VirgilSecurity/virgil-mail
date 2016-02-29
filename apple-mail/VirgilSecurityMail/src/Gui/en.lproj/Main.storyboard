@@ -711,6 +711,9 @@
                                 <buttonCell key="cell" type="push" title="Disable encryption" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="zdL-zh-2UA">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
+                                    <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
                                 </buttonCell>
                                 <connections>
                                     <action selector="onDisableEncryptionClicked:" target="A65-Cd-tD6" id="wWl-ai-QAJ"/>
@@ -754,6 +757,9 @@
                                 <buttonCell key="cell" type="push" title="Ok" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="HMc-cY-kBg">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
+                                    <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
                                 </buttonCell>
                                 <connections>
                                     <action selector="onOkClicked:" target="11N-Vm-JC0" id="FY5-tN-fnA"/>
@@ -1063,6 +1069,9 @@ Gw
                                 <buttonCell key="cell" type="push" title="Ok" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="pVK-QW-JlK">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
+                                    <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
                                 </buttonCell>
                                 <connections>
                                     <action selector="onOk:" target="Nop-Vx-hwn" id="RWM-SG-oit"/>
@@ -1087,6 +1096,7 @@ Gw
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="okButton" destination="qij-sU-sPS" id="Pbv-te-fPR"/>
                         <outlet property="titleField" destination="2uB-N8-149" id="LnT-3J-fAj"/>
                     </connections>
                 </viewController>
@@ -1362,10 +1372,13 @@ Gw
                                 </connections>
                             </secureTextField>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LXC-S3-a2i">
-                                <rect key="frame" x="378" y="13" width="58" height="32"/>
+                                <rect key="frame" x="372" y="7" width="70" height="42"/>
                                 <buttonCell key="cell" type="push" title="Ok" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="LuX-9y-pno">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
+                                    <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
                                 </buttonCell>
                                 <connections>
                                     <action selector="onOkClicked:" target="pAn-7o-dwR" id="EOK-do-6Zi"/>
@@ -1550,6 +1563,9 @@ Gw
                                 <buttonCell key="cell" type="push" title="Ok" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="TgW-eV-SXr">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
+                                    <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
                                 </buttonCell>
                                 <connections>
                                     <action selector="onOkClicked:" target="K6E-GK-olo" id="3et-ly-scC"/>
@@ -1567,6 +1583,9 @@ Gw
                             <constraint firstAttribute="trailing" secondItem="DRf-0V-eQ6" secondAttribute="trailing" constant="20" symbolic="YES" id="z5Z-5e-2fs"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="okButton" destination="Nii-tV-Cjf" id="9Go-bg-oFN"/>
+                    </connections>
                 </viewController>
                 <customObject id="Ch6-3k-mi4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>

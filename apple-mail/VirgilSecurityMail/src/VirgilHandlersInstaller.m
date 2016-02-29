@@ -88,6 +88,9 @@
                      @"newDefaultMessageViewer",
                      @"_registerNewViewer:"
                      ],
+             @"MCMemoryDataSource" : @[
+                     @"deleteMessages:moveToTrash:"
+                     ],
              };
 }
 
@@ -210,8 +213,11 @@
 + (NSString *)legacyClassNameForName:(NSString *)className {
     // Some classes have been renamed in Mavericks.
     // This methods converts known classes to their counterparts in Mavericks.
-    if([@[@"MC", @"MF"] containsObject:[className substringToIndex:2]])
-        return [className substringFromIndex:2];
+    if (![className isEqualToString:@"MCMemoryDataSource"]) {
+        if([@[@"MC", @"MF"] containsObject:[className substringToIndex:2]]) {
+            return [className substringFromIndex:2];
+        }
+    }
     
     if([VirgilMain isElCapitan] && [className isEqualToString:@"ComposeViewController"])
         return @"DocumentEditor";

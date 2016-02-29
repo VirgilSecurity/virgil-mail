@@ -117,6 +117,16 @@
 }
 
 + (BOOL)jrlp_addMethodsFromClass:(Class)aClass error:(NSError **)error {
+    /*Class cl = objc_getClass("MCMemoryDataSource");
+    unsigned int methodCount1;
+    for (unsigned int i = 0; i < 2; i++) {
+        Method * classMethods1 = class_copyMethodList(i == 0 ? cl : object_getClass(cl), &methodCount1);
+        for (unsigned int j = 0; j < methodCount1; j++) {
+            NSLog(@">>>>>>>>>>> Method : %@", NSStringFromSelector(method_getName((Method)classMethods1[j])));
+        }
+    }*/
+    
+    
 	unsigned int methodCount;
     SEL currentSelector;
     Method *classMethods;
