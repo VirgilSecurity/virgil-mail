@@ -61,5 +61,6 @@
 @property (nonatomic, weak) IBOutlet NSButton * btnCancel;
 @property (nonatomic, weak) IBOutlet NSButton * btnContinue;
 @property (nonatomic, weak) IBOutlet NSTextField * prograssExplain;
+@property (weak) IBOutlet NSButton * saveToCloudCheckBox;
 
 @end

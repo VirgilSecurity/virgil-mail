@@ -203,7 +203,7 @@ NSInteger _checkCounter = 0;
 
 - (IBAction)onCreateKeysClicked:(id)sender {
     if (nil == _account) return;
-    BOOL useCloudStorage = NSOnState == [[_matrixField cellAtRow:0 column:0] state];
+    BOOL useCloudStorage = [_saveToCloudCheckBox state] == NSOnState;
     BOOL useKeyPassword = (_keyPassword.stringValue && _keyPassword.stringValue.length) ||
                             (_keyPasswordConfirm.stringValue && _keyPasswordConfirm.stringValue.length);
     
