@@ -37,6 +37,8 @@
             builder.RegisterType<PrivateKeysStorage>().As<IPrivateKeysStorage>();
             builder.RegisterType<EncryptedKeyValueStorage>().As<IEncryptedKeyValueStorage>();
             builder.RegisterType<PasswordHolder>().As<IPasswordHolder>();
+            builder.RegisterType<MailSender>().As<IMailSender>();
+            builder.RegisterType<PasswordExactor>().As<IPasswordExactor>();
 
             builder.RegisterType<RegisterAccountView>();
             builder.RegisterType<RegisterAccountViewModel>();

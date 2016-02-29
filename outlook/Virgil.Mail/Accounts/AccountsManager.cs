@@ -37,6 +37,16 @@
             this.AcceptChanges(newAccounts);
         }
 
+        public bool IsRegistered(string accountSmtpAddress)
+        {
+            var accounts = this.GetMergedAccounts();
+
+            var account = accounts.Single(
+                it => it.OutlookAccountEmail.Equals(accountSmtpAddress, StringComparison.CurrentCultureIgnoreCase));
+
+            return account.IsRegistered;
+        }
+
         public void UpdateAccount(AccountModel accountModel)
         {
             var accounts = this.GetMergedAccounts();

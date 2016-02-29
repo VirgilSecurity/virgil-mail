@@ -2,6 +2,7 @@
 {
     internal class Constants
     {
+
         internal const string VirgilHtmlBodyElementId = "virgil-info";
         internal const string VirgilMessageClass = "IPM.Note.VirgilMail";
         internal const string VirgilAccessToken = "eyJpZCI6Ijc1MmMyMzM3LTM0YTYtNGRhOS04NzUwLTZhMjZlYWUzOWU2NSIsImFwcGxpY2F0aW9uX2NhcmRfaWQiOiIxMDEwMDBiNS02MDRlLTQ1ZWMtODMzMi00MWFmOTE1MGYzYWUiLCJ0dGwiOi0xLCJjdGwiOi0xLCJwcm9sb25nIjowfQ==.MIGZMA0GCWCGSAFlAwQCAgUABIGHMIGEAkBd0GMYg9I2H/cQz7jbL1EPJLLUnWePpGfc5LyjNgidAq9z/4rYDFRYyv6wPKJDx6KysCqLIWgH2YfmMTCtBYL1AkArX14rnAYP63brY3QMP01z2c/zf3K06O+jr9eDshETGRxIoumhqTcbRP/00KjBlEGb8Ip7KX0wo/vPYNpzqf91";
@@ -15,6 +16,6 @@
             	<input id='virgil-info' type='hidden' value='{0}' />
             </body>
             </html>";
-
+        internal const string OutlookAttachmentDataBin = "http://schemas.microsoft.com/mapi/proptag/0x37010102";
     }
 }   

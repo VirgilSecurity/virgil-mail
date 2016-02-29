@@ -2,7 +2,6 @@
 {
     using System;
     using System.Windows;
-
     using Virgil.Mail.Common;
     using Virgil.Mail.Integration;
 
@@ -13,9 +12,51 @@
         private string previousMailId;
 
         private Outlook.Explorer ActiveExplorer => this.Application.ActiveExplorer();
-
+        
+        /// <summary>
+        /// Occurs when outlook tries to send new message.
+        /// </summary>
         private void OnApplicationMailSend(object item, ref bool cancel)
         {
+            Outlook.MailItem mail = null;
+
+            try
+            {
+                mail = (Outlook.MailItem)item;
+
+                if (mail.ConversationIndex.Length > 45 && !mail.IsVirgilMail())
+                {
+                    return;
+                }
+
+                if (!Properties.Settings.Default.AutoEncryptEmails)
+                {
+                    return;
+                }
+
+                var senderAccount = mail.ExtractOutlookAccountEmailAddress();
+                if (!ServiceLocator.Accounts.IsRegistered(senderAccount))
+                {
+                    var accountModel = ServiceLocator.Accounts.GetAccount(senderAccount);
+                    ServiceLocator.Dialogs.ShowRegisterAccount(accountModel);
+
+                    if (!ServiceLocator.Accounts.IsRegistered(senderAccount))
+                    {
+                        cancel = true;
+                        return;
+                    }
+                }
+                
+                ServiceLocator.MailSender.EncryptAndSend(mail);
+            }
+            catch (Exception ex)
+            {
+                cancel = true;
+            }
+            finally
+            {
+                mail.ReleaseCom();
+            }
         }
 
         /// <summary>
@@ -84,7 +125,7 @@
 
             // subscrube to outlook events
 
-            this.Application.ItemSend += OnApplicationMailSend;
+            this.Application.ItemSend += this.OnApplicationMailSend;
             this.ActiveExplorer.SelectionChange += this.OnExplorerSelectionChange;
         }
 

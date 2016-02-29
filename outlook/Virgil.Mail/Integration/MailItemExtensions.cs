@@ -83,7 +83,7 @@
         /// <summary>
         /// Extracts the mail outlook account address.
         /// </summary>
-        internal static string ExtractOutlookAccountEmailAddress(this Outlook.MailItem mail)
+        internal static string ExtractOutlookAccountEmailAddress1(this Outlook.MailItem mail)
         {
             var folder = mail.Parent as Outlook.Folder;
 
@@ -102,6 +102,41 @@
             }
 
             return mail.To;
+        }
+
+        internal static string ExtractOutlookAccountEmailAddress(this Outlook.MailItem mail)
+        {
+            var PR_SMTP_ADDRESS = @"http://schemas.microsoft.com/mapi/proptag/0x39FE001E";
+
+            if (mail == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (mail.SenderEmailType == "EX")
+            {
+                Outlook.AddressEntry sender =
+                    mail.Sender;
+                if (sender != null)
+                {
+                    //Now we have an AddressEntry representing the Sender
+                    if (sender.AddressEntryUserType == Outlook.OlAddressEntryUserType.olExchangeUserAddressEntry || sender.AddressEntryUserType == Outlook.OlAddressEntryUserType.
+                        olExchangeRemoteUserAddressEntry)
+                    {
+                        //Use the ExchangeUser object PrimarySMTPAddress
+                        Outlook.ExchangeUser exchUser =
+                            sender.GetExchangeUser();
+
+                        return exchUser?.PrimarySmtpAddress;
+                    }
+
+                    return sender.PropertyAccessor.GetProperty(PR_SMTP_ADDRESS) as string;
+                }
+
+                return null;
+            }
+
+            return mail.SenderEmailAddress;
         }
     }
 }

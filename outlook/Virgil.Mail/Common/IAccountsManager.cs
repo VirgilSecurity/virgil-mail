@@ -10,5 +10,7 @@
         IEnumerable<AccountModel> GetAccounts();
         void UpdateAccount(AccountModel accountModel);
         void Remove(string outlookAccountEmail);
+
+        bool IsRegistered(string accountSmtpAddress);
     }
 }

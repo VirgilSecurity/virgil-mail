@@ -1,4 +1,4 @@
-﻿namespace Virgil.Mail.Common.Models
+﻿namespace Virgil.Mail.Models
 {
     using System;
 
