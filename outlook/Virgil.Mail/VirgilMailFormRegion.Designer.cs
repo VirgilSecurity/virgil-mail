@@ -35,7 +35,6 @@
         private void InitializeComponent()
         {
             this.mailViewerHost = new System.Windows.Forms.Integration.ElementHost();
-            this.mailViewer = new Virgil.Mail.Viewer.Shell();
             this.SuspendLayout();
             // 
             // mailViewerHost
@@ -47,8 +46,6 @@
             this.mailViewerHost.Name = "mailViewerHost";
             this.mailViewerHost.TabIndex = 0;
             this.mailViewerHost.Text = "mailViewerHost";
-            this.mailViewerHost.UseWaitCursor = true;
-            this.mailViewerHost.Child = this.mailViewer;
             // 
             // VirgilMailFormRegion
             // 
@@ -79,13 +76,11 @@
             manifest.FormRegionType = Microsoft.Office.Tools.Outlook.FormRegionType.ReplaceAll;
             manifest.ShowInspectorCompose = false;
             manifest.Title = "VirgilMailFormRegion";
-
         }
 
         #endregion
 
         private System.Windows.Forms.Integration.ElementHost mailViewerHost;
-        private Virgil.Mail.Viewer.Shell mailViewer;
 
         //private MailView mailViewer;
 

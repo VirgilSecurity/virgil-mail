@@ -5,7 +5,7 @@
     using System.Windows.Input;
 
     using Newtonsoft.Json;
-    using Virgil.Crypto;
+
     using Virgil.Mail.Common;
     using Virgil.Mail.Common.Mvvm;
     using Virgil.Mail.Models;

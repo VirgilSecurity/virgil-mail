@@ -232,10 +232,13 @@
     <Compile Include="Common\IPasswordHolder.cs" />
     <Compile Include="Common\IStorageProvider.cs" />
     <Compile Include="Common\IDialogPresenter.cs" />
+    <Compile Include="Common\IViewBuilder.cs" />
     <Compile Include="Dialogs\Dialog.cs" />
     <Compile Include="Dialogs\DialogBuilder.cs" />
     <Compile Include="Dialogs\PasswordExactor.cs" />
+    <Compile Include="Dialogs\ViewBuilder.cs" />
     <Compile Include="Integration\MailSender.cs" />
+    <Compile Include="Models\EncryptedMailModel.cs" />
     <Compile Include="Models\PasswordStorageModel.cs" />
     <Compile Include="Models\VirgilMailModel.cs" />
     <Compile Include="Mvvm\NotBoolConverter.cs" />
@@ -278,9 +281,12 @@
       <DependentUpon>RegisterAccountView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Accounts\RegisterAccountViewModel.cs" />
-    <Compile Include="Viewer\Shell.xaml.cs">
-      <DependentUpon>Shell.xaml</DependentUpon>
+    <Compile Include="Viewer\EncryptedMailStatus.cs" />
+    <Compile Include="Viewer\EncryptedMailView.xaml.cs">
+      <DependentUpon>EncryptedMailView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Viewer\EncryptedMailViewer.cs" />
+    <Compile Include="Viewer\EncryptedMailViewModel.cs" />
     <Compile Include="VirgilMailFormRegion.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -355,7 +361,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Viewer\Shell.xaml">
+    <Page Include="Viewer\EncryptedMailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

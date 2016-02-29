@@ -35,7 +35,7 @@
                     return;
                 }
 
-                var senderAccount = mail.ExtractOutlookAccountEmailAddress();
+                var senderAccount = mail.ExtractSenderEmailAddress();
                 if (!ServiceLocator.Accounts.IsRegistered(senderAccount))
                 {
                     var accountModel = ServiceLocator.Accounts.GetAccount(senderAccount);
@@ -128,6 +128,13 @@
 
             this.Application.ItemSend += this.OnApplicationMailSend;
             this.ActiveExplorer.SelectionChange += this.OnExplorerSelectionChange;
+
+            this.Application.Explorers.NewExplorer += this.ExplorersOnNewExplorer;
+        }
+
+        private void ExplorersOnNewExplorer(Outlook.Explorer explorer)
+        {
+            throw new NotImplementedException();
         }
 
         private void OnAddInShutdown(object sender, EventArgs e)

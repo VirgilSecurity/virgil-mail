@@ -36,7 +36,7 @@ namespace Virgil.Mail.Mvvm
         }
 
         public object Result { get; set; }
-
+        
         public void ChangeStateText(string newStateText)
         {
             this.StateText = newStateText;

@@ -42,7 +42,7 @@
                 .Select(it => it.Address)
                 .ToList();
 
-            var senderSmtpAddress = mailItem.ExtractOutlookAccountEmailAddress();
+            var senderSmtpAddress = mailItem.ExtractSenderEmailAddress();
             recipients.Add(senderSmtpAddress);
 
             var tasks = recipients
@@ -61,7 +61,7 @@
 
                 if (recipientCard != null)
                 {
-                    recipientsDictionary.Add(recipient, recipientCard.PublicKey.PublicKey);
+                    recipientsDictionary.Add(recipientCard.Id.ToString(), recipientCard.PublicKey.PublicKey);
                 }
             }
 
@@ -78,7 +78,10 @@
         {
             EncryptAttachments(mail, recipients);
             var encryptedMailData = EncryptMailData(mail, recipients);
-            var signature = CryptoHelper.Sign(encryptedMailData, privateKey, privateKeyPassword);
+            
+            var signature = privateKeyPassword == null 
+                ? CryptoHelper.Sign(encryptedMailData, privateKey)
+                : CryptoHelper.Sign(encryptedMailData, privateKey, privateKeyPassword);
 
             var mailModel = new VirgilMailModel
             {

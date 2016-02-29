@@ -83,7 +83,7 @@
         /// <summary>
         /// Extracts the mail outlook account address.
         /// </summary>
-        internal static string ExtractOutlookAccountEmailAddress1(this Outlook.MailItem mail)
+        internal static string ExtractReciverEmailAddress(this Outlook.MailItem mail)
         {
             var folder = mail.Parent as Outlook.Folder;
 
@@ -104,7 +104,7 @@
             return mail.To;
         }
 
-        internal static string ExtractOutlookAccountEmailAddress(this Outlook.MailItem mail)
+        internal static string ExtractSenderEmailAddress(this Outlook.MailItem mail)
         {
             var PR_SMTP_ADDRESS = @"http://schemas.microsoft.com/mapi/proptag/0x39FE001E";
 

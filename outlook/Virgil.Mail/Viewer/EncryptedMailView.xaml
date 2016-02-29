@@ -1,0 +1,60 @@
+﻿<UserControl x:Class="Virgil.Mail.Viewer.EncryptedMailView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewer="clr-namespace:Virgil.Mail.Viewer"
+             xmlns:mvvm="clr-namespace:Virgil.Mail.Common.Mvvm"
+             mc:Ignorable="d" 
+             Background="White">
+    <UserControl.Resources>
+        <mvvm:BoolToVisibilityConverter x:Key="BoolToVisibility" />
+        <mvvm:EnumToVisibilityConverter x:Key="EnumToVisibility" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid 
+            Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=Processing}">
+            <StackPanel 
+                VerticalAlignment="Center" 
+                HorizontalAlignment="Center" 
+                Orientation="Vertical">
+                <TextBlock Text="Decrypting..." />
+                <ProgressBar 
+                    IsIndeterminate="True" 
+                    Height="10" 
+                    Width="200" />
+            </StackPanel>
+        </Grid>
+        <Grid 
+            Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=ReadMail}">
+        </Grid>
+        <Grid 
+            Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=WaitPassword}">
+            <StackPanel 
+                VerticalAlignment="Center" 
+                HorizontalAlignment="Center" 
+                Width="300"
+                Orientation="Vertical" >
+                <TextBlock
+                    TextWrapping="Wrap" >
+                    <Run Text="Enter account's private key password to decrypt this email"></Run>
+                </TextBlock>
+                <Grid 
+                    Background="White" 
+                    Margin="0 10" >
+                    <TextBlock 
+                        Name="watermarkPassword" 
+                        Padding="6 0" 
+                        Foreground="Silver" 
+                        VerticalAlignment="Center" 
+                        Text="Password"  />
+                   <PasswordBox 
+                        Name="password"
+                        Background="Transparent"
+                        Padding="5 4" />
+                </Grid>
+                <Button Content="Decrypt" Command="{Binding DecryptCommand}"  />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

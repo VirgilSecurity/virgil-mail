@@ -7,6 +7,7 @@
     using Virgil.Mail.Dialogs;
     using Virgil.Mail.Integration;
     using Virgil.Mail.Storage;
+    using Virgil.Mail.Viewer;
     using Virgil.SDK.Infrastructure;
 
     using Outlook = Microsoft.Office.Interop.Outlook;
@@ -48,6 +49,8 @@
             builder.RegisterType<AccountSettingsViewModel>();
             builder.RegisterType<AccountKeyPasswordView>();
             builder.RegisterType<AccountKeyPasswordViewModel>();
+            builder.RegisterType<EncryptedMailView>();
+            builder.RegisterType<EncryptedMailViewModel>();
 
             container = builder.Build();
 
@@ -56,8 +59,11 @@
 
             builder = new ContainerBuilder();
 
-            var viewBuilder = new DialogPresenter(container);
-            builder.RegisterInstance(viewBuilder).As<IDialogPresenter>();
+            var dialogPresenter = new DialogPresenter(container);
+            var viewBuilder = new ViewBuilder(container);
+
+            builder.RegisterInstance(dialogPresenter).As<IDialogPresenter>();
+            builder.RegisterInstance(viewBuilder).As<IViewBuilder>();
 
             builder.Update(container);
 

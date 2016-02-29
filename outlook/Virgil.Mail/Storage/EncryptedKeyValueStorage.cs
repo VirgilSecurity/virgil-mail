@@ -57,7 +57,7 @@
 
         private string GetHash(string value)
         {
-            var hasher = Virgil.Crypto.Foundation.VirgilHash.Sha384();
+            var hasher = Crypto.Foundation.VirgilHash.Sha384();
             var keyBytes = hasher.Hash(Encoding.UTF8.GetBytes(value));
 
             return Convert.ToBase64String(keyBytes).Replace("/", "");
