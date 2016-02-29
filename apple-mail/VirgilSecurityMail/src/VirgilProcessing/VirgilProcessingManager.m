@@ -691,10 +691,6 @@
         return container;
     }
     
-    if (nil != container) {
-        VLogInfo(@"Container in KeyChain : %@", container);
-    }
-    
     VirgilPrivateKey * privateKey = container.privateKey;
     if ((nil == container || nil == privateKey) && forcePrivateKey) {
         VLogWarning(@"There is no private key for decryption : account - %@", account);
