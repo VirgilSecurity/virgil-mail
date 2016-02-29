@@ -2,6 +2,7 @@
 {
     using System;
     using System.Windows;
+
     using Virgil.Mail.Common;
     using Virgil.Mail.Integration;
 

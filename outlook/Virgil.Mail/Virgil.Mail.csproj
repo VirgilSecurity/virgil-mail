@@ -221,6 +221,7 @@
     <Compile Include="Bootstraper.cs" />
     <Compile Include="Common\Constants.cs" />
     <Compile Include="Common\Exceptions\PasswordExactionException.cs" />
+    <Compile Include="Common\Exceptions\PrivateKeyPasswordIsNotFoundException.cs" />
     <Compile Include="Common\Exceptions\VirgilMailException.cs" />
     <Compile Include="Common\IAccountsManager.cs" />
     <Compile Include="Common\IEncryptedKeyValueStorage.cs" />

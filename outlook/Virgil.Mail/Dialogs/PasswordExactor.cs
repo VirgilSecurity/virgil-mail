@@ -1,5 +1,6 @@
 ﻿namespace Virgil.Mail.Dialogs
 {
+    using System;
     using Virgil.Crypto;
     using Virgil.Mail.Common;
     using Virgil.Mail.Common.Exceptions;
@@ -22,26 +23,7 @@
             this.accountsManager = accountsManager;
             this.privateKeysStorage = privateKeysStorage;
         }
-
-        public string Exact(string accountSmtpAddress)
-        {
-            var account = this.accountsManager.GetAccount(accountSmtpAddress);
-            var privateKey = this.privateKeysStorage.GetPrivateKey(account.VirgilCardId);
-
-            if (!VirgilKeyPair.IsPrivateKeyEncrypted(privateKey))
-            {
-                return null;
-            }
-
-            if (account.IsPrivateKeyPasswordNeedToStore)
-            {
-                return this.passwordHolder.Get(accountSmtpAddress);
-            }
-
-            var enteredPassword = this.presenter.ShowPrivateKeyPassword(account.OutlookAccountEmail, privateKey);
-            return enteredPassword;
-        }
-
+        
         public string ExactOrAlarm(string accountSmtpAddress)
         {
             var account = this.accountsManager.GetAccount(accountSmtpAddress);
@@ -52,9 +34,20 @@
                 return null;
             }
 
+            var isNotSet = false;
+
+            // check if password can be extracted from password storage.
+
             if (account.IsPrivateKeyPasswordNeedToStore)
             {
-                return this.passwordHolder.Get(accountSmtpAddress);
+                try
+                {
+                    return this.passwordHolder.Get(accountSmtpAddress);
+                }
+                catch (PrivateKeyPasswordIsNotFoundException)
+                {
+                    isNotSet = true;
+                }
             }
 
             var enteredPassword = this.presenter.ShowPrivateKeyPassword(account.OutlookAccountEmail, privateKey);
@@ -62,6 +55,11 @@
             if (string.IsNullOrEmpty(enteredPassword))
             {
                 throw new PasswordExactionException();
+            }
+
+            if (isNotSet)
+            {
+                this.passwordHolder.Keep(accountSmtpAddress, enteredPassword);
             }
 
             return enteredPassword;

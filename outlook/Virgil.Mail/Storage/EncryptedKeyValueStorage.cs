@@ -50,6 +50,11 @@
             this.storageProvider.Add(hashedKey, base64EncryptedData);
         }
 
+        public void Delete(string key)
+        {
+            this.storageProvider.Remove(this.GetHash(key));
+        }
+
         private string GetHash(string value)
         {
             var hasher = Virgil.Crypto.Foundation.VirgilHash.Sha384();

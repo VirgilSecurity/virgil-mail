@@ -1,6 +1,7 @@
 namespace Virgil.Mail.Storage
 {
     using Virgil.Mail.Common;
+    using Virgil.Mail.Common.Exceptions;
     using Virgil.Mail.Models;
 
     public class PasswordHolder : IPasswordHolder
@@ -17,10 +18,20 @@ namespace Virgil.Mail.Storage
             this.keysStorage.Set($"password_{identity}".ToUpper(), new PasswordStorageModel { Password = password });
         }
 
+        public void Remove(string identity)
+        {
+            this.keysStorage.Delete($"password_{identity}".ToUpper());
+        }
+
         public string Get(string identity)
         {
-            var password = this.keysStorage.Get<PasswordStorageModel>($"password_{identity}".ToUpper()).Password;
-            return password;
+            var passwordModel = this.keysStorage.Get<PasswordStorageModel>($"password_{identity}".ToUpper());
+            if (passwordModel == null)
+            {
+                throw new PrivateKeyPasswordIsNotFoundException();
+            }
+
+            return passwordModel.Password;
         }
     }
 }

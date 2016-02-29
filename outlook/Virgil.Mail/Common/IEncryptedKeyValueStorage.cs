@@ -4,5 +4,6 @@
     {
         TValue Get<TValue>(string key) where TValue : class;
         void Set<TValue>(string key, TValue value);
+        void Delete(string key);
     }
 }

@@ -4,5 +4,6 @@
     {
         void Keep(string id, string password);
         string Get(string id);
+        void Remove(string outlookAccountEmail);
     }
 }

@@ -16,7 +16,9 @@
     {
         private readonly IDialogPresenter dialogPresenter;
         private readonly IPrivateKeysStorage cryptoProvider;
+        private readonly IPasswordHolder passwordHolder;
         private readonly IAccountsManager accountsManager;
+        private readonly IPasswordExactor passwordExactor;
         private readonly VirgilHub virgilHub;
 
         private AccountModel account;
@@ -28,13 +30,17 @@
         (
             IDialogPresenter dialogPresenter, 
             IPrivateKeysStorage cryptoProvider,
+            IPasswordHolder passwordHolder,
             IAccountsManager accountsManager,
+            IPasswordExactor passwordExactor,
             VirgilHub virgilHub
         )
         {
             this.dialogPresenter = dialogPresenter;
             this.cryptoProvider = cryptoProvider;
+            this.passwordHolder = passwordHolder;
             this.accountsManager = accountsManager;
+            this.passwordExactor = passwordExactor;
             this.virgilHub = virgilHub;
 
             this.ExportCommand = new RelayCommand(this.Export);
@@ -54,9 +60,17 @@
             set
             {
                 this.isPrivateKeyPasswordNeedToStore = value;
+                
+                if (this.account.IsPrivateKeyPasswordNeedToStore != value)
+                {
+                    this.account.IsPrivateKeyPasswordNeedToStore = value;
+                    this.accountsManager.UpdateAccount(this.account);
 
-                this.account.IsPrivateKeyPasswordNeedToStore = value;
-                this.accountsManager.UpdateAccount(this.account);
+                    if (!value)
+                    {
+                        this.passwordHolder.Remove(this.account.OutlookAccountEmail);
+                    }
+                }
 
                 this.RaisePropertyChanged();
             }
@@ -126,17 +140,7 @@
 
                 var privateKey = this.cryptoProvider.GetPrivateKey(this.account.VirgilCardId);
 
-                string privateKeyPassword = null;
-                if (VirgilKeyPair.IsPrivateKeyEncrypted(privateKey))
-                {
-                    var enteredPassword = this.dialogPresenter.ShowPrivateKeyPassword(this.account.OutlookAccountEmail, privateKey);
-                    if (enteredPassword == null)
-                    {
-                        return;
-                    }
-
-                    privateKeyPassword = enteredPassword;
-                }
+                var privateKeyPassword = this.passwordExactor.ExactOrAlarm(this.account.OutlookAccountEmail);
 
                 await this.virgilHub.PrivateKeys.Stash(this.account.VirgilCardId, privateKey, privateKeyPassword);
 
@@ -166,18 +170,7 @@
                 this.ChangeState(AccountSettingsState.Processing, "Removing Private Key....");
 
                 var privateKey = this.cryptoProvider.GetPrivateKey(this.account.VirgilCardId);
-
-                string privateKeyPassword = null;
-                if (VirgilKeyPair.IsPrivateKeyEncrypted(privateKey))
-                {
-                    var enteredPassword = this.dialogPresenter.ShowPrivateKeyPassword(this.account.OutlookAccountEmail, privateKey);
-                    if (enteredPassword == null)
-                    {
-                        return;
-                    }
-
-                    privateKeyPassword = enteredPassword;
-                }
+                var privateKeyPassword = this.passwordExactor.ExactOrAlarm(this.account.OutlookAccountEmail);
 
                 await this.virgilHub.PrivateKeys.Destroy(this.account.VirgilCardId, privateKey, privateKeyPassword);
 
