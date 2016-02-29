@@ -322,7 +322,6 @@
       <DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
     </Compile>
     <AppDesigner Include="Properties\" />
-    <None Include="Virgil.Mail_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\success.png" />
