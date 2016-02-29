@@ -26,6 +26,7 @@
         private readonly IPrivateKeysStorage privateKeyStorage;
         private readonly IDialogPresenter dialogs;
         private readonly IMailObserver mailObserver;
+        private readonly IPasswordHolder passwordHolder;
         private readonly VirgilHub virgilHub;
 
         private AccountModel currentAccount;
@@ -42,6 +43,7 @@
             IPrivateKeysStorage privateKeyStorage, 
             IDialogPresenter dialogs,
             IMailObserver mailObserver,
+            IPasswordHolder passwordHolder,
             VirgilHub virgilHub
         )
         {
@@ -50,6 +52,7 @@
             this.privateKeyStorage = privateKeyStorage;
             this.dialogs = dialogs;
             this.mailObserver = mailObserver;
+            this.passwordHolder = passwordHolder;
             this.virgilHub = virgilHub;
 
             this.CreateCommand = new RelayCommand(this.Create);
@@ -204,7 +207,7 @@
 
                 this.ChangeStateText("Waiting for confirmation email...");
 
-                var code = await this.ExtractConfirmationCode();
+                var code = await this.ExtractConfirmationCode(this.CurrentAccount.OutlookAccountEmail);
 
                 this.ChangeStateText("Confirming email account...");
 
@@ -229,7 +232,12 @@
                 this.CurrentAccount.VirgilPublicKey = createdCard.PublicKey.PublicKey;
                 this.CurrentAccount.VirgilPublicKeyId = createdCard.PublicKey.Id;
                 this.CurrentAccount.IsVirgilPrivateKeyStorage = this.IsVirgilStorage;
-                this.CurrentAccount.IsPrivateKeyPasswordNeedToStore = true;
+
+                if (VirgilKeyPair.IsPrivateKeyEncrypted(keyPair.PrivateKey()))
+                {
+                    this.passwordHolder.Keep(this.CurrentAccount.OutlookAccountEmail, keyPassword);
+                    this.CurrentAccount.IsPrivateKeyPasswordNeedToStore = true;
+                }
 
                 this.accountsManager.UpdateAccount(this.CurrentAccount);
 
@@ -239,6 +247,7 @@
                     await this.virgilHub.PrivateKeys.Stash(createdCard.Id, keyPair.PrivateKey(), keyPassword);
 
                     this.CurrentAccount.LastPrivateKeySyncDateTime = DateTime.Now;
+                    this.accountsManager.UpdateAccount(this.CurrentAccount);
                 }
 
                 this.ChangeState(RegisterAccountState.Done, "Account's keys has been successfully generated and published.");
@@ -250,9 +259,9 @@
             }
         }
 
-        private async Task<string> ExtractConfirmationCode()
+        private async Task<string> ExtractConfirmationCode(string accountSmtpAddress)
         {
-            var mail = await this.mailObserver.WaitFor("no-reply@virgilsecurity.com");
+            var mail = await this.mailObserver.WaitFor(accountSmtpAddress, "no-reply@virgilsecurity.com");
 
             var matches = Regex.Match(mail.Body, @"Your confirmation code is[\s\S]*<b[\s\S]*>(?<code>[\s\S]*)<\/b>");
             var code = matches.Groups["code"].Value;
@@ -284,7 +293,20 @@
                     throw new NullReferenceException();
                 }
 
-                ChangeStateText("Loading Public Key details...");
+                this.ChangeStateText("Loading Public Key details...");
+
+                if (VirgilKeyPair.IsPrivateKeyEncrypted(result.private_key))
+                {
+                    var enteredPassword = this.dialogs.ShowPrivateKeyPassword(this.CurrentAccount.OutlookAccountEmail, result.private_key);
+                    if (enteredPassword == null)
+                    {
+                        this.ChangeState(RegisterAccountState.GenerateKeyPair);
+                        return;
+                    }
+
+                    this.passwordHolder.Keep(this.CurrentAccount.OutlookAccountEmail, enteredPassword);
+                    this.CurrentAccount.IsPrivateKeyPasswordNeedToStore = true;
+                }
 
                 var card = await this.virgilHub.Cards.Get(result.card.id);
 
@@ -295,7 +317,7 @@
                 this.CurrentAccount.VirgilPublicKeyId = card.PublicKey.Id;
                 this.CurrentAccount.IsVirgilPrivateKeyStorage = this.IsVirgilStorage;
                 this.CurrentAccount.IsPrivateKeyPasswordNeedToStore = true;
-
+                
                 this.privateKeyStorage.StorePrivateKey(this.CurrentAccount.VirgilCardId, result.private_key);
                 this.accountsManager.UpdateAccount(this.CurrentAccount);
 
@@ -312,6 +334,8 @@
         {
             try
             {
+                this.ChangeState(RegisterAccountState.Processing, "Loading Public Key information...");
+
                 var foundCards = await this.virgilHub.Cards.Search(this.CurrentAccount.OutlookAccountEmail);
                 var card = foundCards.Single();
 
@@ -322,16 +346,28 @@
 
                 this.ChangeStateText("Waiting for confirmation email...");
 
-                var code = await this.ExtractConfirmationCode();
+                var code = await this.ExtractConfirmationCode(this.CurrentAccount.OutlookAccountEmail);
 
                 this.ChangeStateText("Confirming an account's email...");
 
                 var validationToken = await this.virgilHub.Identity.Confirm(verifyResponse.ActionId, code);
-
                 var response = await this.virgilHub.PrivateKeys.Get(card.Id, validationToken);
 
                 var privateKey = response.PrivateKey;
-                
+
+                if (VirgilKeyPair.IsPrivateKeyEncrypted(privateKey))
+                {
+                    var enteredPassword = this.dialogs.ShowPrivateKeyPassword(this.CurrentAccount.OutlookAccountEmail, privateKey);
+                    if (enteredPassword == null)
+                    {
+                        this.ChangeState(RegisterAccountState.DownloadKeyPair);
+                        return;
+                    }
+
+                    this.passwordHolder.Keep(this.CurrentAccount.OutlookAccountEmail, enteredPassword);
+                    this.CurrentAccount.IsPrivateKeyPasswordNeedToStore = true;
+                }
+
                 this.CurrentAccount.VirgilCardId = card.Id;
                 this.CurrentAccount.VirgilCardHash = card.Hash;
                 this.CurrentAccount.VirgilCardCustomData = card.CustomData;
@@ -343,7 +379,7 @@
                 
                 this.privateKeyStorage.StorePrivateKey(card.Id, privateKey);
                 this.accountsManager.UpdateAccount(this.CurrentAccount);
-
+                
                 this.ChangeState(RegisterAccountState.Done, "Private Key has been successfully imported");
             }
             catch (Exception ex)

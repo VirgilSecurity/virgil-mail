@@ -17,7 +17,20 @@ namespace Virgil.Mail.Dialogs
         {
             this.container = container;
         }
-        
+
+        public string ShowPrivateKeyPassword(string accountEmail, byte[] privateKey)
+        {
+            var view = this.container.Resolve<AccountKeyPasswordView>();
+            var viewModel = this.container.Resolve<AccountKeyPasswordViewModel>();
+
+            viewModel.Initialize(privateKey);
+
+            var dialog = DialogBuilder.Build(view, viewModel, $"Account ({accountEmail})", 290, 200, false);
+            var passwordObject = dialog.Show();
+
+            return passwordObject?.ToString();
+        }
+
         public void ShowRegisterAccount(AccountModel accountModel)
         {
             var view = this.container.Resolve<RegisterAccountView>();

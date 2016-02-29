@@ -5,7 +5,7 @@
     using System.Windows.Input;
 
     using Newtonsoft.Json;
-
+    using Virgil.Crypto;
     using Virgil.Mail.Common;
     using Virgil.Mail.Common.Mvvm;
     using Virgil.Mail.Models;
@@ -54,6 +54,10 @@
             set
             {
                 this.isPrivateKeyPasswordNeedToStore = value;
+
+                this.account.IsPrivateKeyPasswordNeedToStore = value;
+                this.accountsManager.UpdateAccount(this.account);
+
                 this.RaisePropertyChanged();
             }
         }
@@ -83,6 +87,8 @@
         {
             this.account = accountModel;
 
+            this.ChangeState(AccountSettingsState.Settings);
+
             this.IsPrivateKeyHasPassword = this.cryptoProvider.HasPrivateKeyPassword(this.account.VirgilCardId);
             this.IsPrivateKeyPasswordNeedToStore = this.account.IsPrivateKeyPasswordNeedToStore;
 
@@ -96,8 +102,6 @@
             {
                 this.CanUploadToCloud = true;
             }
-
-            this.ChangeState(AccountSettingsState.Settings);
         }
 
         private void Remove()
@@ -123,9 +127,15 @@
                 var privateKey = this.cryptoProvider.GetPrivateKey(this.account.VirgilCardId);
 
                 string privateKeyPassword = null;
-                if (Crypto.VirgilKeyPair.IsPrivateKeyEncrypted(privateKey))
+                if (VirgilKeyPair.IsPrivateKeyEncrypted(privateKey))
                 {
+                    var enteredPassword = this.dialogPresenter.ShowPrivateKeyPassword(this.account.OutlookAccountEmail, privateKey);
+                    if (enteredPassword == null)
+                    {
+                        return;
+                    }
 
+                    privateKeyPassword = enteredPassword;
                 }
 
                 await this.virgilHub.PrivateKeys.Stash(this.account.VirgilCardId, privateKey, privateKeyPassword);
@@ -158,9 +168,15 @@
                 var privateKey = this.cryptoProvider.GetPrivateKey(this.account.VirgilCardId);
 
                 string privateKeyPassword = null;
-                if (Crypto.VirgilKeyPair.IsPrivateKeyEncrypted(privateKey))
+                if (VirgilKeyPair.IsPrivateKeyEncrypted(privateKey))
                 {
+                    var enteredPassword = this.dialogPresenter.ShowPrivateKeyPassword(this.account.OutlookAccountEmail, privateKey);
+                    if (enteredPassword == null)
+                    {
+                        return;
+                    }
 
+                    privateKeyPassword = enteredPassword;
                 }
 
                 await this.virgilHub.PrivateKeys.Destroy(this.account.VirgilCardId, privateKey, privateKeyPassword);

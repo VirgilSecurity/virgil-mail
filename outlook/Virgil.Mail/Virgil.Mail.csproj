@@ -229,9 +229,11 @@
     <Compile Include="Common\IDialogPresenter.cs" />
     <Compile Include="Dialogs\Dialog.cs" />
     <Compile Include="Dialogs\DialogBuilder.cs" />
+    <Compile Include="Models\PasswordStorageModel.cs" />
     <Compile Include="Mvvm\NotBoolConverter.cs" />
     <Compile Include="Mvvm\ValidationRule.cs" />
     <Compile Include="Storage\EncryptedKeyValueStorage.cs" />
+    <Compile Include="Storage\PasswordHolder.cs" />
     <Compile Include="Storage\PrivateKeysStorage.cs" />
     <Compile Include="Dialogs\DialogPresenter.cs" />
     <Compile Include="Dialogs\ShellWindow.cs">

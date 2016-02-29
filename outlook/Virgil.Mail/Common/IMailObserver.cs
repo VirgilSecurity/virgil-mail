@@ -5,6 +5,6 @@
 
     public interface IMailObserver : IService
     {
-        Task<OutlookMailModel> WaitFor(string from);
+        Task<OutlookMailModel> WaitFor(string accountSmtpAddress, string from);
     }
 }

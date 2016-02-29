@@ -4,6 +4,7 @@
 
     public interface IDialogPresenter : IService
     {
+        string ShowPrivateKeyPassword(string accountEmail, byte[] privateKey);
         void ShowRegisterAccount(AccountModel accountModel);
         void ShowAccounts();
         void ShowAccountSettings(AccountModel accountModel);

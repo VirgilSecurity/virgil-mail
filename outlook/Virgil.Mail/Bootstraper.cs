@@ -36,6 +36,7 @@
             builder.RegisterType<AccountsManager>().As<IAccountsManager>();
             builder.RegisterType<PrivateKeysStorage>().As<IPrivateKeysStorage>();
             builder.RegisterType<EncryptedKeyValueStorage>().As<IEncryptedKeyValueStorage>();
+            builder.RegisterType<PasswordHolder>().As<IPasswordHolder>();
 
             builder.RegisterType<RegisterAccountView>();
             builder.RegisterType<RegisterAccountViewModel>();
@@ -43,6 +44,8 @@
             builder.RegisterType<AccountsViewModel>();
             builder.RegisterType<AccountSettingsView>();
             builder.RegisterType<AccountSettingsViewModel>();
+            builder.RegisterType<AccountKeyPasswordView>();
+            builder.RegisterType<AccountKeyPasswordViewModel>();
 
             container = builder.Build();
 
