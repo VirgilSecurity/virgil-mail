@@ -1209,6 +1209,9 @@ Gw
                                     <allowedInputSourceLocales>
                                         <string>NSAllRomanInputSourcesLocaleIdentifier</string>
                                     </allowedInputSourceLocales>
+                                    <connections>
+                                        <action selector="onCreateKeysClicked:" target="n14-sO-duo" id="Vpc-JW-q43"/>
+                                    </connections>
                                 </secureTextFieldCell>
                                 <connections>
                                     <outlet property="nextKeyView" destination="Gqw-3Q-iYc" id="7Id-M2-HFQ"/>
@@ -1246,6 +1249,7 @@ Gw
                                     </allowedInputSourceLocales>
                                 </secureTextFieldCell>
                                 <connections>
+                                    <action selector="onFocusToConfirmField:" target="n14-sO-duo" id="m7C-GE-woH"/>
                                     <outlet property="nextKeyView" destination="kb0-er-C5u" id="lDI-93-zYW"/>
                                 </connections>
                             </secureTextField>
@@ -1619,6 +1623,7 @@ Gw
                                     </allowedInputSourceLocales>
                                 </secureTextFieldCell>
                                 <connections>
+                                    <action selector="onFocusToConfirmField:" target="aOi-Ks-iIS" id="AFS-Pj-Bfm"/>
                                     <outlet property="nextKeyView" destination="qUM-kP-GoT" id="tIh-Wd-aqE"/>
                                 </connections>
                             </secureTextField>

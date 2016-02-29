@@ -201,6 +201,10 @@ NSInteger _checkCounter = 0;
     }];
 }
 
+- (IBAction)onFocusToConfirmField:(id)sender {
+    [self.view.window makeFirstResponder:_keyPasswordConfirm];
+}
+
 - (IBAction)onCreateKeysClicked:(id)sender {
     if (nil == _account) return;
     BOOL useCloudStorage = [_saveToCloudCheckBox state] == NSOnState;
