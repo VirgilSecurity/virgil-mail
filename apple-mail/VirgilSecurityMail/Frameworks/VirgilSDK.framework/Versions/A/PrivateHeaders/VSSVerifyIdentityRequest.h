@@ -13,8 +13,6 @@
 
 @property (nonatomic, strong, readonly) GUID * __nullable actionId;
 
-/*- (instancetype __nonnull)initWithContext:(VSSRequestContext * __nonnull)context type:(VSSIdentityType)type value:(NSString * __nonnull)value NS_DESIGNATED_INITIALIZER;*/
-
 - (instancetype __nonnull)initWithContext:(VSSRequestContext * __nonnull)context type:(VSSIdentityType)type value:(NSString  * __nonnull)value extraFields:(NSDictionary  * __nullable)extra NS_DESIGNATED_INITIALIZER;
 
 @end

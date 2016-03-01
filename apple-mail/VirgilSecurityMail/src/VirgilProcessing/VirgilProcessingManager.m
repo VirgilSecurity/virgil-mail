@@ -240,12 +240,12 @@
 }
 
 - (VirgilDecryptedContent *) decryptContent : (VirgilEncryptedContent *) content
-                                publicKeyId : (NSString *) publicKeyId
+                                recipientId : (NSString *) recipientId
                                  privateKey : (NSString *) privateKey
                          privateKeyPassword : (NSString *) privateKeyPassword {
     
     NSData * decryptedJsonData = [[VSSCryptor new] decryptData : content.emailData
-                                                   publicKeyId : publicKeyId
+                                                   publicKeyId : recipientId
                                                     privateKey : [privateKey dataUsingEncoding:NSUTF8StringEncoding]
                                                    keyPassword : privateKeyPassword];
     
@@ -367,19 +367,19 @@
         nil == receiverContainer.publicKey) {
         return NO;
     }
-    NSString * publicId = receiverContainer.publicKey.publicKeyID;
+    NSString * recipientId = receiverContainer.publicKey.cardID;
     VirgilPrivateKey * privateKey = receiverContainer.privateKey;
     
     if (nil == sender ||
         nil == senderPublicKey ||
         nil == receiver ||
-        nil == publicId ||
+        nil == recipientId ||
         nil == privateKey ||
         nil == encryptedContent) {
         VLogInfo(@"sender : %@", sender);
         VLogInfo(@"senderPublicKey : %@", senderPublicKey);
         VLogInfo(@"receiver : %@", receiver);
-        VLogInfo(@"publicId : %@", publicId);
+        VLogInfo(@"recipientId : %@", recipientId);
         VLogError(@"ERROR : Can't decrypt message !");
         return NO;
     }
@@ -394,7 +394,7 @@
     }
     
     VirgilDecryptedContent * decryptedContent = [self decryptContent:encryptedContent
-                                                         publicKeyId:publicId
+                                                         recipientId:recipientId
                                                           privateKey:privateKey.key
                                                   privateKeyPassword:privateKey.keyPassword];
     
@@ -424,7 +424,7 @@
         if (nil == encryptedAttachement) continue;
         
         NSData * decryptedAttachement = [[VSSCryptor new] decryptData : encryptedAttachement
-                                                          publicKeyId : publicId
+                                                          publicKeyId : recipientId
                                                            privateKey : [privateKey.key dataUsingEncoding:NSUTF8StringEncoding]
                                                           keyPassword : privateKey.keyPassword];
         if (nil == decryptedAttachement) continue;
@@ -759,7 +759,7 @@
     VSSCryptor * cryptor = [VSSCryptor new];
     
     for (VirgilPublicKey * key in publicKeys) {
-        [cryptor addKeyRecepient : key.publicKeyID
+        [cryptor addKeyRecepient : key.cardID
                        publicKey : [key.publicKey dataUsingEncoding:NSUTF8StringEncoding]];
     }
     NSData * encryptedEmailBody = [cryptor encryptData : jsonData
@@ -819,7 +819,7 @@
         VSSCryptor * cryptor = [VSSCryptor new];
         
         for (VirgilPublicKey * key in publicKeys) {
-            [cryptor addKeyRecepient : key.publicKeyID
+            [cryptor addKeyRecepient : key.cardID
                            publicKey : [key.publicKey dataUsingEncoding:NSUTF8StringEncoding]];
         }
         

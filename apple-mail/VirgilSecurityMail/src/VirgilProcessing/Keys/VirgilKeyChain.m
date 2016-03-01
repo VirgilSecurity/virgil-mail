@@ -37,7 +37,11 @@
 #import "VirgilKeyChain.h"
 #import "VirgilKeychainWrapper.h"
 
+#if defined(VIRGIL_STAGING_SERVICES)
 #define kVirgilService  @"VirgilSecurityMail_v3"
+#else
+#define kVirgilService  @"VirgilSecurityMail_v3_pr"
+#endif
 
 @implementation VirgilKeyChain
 

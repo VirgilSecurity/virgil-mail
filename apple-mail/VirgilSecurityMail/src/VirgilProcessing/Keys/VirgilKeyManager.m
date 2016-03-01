@@ -51,10 +51,6 @@
 #import "VSSModelCommons.h"
 #import "VSSCryptor.h"
 
-#if !defined(VIRGIL_STAGING_SERVICES)
-#define VIRGIL_STAGING_SERVICES
-#endif
-
 @interface VirgilKeyManager ()
 
 //! _lastError - contains user friendly error string

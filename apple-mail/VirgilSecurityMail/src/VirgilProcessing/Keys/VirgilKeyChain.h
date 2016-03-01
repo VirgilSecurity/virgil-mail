@@ -37,6 +37,10 @@
 #import <Foundation/Foundation.h>
 #import "VirgilKeyChainContainer.h"
 
+#if !defined(VIRGIL_STAGING_SERVICES)
+#define VIRGIL_STAGING_SERVICES
+#endif
+
 @interface VirgilKeyChain : NSObject
 
 + (VirgilKeyChainContainer *) loadContainer : (NSString *) account;

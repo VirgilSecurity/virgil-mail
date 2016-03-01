@@ -27,7 +27,6 @@
 		493F965A1BD57F0200EF1930 /* square@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 493F96561BD57F0200EF1930 /* square@2x.png */; };
 		4948BC321BCFB7F300D30AB7 /* VirgilHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4948BC311BCFB7F300D30AB7 /* VirgilHelpViewController.m */; };
 		4948BC351BCFD4D600D30AB7 /* VirgilComposeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4948BC341BCFD4D600D30AB7 /* VirgilComposeViewController.m */; };
-		4970AEBB1C848C9900A60D8E /* VirgilMCMemoryDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 4970AEBA1C848C9900A60D8E /* VirgilMCMemoryDataSource.m */; };
 		49740B621BC5000800000D5E /* VirgilAccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49740B611BC5000800000D5E /* VirgilAccountsViewController.m */; };
 		4976551B1C7BB0D6003057F7 /* VirgilFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 497655171C7BB0BE003057F7 /* VirgilFoundation.framework */; };
 		4976551C1C7BB0D6003057F7 /* VirgilSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 497655181C7BB0BE003057F7 /* VirgilSDK.framework */; };
@@ -175,8 +174,6 @@
 		4948BC311BCFB7F300D30AB7 /* VirgilHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilHelpViewController.m; path = VirgilSecurityMail/src/Gui/VirgilHelpViewController.m; sourceTree = "<group>"; };
 		4948BC331BCFD4D600D30AB7 /* VirgilComposeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilComposeViewController.h; path = VirgilSecurityMail/src/OutgoingMes/VirgilComposeViewController.h; sourceTree = "<group>"; };
 		4948BC341BCFD4D600D30AB7 /* VirgilComposeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilComposeViewController.m; path = VirgilSecurityMail/src/OutgoingMes/VirgilComposeViewController.m; sourceTree = "<group>"; };
-		4970AEBA1C848C9900A60D8E /* VirgilMCMemoryDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilMCMemoryDataSource.m; path = VirgilSecurityMail/src/CommonMes/VirgilMCMemoryDataSource.m; sourceTree = "<group>"; };
-		4970AEBC1C848CAA00A60D8E /* VirgilMCMemoryDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VirgilMCMemoryDataSource.h; sourceTree = "<group>"; };
 		49740B601BC5000800000D5E /* VirgilAccountsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilAccountsViewController.h; path = VirgilSecurityMail/src/Gui/VirgilAccountsViewController.h; sourceTree = "<group>"; };
 		49740B611BC5000800000D5E /* VirgilAccountsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilAccountsViewController.m; path = VirgilSecurityMail/src/Gui/VirgilAccountsViewController.m; sourceTree = "<group>"; };
 		497655171C7BB0BE003057F7 /* VirgilFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VirgilFoundation.framework; path = VirgilSecurityMail/Frameworks/VirgilFoundation.framework; sourceTree = "<group>"; };
@@ -503,8 +500,6 @@
 				49D0C2EC1BB9B8ED00131ACB /* VirgilHeaderViewController.m */,
 				49FBE6A91BBA86C5001EC529 /* VirgilMessageListObjectProxy.h */,
 				49FBE6AA1BBA86C5001EC529 /* VirgilMessageListObjectProxy.m */,
-				4970AEBC1C848CAA00A60D8E /* VirgilMCMemoryDataSource.h */,
-				4970AEBA1C848C9900A60D8E /* VirgilMCMemoryDataSource.m */,
 			);
 			name = CommonMes;
 			sourceTree = "<group>";
@@ -915,7 +910,6 @@
 				49C821F61BBC830A0031ED7F /* VirgilHeadersEditor.m in Sources */,
 				49CD50201BB40436007B0E23 /* HTMLConverter.m in Sources */,
 				D15362C51B6F62E4000215F9 /* NSData+Base64.m in Sources */,
-				4970AEBB1C848C9900A60D8E /* VirgilMCMemoryDataSource.m in Sources */,
 				49C9B2761BB568DB001B86F0 /* VirgilLog.m in Sources */,
 				D13F605C1B6B6D6200508C79 /* VirgilProcessingManager.m in Sources */,
 				D1DDA9261B91B22F00002A2F /* VirgilReplaceAnimator.m in Sources */,
