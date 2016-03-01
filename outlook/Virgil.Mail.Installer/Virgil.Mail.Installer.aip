@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<DOCUMENT Type="Advanced Installer" CreateVersion="12.6.1" version="12.6.1" Modules="professional" RootPath="." Language="en" Id="{7BFE0DA3-BFEE-4ED2-9BA3-C9372DD245B7}">
+<DOCUMENT Type="Advanced Installer" CreateVersion="12.6.1" version="12.7.2" Modules="professional" RootPath="." Language="en" Id="{7BFE0DA3-BFEE-4ED2-9BA3-C9372DD245B7}">
   <COMPONENT cid="caphyon.advinst.msicomp.ProjectOptionsComponent">
     <ROW Name="HiddenItems" Value="MsiJavaComponent;MsiDriverPackagesComponent;UserAccountsComponent;ScheduledTasksComponent;SqlConnectionComponent;AutorunComponent;FirewallExceptionComponent;GameUxComponent;MsiDirectEditorComponent;SharePointSlnComponent;SilverlightSlnComponent;MultipleInstancesComponent;SccmComponent;SerValComponent;MsiExtComponent;MsiServInstComponent;ActSyncAppComponent;MsiEnvComponent;CPLAppletComponent;WebApplicationsComponent;MsiOdbcDataSrcComponent"/>
   </COMPONENT>
@@ -11,6 +11,7 @@
     <ROW Property="AI_REQUIRED_DOTNET_VERSION" MultiBuildValue="DefaultBuild:4.6" ValueLocId="-"/>
     <ROW Property="AI_REQUIRED_OFFICE_APPNAME" MultiBuildValue="DefaultBuild:Microsoft Outlook" ValueLocId="-"/>
     <ROW Property="AI_REQUIRED_OFFICE_VERSION" MultiBuildValue="DefaultBuild:2016" ValueLocId="-"/>
+    <ROW Property="ALLUSERS" MultiBuildValue="DefaultBuild:1"/>
     <ROW Property="ARPCOMMENTS" Value="This installer database contains the logic and data required to install [|ProductName]." ValueLocId="*"/>
     <ROW Property="ARPHELPLINK" Value="https://virgilsecurity.com/"/>
     <ROW Property="ARPURLINFOABOUT" Value="https://virgilsecurity.com/demos"/>
@@ -41,11 +42,16 @@
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiCompsComponent">
     <ROW Component="AI_ExePath" ComponentId="{BE9BF921-B819-4E99-938A-80817CD54261}" Directory_="APPDIR" Attributes="4" KeyPath="AI_ExePath"/>
-    <ROW Component="Description" ComponentId="{CFB0A88B-1C53-4E27-9ADD-B8E8B544C545}" Directory_="APPDIR" Attributes="4" KeyPath="Description"/>
-    <ROW Component="FriendlyName" ComponentId="{F1D4996C-2B65-4776-B43B-E125EF668807}" Directory_="APPDIR" Attributes="4" KeyPath="FriendlyName"/>
+    <ROW Component="Autofac.dll" ComponentId="{65A5DD43-1678-41A8-8274-B43DCD32F92A}" Directory_="APPDIR" Attributes="0" KeyPath="Autofac.dll"/>
+    <ROW Component="Description" ComponentId="{C73F4B9C-E3C4-4E5E-8321-67514C2FAB57}" Directory_="APPDIR" Attributes="4" KeyPath="Description"/>
+    <ROW Component="Description_4" ComponentId="{4694AA62-BD1F-4CEE-8E3E-32B110E558C9}" Directory_="APPDIR" Attributes="260" KeyPath="Description_4"/>
+    <ROW Component="FriendlyName" ComponentId="{A3D133E4-7B58-409F-9112-7E24F8C2414D}" Directory_="APPDIR" Attributes="4" KeyPath="FriendlyName"/>
+    <ROW Component="FriendlyName_4" ComponentId="{61C67792-F2A5-409F-BEA0-9CB93BB71BA6}" Directory_="APPDIR" Attributes="260" KeyPath="FriendlyName_4"/>
     <ROW Component="HtmlAgilityPack.dll" ComponentId="{1D11E7A9-D6CE-46B9-8F2E-41E41F58B48A}" Directory_="APPDIR" Attributes="0" KeyPath="HtmlAgilityPack.dll"/>
-    <ROW Component="LoadBehavior" ComponentId="{664442FF-747A-4B0E-89B6-D1985B85EC3D}" Directory_="APPDIR" Attributes="4" KeyPath="LoadBehavior"/>
-    <ROW Component="Manifest" ComponentId="{A640281E-A0C6-449F-AF9E-D2316C8B44BF}" Directory_="APPDIR" Attributes="4" KeyPath="Manifest"/>
+    <ROW Component="LoadBehavior" ComponentId="{9D369DDA-6E90-41A1-98EC-BAD4F2FFB289}" Directory_="APPDIR" Attributes="4" KeyPath="LoadBehavior"/>
+    <ROW Component="LoadBehavior_4" ComponentId="{B69C0F3F-F191-4998-AFC9-7F36BEF529DC}" Directory_="APPDIR" Attributes="260" KeyPath="LoadBehavior_4"/>
+    <ROW Component="Manifest" ComponentId="{25CC4799-FC76-4788-8BF0-D05878F17BFA}" Directory_="APPDIR" Attributes="4" KeyPath="Manifest"/>
+    <ROW Component="Manifest_3" ComponentId="{3FE9BFF5-85A2-43ED-96DD-54C081739E1B}" Directory_="APPDIR" Attributes="260" KeyPath="Manifest_3"/>
     <ROW Component="Microsoft.Office.Tools.Common.dll" ComponentId="{C32F30EF-8433-470F-8FE2-B7CB49844F06}" Directory_="APPDIR" Attributes="0" KeyPath="Microsoft.Office.Tools.Common.dll"/>
     <ROW Component="Microsoft.Office.Tools.Common.v4.0.Utili" ComponentId="{184DF737-DDA7-4507-A7BF-23662D4B0B39}" Directory_="APPDIR" Attributes="0" KeyPath="Microsoft.Office.Tools.Common.v4.0.Utilities.dll"/>
     <ROW Component="Microsoft.Office.Tools.Outlook.dll" ComponentId="{A27C2540-B25B-4E44-9B1D-457B3FB4E223}" Directory_="APPDIR" Attributes="0" KeyPath="Microsoft.Office.Tools.Outlook.dll"/>
@@ -54,21 +60,26 @@
     <ROW Component="Microsoft.Office.Tools.v4.0.Framework.dl" ComponentId="{0F07E710-F803-41F3-B579-D147C0E24580}" Directory_="APPDIR" Attributes="0" KeyPath="Microsoft.Office.Tools.v4.0.Framework.dll"/>
     <ROW Component="Microsoft.VisualStudio.Tools.Application" ComponentId="{AE5DD335-A9D3-468B-BDD9-68CF1A0ACDDA}" Directory_="APPDIR" Attributes="0" KeyPath="Microsoft.VisualStudio.Tools.Applications.Runtime.dll"/>
     <ROW Component="Newtonsoft.Json.dll" ComponentId="{A8A01C4D-B4A9-47A8-A6A2-6C1860829DF2}" Directory_="APPDIR" Attributes="0" KeyPath="Newtonsoft.Json.dll"/>
+    <ROW Component="Path" ComponentId="{CABF485E-6005-4916-BC5A-21135F833F30}" Directory_="APPDIR" Attributes="260" KeyPath="Path_3"/>
     <ROW Component="ProductInformation" ComponentId="{CD18F970-9EEB-4EB7-8483-3EE2637B1C7E}" Directory_="APPDIR" Attributes="4" KeyPath="Version"/>
+    <ROW Component="Software" ComponentId="{21F96FA4-F288-4680-8EC7-49850063C214}" Directory_="APPDIR" Attributes="260" KeyPath="Software_2"/>
+    <ROW Component="Version" ComponentId="{944E026C-4BCB-4C2C-8821-4F1C660E982D}" Directory_="APPDIR" Attributes="260" KeyPath="Version_3"/>
     <ROW Component="Virgil.Crypto.dll" ComponentId="{5159965E-7658-458A-BFA0-483BF7A79237}" Directory_="APPDIR" Attributes="0" KeyPath="Virgil.Crypto.dll"/>
+    <ROW Component="Virgil.Mail.FormRegion" ComponentId="{343E22AD-35D5-44DD-94A6-2F3EDCA769E6}" Directory_="APPDIR" Attributes="260" KeyPath="Virgil.Mail.FormRegion"/>
+    <ROW Component="Virgil.Mail.FormRegion_2" ComponentId="{915DE060-ACFF-48DF-91D7-F9F1F0277F1C}" Directory_="APPDIR" Attributes="4" KeyPath="Virgil.Mail.FormRegion_2"/>
     <ROW Component="Virgil.Mail.dll" ComponentId="{FA8CDA73-EC44-48FC-9A38-9DAAF466423D}" Directory_="APPDIR" Attributes="0" KeyPath="Virgil.Mail.dll"/>
     <ROW Component="Virgil.Mail.dll.manifest" ComponentId="{C64BBFA0-712B-48EA-B35B-29BC03D15A15}" Directory_="APPDIR" Attributes="0" KeyPath="Virgil.Mail.dll.manifest" Type="0"/>
-    <ROW Component="Virgil.SDK.Domain.dll" ComponentId="{1F70C877-5524-457C-89FA-E7569581516C}" Directory_="APPDIR" Attributes="0" KeyPath="Virgil.SDK.Domain.dll"/>
     <ROW Component="Virgil.SDK.dll" ComponentId="{4C3332CC-2621-488B-87FC-2A90E7B43C2D}" Directory_="APPDIR" Attributes="0" KeyPath="Virgil.SDK.dll"/>
     <ROW Component="updater.exe" ComponentId="{52B32306-E77E-43C8-B8F5-5D7F482EC5BD}" Directory_="APPDIR" Attributes="0" KeyPath="updater.exe"/>
     <ROW Component="virgil_crypto_net.dll" ComponentId="{EA3067B5-2313-40A4-9D74-56AF38BE880E}" Directory_="x64_Dir" Attributes="256" KeyPath="virgil_crypto_net.dll"/>
     <ROW Component="virgil_crypto_net.dll_1" ComponentId="{97E419B8-2FCC-4D47-904E-8262153BD199}" Directory_="x86_Dir" Attributes="0" KeyPath="virgil_crypto_net.dll_1"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFeatsComponent">
-    <ROW Feature="MainFeature" Title="MainFeature" Description="Description" Display="1" Level="1" Directory_="APPDIR" Attributes="0" Components="AI_ExePath Description FriendlyName HtmlAgilityPack.dll LoadBehavior Manifest Microsoft.Office.Tools.Common.dll Microsoft.Office.Tools.Common.v4.0.Utili Microsoft.Office.Tools.Outlook.dll Microsoft.Office.Tools.Outlook.v4.0.Util Microsoft.Office.Tools.dll Microsoft.Office.Tools.v4.0.Framework.dl Microsoft.VisualStudio.Tools.Application Newtonsoft.Json.dll ProductInformation Virgil.Crypto.dll Virgil.Mail.dll Virgil.Mail.dll.manifest Virgil.SDK.Domain.dll Virgil.SDK.dll updater.exe virgil_crypto_net.dll virgil_crypto_net.dll_1"/>
+    <ROW Feature="MainFeature" Title="MainFeature" Description="Description" Display="1" Level="1" Directory_="APPDIR" Attributes="0" Components="AI_ExePath Autofac.dll Description Description_4 FriendlyName FriendlyName_4 HtmlAgilityPack.dll LoadBehavior LoadBehavior_4 Manifest Manifest_3 Microsoft.Office.Tools.Common.dll Microsoft.Office.Tools.Common.v4.0.Utili Microsoft.Office.Tools.Outlook.dll Microsoft.Office.Tools.Outlook.v4.0.Util Microsoft.Office.Tools.dll Microsoft.Office.Tools.v4.0.Framework.dl Microsoft.VisualStudio.Tools.Application Newtonsoft.Json.dll Path ProductInformation Software Version Virgil.Crypto.dll Virgil.Mail.FormRegion Virgil.Mail.FormRegion_2 Virgil.Mail.dll Virgil.Mail.dll.manifest Virgil.SDK.dll updater.exe virgil_crypto_net.dll virgil_crypto_net.dll_1"/>
     <ATTRIBUTE name="CurrentFeature" value="MainFeature"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFilesComponent">
+    <ROW File="Autofac.dll" Component_="Autofac.dll" FileName="Autofac.dll" Attributes="0" SourcePath="..\Virgil.Mail\bin\Release\Autofac.dll" SelfReg="false" NextFile="Virgil.Mail.dll.config"/>
     <ROW File="HtmlAgilityPack.dll" Component_="HtmlAgilityPack.dll" FileName="HTMLAG~1.DLL|HtmlAgilityPack.dll" Attributes="0" SourcePath="..\Virgil.Mail\bin\Release\HtmlAgilityPack.dll" SelfReg="false" NextFile="Microsoft.Office.Tools.Common.dll"/>
     <ROW File="Microsoft.Office.Tools.Common.dll" Component_="Microsoft.Office.Tools.Common.dll" FileName="MICROS~1.DLL|Microsoft.Office.Tools.Common.dll" Attributes="0" SourcePath="..\Virgil.Mail\bin\Release\Microsoft.Office.Tools.Common.dll" SelfReg="false" NextFile="Microsoft.Office.Tools.Common.v4.0.Utilities.dll"/>
     <ROW File="Microsoft.Office.Tools.Common.v4.0.Utilities.dll" Component_="Microsoft.Office.Tools.Common.v4.0.Utili" FileName="MICROS~2.DLL|Microsoft.Office.Tools.Common.v4.0.Utilities.dll" Attributes="0" SourcePath="..\Virgil.Mail\bin\Release\Microsoft.Office.Tools.Common.v4.0.Utilities.dll" SelfReg="false" NextFile="Microsoft.Office.Tools.dll"/>
@@ -80,11 +91,11 @@
     <ROW File="Newtonsoft.Json.dll" Component_="Newtonsoft.Json.dll" FileName="NEWTON~1.DLL|Newtonsoft.Json.dll" Attributes="0" SourcePath="..\Virgil.Mail\bin\Release\Newtonsoft.Json.dll" SelfReg="false" NextFile="Virgil.Crypto.dll"/>
     <ROW File="Virgil.Crypto.dll" Component_="Virgil.Crypto.dll" FileName="VIRGIL~1.DLL|Virgil.Crypto.dll" Attributes="0" SourcePath="..\Virgil.Mail\bin\Release\Virgil.Crypto.dll" SelfReg="false" NextFile="Virgil.Mail.dll"/>
     <ROW File="Virgil.Mail.dll" Component_="Virgil.Mail.dll" FileName="VIRGIL~2.DLL|Virgil.Mail.dll" Attributes="0" SourcePath="..\Virgil.Mail\bin\Release\Virgil.Mail.dll" SelfReg="false" NextFile="Virgil.Mail.dll.manifest"/>
+    <ROW File="Virgil.Mail.dll.config" Component_="Virgil.Mail.dll.manifest" FileName="VIRGIL~1.CON|Virgil.Mail.dll.config" Attributes="0" SourcePath="..\Virgil.Mail\bin\Release\Virgil.Mail.dll.config" SelfReg="false"/>
     <ROW File="Virgil.Mail.dll.manifest" Component_="Virgil.Mail.dll.manifest" FileName="VIRGIL~1.MAN|Virgil.Mail.dll.manifest" Attributes="0" SourcePath="..\Virgil.Mail\bin\Release\Virgil.Mail.dll.manifest" SelfReg="false" NextFile="Virgil.Mail.vsto"/>
     <ROW File="Virgil.Mail.vsto" Component_="Virgil.Mail.dll.manifest" FileName="VIRGIL~1.VST|Virgil.Mail.vsto" Attributes="0" SourcePath="..\Virgil.Mail\bin\Release\Virgil.Mail.vsto" SelfReg="false" NextFile="Virgil.SDK.dll"/>
-    <ROW File="Virgil.SDK.Domain.dll" Component_="Virgil.SDK.Domain.dll" FileName="VIRGIL~4.DLL|Virgil.SDK.Domain.dll" Attributes="0" SourcePath="..\Virgil.Mail\bin\Release\Virgil.SDK.Domain.dll" SelfReg="false" NextFile="virgil_crypto_net.dll"/>
-    <ROW File="Virgil.SDK.dll" Component_="Virgil.SDK.dll" FileName="VIRGIL~3.DLL|Virgil.SDK.dll" Attributes="0" SourcePath="..\Virgil.Mail\bin\Release\Virgil.SDK.dll" SelfReg="false" NextFile="Virgil.SDK.Domain.dll"/>
-    <ROW File="updater.exe" Component_="updater.exe" FileName="Updater.exe" Version="65535.65535.65535.65535" Attributes="0" SourcePath="&lt;AI_STUBS&gt;updater.exe" SelfReg="false" DigSign="true"/>
+    <ROW File="Virgil.SDK.dll" Component_="Virgil.SDK.dll" FileName="VIRGIL~3.DLL|Virgil.SDK.dll" Attributes="0" SourcePath="..\Virgil.Mail\bin\Release\Virgil.SDK.dll" SelfReg="false" NextFile="virgil_crypto_net.dll"/>
+    <ROW File="updater.exe" Component_="updater.exe" FileName="Updater.exe" Version="65535.65535.65535.65535" Attributes="0" SourcePath="&lt;AI_STUBS&gt;updater.exe" SelfReg="false" NextFile="Autofac.dll" DigSign="true"/>
     <ROW File="virgil_crypto_net.dll" Component_="virgil_crypto_net.dll" FileName="VIRGIL~1.DLL|virgil_crypto_net.dll" Attributes="0" SourcePath="..\Virgil.Mail\bin\Release\x64\virgil_crypto_net.dll" SelfReg="false" NextFile="virgil_crypto_net.dll_1"/>
     <ROW File="virgil_crypto_net.dll_1" Component_="virgil_crypto_net.dll_1" FileName="VIRGIL~1.DLL|virgil_crypto_net.dll" Attributes="0" SourcePath="..\Virgil.Mail\bin\Release\x86\virgil_crypto_net.dll" SelfReg="false" NextFile="updater.exe"/>
   </COMPONENT>
@@ -92,7 +103,7 @@
     <ROW BootstrOptKey="GlobalOptions" GeneralOptions="b" DownloadFolder="[AppDataFolder][|Manufacturer]\[|ProductName]\prerequisites" EulaPathLocId="*" IntroTextPathLocId="*"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.BuildComponent">
-    <ROW BuildKey="DefaultBuild" BuildName="DefaultBuild" BuildOrder="1" BuildType="0" PackageFolder="Output" PackageFileName="virgil_mail" Languages="en" InstallationType="4" CabsLocation="1" PackageType="1" FilesInsideExe="true" ExtractionFolder="[AppDataFolder][|Manufacturer]\[|ProductName] [|ProductVersion]\install" UseLargeSchema="true"/>
+    <ROW BuildKey="DefaultBuild" BuildName="DefaultBuild" BuildOrder="1" BuildType="0" PackageFolder="Output" PackageFileName="virgil_mail" Languages="en" InstallationType="4" CabsLocation="1" PackageType="1" FilesInsideExe="true" ExtractionFolder="[AppDataFolder][|Manufacturer]\[|ProductName] [|ProductVersion]\install" UseLargeSchema="true" MsiPackageType="x64" UACExecutionLevel="2"/>
     <ATTRIBUTE name="CurrentBuild" value="DefaultBuild"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.DictionaryComponent">
@@ -100,7 +111,7 @@
     <ROW Path="&lt;AI_DICTS&gt;ui_en.ail"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.DigCertStoreComponent">
-    <ROW TimeStampUrl="http://timestamp.verisign.com/scripts/timstamp.dll" SignerDescription="[|ProductName]" SignOptions="0" SignTool="0"/>
+    <ROW TimeStampUrl="http://timestamp.digicert.com" SignerDescription="[|ProductName]" SignOptions="0" SignTool="0" Thumbprint="1e198d4ec0d6c713b73abd2ba6ba2e82d19efb17 Subject: Virgil Security, Inc.&#10;Issuer: DigiCert SHA2 Assured ID Code Signing CA&#10;Valid from 02/26/2016 to 11/02/2016"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.FragmentComponent">
     <ROW Fragment="CommonUI.aip" Path="&lt;AI_FRAGS&gt;CommonUI.aip"/>
@@ -187,7 +198,7 @@
     <ROW Action="AddCaspolSecurityPolicy" Type="11265" Source="aicustact.dll" Target="AddCaspolSecurityPolicy" AdditionalSeq="AI_DATA_SETTER"/>
     <ROW Action="RemoveCaspolSecurityPolicy" Type="11265" Source="aicustact.dll" Target="RemoveCaspolSecurityPolicy" AdditionalSeq="AI_DATA_SETTER_1"/>
     <ROW Action="RollbackCaspolSecurityPolicy" Type="11521" Source="aicustact.dll" Target="RemoveCaspolSecurityPolicy" AdditionalSeq="AI_DATA_SETTER_2"/>
-    <ROW Action="SET_APPDIR" Type="307" Source="APPDIR" Target="[AppDataFolder][Manufacturer]\[ProductName]"/>
+    <ROW Action="SET_APPDIR" Type="307" Source="APPDIR" Target="[AppDataFolder][Manufacturer]\[ProductName]" MultiBuildTarget="DefaultBuild:[ProgramFiles64Folder][Manufacturer]\[ProductName]"/>
     <ROW Action="SET_SHORTCUTDIR" Type="307" Source="SHORTCUTDIR" Target="[ProgramMenuFolder][ProductName]"/>
     <ROW Action="SET_TARGETDIR_TO_APPDIR" Type="51" Source="TARGETDIR" Target="[APPDIR]"/>
   </COMPONENT>
@@ -201,8 +212,8 @@
     <ROW IniFile="CheckFrequency" FileName="Updater.ini" DirProperty="APPDIR" Section="General" Key="CheckFrequency" Value="1" Action="0" Component_="updater.exe"/>
     <ROW IniFile="CompanyName" FileName="Updater.ini" DirProperty="APPDIR" Section="General" Key="CompanyName" Value="[Manufacturer]" Action="0" Component_="updater.exe"/>
     <ROW IniFile="DefaultCommandLine" FileName="Updater.ini" DirProperty="APPDIR" Section="General" Key="DefaultCommandLine" Value="/checknow" Action="0" Component_="updater.exe"/>
-    <ROW IniFile="DownloadsFolder" FileName="Updater.ini" DirProperty="APPDIR" Section="General" Key="DownloadsFolder" Value="[AppDataFolder][Manufacturer]\[ProductName]\updates\" Action="0" Component_="updater.exe"/>
-    <ROW IniFile="Flags" FileName="Updater.ini" DirProperty="APPDIR" Section="General" Key="Flags" Value="NoDisableAutoCheck|NoUpdaterInstallGUI" Action="0" Component_="updater.exe"/>
+    <ROW IniFile="DownloadsFolder" FileName="Updater.ini" DirProperty="APPDIR" Section="General" Key="DownloadsFolder" Value="[CommonAppDataFolder][Manufacturer]\[ProductName]\updates\" Action="0" Component_="updater.exe"/>
+    <ROW IniFile="Flags" FileName="Updater.ini" DirProperty="APPDIR" Section="General" Key="Flags" Value="NoDisableAutoCheck|PerMachine|NoUpdaterInstallGUI" Action="0" Component_="updater.exe"/>
     <ROW IniFile="ID" FileName="Updater.ini" DirProperty="APPDIR" Section="General" Key="ID" Value="[UpgradeCode]" Action="0" Component_="updater.exe"/>
     <ROW IniFile="URL" FileName="Updater.ini" DirProperty="APPDIR" Section="General" Key="URL" Value="http://www.example.com/download/updates.txt" Action="0" Component_="updater.exe"/>
   </COMPONENT>
@@ -258,13 +269,22 @@
     <ROW Signature_="AI_EXE_PATH_LM" Root="2" Key="Software\Caphyon\Advanced Installer\LZMA\[ProductCode]\[ProductVersion]" Name="AI_ExePath" Type="2"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiRegsComponent">
-    <ROW Registry="AI_ExePath" Root="-1" Key="Software\Caphyon\Advanced Installer\LZMA\[ProductCode]\[ProductVersion]" Name="AI_ExePath" Value="[AI_SETUPEXEPATH]" Component_="AI_ExePath"/>
-    <ROW Registry="Description" Root="-1" Key="Software\Microsoft\Office\Outlook\Addins\[Manufacturer].[ProductName]" Name="Description" Value="Virgil Security Outlook Add-In that allows users to send end-to-end encrypted emails." Component_="Description"/>
-    <ROW Registry="FriendlyName" Root="-1" Key="Software\Microsoft\Office\Outlook\Addins\[Manufacturer].[ProductName]" Name="FriendlyName" Value="Virgil Mail Add-In" Component_="FriendlyName"/>
-    <ROW Registry="LoadBehavior" Root="-1" Key="Software\Microsoft\Office\Outlook\Addins\[Manufacturer].[ProductName]" Name="LoadBehavior" Value="#3" Component_="LoadBehavior"/>
-    <ROW Registry="Manifest" Root="-1" Key="Software\Microsoft\Office\Outlook\Addins\[Manufacturer].[ProductName]" Name="Manifest" Value="file:///[APPDIR]Virgil.Mail.vsto|vstolocal" Component_="Manifest"/>
-    <ROW Registry="Path" Root="-1" Key="Software\[Manufacturer]\[ProductName]" Name="Path" Value="[APPDIR]" Component_="ProductInformation"/>
-    <ROW Registry="Version" Root="-1" Key="Software\[Manufacturer]\[ProductName]" Name="Version" Value="[ProductVersion]" Component_="ProductInformation"/>
+    <ROW Registry="AI_ExePath" Root="2" Key="Software\Caphyon\Advanced Installer\LZMA\[ProductCode]\[ProductVersion]" Name="AI_ExePath" Value="[AI_SETUPEXEPATH]" Component_="AI_ExePath"/>
+    <ROW Registry="Description" Root="2" Key="Software\Microsoft\Office\Outlook\Addins\[Manufacturer].[ProductName]" Name="Description" Value="Virgil Security Outlook Add-In that allows users to send end-to-end encrypted emails." Component_="Description"/>
+    <ROW Registry="Description_4" Root="-1" Key="Software\Microsoft\Office\Outlook\Addins\[Manufacturer].[ProductName]" Name="Description" Value="Virgil Security Outlook Add-In that allows users to send end-to-end encrypted emails." Component_="Description_4"/>
+    <ROW Registry="FriendlyName" Root="2" Key="Software\Microsoft\Office\Outlook\Addins\[Manufacturer].[ProductName]" Name="FriendlyName" Value="Virgil Mail Add-In" Component_="FriendlyName"/>
+    <ROW Registry="FriendlyName_4" Root="-1" Key="Software\Microsoft\Office\Outlook\Addins\[Manufacturer].[ProductName]" Name="FriendlyName" Value="Virgil Mail Add-In" Component_="FriendlyName_4"/>
+    <ROW Registry="LoadBehavior" Root="2" Key="Software\Microsoft\Office\Outlook\Addins\[Manufacturer].[ProductName]" Name="LoadBehavior" Value="#3" Component_="LoadBehavior"/>
+    <ROW Registry="LoadBehavior_4" Root="-1" Key="Software\Microsoft\Office\Outlook\Addins\[Manufacturer].[ProductName]" Name="LoadBehavior" Value="#3" Component_="LoadBehavior_4"/>
+    <ROW Registry="Manifest" Root="2" Key="Software\Microsoft\Office\Outlook\Addins\[Manufacturer].[ProductName]" Name="Manifest" Value="file:///[APPDIR]Virgil.Mail.vsto|vstolocal" Component_="Manifest"/>
+    <ROW Registry="Manifest_3" Root="-1" Key="Software\Microsoft\Office\Outlook\Addins\[Manufacturer].[ProductName]" Name="Manifest" Value="file:///[APPDIR]Virgil.Mail.vsto|vstolocal" Component_="Manifest_3"/>
+    <ROW Registry="Path" Root="2" Key="Software\[Manufacturer]\[ProductName]" Name="Path" Value="[APPDIR]" Component_="ProductInformation"/>
+    <ROW Registry="Path_3" Root="-1" Key="Software\[Manufacturer]\[ProductName]" Name="Path" Value="[APPDIR]" Component_="Path"/>
+    <ROW Registry="Software_2" Root="-1" Key="Software" Name="+" Component_="Software"/>
+    <ROW Registry="Version" Root="2" Key="Software\[Manufacturer]\[ProductName]" Name="Version" Value="[ProductVersion]" Component_="ProductInformation"/>
+    <ROW Registry="Version_3" Root="-1" Key="Software\[Manufacturer]\[ProductName]" Name="Version" Value="[ProductVersion]" Component_="Version"/>
+    <ROW Registry="Virgil.Mail.FormRegion" Root="-1" Key="Software\Microsoft\Office\Outlook\FormRegions\IPM.Note.VirgilMail" Name="Virgil.Mail.FormRegion" Value="=[Manufacturer].[ProductName]" Component_="Virgil.Mail.FormRegion"/>
+    <ROW Registry="Virgil.Mail.FormRegion_2" Root="2" Key="Software\Microsoft\Office\Outlook\FormRegions\IPM.Note.VirgilMail" Name="Virgil.Mail.FormRegion" Value="=[Manufacturer].[ProductName]" Component_="Virgil.Mail.FormRegion_2"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiSignatureComponent">
     <ROW Signature="CaspolExeSignature" FileName="caspol.exe"/>
