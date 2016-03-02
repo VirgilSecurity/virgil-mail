@@ -68,8 +68,11 @@
                     x:Name="keyPasswordCheckBox"
                     Margin="0 5" 
                     IsChecked="{Binding HasPassword, Mode=TwoWay}" 
-                    Content="Protect my private key with a password (recommended)"
-                    VerticalContentAlignment="Center" />
+                    VerticalContentAlignment="Center" >
+                    <TextBlock 
+                        TextWrapping="Wrap" 
+                        Text="Protect my private key with a password (recommended)" />
+                </CheckBox>
 
                 <TextBlock 
                     FontSize="10" 
