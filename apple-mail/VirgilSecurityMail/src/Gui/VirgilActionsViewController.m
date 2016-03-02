@@ -115,6 +115,7 @@ NSInteger _checkCounter = 0;
     _keyPasswordConfirm.hidden = !visible;
     _keyPasswordConfirm.enabled = visible;
     
+    _btnRemoveFromCloud.enabled = !visible;
     _btnRemoveFromKeyChain.enabled = !visible;
     _btnExport.enabled = !visible;
 }

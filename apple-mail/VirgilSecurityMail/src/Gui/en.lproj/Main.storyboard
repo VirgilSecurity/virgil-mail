@@ -1325,6 +1325,9 @@ Gw
                                 <buttonCell key="cell" type="push" title="Repeate creation" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Rkr-JY-fda">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
+                                    <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
                                 </buttonCell>
                                 <connections>
                                     <action selector="onResendConfirmationClicked:" target="xa5-mg-cq8" id="j61-R7-6KV"/>
@@ -1375,7 +1378,7 @@ Gw
                                 </connections>
                             </secureTextField>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LXC-S3-a2i">
-                                <rect key="frame" x="372" y="7" width="70" height="42"/>
+                                <rect key="frame" x="372" y="7" width="70" height="32"/>
                                 <buttonCell key="cell" type="push" title="Ok" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="LuX-9y-pno">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -1485,6 +1488,9 @@ Gw
                                 <buttonCell key="cell" type="push" title="Load" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Y2p-sr-Jsy">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
+                                    <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
                                 </buttonCell>
                                 <connections>
                                     <action selector="onLoadKeyClicked:" target="LTV-Xl-4kz" id="91C-bo-s5q"/>
@@ -1677,6 +1683,9 @@ Gw
                                 <buttonCell key="cell" type="push" title="Continue" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="xDI-F5-gLi">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
+                                    <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
                                 </buttonCell>
                                 <connections>
                                     <action selector="onExportContinueClicked:" target="aOi-Ks-iIS" id="3RY-7P-I4X"/>
@@ -1756,6 +1765,7 @@ Gw
                         <outlet property="btnCancel" destination="GP9-jF-AEr" id="bYl-lP-e49"/>
                         <outlet property="btnContinue" destination="jAf-ka-0Aw" id="AHN-vC-7Na"/>
                         <outlet property="btnExport" destination="ERd-Rs-uic" id="5HS-yK-Jwd"/>
+                        <outlet property="btnRemoveFromCloud" destination="VnO-3x-oX4" id="ws4-kw-jZf"/>
                         <outlet property="btnRemoveFromKeyChain" destination="bOb-n4-C6y" id="bOg-7B-cmV"/>
                         <outlet property="keyPassword" destination="wpq-qz-l9Z" id="r35-xm-cyb"/>
                         <outlet property="keyPasswordConfirm" destination="qUM-kP-GoT" id="kcd-3m-mc0"/>
@@ -1843,6 +1853,9 @@ Gw
                                 <buttonCell key="cell" type="push" title="Repeate" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="JTj-2a-6GL">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
+                                    <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
                                 </buttonCell>
                                 <connections>
                                     <action selector="onResendDeleteRequest:" target="aJr-7q-cS5" id="2vG-en-Ife"/>
@@ -1874,6 +1887,7 @@ Gw
                                 <buttonCell key="cell" type="push" title="Stop" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="zzZ-Hg-60l">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
+                                    <string key="keyEquivalent">a</string>
                                 </buttonCell>
                                 <connections>
                                     <action selector="onStopDeletion:" target="aJr-7q-cS5" id="DVk-iE-EDH"/>
