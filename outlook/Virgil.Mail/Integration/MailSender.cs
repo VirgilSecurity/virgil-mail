@@ -40,6 +40,7 @@
            var recipients = mailItem.Recipients
                 .OfType<Outlook.Recipient>()
                 .Select(it => it.Address)
+                .Distinct()
                 .ToList();
 
             var senderSmtpAddress = mailItem.ExtractSenderEmailAddress();

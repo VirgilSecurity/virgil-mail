@@ -197,7 +197,7 @@ namespace Virgil.Mail.Viewer
 
                 this.ChangeState(EncryptedMailState.ReadMail);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 this.ChangeState(EncryptedMailState.EncryptionFailed);
             }
