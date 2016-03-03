@@ -268,8 +268,8 @@ NSInteger _checkCounter = 0;
     NSString * keyPass = nil;
     NSString * keyPassConfirm = nil;
     
-    keyPass = _keyPassword.stringValue;
-    keyPassConfirm = _keyPasswordConfirm.stringValue;
+    //keyPass = _keyPassword.stringValue;
+    //keyPassConfirm = _keyPasswordConfirm.stringValue;
     
     if (keyPass.length || keyPassConfirm.length) {
         if (NO == [VirgilValidator simplePassword : keyPass]) {
@@ -398,7 +398,7 @@ NSInteger _checkCounter = 0;
     // Get params from GUI
     BOOL useCloudStorage = NSOnState == [[_matrixField cellAtRow:0 column:0] state];
     
-    NSString * password = _keyPassword.stringValue.length ? _keyPassword.stringValue : nil;
+    NSString * password = /*_keyPassword.stringValue.length ? _keyPassword.stringValue :*/ nil;
     BOOL passwordValid = (password == nil) ? YES : [VirgilValidator simplePassword : password];
     
     if (!useCloudStorage && !passwordValid) {
