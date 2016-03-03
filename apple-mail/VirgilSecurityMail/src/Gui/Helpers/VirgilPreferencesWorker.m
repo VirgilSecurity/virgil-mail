@@ -43,7 +43,7 @@
 @implementation NSPreferences (Virgil)
 
 static BOOL _showAllItems = YES;
-static NSString * _preferencesName = @"Virgil Preferences";
+static NSString * _preferencesName = @"Virgil";
 
 + (NSString *) virgilPreferencesName {
     return _preferencesName;

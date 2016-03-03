@@ -41,6 +41,7 @@
 #import "VirgilPreferencesContainer.h"
 #import "VirgilGui.h"
 #import "VirgilLog.h"
+#import "VirgilVersion.h"
 
 NSString *VirgilMailMethodPrefix = @"MA";
 
@@ -82,14 +83,9 @@ NSString *VirgilMailMethodPrefix = @"MA";
     [[((VirgilMain *)self) class] registerBundle];
 }
 
-- (NSString *) version {
-    NSDictionary * info = [[NSBundle bundleForClass : [self class]] infoDictionary];
-    return [info objectForKey:@"CFBundleVersion"];
-}
-
 - (id)init {
 	if (self = [super init]) {
-		VLogInfo(@"Virgil Security Mail Plugin %@ successfully Loaded", [self version]);
+		VLogInfo(@"Virgil Security Mail Plugin %@ successfully Loaded", [[VirgilVersion sharedInstance] currentVersion]);
 
         // Install handlers
         [VirgilHandlersInstaller installHandlerByPrefix:VirgilMailMethodPrefix];
@@ -117,7 +113,7 @@ NSString *VirgilMailMethodPrefix = @"MA";
 }
 
 + (NSString *)preferencesPanelName {
-    return @"Virgil Preferences";
+    return @"Virgil";
 }
 
 - (void)_loadImages {
@@ -134,7 +130,8 @@ NSString *VirgilMailMethodPrefix = @"MA";
                                   @"in_progress",
                                   @"ok",
                                   @"attention",
-                                  @"problem"];
+                                  @"problem",
+                                  @"virgil_logo"];
     NSMutableArray *bundleImages = [[NSMutableArray alloc] initWithCapacity:[bundleImageNames count]];
     
     for (NSString *name in bundleImageNames) {

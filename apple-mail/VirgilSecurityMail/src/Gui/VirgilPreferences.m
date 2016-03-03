@@ -37,8 +37,16 @@
 #import "VirgilPreferences.h"
 #import "VirgilPreferencesContainer.h"
 #import "VirgilPreferencesWorker.h"
+#import "VirgilVersion.h"
 
 @implementation VirgilPreferences
+
+NSString * homePage = @"https://virgilsecurity.com";
+NSString * updateURL = @"https://downloads.virgilsecurity.com/apps/virgil-mail/apple-mail/VirgilSecurityMail.dmg";
+
+NSMutableAttributedString * normalHomeLink = nil;
+NSMutableAttributedString * activeHomeLink = nil;
+
 
 -(id)init {
 	self = [super init];
@@ -64,62 +72,86 @@
     [self updateGuiElements];
 }
 
-- (IBAction)onOptionChanged:(id)sender {
-// 1000 - Ask before decrypt
-// 1001 - Use encryption
-// 1002 - Auto check updates
-// 1003 - Install automaticaly
-    BOOL isOn = NSOnState == [sender state];
-    switch ([sender tag]) {
-        case 1000:
-            [VirgilPreferencesContainer setNeedAskToDecrypt : isOn];
-            break;
-            
-        case 1001:
-            [VirgilPreferencesContainer setUseEncryption : isOn];
-            break;
-            
-        case 1002:
-            break;
-            
-        case 1003:
-            break;
-            
-        default:
-            return;
-    }
-
+- (NSImage *)imageForPreferenceNamed:(NSString *)aName {
+    return [NSImage imageNamed:@"square"];
 }
 
-- (IBAction)onCheckNowClick:(id __unused)sender {
+- (IBAction)onOptionChanged:(id)sender {
+    BOOL isOn = NSOnState == [sender state];
+    [VirgilPreferencesContainer setUseEncryption : isOn];
+}
+
+- (IBAction)onDownloadUpdate:(id)sender {
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:updateURL]];
 }
 
 - (void) updateGuiElements {
-    // 1000 - Ask before decrypt
-    // 1001 - Use encryption
-    // 1002 - Auto check updates
-    // 1003 - Install automaticaly
+    // ----------- Load settings -----------
+    NSInteger encByDefaultState = [VirgilPreferencesContainer isUseEncryption] ? NSOnState : NSOffState;
+    [_encByDefaultCheckBox setState:encByDefaultState];
     
-    [self loadStateForTag : 1000
-                    state : [VirgilPreferencesContainer isNeedAskToDecrypt] ? NSOnState : NSOffState];
-    [self loadStateForTag : 1001
-                    state : [VirgilPreferencesContainer isUseEncryption] ? NSOnState : NSOffState];
+    // --------- Prepare home link ---------
+    NSColor *color = [NSColor blueColor];
+    normalHomeLink =
+    [[NSMutableAttributedString alloc] initWithAttributedString:[_btnHomeLink attributedTitle]];
+    NSRange titleRange = NSMakeRange(0, [normalHomeLink length]);
+    [normalHomeLink addAttributes : @{NSForegroundColorAttributeName:color,NSUnderlineStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]}
+                         range : titleRange];
+    
+    NSColor *colorAlt = [NSColor colorWithCalibratedRed:(30/255.0f) green:(144/255.0f) blue:(255/255.0f) alpha:1.0];
+    activeHomeLink =
+    [[NSMutableAttributedString alloc] initWithAttributedString:[_btnHomeLink attributedTitle]];
+    [activeHomeLink addAttributes : @{NSForegroundColorAttributeName:colorAlt,NSUnderlineStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]}
+                        range : titleRange];
+    
+    [_btnHomeLink setAttributedTitle:normalHomeLink];
+    
+    // -------- Load versions info ---------
+    [[VirgilVersion sharedInstance] setDelegate:self];
+    [self reloadVersionInfo];
+}
+
+- (void) showLatestVersion : (NSString *) latestVersion {
+    BOOL canShow = latestVersion != nil;
+    _latestVersionTextField.hidden = !canShow;
+    _latestVersionLabel.hidden = !canShow;
+    if (canShow) {
+        [_latestVersionTextField setStringValue:latestVersion];
+    }
+}
+
+- (void) showUpdateButton : (BOOL) show {
+    _btnUpdate.hidden = !show;
+}
+
+- (void) reloadVersionInfo {
+    [_currentVersionTextField setStringValue:[[VirgilVersion sharedInstance] currentVersion]];
+    NSString * latestVersion = [[VirgilVersion sharedInstance] cachedLatestVersion];
+    [self showLatestVersion:latestVersion];
+    BOOL needUpdate = [[VirgilVersion sharedInstance] isNeedUpdate];
+    [self showUpdateButton:needUpdate];
+}
+
+- (void) versionUpdated : (NSString * _Nullable) newVersion {
+    [self reloadVersionInfo];
+}
+
+
+- (IBAction)onOpenHomeLink:(id)sender {
+    [_btnHomeLink setAttributedTitle:activeHomeLink];
+    
+    double delayInSeconds = 0.25;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [_btnHomeLink setAttributedTitle:normalHomeLink];
+    });
+    
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:homePage]];
 }
 
 - (void)willBeDisplayed {
     [self updateGuiElements];
 }
-
-- (void) loadStateForTag : (NSInteger) tag
-                   state : (BOOL) state {
-    NSString * ourPrefName = [NSPreferences virgilPreferencesName];
-    NSBox * ourPrefView = [self viewForPreferenceNamed : ourPrefName];
-    if (nil == ourPrefView) return;
-    
-    NSButton * element = [ourPrefView viewWithTag : tag];
-    [element setState : state];
-}
-
 
 - (BOOL)isResizable {
 	return NO;

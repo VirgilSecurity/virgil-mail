@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Virgil Security Inc.
+ * Copyright (C) 2016 Virgil Security Inc.
  *
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  *
@@ -34,20 +34,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <NSPreferences.h>
-#import <AppKit/AppKit.h>
-#import "NSPreferencesModule.h"
-#import "VirgilVersion.h"
+#ifndef VirgilVersion_h
+#define VirgilVersion_h
 
-@interface VirgilPreferences : NSPreferencesModule <VirgilVersionProtocol> {}
+@protocol VirgilVersionProtocol <NSObject>
 
-@property (weak) IBOutlet NSTextField *currentVersionTextField;
-@property (weak) IBOutlet NSTextField *latestVersionTextField;
-@property (weak) IBOutlet NSButton *encByDefaultCheckBox;
-@property (weak) IBOutlet NSTextField *latestVersionLabel;
-@property (weak) IBOutlet NSButton *btnUpdate;
-
-@property (weak) IBOutlet NSButton *btnHomeLink;
+- (void) versionUpdated : (NSString * _Nullable) newVersion;
 
 @end
 
+@interface VirgilVersion : NSObject <NSXMLParserDelegate>
+
+@property (nonatomic, weak) id <VirgilVersionProtocol> delegate;
+
++ (VirgilVersion * _Nonnull) sharedInstance;
+
+- (NSString * _Nonnull) currentVersion;
+- (NSString * _Nullable) cachedLatestVersion;
+- (BOOL) isNeedUpdate;
+
+@end
+
+#endif /* VirgilVersion_h */
