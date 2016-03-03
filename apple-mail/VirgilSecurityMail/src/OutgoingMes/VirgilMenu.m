@@ -285,31 +285,60 @@
 - (NSGradient *)gradientUseEncryptionColor:(NSColor **)strokeColor {
     NSGradient *gradient = nil;
     
-    NSUInteger redStart = 20.0f;
-    NSUInteger greenStart = 80.0f;
+    NSUInteger redStart = 158.0f;
+    NSUInteger greenStart = 11.0f;
     // Start for full screen.
-    NSUInteger greenStartAlt = 128.0f;
-    NSUInteger blueStart = 240.0f;
+    NSUInteger greenStartAlt = 11.0f;
+    NSUInteger blueStart = 15.0f;
     NSUInteger redStep, greenStep, blueStep;
     redStep = greenStep = blueStep = 18.0f;
     
     if(!self.fullscreen) {
-        gradient = [[NSGradient alloc] initWithColorsAndLocations:[NSColor colorWithDeviceRed:redStart/255.0f green:greenStart/255.0f blue:blueStart/255.0f alpha:1.0], 0.0f,
-                    [NSColor colorWithDeviceRed:(redStart + (redStep * 1))/255.0f green:(greenStart + (greenStep * 1))/255.0f blue:blueStart/255.0f alpha:1.0], 0.13f,
-                    [NSColor colorWithDeviceRed:(redStart + (redStep * 1))/255.0f green:(greenStart + (greenStep * 1))/255.0f blue:blueStart/255.0f alpha:1.0], 0.27f,
-                    [NSColor colorWithDeviceRed:(redStart + (redStep * 2))/255.0f green:(greenStart + (greenStep * 2))/255.0f blue:blueStart/255.0f alpha:1.0], 0.61f,
-                    [NSColor colorWithDeviceRed:(redStart + (redStep * 3))/255.0f green:(greenStart + (greenStep * 3))/255.0f blue:blueStart/255.0f alpha:1.0], 1.0f, nil];
+        gradient = [[NSGradient alloc] initWithColorsAndLocations:[NSColor colorWithDeviceRed:redStart/255.0f
+                                                                                        green:greenStart/255.0f
+                                                                                         blue:blueStart/255.0f
+                                                                                        alpha:1.0], 0.0f,
+                    [NSColor colorWithDeviceRed:(redStart + (redStep * 1))/255.0f
+                                          green:(greenStart + (greenStep * 1))/255.0f
+                                           blue:blueStart/255.0f
+                                          alpha:1.0], 0.13f,
+                    [NSColor colorWithDeviceRed:(redStart + (redStep * 1))/255.0f
+                                          green:(greenStart + (greenStep * 1))/255.0f
+                                           blue:blueStart/255.0f
+                                          alpha:1.0], 0.27f,
+                    [NSColor colorWithDeviceRed:(redStart + (redStep * 2))/255.0f
+                                          green:(greenStart + (greenStep * 2))/255.0f
+                                           blue:blueStart/255.0f
+                                          alpha:1.0], 0.61f,
+                    [NSColor colorWithDeviceRed:(redStart + (redStep * 3))/255.0f
+                                          green:(greenStart + (greenStep * 3))/255.0f
+                                           blue:blueStart/255.0f
+                                          alpha:1.0], 1.0f, nil];
     }
     else {
         redStep = greenStep = blueStep = 8.0f;
         gradient = [[NSGradient alloc] initWithColorsAndLocations:[NSColor colorWithDeviceRed:(redStart + (redStep * 2))/255.0f green:(greenStartAlt + (greenStep * 2))/255.0f blue:(blueStart + (blueStep * 1))/255.0f alpha:1.0], 0.0f,
-                    [NSColor colorWithDeviceRed:(redStart + (redStep * 3))/255.0f green:(greenStartAlt + (greenStep * 3))/255.0f blue:(blueStart + (blueStep * 1))/255.0f alpha:1.0], 0.13f,
-                    [NSColor colorWithDeviceRed:(redStart + (redStep * 4))/255.0f green:(greenStartAlt + (greenStep * 4))/255.0f blue:(blueStart + (blueStep * 1))/255.0f alpha:1.0], 0.27f,
-                    [NSColor colorWithDeviceRed:(redStart + (redStep * 5))/255.0f green:(greenStartAlt + (greenStep * 5))/255.0f blue:(blueStart + (blueStep * 1))/255.0f alpha:1.0], 0.61f,
-                    [NSColor colorWithDeviceRed:(redStart + (redStep * 6))/255.0f green:(greenStartAlt + (greenStep * 6))/255.0f blue:(blueStart + (blueStep * 1))/255.0f alpha:1.0], 1.0f, nil];
+                    [NSColor colorWithDeviceRed:(redStart + (redStep * 3))/255.0f
+                                          green:(greenStartAlt + (greenStep * 3))/255.0f
+                                           blue:(blueStart + (blueStep * 1))/255.0f alpha:1.0], 0.13f,
+                    [NSColor colorWithDeviceRed:(redStart + (redStep * 4))/255.0f
+                                          green:(greenStartAlt + (greenStep * 4))/255.0f
+                                           blue:(blueStart + (blueStep * 1))/255.0f
+                                          alpha:1.0], 0.27f,
+                    [NSColor colorWithDeviceRed:(redStart + (redStep * 5))/255.0f
+                                          green:(greenStartAlt + (greenStep * 5))/255.0f
+                                           blue:(blueStart + (blueStep * 1))/255.0f
+                                          alpha:1.0], 0.61f,
+                    [NSColor colorWithDeviceRed:(redStart + (redStep * 6))/255.0f
+                                          green:(greenStartAlt + (greenStep * 6))/255.0f
+                                           blue:(blueStart + (blueStep * 1))/255.0f
+                                          alpha:1.0], 1.0f, nil];
     }
     
-    *strokeColor = [NSColor colorWithDeviceRed:redStart/255.0f green:greenStart/255.0f blue:blueStart/255.0f alpha:1.0];
+    *strokeColor = [NSColor colorWithDeviceRed:redStart/255.0f
+                                         green:greenStart/255.0f
+                                          blue:blueStart/255.0f
+                                         alpha:1.0];
     
     return gradient;
 }
