@@ -367,19 +367,19 @@
  * @brief Confirm private key request with received (by email) code
  * @param account - email
  * @param code - code from email
- * @return YES - success | NO - error occured, get error with [VirgilKeyManager lastError]
+ * @return VirgilSetPrivateKeyResult
  */
-- (BOOL) confirmPrivateKeyRequest : (NSString *) account
-                             code : (NSString *) code {
+- (VirgilSetPrivateKeyResult) confirmPrivateKeyRequest : (NSString *) account
+                                                  code : (NSString *) code {
     if (nil == account) {
         [self setErrorString : @"wrong account for confirmation"];
-        return NO;
+        return kSaveError;
     }
     
     VirgilKeyChainContainer * keyChainContainer = [VirgilKeyChain loadContainer : account];
     if (nil == keyChainContainer) {
         [self setErrorString : @"account not present for confirmation"];
-        return NO;
+        return kSaveError;
     }
     
     return [self confirmPrivateKeyRequestWithCode : code
@@ -442,25 +442,25 @@
  * @brief Confirm private key request with received (by email) code
  * @param code - code from email
  * @param account - email
- * @return YES - success | NO - error occured, get error with [VirgilKeyManager lastError]
+ * @return VirgilSetPrivateKeyResult
  */
-- (BOOL) confirmPrivateKeyRequestWithCode : (NSString *) code
-                                  account : (NSString *) account
-                             keyContainer : (VirgilKeyChainContainer *) container {
+- (VirgilSetPrivateKeyResult) confirmPrivateKeyRequestWithCode : (NSString *) code
+                                                       account : (NSString *) account
+                                                  keyContainer : (VirgilKeyChainContainer *) container {
     _lastError = nil;
     if (nil == code ||
         nil == container) {
         [self setErrorString : @"wrong params for private key request confirmation"];
-        return NO;
+        return kSaveError;
     }
     
     NSDictionary * identity = [self confirmIdentityWithActionId : container.publicKey.actionID
                                                        withCode : code];
-    if (identity == nil) return NO;
+    if (identity == nil) return kSaveError;
     
     NSString * key = [self grabPrivateKeyWithIdentity : identity
                                                cardId : container.publicKey.cardID];
-    if (key == nil) return NO;
+    if (key == nil) return kSaveError;
     
     return [self prepareAndSaveLoadedPrivateKey : key
                                   containerType : VirgilContainerNormal
@@ -891,11 +891,10 @@
     return nil;
 }
 
-- (BOOL) prepareAndSaveLoadedPrivateKey : (NSString *) key
-                          containerType : (VirgilContainerType) containerType
-                                account : (NSString *) account {
-    BOOL res = NO;
-    VirgilPrivateKey * decryptedKey = nil;
+- (VirgilSetPrivateKeyResult) prepareAndSaveLoadedPrivateKey : (NSString *) key
+                                               containerType : (VirgilContainerType) containerType
+                                                     account : (NSString *) account {
+    VirgilPrivateKey * preparedKey = nil;
     
     // Check is need to ask for private key password
     NSString * userPassword = nil;
@@ -905,25 +904,24 @@
         if (keyChainContainer != nil) {
             userPassword = [VirgilGui getUserPasswordForKeyPair : keyChainContainer.publicKey.publicKey
                                                      privateKey : key];
-            if (nil != userPassword) {
-                res = YES;
+            if (nil == userPassword) {
+                return kSaveTerminated;
             }
+        }
+    } else {
+        if (![VirgilKeyManager isCorrectPrivateKey : key]) {
+            return kSaveError;
         }
     }
     
-    if (!res) {
-        res = [VirgilKeyManager isCorrectPrivateKey : key];
-    }
     
-    if (res) {
-        decryptedKey = [[VirgilPrivateKey alloc] initAccount : account
-                                               containerType : containerType
-                                                  privateKey : key
-                                                 keyPassword : userPassword];
-        [[VirgilKeyManager sharedInstance] setPrivateKey : decryptedKey
-                                              forAccount : account];
-    }
-    return res;
+    preparedKey = [[VirgilPrivateKey alloc] initAccount : account
+                                          containerType : containerType
+                                             privateKey : key
+                                            keyPassword : userPassword];
+    [[VirgilKeyManager sharedInstance] setPrivateKey : preparedKey
+                                          forAccount : account];
+    return kSaveDone;
 }
 
 /**

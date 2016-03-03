@@ -44,6 +44,13 @@
 #define kDeleteAction       @"delete_action"
 #define kKeyRequestAction   @"key_request_action"
 
+
+typedef NS_ENUM(NSUInteger, VirgilSetPrivateKeyResult) {
+    kSaveDone,
+    kSaveError,
+    kSaveTerminated
+};
+
 /**
  * @brief Class for working with Private and Public keys
  */
@@ -106,10 +113,10 @@
  * @brief Confirm private key request with received (by email) code
  * @param account - email
  * @param code - code from email
- * @return YES - success | NO - error occured, get error with [VirgilKeyManager lastError]
+ * @return VirgilSetPrivateKeyResult
  */
-- (BOOL) confirmPrivateKeyRequest : (NSString *) account
-                             code : (NSString *) code;
+- (VirgilSetPrivateKeyResult) confirmPrivateKeyRequest : (NSString *) account
+                                                  code : (NSString *) code;
 
 /**
  * @brief Resend confirmation email for account creation
@@ -173,9 +180,9 @@
                                        fromFile : (NSString *) fileName
                                    withPassword : (NSString *) passwordForDecryption;
 
-- (BOOL) prepareAndSaveLoadedPrivateKey : (NSString *) base64PrivateKey
-                          containerType : (VirgilContainerType) containerType
-                                account : (NSString *) account;
+- (VirgilSetPrivateKeyResult) prepareAndSaveLoadedPrivateKey : (NSString *) base64PrivateKey
+                                               containerType : (VirgilContainerType) containerType
+                                                     account : (NSString *) account;
 
 /**
  * @brief Check is correct private key.

@@ -102,15 +102,18 @@ NSString * windowTitle = @"";
             } else if ([[VirgilProcessingManager sharedInstance] accountNeedsPrivateKey:account]) {
                 
                 // Request private key password
-                BOOL res = [[VirgilKeyManager sharedInstance] confirmPrivateKeyRequest : account
-                                                                                  code : confirmationCode];
+                VirgilSetPrivateKeyResult res =
+                [[VirgilKeyManager sharedInstance] confirmPrivateKeyRequest : account
+                                                                       code : confirmationCode];
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    if (res) {
+                    if (res == kSaveDone) {
                         [self setCurrentState:confirmDone];
-                    } else {
+                    } else if (res == kSaveError) {
                         [self setCurrentState:confirmError];
+                    } else {
+                        [self closeWindow];
                     }
-                    resultBlock(resultObject, res);
+                    resultBlock(resultObject, res == kSaveDone);
                 });
                 
             // Confirm account deletion
