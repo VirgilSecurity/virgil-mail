@@ -111,12 +111,22 @@ NSMutableAttributedString * activeHomeLink = nil;
     [self reloadVersionInfo];
 }
 
-- (void) showLatestVersion : (NSString *) latestVersion {
+- (void) showLatestVersion : (NSString *) latestVersion
+                isUpToDate : (BOOL) isUpToDate {
     BOOL canShow = latestVersion != nil;
-    _latestVersionTextField.hidden = !canShow;
-    _latestVersionLabel.hidden = !canShow;
-    if (canShow) {
+    
+    if (!canShow) {
+        _latestVersionTextField.hidden = YES;
+        _latestVersionLabel.hidden = YES;
+    } else {
+        _latestVersionLabel.hidden = NO;
+        _latestVersionTextField.hidden = isUpToDate;
         [_latestVersionTextField setStringValue:latestVersion];
+        if (isUpToDate) {
+            [_latestVersionLabel setStringValue:@"Your version of Virgil Mail Plugin is up to date."];
+        } else {
+            [_latestVersionLabel setStringValue:@"Latest version:"];
+        }
     }
 }
 
@@ -127,8 +137,8 @@ NSMutableAttributedString * activeHomeLink = nil;
 - (void) reloadVersionInfo {
     [_currentVersionTextField setStringValue:[[VirgilVersion sharedInstance] currentVersion]];
     NSString * latestVersion = [[VirgilVersion sharedInstance] cachedLatestVersion];
-    [self showLatestVersion:latestVersion];
     BOOL needUpdate = [[VirgilVersion sharedInstance] isNeedUpdate];
+    [self showLatestVersion:latestVersion isUpToDate:!needUpdate];
     [self showUpdateButton:needUpdate];
 }
 

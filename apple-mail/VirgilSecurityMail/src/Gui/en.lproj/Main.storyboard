@@ -1504,9 +1504,12 @@ Gw
                                     <action selector="onShowHelp_LoadKey:" target="LTV-Xl-4kz" id="4MR-vY-czJ"/>
                                 </connections>
                             </button>
+                            <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="gVd-yD-rgx">
+                                <rect key="frame" x="1" y="147" width="16" height="16"/>
+                            </progressIndicator>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RXM-XO-k6C">
-                                <rect key="frame" x="15" y="138" width="71" height="32"/>
-                                <buttonCell key="cell" type="push" title="Load" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Y2p-sr-Jsy">
+                                <rect key="frame" x="14" y="138" width="110" height="32"/>
+                                <buttonCell key="cell" type="push" title="Upload Key" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Y2p-sr-Jsy">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                     <string key="keyEquivalent" base64-UTF8="YES">
@@ -1517,9 +1520,6 @@ DQ
                                     <action selector="onLoadKeyClicked:" target="LTV-Xl-4kz" id="91C-bo-s5q"/>
                                 </connections>
                             </button>
-                            <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="gVd-yD-rgx">
-                                <rect key="frame" x="1" y="147" width="16" height="16"/>
-                            </progressIndicator>
                         </subviews>
                     </view>
                     <connections>
