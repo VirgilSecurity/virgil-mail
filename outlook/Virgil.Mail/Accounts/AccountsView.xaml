@@ -20,58 +20,64 @@
             <TextBlock Text="Manage Accounts" FontWeight="Bold" FontSize="14" />
             <TextBlock Text="Please manage your Virgil Keys by clicking on one of your Outlook Accounts wich shown below:" TextWrapping="Wrap" Margin="0 7" />
         </StackPanel>
-        <ItemsControl Margin="20 5 20 10" Grid.Row="1" ItemsSource="{Binding Accounts}" >
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Button 
-                        Margin="0 0 0 5"
-                        Height="55"
-                        HorizontalContentAlignment="Stretch"
-                        VerticalContentAlignment="Stretch"
-                        CommandParameter="{Binding}"
-                        Command="{Binding DataContext.ManageAccountCommand, RelativeSource={RelativeSource AncestorType=ItemsControl, Mode=FindAncestor}}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <StackPanel 
-                                Margin="10 0 0 0" 
-                                Grid.Column="0"
-                                Orientation="Vertical"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center">
-                                <TextBlock
-                                    Margin="0 0 0 3"
-                                    FontWeight="Bold"
-                                    FontSize="12"
+        <ScrollViewer 
+            Margin="20 5 20 10" 
+            Grid.Row="1" 
+            HorizontalScrollBarVisibility="Disabled" 
+            VerticalScrollBarVisibility="Auto" >
+            <ItemsControl ItemsSource="{Binding Accounts}" >
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button 
+                            Margin="0 0 0 5"
+                            Height="55"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            CommandParameter="{Binding}"
+                            Command="{Binding DataContext.ManageAccountCommand, RelativeSource={RelativeSource AncestorType=ItemsControl, Mode=FindAncestor}}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel 
+                                    Margin="10 0 0 0" 
+                                    Grid.Column="0"
+                                    Orientation="Vertical"
                                     HorizontalAlignment="Left"
-                                    Text="{Binding OutlookAccountDescription}" />
-                                <TextBlock 
-                                    HorizontalAlignment="Left"
-                                    Text="{Binding OutlookAccountEmail}" />
-                            </StackPanel>
-                            <Image
-                                Grid.Column="1" 
-                                Margin="0 0 10 0"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Right"
-                                Height="28"
-                                Visibility="{Binding IsRegistered, Converter={StaticResource NotBoolToVisibility}}"
-                                Source="/Virgil.Mail;component/Resources/add.png" />
-                            <Image
-                                Grid.Column="1" 
-                                Margin="0 0 10 0"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Right"
-                                Height="28"
-                                Visibility="{Binding IsRegistered, Converter={StaticResource BoolToVisibility}}"
-                                Source="/Virgil.Mail;component/Resources/gear.png" />
-                        </Grid>
-                    </Button>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+                                    VerticalAlignment="Center">
+                                    <TextBlock
+                                        Margin="0 0 0 3"
+                                        FontWeight="Bold"
+                                        FontSize="12"
+                                        HorizontalAlignment="Left"
+                                        Text="{Binding OutlookAccountDescription}" />
+                                    <TextBlock 
+                                        HorizontalAlignment="Left"
+                                        Text="{Binding OutlookAccountEmail}" />
+                                </StackPanel>
+                                <Image
+                                    Grid.Column="1" 
+                                    Margin="0 0 10 0"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Right"
+                                    Height="28"
+                                    Visibility="{Binding IsRegistered, Converter={StaticResource NotBoolToVisibility}}"
+                                    Source="/Virgil.Mail;component/Resources/add.png" />
+                                <Image
+                                    Grid.Column="1" 
+                                    Margin="0 0 10 0"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Right"
+                                    Height="28"
+                                    Visibility="{Binding IsRegistered, Converter={StaticResource BoolToVisibility}}"
+                                    Source="/Virgil.Mail;component/Resources/gear.png" />
+                            </Grid>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
         <!--<Border 
             Grid.Row="2" 
             BorderThickness="0 1 0 0" 
