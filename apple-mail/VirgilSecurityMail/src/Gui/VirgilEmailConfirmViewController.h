@@ -52,6 +52,7 @@ typedef NS_ENUM(NSInteger, ConfirmationState) {
 - (BOOL) setConfirmationCode : (NSString *) confirmationCode
                   forAccount : (NSString *) account
             confirmationGUID : (NSString *) confirmationGUID
+       checkConfirmationGUID : (BOOL) checkConfirmationGUID
                 resultObject : (id)resultObject
                  resultBlock : (void (^)(id arg1, BOOL isOk))resultBlock;
 

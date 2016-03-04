@@ -50,6 +50,7 @@
       confirmationCode : (NSString *)code
                 action : (NSString *)action
       confirmationGUID : (NSString *)confirmationGUID
+ checkConfirmationGUID : (BOOL) checkConfirmationGUID
           resultObject : (id)resultObject
            resultBlock : (void (^)(id arg1, BOOL isOk))resultBlock;
 

@@ -72,14 +72,17 @@ NSString * windowTitle = @"";
 - (BOOL) setConfirmationCode : (NSString *) confirmationCode
                   forAccount : (NSString *) account
             confirmationGUID : (NSString *) confirmationGUID
+       checkConfirmationGUID : (BOOL) checkConfirmationGUID
                 resultObject : (id)resultObject
                  resultBlock : (void (^)(id arg1, BOOL isOk))resultBlock {
     [self setCurrentState:confirmInAction];
     curAccount = account;
     
-    if (![[VirgilProcessingManager sharedInstance] isCorrectconfirmationGUID : confirmationGUID
-                                                                     account : account]) {
-        return NO;
+    if (checkConfirmationGUID) {
+        if (![[VirgilProcessingManager sharedInstance] isCorrectconfirmationGUID : confirmationGUID
+                                                                         account : account]) {
+            return NO;
+        }
     }
     @try {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{

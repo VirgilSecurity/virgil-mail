@@ -1298,9 +1298,13 @@ DQ
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HLi-pb-TCF">
-                                <rect key="frame" x="-2" y="169" width="290" height="58"/>
-                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Wait for email with confirmation code please. Or you can ask for resend email.  (Current window can be closed)" id="qLt-kk-KRb">
+                                <rect key="frame" x="-2" y="103" width="290" height="136"/>
+                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" id="qLt-kk-KRb">
                                     <font key="font" metaFont="system"/>
+                                    <string key="title">Confirmation code for this operation is generated and will be automatically applied. 
+You can close Virgil Menu and continue your work.
+
+You can enter the code from your confirmation email manually into the field below or request to resend the code.</string>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
@@ -1318,16 +1322,13 @@ DQ
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eBH-5F-D9a">
                                 <rect key="frame" x="-2" y="235" width="184" height="24"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Virgil keys creation" id="b9i-WX-dS2">
-                                    <font key="font" metaFont="system"/>
+                                    <font key="font" metaFont="systemBold"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="9E1-oe-OML">
-                                <rect key="frame" x="20" y="135" width="16" height="16"/>
-                            </progressIndicator>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f4L-dU-WjA">
-                                <rect key="frame" x="38" y="126" width="204" height="32"/>
+                                <rect key="frame" x="38" y="67" width="204" height="32"/>
                                 <buttonCell key="cell" type="push" title="Repeat creation" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Rkr-JY-fda">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -1339,9 +1340,42 @@ DQ
                                     <action selector="onResendConfirmationClicked:" target="xa5-mg-cq8" id="j61-R7-6KV"/>
                                 </connections>
                             </button>
+                            <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="9E1-oe-OML">
+                                <rect key="frame" x="20" y="76" width="16" height="16"/>
+                            </progressIndicator>
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="G0N-sY-DzB">
+                                <rect key="frame" x="44" y="44" width="111" height="22"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="ZMJ-kl-m2a">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XRA-Db-wIT">
+                                <rect key="frame" x="153" y="39" width="89" height="32"/>
+                                <buttonCell key="cell" type="push" title="Confirm" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="HQc-Cq-IcH">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="onConfirmKeyCreation:" target="xa5-mg-cq8" id="i30-fM-IDa"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8IW-hK-Rxt">
+                                <rect key="frame" x="38" y="4" width="204" height="32"/>
+                                <buttonCell key="cell" type="push" title="Stop" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="YqW-kC-mX7">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="onStopPrivateKeyRequest:" target="Avm-2d-p8j" id="Tce-82-hMy"/>
+                                </connections>
+                            </button>
                         </subviews>
                     </view>
                     <connections>
+                        <outlet property="btnConfirm" destination="XRA-Db-wIT" id="aJG-rE-8cw"/>
+                        <outlet property="confirmationTextField" destination="G0N-sY-DzB" id="P3n-hy-enk"/>
                         <outlet property="infoTextField" destination="HLi-pb-TCF" id="VHM-T3-iTC"/>
                     </connections>
                 </viewController>
@@ -1713,13 +1747,13 @@ DQ
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TLi-bR-7Y2">
                                 <rect key="frame" x="-2" y="235" width="184" height="24"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Private key request" id="e8h-Ok-GM2">
-                                    <font key="font" metaFont="system"/>
+                                    <font key="font" metaFont="systemBold"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="v8q-AW-yVp">
-                                <rect key="frame" x="38" y="128" width="204" height="32"/>
+                                <rect key="frame" x="30" y="67" width="204" height="32"/>
                                 <buttonCell key="cell" type="push" title="Repeat" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Fk5-PD-Xst">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -1732,18 +1766,10 @@ DQ
                                 </connections>
                             </button>
                             <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="F7E-Bu-7kn">
-                                <rect key="frame" x="20" y="137" width="16" height="16"/>
+                                <rect key="frame" x="12" y="76" width="16" height="16"/>
                             </progressIndicator>
-                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="m9d-4U-VnS">
-                                <rect key="frame" x="-2" y="169" width="290" height="58"/>
-                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Wait for email with confirmation code please. Or you can ask for resend email.  (Current window can be closed)" id="CRo-Fo-0nw">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xLC-mc-dnt">
-                                <rect key="frame" x="38" y="95" width="204" height="32"/>
+                                <rect key="frame" x="30" y="3" width="204" height="32"/>
                                 <buttonCell key="cell" type="push" title="Stop" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="drr-IP-tn6">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -1752,8 +1778,42 @@ DQ
                                     <action selector="onStopPrivateKeyRequest:" target="Avm-2d-p8j" id="3xo-UU-qcl"/>
                                 </connections>
                             </button>
+                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="m9d-4U-VnS">
+                                <rect key="frame" x="-2" y="103" width="290" height="136"/>
+                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" id="CRo-Fo-0nw">
+                                    <font key="font" metaFont="system"/>
+                                    <string key="title">Confirmation code for this operation is generated and will be automatically applied. 
+You can close Virgil Menu and continue your work.
+
+You can enter the code from your confirmation email manually into the field below or request to resend the code.</string>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="84k-Jg-UVa">
+                                <rect key="frame" x="36" y="44" width="111" height="22"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="tJg-o4-ycN">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="81f-5t-IcD">
+                                <rect key="frame" x="145" y="39" width="89" height="32"/>
+                                <buttonCell key="cell" type="push" title="Confirm" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Czk-CN-GzB">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="onConfirmPrivateKeyRequest:" target="Avm-2d-p8j" id="FGK-Dr-a2w"/>
+                                </connections>
+                            </button>
                         </subviews>
                     </view>
+                    <connections>
+                        <outlet property="btnConfirm" destination="81f-5t-IcD" id="IOQ-oN-xLw"/>
+                        <outlet property="confirmationTextField" destination="84k-Jg-UVa" id="clI-RP-ipr"/>
+                    </connections>
                 </viewController>
                 <customObject id="sAz-iq-EbB" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1768,7 +1828,7 @@ DQ
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Yl-jF-QpM">
-                                <rect key="frame" x="38" y="127" width="204" height="32"/>
+                                <rect key="frame" x="38" y="67" width="204" height="32"/>
                                 <buttonCell key="cell" type="push" title="Repeat" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="JTj-2a-6GL">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -1777,11 +1837,11 @@ DQ
 </string>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="onResendDeleteRequest:" target="aJr-7q-cS5" id="2vG-en-Ife"/>
+                                    <action selector="onResendDeleteRequest:" target="aJr-7q-cS5" id="fg5-CH-lwX"/>
                                 </connections>
                             </button>
                             <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="d3w-3n-cgu">
-                                <rect key="frame" x="20" y="136" width="16" height="16"/>
+                                <rect key="frame" x="20" y="76" width="16" height="16"/>
                             </progressIndicator>
                             <button horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6X3-GY-JV6">
                                 <rect key="frame" x="263" y="17" width="25" height="25"/>
@@ -1796,21 +1856,13 @@ DQ
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2gh-ku-NNu">
                                 <rect key="frame" x="-2" y="235" width="184" height="24"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Keys deletion request" id="ErV-Es-xTW">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1I0-EA-aIR">
-                                <rect key="frame" x="-2" y="169" width="290" height="58"/>
-                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Wait for email with confirmation code please. Or you can ask for resend email.  (Current window can be closed)" id="pjj-x7-dSq">
-                                    <font key="font" metaFont="system"/>
+                                    <font key="font" metaFont="systemBold"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2TO-nf-8ua">
-                                <rect key="frame" x="38" y="94" width="204" height="32"/>
+                                <rect key="frame" x="38" y="3" width="204" height="32"/>
                                 <buttonCell key="cell" type="push" title="Stop" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="zzZ-Hg-60l">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -1820,8 +1872,42 @@ DQ
                                     <action selector="onStopDeletion:" target="aJr-7q-cS5" id="DVk-iE-EDH"/>
                                 </connections>
                             </button>
+                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1I0-EA-aIR">
+                                <rect key="frame" x="-2" y="103" width="290" height="136"/>
+                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" id="pjj-x7-dSq">
+                                    <font key="font" metaFont="system"/>
+                                    <string key="title">Confirmation code for this operation is generated and will be automatically applied. 
+You can close Virgil Menu and continue your work.
+
+You can enter the code from your confirmation email manually into the field below or request to resend the code.</string>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ByX-NP-PCU">
+                                <rect key="frame" x="44" y="43" width="111" height="22"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="uko-gH-hUm">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jlP-6e-DaZ">
+                                <rect key="frame" x="153" y="36" width="89" height="32"/>
+                                <buttonCell key="cell" type="push" title="Confirm" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="lVD-dD-siX">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="onConfirmKeysDeletion:" target="aJr-7q-cS5" id="9RY-fD-vcR"/>
+                                </connections>
+                            </button>
                         </subviews>
                     </view>
+                    <connections>
+                        <outlet property="btnConfirm" destination="jlP-6e-DaZ" id="H8N-Tc-1gH"/>
+                        <outlet property="confirmationTextField" destination="ByX-NP-PCU" id="g1v-TA-t4V"/>
+                    </connections>
                 </viewController>
                 <customObject id="WeJ-em-2PI" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>

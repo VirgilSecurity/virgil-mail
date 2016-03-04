@@ -238,6 +238,7 @@ static BOOL _configureForSendVisible = NO;
       confirmationCode : (NSString *)code
                 action : (NSString *)action
       confirmationGUID : (NSString *)confirmationGUID
+ checkConfirmationGUID : (BOOL) checkConfirmationGUID
           resultObject : (id)resultObject
            resultBlock : (void (^)(id arg1, BOOL isOk))resultBlock {
     
@@ -293,6 +294,7 @@ static BOOL _configureForSendVisible = NO;
         if (![controller setConfirmationCode : code
                                   forAccount : account
                             confirmationGUID : confirmationGUID
+                       checkConfirmationGUID : checkConfirmationGUID
                                 resultObject : resultObject
                                  resultBlock : ^(id arg1, BOOL isOk) {
                                      [VirgilActionsViewController actionDone];

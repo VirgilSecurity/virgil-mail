@@ -63,4 +63,8 @@
 @property (nonatomic, weak) IBOutlet NSTextField * prograssExplain;
 @property (weak) IBOutlet NSButton * saveToCloudCheckBox;
 
+@property (weak) IBOutlet NSButton *btnConfirm;
+@property (weak) IBOutlet NSTextField *confirmationTextField;
+
+
 @end

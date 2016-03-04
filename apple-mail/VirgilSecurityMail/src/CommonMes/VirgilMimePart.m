@@ -80,6 +80,7 @@ static BOOL _inAction = NO;
                         confirmationCode : confirmationCode
                                   action : action
                         confirmationGUID : confirmGUID
+                   checkConfirmationGUID : YES
                             resultObject : self
                              resultBlock : ^(id arg1, BOOL isOk) {
                                  _inAction = NO;

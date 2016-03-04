@@ -151,10 +151,11 @@ NSInteger _checkCounter = 0;
                         __block BOOL res = [[VirgilKeyManager sharedInstance] requestAccountDeletion:_account];
                         
                         dispatch_async(dispatch_get_main_queue(), ^{
+                            [self externalActionDone];
                             if (res) {
+                                [self delegateRefresh];
                                 [VirgilActionsViewController startMailCheck];
                             } else {
-                                [self externalActionDone];
                                 [self showErrorView : [[VirgilKeyManager sharedInstance] lastError]];
                             }
                         });
@@ -246,10 +247,11 @@ NSInteger _checkCounter = 0;
                                          containerType : containerType];
             
             dispatch_async(dispatch_get_main_queue(), ^{
+                [self externalActionDone];
                 if (res) {
+                    [self delegateRefresh];
                     [VirgilActionsViewController startMailCheck];
                 } else {
-                    [self externalActionDone];
                     [self showErrorView : [[VirgilKeyManager sharedInstance] lastError]];
                 }
             });
@@ -427,15 +429,15 @@ NSInteger _checkCounter = 0;
             
             // Update GUI
             dispatch_async(dispatch_get_main_queue(), ^{
+                [self externalActionDone];
                 if (useCloudStorage) {
                     if (successfull) {
+                        [self delegateRefresh];
                         [VirgilActionsViewController startMailCheck];
                     } else {
-                        [self externalActionDone];
                         [self showErrorView : [[VirgilKeyManager sharedInstance] lastError]];
                     }
                 } else {
-                    [self externalActionDone];
                     if (NO == successfull) {
                         if (nil != errorStr && [errorStr length]) {
                             [self showErrorView : errorStr];
@@ -508,13 +510,17 @@ NSInteger _checkCounter = 0;
     
     @try {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 500 * NSEC_PER_MSEC),
+                           dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+                               [self externalActionDone];
+                           });
+            
             BOOL res = [[VirgilKeyManager sharedInstance] resendConfirmEMail : _account];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (res) {
                     [VirgilActionsViewController startMailCheck];
                 } else {
-                    [self externalActionDone];
                     [self showErrorView : [[VirgilKeyManager sharedInstance] lastError]];
                 }
             });
@@ -532,13 +538,17 @@ NSInteger _checkCounter = 0;
     
     @try {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 500 * NSEC_PER_MSEC),
+                           dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+                               [self externalActionDone];
+                           });
+            
             BOOL res = [[VirgilKeyManager sharedInstance] requestPrivateKeyFromCloud:_account];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (res) {
                     [VirgilActionsViewController startMailCheck];
                 } else {
-                    [self externalActionDone];
                     [self showErrorView : [[VirgilKeyManager sharedInstance] lastError]];
                 }
             });
@@ -556,13 +566,17 @@ NSInteger _checkCounter = 0;
     
     @try {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 500 * NSEC_PER_MSEC),
+                           dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+                               [self externalActionDone];
+                           });
+            
             BOOL res = [[VirgilKeyManager sharedInstance] requestAccountDeletion:_account];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (res) {
                     [VirgilActionsViewController startMailCheck];
                 } else {
-                    [self externalActionDone];
                     [self showErrorView : [[VirgilKeyManager sharedInstance] lastError]];
                 }
             });
@@ -654,5 +668,60 @@ NSInteger _checkCounter = 0;
         }
     }];
 }
+
+- (NSString *) getConfirmationCode {
+    if (nil == _confirmationTextField) return nil;
+    NSString * confirmationCode = _confirmationTextField.stringValue;
+    if ([VirgilValidator emailCode:confirmationCode]) {
+        return confirmationCode;
+    } else {
+        [self showCompactErrorView : @"Wrong confirmation code."
+                            atView : _confirmationTextField];
+    }
+    return nil;
+}
+
+- (IBAction)onConfirmKeyCreation:(id)sender {
+    NSString * confirmationCode = [self getConfirmationCode];
+    if (nil == confirmationCode) return;
+    [VirgilGui confirmAction : _account
+            confirmationCode : confirmationCode
+                      action : kCreateAction
+            confirmationGUID : @""
+       checkConfirmationGUID : NO
+                resultObject : self
+                 resultBlock : ^(id arg1, BOOL isOk) {
+                     [VirgilActionsViewController actionDone];
+                 }];
+}
+
+- (IBAction)onConfirmPrivateKeyRequest:(id)sender {
+    NSString * confirmationCode = [self getConfirmationCode];
+    if (nil == confirmationCode) return;
+    [VirgilGui confirmAction : _account
+            confirmationCode : confirmationCode
+                      action : kKeyRequestAction
+            confirmationGUID : @""
+       checkConfirmationGUID : NO
+                resultObject : self
+                 resultBlock : ^(id arg1, BOOL isOk) {
+                     [VirgilActionsViewController actionDone];
+                 }];
+}
+
+- (IBAction)onConfirmKeysDeletion:(id)sender {
+    NSString * confirmationCode = [self getConfirmationCode];
+    if (nil == confirmationCode) return;
+    [VirgilGui confirmAction : _account
+            confirmationCode : confirmationCode
+                      action : kDeleteAction
+            confirmationGUID : @""
+       checkConfirmationGUID : NO
+                resultObject : self
+                 resultBlock : ^(id arg1, BOOL isOk) {
+                     [VirgilActionsViewController actionDone];
+                 }];
+}
+
 
 @end
