@@ -351,17 +351,16 @@
         sender = [self getEmailFromFullName:[message sender]];
     }
 
-    VirgilKeyChainContainer * senderContainer = [self getKeysContainer : sender
-                                                    forcePrivateKeyGet : NO
-                                                    forceActiveAccount : YES];
-    if (nil == senderContainer || nil == senderContainer.publicKey) return NO;
-    NSString * senderPublicKey = senderContainer.publicKey.publicKey;
+    VirgilPublicKey * publicKey = [[VirgilKeyManager sharedInstance] getPublicKey : sender
+                                                                  forceNetRequest : YES];
+    if (nil == publicKey) return NO;
+    NSString * senderPublicKey = publicKey.publicKey;
     
     // Get receiver (me) info
     NSString * receiver = [self getMyAccountFromMessage : message];
-    VirgilKeyChainContainer * receiverContainer = [self getKeysContainer : receiver
-                                                      forcePrivateKeyGet : YES
-                                                      forceActiveAccount : YES];
+    VirgilKeyChainContainer * receiverContainer = [self getOwnKeysContainer : receiver
+                                                         forcePrivateKeyGet : YES
+                                                         forceActiveAccount : YES];
     if (nil == receiverContainer ||
         nil == receiverContainer.privateKey ||
         nil == receiverContainer.publicKey) {
@@ -595,7 +594,8 @@
         }
     } else {
         if (YES == checkInCloud) {
-            VirgilPublicKey * publicKey = [[VirgilKeyManager sharedInstance] getPublicKey : account];
+            VirgilPublicKey * publicKey = [[VirgilKeyManager sharedInstance] getPublicKey : account
+                                                                          forceNetRequest : YES];
             res.status = (nil == publicKey) ? statusPublicKeyNotPresent : statusPublicKeyPresent;
         } else {
             res.status = statusUnknown;
@@ -676,9 +676,9 @@
     return [VirgilPreferencesContainer isUseEncryption];
 }
 
-- (VirgilKeyChainContainer *) getKeysContainer : (NSString *) account
-                            forcePrivateKeyGet : (BOOL) forcePrivateKey
-                            forceActiveAccount : (BOOL) forceActiveAccount {
+- (VirgilKeyChainContainer *) getOwnKeysContainer : (NSString *) account
+                               forcePrivateKeyGet : (BOOL) forcePrivateKey
+                               forceActiveAccount : (BOOL) forceActiveAccount {
     VLogInfo(@"getKeysContainer  account : %@  NeedPrivateKey : %hhd", account, forcePrivateKey);
     if (nil == account) return nil;
     VirgilKeyChainContainer * container = [VirgilKeyChain loadContainer : account];
@@ -698,7 +698,8 @@
     
     VirgilPublicKey * publicKey = container.publicKey;
     if (nil == container || nil == publicKey) {
-        publicKey = [[VirgilKeyManager sharedInstance] getPublicKey : account];
+        publicKey = [[VirgilKeyManager sharedInstance] getPublicKey : account
+                                                    forceNetRequest : NO];
     }
     
     if (nil == publicKey) return nil;
@@ -731,24 +732,23 @@
     }
     
     NSString * fixedSender = [self getEmailFromFullName : sender];
-    VirgilKeyChainContainer * container = [self getKeysContainer : fixedSender
-                                              forcePrivateKeyGet : YES
-                                              forceActiveAccount : YES];
-    if (nil == container || nil == container.privateKey) return nil;
+    VirgilKeyChainContainer * container = [self getOwnKeysContainer : fixedSender
+                                                 forcePrivateKeyGet : YES
+                                                 forceActiveAccount : YES];
+    if (nil == container || nil == container.privateKey || nil == container.publicKey) return nil;
 
     // Get all public keys
     NSMutableArray * publicKeys = [[NSMutableArray alloc] init];
     
-    VirgilPublicKey * publicKeyForSender = [[VirgilKeyManager sharedInstance] getPublicKey : fixedSender];
-    if (nil == publicKeyForSender) return nil;
-    [publicKeys addObject : publicKeyForSender];
+    [publicKeys addObject : container.publicKey];
     
     VLogInfo(@"sender : %@", sender);
     VLogInfo(@"receivers : %@", receivers);
     
     for (NSString * receiverEmail in receivers) {
         NSString * fixedReceiver = [self getEmailFromFullName : receiverEmail];
-        VirgilPublicKey * publicKey = [[VirgilKeyManager sharedInstance] getPublicKey : fixedReceiver];
+        VirgilPublicKey * publicKey = [[VirgilKeyManager sharedInstance] getPublicKey : fixedReceiver
+                                                                      forceNetRequest : YES];
         if (nil != publicKey) {
             [publicKeys addObject : publicKey];
         }
@@ -798,11 +798,13 @@
     NSMutableArray * publicKeys = [[NSMutableArray alloc] init];
     for (NSString * receiverEmail in receivers) {
         NSString * fixedReceiver = [self getEmailFromFullName : receiverEmail];
-        VirgilPublicKey * publicKey = [[VirgilKeyManager sharedInstance] getPublicKey : fixedReceiver];
+        VirgilPublicKey * publicKey = [[VirgilKeyManager sharedInstance] getPublicKey : fixedReceiver
+                                                                      forceNetRequest : YES];
         [publicKeys addObject : publicKey];
     }
     
-    VirgilPublicKey * publicKeyForSender = [[VirgilKeyManager sharedInstance] getPublicKey : fixedSender];
+    VirgilPublicKey * publicKeyForSender = [[VirgilKeyManager sharedInstance] getPublicKey : fixedSender
+                                                                           forceNetRequest : NO];
     [publicKeys addObject : publicKeyForSender];
     
     // Encrypt all attachments

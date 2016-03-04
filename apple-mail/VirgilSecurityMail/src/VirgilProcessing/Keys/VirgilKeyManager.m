@@ -123,16 +123,19 @@
 /**
  * @brief Get public key by account (email)
  * @param account - email
+ * @param forceNetRequest - request key from service, ignore keychain
  * @return VirgilPublicKey - instance | nil - error occured, get error with [VirgilKeyManager lastError]
  */
-- (VirgilPublicKey *) getPublicKey:(NSString *) account {
+- (VirgilPublicKey *) getPublicKey : (NSString *) account
+                   forceNetRequest : (BOOL) forceNetRequest {
     _lastError = nil;
     
     if (nil == account) return nil;
     
     // Try to load public key from key chain
     VirgilKeyChainContainer * keyChainContainer = [VirgilKeyChain loadContainer : account];
-    if (keyChainContainer != nil) {
+    
+    if (!forceNetRequest && keyChainContainer != nil) {
         return keyChainContainer.publicKey;
     }
     
@@ -147,11 +150,19 @@
                                                            publicKey : keyStr
                                                           identityID : card.identity.Id];
     // Save received key to keychain
-    keyChainContainer = [[VirgilKeyChainContainer alloc] initWithPrivateKey : nil
-                                                               andPublicKey : resPubKey
-                                                                   isActive : YES
-                                                           isWaitPrivateKey : NO
-                                                          isWaitForDeletion : NO];
+    if (keyChainContainer != nil) {
+        keyChainContainer = [[VirgilKeyChainContainer alloc] initWithPrivateKey : keyChainContainer.privateKey
+                                                                   andPublicKey : resPubKey
+                                                                       isActive : keyChainContainer.isActive
+                                                               isWaitPrivateKey : keyChainContainer.isWaitPrivateKey
+                                                              isWaitForDeletion : keyChainContainer.isWaitForDeletion];
+    } else {
+        keyChainContainer = [[VirgilKeyChainContainer alloc] initWithPrivateKey : nil
+                                                                   andPublicKey : resPubKey
+                                                                       isActive : YES
+                                                               isWaitPrivateKey : NO
+                                                              isWaitForDeletion : NO];
+    }
     [VirgilKeyChain saveContainer : keyChainContainer
                        forAccount : account];
     return resPubKey;
@@ -694,7 +705,8 @@
     VirgilKeyChainContainer * keyChainContainer = [VirgilKeyChain loadContainer : account];
     
     if (nil == keyChainContainer || nil == keyChainContainer.publicKey) {
-        publicKey = [self getPublicKey : account];
+        publicKey = [self getPublicKey : account
+                       forceNetRequest : YES];
         keyChainContainer = [VirgilKeyChain loadContainer : account];
     } else {
         publicKey = keyChainContainer.publicKey;

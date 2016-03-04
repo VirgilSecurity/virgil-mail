@@ -137,9 +137,11 @@ typedef NS_ENUM(NSUInteger, VirgilSetPrivateKeyResult) {
 /**
  * @brief Get public key by account (email)
  * @param account - email
+ * @param forceNetRequest - request key from service, ignore keychain
  * @return VirgilPublicKey - instance | nil - error occured, get error with [VirgilKeyManager lastError]
  */
-- (VirgilPublicKey *) getPublicKey : (NSString *) account;
+- (VirgilPublicKey *) getPublicKey : (NSString *) account
+                   forceNetRequest : (BOOL) forceNetRequest;
 
 /**
  * @brief Request private key by account (email) from Private Keys Service
