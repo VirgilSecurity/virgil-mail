@@ -12,5 +12,6 @@
 
         void SaveFile(string fileName, string content, string extension);
         string OpenFile(string extension);
+        void ShowAlert(string message);
     }
 }

@@ -70,9 +70,11 @@
 
             var account = this.accountsManager.GetAccount(senderSmtpAddress);
             var privateKey = this.privateKeysStorage.GetPrivateKey(account.VirgilCardId);
+            
+            var virgilMailHtml = EncryptMail(mailItem, recipientsDictionary, privateKey, password);
 
             mailItem.MessageClass = Constants.VirgilMessageClass;
-            mailItem.HTMLBody = EncryptMail(mailItem, recipientsDictionary, privateKey, password);
+            mailItem.HTMLBody = virgilMailHtml;
         }
 
         private static string EncryptMail(Outlook._MailItem mail, IDictionary<string, byte[]> recipients, byte[] privateKey, string privateKeyPassword)

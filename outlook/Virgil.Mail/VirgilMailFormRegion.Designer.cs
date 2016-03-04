@@ -44,8 +44,10 @@
             this.mailViewerHost.Location = new System.Drawing.Point(0, 0);
             this.mailViewerHost.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.mailViewerHost.Name = "mailViewerHost";
+            this.mailViewerHost.Size = new System.Drawing.Size(2331, 1657);
             this.mailViewerHost.TabIndex = 0;
             this.mailViewerHost.Text = "mailViewerHost";
+            this.mailViewerHost.Child = null;
             // 
             // VirgilMailFormRegion
             // 
@@ -58,6 +60,7 @@
             this.Size = new System.Drawing.Size(2331, 1657);
             this.FormRegionShowing += new System.EventHandler(this.VirgilMailFormRegion_FormRegionShowing);
             this.FormRegionClosed += new System.EventHandler(this.VirgilMailFormRegion_FormRegionClosed);
+            this.Load += new System.EventHandler(this.VirgilMailFormRegion_FormRegionLoad);
             this.ResumeLayout(false);
 
         }
@@ -76,6 +79,7 @@
             manifest.FormRegionType = Microsoft.Office.Tools.Outlook.FormRegionType.ReplaceAll;
             manifest.ShowInspectorCompose = false;
             manifest.Title = "VirgilMailFormRegion";
+
         }
 
         #endregion

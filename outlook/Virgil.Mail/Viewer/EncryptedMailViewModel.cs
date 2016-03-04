@@ -1,8 +1,7 @@
-﻿using System.Linq;
-
-namespace Virgil.Mail.Viewer
+﻿namespace Virgil.Mail.Viewer
 {
     using System;
+    using System.Linq;
     using System.Text;
     using System.Windows.Input;
     using System.Windows.Controls;
@@ -109,7 +108,7 @@ namespace Virgil.Mail.Viewer
         public void Initialize(Outlook.MailItem mail)
         {
             this.mailItem = mail;
-
+            
             var reciverEmailAddress = mail.ExtractReciverEmailAddress();
             this.account = this.accountsManager.GetAccount(reciverEmailAddress);
             
@@ -144,6 +143,20 @@ namespace Virgil.Mail.Viewer
 
             InternalDecrypt(keyPassword);
         }
+
+        public void OnReply(object response, ref bool cancel)
+        {
+            if (!this.account.IsRegistered)
+            {
+                this.dialogPresenter.ShowAlert("You can't reply this email because your account is not registered.");
+                cancel = true;
+
+                return;
+            }
+            
+            //mail.HTMLBody = this.Body;
+        }
+        
 
         private void Register()
         {
@@ -222,7 +235,7 @@ namespace Virgil.Mail.Viewer
                 return mailData;
             }
         }
-
+        
         private static VirgilMailModel ExtractVirgilMailModel(Outlook._MailItem mail)
         {
             var htmlDoc = new HtmlDocument();
@@ -242,5 +255,8 @@ namespace Virgil.Mail.Viewer
 
             return null;
         }
+        
+
+        
     }
 }

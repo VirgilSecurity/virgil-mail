@@ -13,7 +13,7 @@
         private string previousMailId;
 
         private Outlook.Explorer ActiveExplorer;
-        
+
         /// <summary>
         /// Occurs when outlook tries to send new message.
         /// </summary>
@@ -25,10 +25,10 @@
             {
                 mail = (Outlook.MailItem)item;
 
-                if (mail.ConversationIndex.Length > 45 && !mail.IsVirgilMail())
-                {
-                    return;
-                }
+                //if (mail.ConversationIndex.Length > 45 && !mail.IsVirgilMail())
+                //{
+                //    return;
+                //}
 
                 if (!Properties.Settings.Default.AutoEncryptEmails)
                 {
@@ -47,7 +47,6 @@
                         return;
                     }
                 }
-                
                 ServiceLocator.MailSender.EncryptAndSend(mail);
             }
             catch (Exception ex)
@@ -97,7 +96,7 @@
                 }
 
                 this.previousMailId = mail.EntryID;
-
+                
                 // ensure that the message class has been set as virgil mail,
                 // this requires to display custom reading pane for the mail item.               
 
@@ -118,11 +117,11 @@
                 mail.ReleaseCom();
             }
         }
-
+        
         private void OnAddInStartup(object sender, EventArgs e)
         {
             this.ActiveExplorer = this.Application.ActiveExplorer();
-
+            
             // initialize bootstrapper.
 
             Bootstraper.Initialize(this.Application);

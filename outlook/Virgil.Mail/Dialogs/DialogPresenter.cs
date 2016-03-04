@@ -102,6 +102,11 @@ namespace Virgil.Mail.Dialogs
             return openFileDialog.FileName;
         }
 
+        public void ShowAlert(string message)
+        {
+            MessageBox.Show(message, @"Warning", MessageBoxButtons.OK);
+        }
+
         public bool ShowConfirmation(string caption, string message)
         {
             return MessageBox.Show(message, caption, MessageBoxButtons.YesNo) == DialogResult.Yes;

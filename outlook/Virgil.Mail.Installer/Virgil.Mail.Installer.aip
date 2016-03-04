@@ -17,10 +17,10 @@
     <ROW Property="ARPURLINFOABOUT" Value="https://virgilsecurity.com/demos"/>
     <ROW Property="CASPOL_TRUST_ASSEMBLIES" Value="HtmlAgilityPack.dll|Microsoft.Office.Tools.Common.dll|Microsoft.Office.Tools.Common.v4.0.Utilities.dll|Microsoft.Office.Tools.dll|Microsoft.Office.Tools.Outlook.dll|Microsoft.Office.Tools.Outlook.v4.0.Utilities.dll|Microsoft.Office.Tools.v4.0.Framework.dll|Microsoft.VisualStudio.Tools.Applications.Runtime.dll|Newtonsoft.Json.dll|Virgil.Crypto.dll|Virgil.Mail.dll|Virgil.SDK.dll|Virgil.SDK.Domain.dll"/>
     <ROW Property="Manufacturer" Value="Virgil Security, Inc"/>
-    <ROW Property="ProductCode" Value="1033:{368EAF4D-E18F-4E68-BEE6-F85B32274EC6} " Type="16"/>
+    <ROW Property="ProductCode" Value="1033:{3C9C49DE-7E70-4468-966B-2878B6325E2B} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="Virgil Mail"/>
-    <ROW Property="ProductVersion" Value="2.0.1.0" Type="32" TargetFile="Virgil.Mail.dll"/>
+    <ROW Property="ProductVersion" Value="2.0.2.0" Type="32" TargetFile="Virgil.Mail.dll"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND;AI_SETUPEXEPATH;SETUPEXEDIR"/>
     <ROW Property="UpgradeCode" Value="{4D94935F-CF51-412F-82F9-A26B07A06AA1}"/>
     <ROW Property="WindowsType9X" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>
