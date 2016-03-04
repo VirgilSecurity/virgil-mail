@@ -47,13 +47,8 @@
     [self printBundleVersion];
     updater = [SUUpdater sharedUpdater];
     updater.delegate = self;
-    NSArray *arguments = [[NSProcessInfo processInfo] arguments];
-    
-    if ([arguments containsObject:@"--gui"]) {
-        [updater checkForUpdates : nil];
-    } else {
-        [updater checkForUpdatesInBackground];
-    }
+    updater.automaticallyDownloadsUpdates = YES;
+    [updater checkForUpdatesInBackground];
     
     [NSTimer scheduledTimerWithTimeInterval : 30
                                      target : self
@@ -73,15 +68,21 @@
     return @"/Applications/Mail.app";
 }
 
-//- (void)updater:(SUUpdater *)updater didFinishLoadingAppcast:(SUAppcast *)appcast;
-//- (SUAppcastItem *)bestValidUpdateInAppcast:(SUAppcast *)appcast forUpdater:(SUUpdater *)updater;
-
 - (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)item {
-    [NSTimer scheduledTimerWithTimeInterval : 5
+    /*[NSTimer scheduledTimerWithTimeInterval : 5
                                      target : self
                                    selector : @selector(raiseApp)
                                    userInfo : nil
-                                    repeats : NO];
+                                    repeats : NO];*/
+    NSLog(@"didFindValidUpdate");
+}
+
+- (void)updater:(SUUpdater *)updater willDownloadUpdate:(SUAppcastItem *)item withRequest:(NSMutableURLRequest *)request {
+    NSLog(@"willDownloadUpdate");
+}
+
+- (void)updater:(SUUpdater *)updater willInstallUpdate:(SUAppcastItem *)item {
+     NSLog(@"willInstallUpdate");
 }
 
 - (void) raiseApp {
