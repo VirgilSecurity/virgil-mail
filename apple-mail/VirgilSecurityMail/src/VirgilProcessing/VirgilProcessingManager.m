@@ -351,10 +351,31 @@
         sender = [self getEmailFromFullName:[message sender]];
     }
 
-    VirgilPublicKey * publicKey = [[VirgilKeyManager sharedInstance] getPublicKey : sender
-                                                                  forceNetRequest : YES];
+    VirgilPublicKey * publicKey = nil;
+    NSString * senderPublicKey = nil;
+    BOOL signatureCorrect = NO;
+    
+    for (NSInteger i = 0; i < 2; i++) {
+        // First request goes to KeyChain and second one to Cloud
+        publicKey = [[VirgilKeyManager sharedInstance] getPublicKey : sender
+                                                    forceNetRequest : (i == 1)];
+        if (nil == publicKey) return NO;
+        senderPublicKey = publicKey.publicKey;
+        
+        signatureCorrect = [[VSSSigner new] verifySignature : encryptedContent.signature
+                                                       data : encryptedContent.emailData
+                                                  publicKey : [senderPublicKey dataUsingEncoding:NSUTF8StringEncoding]];
+        if (signatureCorrect) {
+            break;
+        }
+    }
     if (nil == publicKey) return NO;
-    NSString * senderPublicKey = publicKey.publicKey;
+    if (NO == signatureCorrect) {
+        VLogError(@"Wrong signature !");
+        [_decryptedMailContainer setStatus:decryptError forEmail:message];
+        return NO;
+    }
+    
     
     // Get receiver (me) info
     NSString * receiver = [self getMyAccountFromMessage : message];
@@ -380,15 +401,6 @@
         VLogInfo(@"receiver : %@", receiver);
         VLogInfo(@"recipientId : %@", recipientId);
         VLogError(@"ERROR : Can't decrypt message !");
-        return NO;
-    }
-    
-    BOOL signatureCorrect = [[VSSSigner new] verifySignature : encryptedContent.signature
-                                                        data : encryptedContent.emailData
-                                                   publicKey : [senderPublicKey dataUsingEncoding:NSUTF8StringEncoding]];
-    if (NO == signatureCorrect) {
-        VLogError(@"Wrong signature !");
-        [_decryptedMailContainer setStatus:decryptError forEmail:message];
         return NO;
     }
     
