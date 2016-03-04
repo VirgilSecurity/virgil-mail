@@ -40,13 +40,13 @@
            var recipients = mailItem.Recipients
                 .OfType<Outlook.Recipient>()
                 .Select(it => it.Address)
-                .Distinct()
                 .ToList();
 
             var senderSmtpAddress = mailItem.ExtractSenderEmailAddress();
             recipients.Add(senderSmtpAddress);
-
+            
             var tasks = recipients
+                .Distinct()
                 .Select(r => this.virgilHub.Cards.Search(r))
                 .ToList();
 
