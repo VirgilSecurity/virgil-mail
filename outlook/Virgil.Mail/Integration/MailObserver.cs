@@ -1,7 +1,7 @@
 ﻿namespace Virgil.Mail.Integration
 {
     using System;
-    using System.Linq;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using Virgil.Mail.Common;
@@ -20,63 +20,49 @@
 
         public async Task<OutlookMailModel> WaitFor(string accountSmtpAddress, string from)
         {
-            var foundMail = await Task.Factory.StartNew(() =>
+            Outlook.NameSpace nameSpace = this.application.GetNamespace("MAPI");
+
+            try
             {
-                Outlook.NameSpace nameSpace = this.application.GetNamespace("MAPI");
+                nameSpace.SendAndReceive(false);
+                var attempts = 0;
 
-                try
+                while (attempts <= 40)
                 {
-                    //Outlook.Account thatVeryAccount = null;
-                    //foreach (Outlook.Account account in this.application.Session.Accounts)
-                    //{
-                    //    if (account.SmtpAddress.Equals(accountSmtpAddress, StringComparison.CurrentCultureIgnoreCase))
-                    //    {
-                    //        thatVeryAccount = account;
-                    //    }
-                    //}
+                    attempts++;
 
-                    //if (thatVeryAccount == null)
-                    //{
-                    //    throw new Exception("Account is not found");
-                    //}
+                    await Task.Delay(1000);
 
-                    nameSpace.SendAndReceive(false);
+                    var inbox = this.application.Session.Folders[accountSmtpAddress]
+                        .Store.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderInbox);
 
-                    while (true)
+                    Outlook.Items unreadItems = inbox.Items.Restrict("[Unread]=true");
+
+                    foreach (var unreadItem in unreadItems)
                     {
-                        Task.Delay(1000);
-                        
-                        var inbox = this.application.Session.Folders[accountSmtpAddress].Store.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderInbox);
-
-                        //var inbox = nameSpace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderInbox);
-                        Outlook.Items unreadItems = inbox.Items.Restrict("[Unread]=true");
-
-                        foreach (var unreadItem in unreadItems)
+                        Outlook.MailItem mail = unreadItem as Outlook.MailItem;
+                        if (mail != null && mail.SenderEmailAddress.Equals(from, StringComparison.CurrentCultureIgnoreCase))
                         {
-                            Outlook.MailItem mail = unreadItem as Outlook.MailItem;
-                            if (mail != null && mail.SenderEmailAddress.Equals(from, StringComparison.CurrentCultureIgnoreCase))
+                            var mailModel = new OutlookMailModel
                             {
-                                var mailModel = new OutlookMailModel
-                                {
-                                    EntryID = mail.EntryID,
-                                    From = mail.SenderEmailAddress,
-                                    Body = mail.HTMLBody
-                                };
-                                
-                                mail.ReleaseCom();
+                                EntryID = mail.EntryID,
+                                From = mail.SenderEmailAddress,
+                                Body = mail.HTMLBody
+                            };
 
-                                return mailModel;
-                            }
+                            mail.ReleaseCom();
+
+                            return mailModel;
                         }
                     }
                 }
-                finally
-                {
-                    nameSpace.ReleaseCom();
-                }
-            });
 
-            return foundMail;
+                return null;
+            }
+            finally
+            {
+                nameSpace.ReleaseCom();
+            }
         }
     }
 }

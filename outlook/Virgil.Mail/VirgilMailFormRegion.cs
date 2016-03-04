@@ -15,12 +15,60 @@
 
         private Outlook.MailItem CurrentMail => (Outlook.MailItem)this.OutlookItem;
 
+        /// <summary>
+        /// Occurs when Forward action has been triggered for this mail.
+        /// </summary>
         private void MailEventsOnForward(object forward, ref bool cancel)
         {
+            if (!ServiceLocator.Accounts.IsRegistered(this.CurrentMail.ExtractReciverEmailAddress()))
+            {
+                ServiceLocator.Dialogs.ShowAlert("You can't forward this email because your account is not registered.");
+                cancel = true;
+
+                return;
+            }
+
+            cancel = true;
+
+            this.CurrentMail.HTMLBody = this.viewModel.Body;
+
+            var forwardMail = this.CurrentMail.Forward();
+            ServiceLocator.Outlook.DeleteAttachment(forwardMail, Constants.VirgilAttachmentName);
+
+            this.CurrentMail.Close(Outlook.OlInspectorClose.olDiscard);
+            this.CurrentMail.ReleaseCom();
+
+            forwardMail.MessageClass = Constants.VirgilMessageClass;
+            forwardMail.Display(true);
+            forwardMail.ReleaseCom();
         }
 
+        /// <summary>
+        /// Occurs when ReplyAll action has been triggered for this mail.
+        /// </summary>
         private void MailEventsOnReplyAll(object response, ref bool cancel)
         {
+            if (!ServiceLocator.Accounts.IsRegistered(this.CurrentMail.ExtractReciverEmailAddress()))
+            {
+                ServiceLocator.Dialogs.ShowAlert("You can't reply this email because your account is not registered.");
+                cancel = true;
+
+                return;
+            }
+
+            cancel = true;
+
+            this.CurrentMail.HTMLBody = this.viewModel.Body;
+
+            var replyAllMail = this.CurrentMail.ReplyAll();
+            ServiceLocator.Outlook.DeleteAttachment(replyAllMail, Constants.VirgilAttachmentName);
+
+            this.CurrentMail.Close(Outlook.OlInspectorClose.olDiscard);
+            this.CurrentMail.ReleaseCom();
+
+            replyAllMail.MessageClass = Constants.VirgilMessageClass;
+            replyAllMail.Display(true);
+            replyAllMail.ReleaseCom();
         }
 
         /// <summary>
@@ -40,14 +88,15 @@
 
             this.CurrentMail.HTMLBody = this.viewModel.Body;
 
-            var replyAllMail = this.CurrentMail.Reply();
+            var replyMail = this.CurrentMail.Reply();
+            ServiceLocator.Outlook.DeleteAttachment(replyMail, Constants.VirgilAttachmentName);
 
             this.CurrentMail.Close(Outlook.OlInspectorClose.olDiscard);
             this.CurrentMail.ReleaseCom();
 
-            replyAllMail.MessageClass = Constants.VirgilMessageClass;
-            replyAllMail.Display(true);
-            replyAllMail.ReleaseCom();
+            replyMail.MessageClass = Constants.VirgilMessageClass;
+            replyMail.Display(true);
+            replyMail.ReleaseCom();
         }
 
         /// <summary>

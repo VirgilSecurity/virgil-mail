@@ -1,5 +1,6 @@
 ﻿namespace Virgil.Mail.Integration
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Runtime.InteropServices;
@@ -38,6 +39,14 @@
 
             nameSpace.ReleaseCom();
             mail.ReleaseCom();
+        }
+
+        public void DeleteAttachment(Outlook.MailItem mail, string attachmentName)
+        {
+            var attachemnt = mail.Attachments.Cast<Outlook.Attachment>()
+                .SingleOrDefault(a => a.FileName.Equals(attachmentName,StringComparison.CurrentCultureIgnoreCase));
+
+            attachemnt?.Delete();
         }
 
         public IEnumerable<AccountIntegrationModel> GetOutlookAccounts()

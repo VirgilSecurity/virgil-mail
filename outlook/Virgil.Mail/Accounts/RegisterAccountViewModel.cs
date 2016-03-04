@@ -1,13 +1,14 @@
 ﻿namespace Virgil.Mail.Accounts
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.IO;
     using System.Text;
     using System.ComponentModel;
     using System.Threading.Tasks;
     using System.Text.RegularExpressions;
-
+    using HtmlAgilityPack;
     using Newtonsoft.Json;
     
     using Virgil.Mail.Common;
@@ -202,12 +203,13 @@
 
                 this.ChangeState(RegisterAccountState.Processing, "Sending verification request...");
 
-                var verifyResponse = await this.virgilHub.Identity
-                    .Verify(this.CurrentAccount.OutlookAccountEmail, IdentityType.Email);
+                var attemptId = Guid.NewGuid().ToString();
+                var verifyResponse = await this.virgilHub.Identity.Verify(this.CurrentAccount.OutlookAccountEmail, 
+                    IdentityType.Email, new Dictionary<string, string> { { "attempt_id", attemptId } });
 
                 this.ChangeStateText("Waiting for confirmation email...");
 
-                var code = await this.ExtractConfirmationCode(this.CurrentAccount.OutlookAccountEmail);
+                var code = await this.ExtractConfirmationCode(this.CurrentAccount.OutlookAccountEmail, attemptId);
 
                 this.ChangeStateText("Confirming email account...");
 
@@ -259,16 +261,34 @@
             }
         }
 
-        private async Task<string> ExtractConfirmationCode(string accountSmtpAddress)
+        private async Task<string> ExtractConfirmationCode(string accountSmtpAddress, string waitingAttemptId)
         {
-            var mail = await this.mailObserver.WaitFor(accountSmtpAddress, "no-reply@virgilsecurity.com");
+            while (true)
+            {
+                var mail = await this.mailObserver.WaitFor(accountSmtpAddress, "no-reply@virgilsecurity.com");
+                if (mail == null)
+                {
+                    throw new Exception("The message with confirmation code is not arrived. Try again later.");
+                }
 
-            var matches = Regex.Match(mail.Body, @"Your confirmation code is[\s\S]*<b[\s\S]*>(?<code>[\s\S]*)<\/b>");
-            var code = matches.Groups["code"].Value;
+                var htmlDoc = new HtmlDocument();
+                htmlDoc.LoadHtml(mail.Body);
 
-            this.outlook.DeleteMail(mail.EntryID);
-            
-            return code;
+                var attemptIdElem = htmlDoc.GetElementbyId("attempt_id");
+                var attemptId = attemptIdElem.GetAttributeValue("value", "");
+
+                if (!attemptId.Equals(waitingAttemptId, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    this.outlook.DeleteMail(mail.EntryID);
+                    continue;
+                }
+
+                var virgilElem = htmlDoc.GetElementbyId("confirmation_code");
+                var code = virgilElem?.GetAttributeValue("value", "");
+
+                this.outlook.DeleteMail(mail.EntryID);
+                return code;
+            }
         }
 
         private async Task ImportFromFile()
@@ -295,20 +315,31 @@
 
                 this.ChangeStateText("Loading Public Key details...");
 
+                string enteredPassword = null;
+
                 if (VirgilKeyPair.IsPrivateKeyEncrypted(result.private_key))
                 {
-                    var enteredPassword = this.dialogs.ShowPrivateKeyPassword(this.CurrentAccount.OutlookAccountEmail, result.private_key);
+                    enteredPassword = this.dialogs.ShowPrivateKeyPassword(this.CurrentAccount.OutlookAccountEmail, result.private_key);
                     if (enteredPassword == null)
                     {
-                        this.ChangeState(RegisterAccountState.GenerateKeyPair);
+                        this.ChangeState(RegisterAccountState.DownloadKeyPair);
                         return;
                     }
-
-                    this.passwordHolder.Keep(this.CurrentAccount.OutlookAccountEmail, enteredPassword);
-                    this.CurrentAccount.IsPrivateKeyPasswordNeedToStore = true;
                 }
+                
+                var foundCard = await this.virgilHub.Cards.Search(this.CurrentAccount.OutlookAccountEmail);
+                var card = foundCard.Single();
 
-                var card = await this.virgilHub.Cards.Get(result.card.id);
+                var isPrivateKeyTrue = string.IsNullOrEmpty(enteredPassword)
+                    ? VirgilKeyPair.IsKeyPairMatch(card.PublicKey.PublicKey, result.private_key)
+                    : VirgilKeyPair.IsKeyPairMatch(card.PublicKey.PublicKey, result.private_key, Encoding.UTF8.GetBytes(enteredPassword));
+
+                if (!isPrivateKeyTrue)
+                {
+                    this.AddCustomError("Uploading Private Key is not matched.");
+                    this.ChangeState(RegisterAccountState.DownloadKeyPair);
+                    return;
+                }
 
                 this.CurrentAccount.VirgilCardId = card.Id;
                 this.CurrentAccount.VirgilCardHash = card.Hash;
@@ -326,7 +357,7 @@
             catch (Exception)
             {
                 this.AddCustomError("Uploading file is invalid or has wrong format");
-                this.ChangeState(RegisterAccountState.GenerateKeyPair);
+                this.ChangeState(RegisterAccountState.DownloadKeyPair);
             }
         }
 
@@ -341,12 +372,13 @@
 
                 this.ChangeState(RegisterAccountState.Processing, "Sending verification request...");
 
-                var verifyResponse = await this.virgilHub.Identity
-                    .Verify(this.CurrentAccount.OutlookAccountEmail, IdentityType.Email);
+                var attemptId = Guid.NewGuid().ToString();
+                var verifyResponse = await this.virgilHub.Identity.Verify(this.CurrentAccount.OutlookAccountEmail, 
+                    IdentityType.Email, new Dictionary<string, string> { { "attempt_id", attemptId } });
 
                 this.ChangeStateText("Waiting for confirmation email...");
 
-                var code = await this.ExtractConfirmationCode(this.CurrentAccount.OutlookAccountEmail);
+                var code = await this.ExtractConfirmationCode(this.CurrentAccount.OutlookAccountEmail, attemptId);
 
                 this.ChangeStateText("Confirming an account's email...");
 

@@ -2,10 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Text;
-    using System.Threading.Tasks;
+
     using Newtonsoft.Json;
+
     using Virgil.Crypto;
     using Outlook = Microsoft.Office.Interop.Outlook;
 
@@ -44,14 +46,14 @@
 
             var senderSmtpAddress = mailItem.ExtractSenderEmailAddress();
             recipients.Add(senderSmtpAddress);
-            
+
+            recipients = recipients.Distinct().ToList();
+
+
             var tasks = recipients
-                .Distinct()
                 .Select(r => this.virgilHub.Cards.Search(r))
                 .ToList();
-
-            Task.WhenAll(tasks);
-
+            
             var searchResults = tasks.Select(it => it.Result).ToList();
             var recipientsDictionary = new Dictionary<string, byte[]>();
 
@@ -71,13 +73,13 @@
             var account = this.accountsManager.GetAccount(senderSmtpAddress);
             var privateKey = this.privateKeysStorage.GetPrivateKey(account.VirgilCardId);
             
-            var virgilMailHtml = EncryptMail(mailItem, recipientsDictionary, privateKey, password);
+            EncryptMail(mailItem, recipientsDictionary, privateKey, password);
 
             mailItem.MessageClass = Constants.VirgilMessageClass;
-            mailItem.HTMLBody = virgilMailHtml;
+            mailItem.HTMLBody = Constants.EmailHtmlBodyTemplate;
         }
 
-        private static string EncryptMail(Outlook._MailItem mail, IDictionary<string, byte[]> recipients, byte[] privateKey, string privateKeyPassword)
+        private static void EncryptMail(Outlook._MailItem mail, IDictionary<string, byte[]> recipients, byte[] privateKey, string privateKeyPassword)
         {
             EncryptAttachments(mail, recipients);
             var encryptedMailData = EncryptMailData(mail, recipients);
@@ -91,11 +93,21 @@
                 EmailData = encryptedMailData,
                 Sign = signature
             };
+            
+            AddEncryptedBodyAttachment(mail, mailModel);
+        }
 
-            var mailInfoJson = JsonConvert.SerializeObject(mailModel);
-            var encodedInfo = Encoding.UTF8.GetBytes(mailInfoJson);
+        private static void AddEncryptedBodyAttachment(Outlook._MailItem mail, VirgilMailModel mailData)
+        {
+            var mailInfoJson = JsonConvert.SerializeObject(mailData);
+            var encodedInfo  = Encoding.UTF8.GetBytes(mailInfoJson);
+            var base64String = Convert.ToBase64String(encodedInfo);
 
-            return string.Format(Constants.EmailHtmlBodyTemplate, Convert.ToBase64String(encodedInfo));
+            File.WriteAllText(Constants.VirgilAttachmentName, base64String);
+
+            mail.Attachments.Add(Constants.VirgilAttachmentName, Outlook.OlAttachmentType.olByValue);
+
+            File.Delete(Constants.VirgilAttachmentName);
         }
 
         private static byte[] EncryptMailData(Outlook._MailItem mail, IDictionary<string, byte[]> recipients)

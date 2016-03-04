@@ -26,11 +26,12 @@
         /// <returns>True, if mail has been sent with Virgil Mail plugin.</returns>
         internal static bool IsVirgilMail(this Outlook.MailItem mailItem)
         {
-            var htmlDoc = new HtmlDocument();
-            htmlDoc.LoadHtml(mailItem.HTMLBody);
+            var isVirgilMail = mailItem.Attachments
+                .Cast<Outlook.Attachment>()
+                .ToList()
+                .Any(it => it.FileName.Equals(Constants.VirgilAttachmentName));
 
-            var virgilElem = htmlDoc.GetElementbyId(Constants.VirgilHtmlBodyElementId);
-            return virgilElem != null;
+            return isVirgilMail;
         }
 
         /// <summary>

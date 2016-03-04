@@ -238,25 +238,22 @@
         
         private static VirgilMailModel ExtractVirgilMailModel(Outlook._MailItem mail)
         {
-            var htmlDoc = new HtmlDocument();
-            htmlDoc.LoadHtml(mail.HTMLBody);
+            var attachment = mail.Attachments.Cast<Outlook.Attachment>()
+                .SingleOrDefault(it => it.FileName == Constants.VirgilAttachmentName);
 
-            var virgilElem = htmlDoc.GetElementbyId("virgil-info");
-            var valueBase64 = virgilElem?.GetAttributeValue("value", "");
-
-            if (!string.IsNullOrWhiteSpace(valueBase64))
+            if (attachment == null)
             {
-                var value = Convert.FromBase64String(valueBase64);
-                var json = Encoding.UTF8.GetString(value);
-                var messageInfo = JsonConvert.DeserializeObject<VirgilMailModel>(json);
-
-                return messageInfo;
+                return null;
             }
 
-            return null;
-        }
-        
+            var attachmentBytes = (byte[])attachment.PropertyAccessor.GetProperty(Constants.OutlookAttachmentDataBin);
+            var attachmentBase64 = Encoding.UTF8.GetString(attachmentBytes);
+            var attachmentJsonBytes = Convert.FromBase64String(attachmentBase64);
+            var attachmentJson = Encoding.UTF8.GetString(attachmentJsonBytes);
 
-        
+            var virgilMail = JsonConvert.DeserializeObject<VirgilMailModel>(attachmentJson);
+
+            return virgilMail;
+        }
     }
 }
