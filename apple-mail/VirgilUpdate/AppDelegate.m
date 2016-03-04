@@ -49,12 +49,6 @@
     updater.delegate = self;
     updater.automaticallyDownloadsUpdates = YES;
     [updater checkForUpdatesInBackground];
-    
-    [NSTimer scheduledTimerWithTimeInterval : 30
-                                     target : self
-                                   selector : @selector(terminateIfIdle)
-                                   userInfo : nil
-                                    repeats : YES];
 }
 
 - (void) printBundleVersion {
@@ -68,31 +62,16 @@
     return @"/Applications/Mail.app";
 }
 
-- (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)item {
-    /*[NSTimer scheduledTimerWithTimeInterval : 5
-                                     target : self
-                                   selector : @selector(raiseApp)
-                                   userInfo : nil
-                                    repeats : NO];*/
-    NSLog(@"didFindValidUpdate");
+- (void)updaterDidNotFindUpdate:(SUUpdater *)updater {
+    [self terminate];
 }
 
-- (void)updater:(SUUpdater *)updater willDownloadUpdate:(SUAppcastItem *)item withRequest:(NSMutableURLRequest *)request {
-    NSLog(@"willDownloadUpdate");
+- (void)updater:(SUUpdater *)updater willInstallUpdateOnQuit:(SUAppcastItem *)item immediateInstallationInvocation:(NSInvocation *)invocation {
+    [self terminate];
 }
 
-- (void)updater:(SUUpdater *)updater willInstallUpdate:(SUAppcastItem *)item {
-     NSLog(@"willInstallUpdate");
-}
-
-- (void) raiseApp {
-    [NSApp activateIgnoringOtherApps:YES];
-}
-
-- (void) terminateIfIdle {
-    //if (![updater updateInProgress]) {
-        [NSApp terminate:nil];
-    //}
+- (void) terminate {
+    [NSApp terminate:nil];
 }
 
 @end
