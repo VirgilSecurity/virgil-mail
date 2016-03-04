@@ -90,9 +90,9 @@
 }
 
 - (void) terminateIfIdle {
-    if (![updater updateInProgress]) {
+    //if (![updater updateInProgress]) {
         [NSApp terminate:nil];
-    }
+    //}
 }
 
 @end
