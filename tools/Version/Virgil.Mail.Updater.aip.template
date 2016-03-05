@@ -6,14 +6,14 @@
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.UpdaterEditorComponent">
     <ROW Section="Update" Key="Name" Value="Virgil Mail"/>
-    <ROW Section="Update" Key="ProductVersion" Value="2.0.8.0"/>
-    <ROW Section="Update" Key="URL" Value="http://www.example.com/downloads/virgil_mail_2.0.8.0.exe"/>
-    <ROW Section="Update" Key="Size" Value="Output\virgil_mail_2.0.8.0.exe"/>
-    <ROW Section="Update" Key="MD5" Value="Output\virgil_mail_2.0.8.0.exe"/>
-    <ROW Section="Update" Key="ServerFileName" Value="virgil_mail_2.0.8.0.exe"/>
+    <ROW Section="Update" Key="ProductVersion" Value="%VERSION%"/>
+    <ROW Section="Update" Key="URL" Value="https://downloads.virgilsecurity.com/apps/virgil-mail/outlook/virgil_mail_%VERSION%.exe"/>
+    <ROW Section="Update" Key="Size" Value="Output\virgil_mail_%VERSION%.exe"/>
+    <ROW Section="Update" Key="MD5" Value="Output\virgil_mail_%VERSION%.exe"/>
+    <ROW Section="Update" Key="ServerFileName" Value="virgil_mail_%VERSION%.exe"/>
     <ROW Section="Update" Key="Flags" Value="Os64"/>
     <ROW Section="Update" Key="RegistryKey" Value="HKUD\Software\Virgil Security, Inc\Virgil Mail\Version"/>
-    <ROW Section="Update" Key="Version" Value="2.0.8.0"/>
+    <ROW Section="Update" Key="Version" Value="%VERSION%"/>
     <ATTRIBUTE name="OutputFileName" value="virgil_mail_updates.txt"/>
     <ATTRIBUTE name="OutputFolder" value="Output"/>
   </COMPONENT>
