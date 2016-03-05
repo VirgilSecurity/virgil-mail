@@ -424,5 +424,12 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="..\packages\Virgil.Crypto.1.2.2.47\build\portable-net4+sl4+wp7+win8+wpa81\Virgil.Crypto.targets" Condition="Exists('..\packages\Virgil.Crypto.1.2.2.47\build\portable-net4+sl4+wp7+win8+wpa81\Virgil.Crypto.targets')" />
+    <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+      <PropertyGroup>
+        <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+      </PropertyGroup>
+      <Error Condition="!Exists('..\packages\Virgil.Crypto.1.2.2.47\build\portable-net4+sl4+wp7+win8+wpa81\Virgil.Crypto.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Virgil.Crypto.1.2.2.47\build\portable-net4+sl4+wp7+win8+wpa81\Virgil.Crypto.targets'))" />
+  </Target>
 </Project>
 
