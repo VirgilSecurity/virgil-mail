@@ -1,8 +1,8 @@
 Param (    
     [Parameter(Mandatory=$true)]
-    [string]$TemplateFilePath
+    [string]$TemplateFilePath,
     [Parameter(Mandatory=$true)]
-    [string]$AssemblyInfoFilePath
+    [string]$AssemblyInfoFilePath,
     [Parameter(Mandatory=$true)]
     [string]$ResultFilePath
 )
