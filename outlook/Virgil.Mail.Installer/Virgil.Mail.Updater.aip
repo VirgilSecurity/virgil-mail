@@ -5,15 +5,24 @@
     <ROW Path="&lt;AI_DICTS&gt;aiu-ue_en.ail"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.UpdaterEditorComponent">
-    <ROW Section="2.0.7" Key="Name" Value="Virgil Mail"/>
-    <ROW Section="2.0.7" Key="ProductVersion" Value="2.0.7.0"/>
-    <ROW Section="2.0.7" Key="URL" Value="https://downloads.virgilsecurity.com/apps/virgil-mail/outlook/virgil_mail_2.0.7.exe"/>
-    <ROW Section="2.0.7" Key="Size" Value="Output\virgil_mail_2.0.7.0.exe"/>
-    <ROW Section="2.0.7" Key="MD5" Value="Output\virgil_mail_2.0.7.0.exe"/>
-    <ROW Section="2.0.7" Key="ServerFileName" Value="virgil_mail_2.0.7.0.exe"/>
-    <ROW Section="2.0.7" Key="Flags" Value="Sys64|Os64"/>
-    <ROW Section="2.0.7" Key="RegistryKey" Value="HKUD\Software\Virgil Security, Inc\Virgil Mail\Version"/>
-    <ROW Section="2.0.7" Key="Version" Value="2.0.7.0"/>
+    <ROW Section="2.0.7.0" Key="Name" Value="Virgil Mail"/>
+    <ROW Section="2.0.7.0" Key="ProductVersion" Value="2.0.7"/>
+    <ROW Section="2.0.7.0" Key="URL" Value="https://downloads.virgilsecurity.com/apps/virgil-mail/outlook/virgil_mail_2.0.7.0.exe"/>
+    <ROW Section="2.0.7.0" Key="Size" Value="Output\virgil_mail_2.0.7.0.exe"/>
+    <ROW Section="2.0.7.0" Key="MD5" Value="Output\virgil_mail_2.0.7.0.exe"/>
+    <ROW Section="2.0.7.0" Key="ServerFileName" Value="virgil_mail_2.0.7.0.exe"/>
+    <ROW Section="2.0.7.0" Key="Flags" Value="Sys64|Os64"/>
+    <ROW Section="2.0.7.0" Key="RegistryKey" Value="HKUD\Software\Virgil Security, Inc\Virgil Mail\Version"/>
+    <ROW Section="2.0.7.0" Key="Version" Value="2.0.7.0"/>
+    <ROW Section="2.0.8.0" Key="Name" Value="Virgil Mail"/>
+    <ROW Section="2.0.8.0" Key="ProductVersion" Value="2.0.8.0"/>
+    <ROW Section="2.0.8.0" Key="URL" Value="https://downloads.virgilsecurity.com/apps/virgil-mail/outlook/virgil_mail_2.0.8.0.exe"/>
+    <ROW Section="2.0.8.0" Key="Size" Value="Output\virgil_mail_2.0.8.0.exe"/>
+    <ROW Section="2.0.8.0" Key="MD5" Value="Output\virgil_mail_2.0.8.0.exe"/>
+    <ROW Section="2.0.8.0" Key="ServerFileName" Value="virgil_mail_2.0.8.0.exe"/>
+    <ROW Section="2.0.8.0" Key="Flags" Value="Sys64|Os64"/>
+    <ROW Section="2.0.8.0" Key="RegistryKey" Value="HKUD\Software\Virgil Security, Inc\Virgil Mail\Version"/>
+    <ROW Section="2.0.8.0" Key="Version" Value="2.0.8.0"/>
     <ATTRIBUTE name="OutputFileName" value="virgil_mail_updates.txt"/>
     <ATTRIBUTE name="OutputFolder" value="Output"/>
   </COMPONENT>
