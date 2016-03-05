@@ -5,11 +5,6 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Virgil.Mail", "Virgil.Mail\Virgil.Mail.csproj", "{EC25DEED-3E40-40BB-9329-6AED27ABFE37}"
 EndProject
-Project("{840C416C-B8F3-42BC-B0DD-F6BB14C9F8CB}") = "Virgil.Mail.Installer", "Virgil.Mail.Installer\Virgil.Mail.Installer.aiproj", "{6DE1427E-3AA4-4AF2-B34D-F07E572692B0}"
-	ProjectSection(ProjectDependencies) = postProject
-		{EC25DEED-3E40-40BB-9329-6AED27ABFE37} = {EC25DEED-3E40-40BB-9329-6AED27ABFE37}
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,16 +27,6 @@ Global
 		{EC25DEED-3E40-40BB-9329-6AED27ABFE37}.Release|x64.Build.0 = Release|Any CPU
 		{EC25DEED-3E40-40BB-9329-6AED27ABFE37}.Release|x86.ActiveCfg = Release|Any CPU
 		{EC25DEED-3E40-40BB-9329-6AED27ABFE37}.Release|x86.Build.0 = Release|Any CPU
-		{6DE1427E-3AA4-4AF2-B34D-F07E572692B0}.Debug|Any CPU.ActiveCfg = All
-		{6DE1427E-3AA4-4AF2-B34D-F07E572692B0}.Debug|x64.ActiveCfg = All
-		{6DE1427E-3AA4-4AF2-B34D-F07E572692B0}.Debug|x64.Build.0 = All
-		{6DE1427E-3AA4-4AF2-B34D-F07E572692B0}.Debug|x86.ActiveCfg = All
-		{6DE1427E-3AA4-4AF2-B34D-F07E572692B0}.Debug|x86.Build.0 = All
-		{6DE1427E-3AA4-4AF2-B34D-F07E572692B0}.Release|Any CPU.ActiveCfg = All
-		{6DE1427E-3AA4-4AF2-B34D-F07E572692B0}.Release|x64.ActiveCfg = All
-		{6DE1427E-3AA4-4AF2-B34D-F07E572692B0}.Release|x64.Build.0 = All
-		{6DE1427E-3AA4-4AF2-B34D-F07E572692B0}.Release|x86.ActiveCfg = All
-		{6DE1427E-3AA4-4AF2-B34D-F07E572692B0}.Release|x86.Build.0 = All
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
