@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Virgil.Mail", "Virgil.Mail\Virgil.Mail.csproj", "{EC25DEED-3E40-40BB-9329-6AED27ABFE37}"
 EndProject
 Project("{840C416C-B8F3-42BC-B0DD-F6BB14C9F8CB}") = "Virgil.Mail.Installer", "Virgil.Mail.Installer\Virgil.Mail.Installer.aiproj", "{6DE1427E-3AA4-4AF2-B34D-F07E572692B0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EC25DEED-3E40-40BB-9329-6AED27ABFE37} = {EC25DEED-3E40-40BB-9329-6AED27ABFE37}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
