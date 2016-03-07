@@ -18,6 +18,6 @@
 		<string>/Library/Mail/Bundles/VirgilSecurityMail.mailbundle/Contents/Resources/VirgilUpdate.app/Contents/MacOS/VirgilUpdate</string>
 	</array>
 	<key>StartInterval</key>
-	<integer>1000</integer>
+	<integer>7200</integer>
 </dict>
 </plist>
