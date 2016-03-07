@@ -107,7 +107,7 @@
 
                 accounts.Add(accountModel);
             }
-
+            
             foreach (var accountModel in accounts)
             {
                 if (!this.internalAccounts.Any(a => a.OutlookAccountEmail.Equals(accountModel.OutlookAccountEmail,
@@ -116,7 +116,10 @@
                     this.internalAccounts.Add(accountModel);
                 }
             }
-            
+
+            this.internalAccounts.RemoveAll(a => !outlookAccounts
+                .Exists(it => it.Email.Equals(a.OutlookAccountEmail)));
+
             return this.internalAccounts;
         }
 
