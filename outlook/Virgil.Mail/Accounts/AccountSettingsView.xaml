@@ -90,15 +90,14 @@
                     Background="White"  />
                 <Button 
                     Margin="0 5 0 0"
-                    Content="Remove Private Key from Virgil Services" 
-                    Visibility="{Binding CanUploadToCloud, Converter={StaticResource NotBoolToVisibility}}"
+                    Content="Delete Private Key" 
                     Command="{Binding RemovePrivateKeyFromCloudCommand}" 
                     Padding="0 3" 
                     Background="White"  />
                 <Button 
                     VerticalAlignment="Bottom" 
                     Margin="0 5 0 0"
-                    Content="Delete" 
+                    Content="Delete Account" 
                     Command="{Binding RemoveCommand}" 
                     Padding="0 3" 
                     BorderBrush="#BB241D" 

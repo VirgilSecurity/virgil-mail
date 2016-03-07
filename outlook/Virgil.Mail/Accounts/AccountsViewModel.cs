@@ -33,8 +33,10 @@
             get
             {
                 var assembly = Assembly.GetExecutingAssembly();
+
                 var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
                 var version = fvi.FileVersion;
+                
                 return version;
             }
         }
@@ -42,7 +44,7 @@
         internal void Initialize()
         {
             this.Accounts.Clear();
-
+            
             var accounts = this.accountsManager.GetAccounts().ToList();
             accounts.ForEach(this.Accounts.Add);
         }

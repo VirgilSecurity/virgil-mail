@@ -13,11 +13,13 @@ $assemblyInfoPath = $FilePath
 
 $contents = [System.IO.File]::ReadAllText($assemblyInfoPath)
 
-$versionString = [RegEx]::Match($contents,"(AssemblyFileVersion\("")(?:\d+\.\d+\.\d+\.\d+)(""\))")
+$foundVersion = [RegEx]::Match($contents, "AssemblyFileVersion\(""(?<ver>\d+\.\d+\.\d+\.\d+)""\)").Groups["ver"].Value
 
-$currentBuild = [RegEx]::Match($versionString,"(\.)(\d+)(""\))").Groups[2]
+$version = [System.Version]::Parse($foundVersion)
+$versionString = [System.String]::Format("{0}.{1}.{2}.{3}", $version.Major, $version.Minor, $BuildNumber, 0)
 
-$contents = [RegEx]::Replace($contents, "(AssemblyVersion\(""\d+\.\d+\.\d+\.)(?:\d+)(""\))", ("`${1}" + $BuildNumber + "`${2}"))
-$contents = [RegEx]::Replace($contents, "(AssemblyFileVersion\(""\d+\.\d+\.\d+\.)(?:\d+)(""\))", ("`${1}" + $BuildNumber + "`${2}"))
+ 
+$contents = [RegEx]::Replace($contents, "AssemblyVersion\(""(?<ver>\d+\.\d+\.\d+\.\d+)""\)", "AssemblyVersion(""" + $versionString + """)")
+$contents = [RegEx]::Replace($contents, "AssemblyFileVersion\(""(?<ver>\d+\.\d+\.\d+\.\d+)""\)", "AssemblyFileVersion(""" + $versionString + """)")
 
 [System.IO.File]::WriteAllText($assemblyInfoPath, $contents)

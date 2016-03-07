@@ -6,14 +6,15 @@
     using System.Windows.Input;
     using System.Windows.Controls;
     using Newtonsoft.Json;
+    
+    using Virgil.Crypto;
 
     using Virgil.Mail.Common;
     using Virgil.Mail.Common.Mvvm;
+    using Virgil.Mail.Common.Exceptions;
     using Virgil.Mail.Integration;
     using Virgil.Mail.Models;
     using Virgil.Mail.Mvvm;
-    using Virgil.Crypto;
-    using Virgil.Mail.Common.Exceptions;
 
     using Outlook = Microsoft.Office.Interop.Outlook;
 
