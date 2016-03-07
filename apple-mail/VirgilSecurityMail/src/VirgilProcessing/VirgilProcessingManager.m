@@ -649,6 +649,23 @@
             }
         }
     }
+
+    for (MFMessageAddressee * addressee in message.ccRecipients) {
+        for (NSString * email in myAccounts) {
+            if ([email isEqualTo:addressee.address]) {
+                return email;
+            }
+        }
+    }
+    
+    for (MFMessageAddressee * addressee in message.bccRecipients) {
+        for (NSString * email in myAccounts) {
+            if ([email isEqualTo:addressee.address]) {
+                return email;
+            }
+        }
+    }
+
     
     // Check for sender is me
     NSString * sender = [self getEmailFromFullName:[message sender]];

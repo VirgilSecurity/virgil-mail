@@ -73,7 +73,7 @@ static BOOL _virgilShowPhotos = NO;
                                                               minHeight : 48];
         } else {
             ((MessageListObjectProxy *)self).showContactPhotos = YES;
-            virgilImage = [NSImage imageNamed:/*@"encrypt_mail"*/@"encrypt_mail_small"];
+            virgilImage = [NSImage imageNamed:@"encrypt_mail_small"];
         }
         
         [self setValue:virgilImage forKey:@"selectedPhoto"];
