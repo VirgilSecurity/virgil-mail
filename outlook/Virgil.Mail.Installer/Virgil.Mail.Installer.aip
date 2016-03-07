@@ -13,8 +13,8 @@
     <ROW Property="AI_REQUIRED_OFFICE_VERSION" MultiBuildValue="DefaultBuild:2016" ValueLocId="-"/>
     <ROW Property="ALLUSERS" MultiBuildValue="DefaultBuild:1"/>
     <ROW Property="ARPCOMMENTS" Value="This installer database contains the logic and data required to install [|ProductName]." ValueLocId="*"/>
-    <ROW Property="ARPHELPLINK" Value="https://virgilsecurity.com/"/>
-    <ROW Property="ARPURLINFOABOUT" Value="https://virgilsecurity.com/demos"/>
+    <ROW Property="ARPHELPLINK" Value="https://www.virgilsecurity.com/"/>
+    <ROW Property="ARPURLINFOABOUT" Value="https://www.virgilsecurity.com/demos"/>
     <ROW Property="CASPOL_TRUST_ASSEMBLIES" Value="HtmlAgilityPack.dll|Microsoft.Office.Tools.Common.dll|Microsoft.Office.Tools.Common.v4.0.Utilities.dll|Microsoft.Office.Tools.dll|Microsoft.Office.Tools.Outlook.dll|Microsoft.Office.Tools.Outlook.v4.0.Utilities.dll|Microsoft.Office.Tools.v4.0.Framework.dll|Microsoft.VisualStudio.Tools.Applications.Runtime.dll|Newtonsoft.Json.dll|Virgil.Crypto.dll|Virgil.Mail.dll|Virgil.SDK.dll|Virgil.SDK.Domain.dll"/>
     <ROW Property="Manufacturer" Value="Virgil Security, Inc"/>
     <ROW Property="ProductCode" Value="1033:{8243FF52-BC76-432E-B9E6-6CAB9BD1BEFB} " Type="16"/>
@@ -100,7 +100,7 @@
     <ROW File="virgil_crypto_net.dll_1" Component_="virgil_crypto_net.dll_1" FileName="VIRGIL~1.DLL|virgil_crypto_net.dll" Attributes="0" SourcePath="..\Virgil.Mail\bin\Release\x86\virgil_crypto_net.dll" SelfReg="false" NextFile="updater.exe"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.BootstrOptComponent">
-    <ROW BootstrOptKey="GlobalOptions" GeneralOptions="b" DownloadFolder="[AppDataFolder][|Manufacturer]\[|ProductName]\prerequisites" EulaPathLocId="*" IntroTextPathLocId="*"/>
+    <ROW BootstrOptKey="GlobalOptions" GeneralOptions="b" DownloadFolder="[AppDataFolder][|Manufacturer]\[|ProductName]\prerequisites" Options="4" UpdatesUrl="https://downloads.virgilsecurity.com/apps/virgil-mail/outlook/virgil_mail_updates.txt" EulaPathLocId="*" IntroTextPathLocId="*"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.BuildComponent">
     <ROW BuildKey="DefaultBuild" BuildName="DefaultBuild" BuildOrder="1" BuildType="0" PackageFolder="Output" PackageFileName="virgil_mail_[|ProductVersion]" Languages="en" InstallationType="4" CabsLocation="1" PackageType="1" FilesInsideExe="true" ExtractionFolder="[AppDataFolder][|Manufacturer]\[|ProductName] [|ProductVersion]\install" UseLargeSchema="true" ExeName="virgil_mail_[|ProductVersion]" MsiPackageType="x64" UACExecutionLevel="2"/>
@@ -213,7 +213,7 @@
     <ROW IniFile="CompanyName" FileName="VIRGIL~2.INI|VirgilMailUpdater.ini" DirProperty="APPDIR" Section="General" Key="CompanyName" Value="[Manufacturer]" Action="0" Component_="updater.exe"/>
     <ROW IniFile="DefaultCommandLine" FileName="VIRGIL~2.INI|VirgilMailUpdater.ini" DirProperty="APPDIR" Section="General" Key="DefaultCommandLine" Value="/checknow" Action="0" Component_="updater.exe"/>
     <ROW IniFile="DownloadsFolder" FileName="VIRGIL~2.INI|VirgilMailUpdater.ini" DirProperty="APPDIR" Section="General" Key="DownloadsFolder" Value="[CommonAppDataFolder][Manufacturer]\[ProductName]\updates\" Action="0" Component_="updater.exe"/>
-    <ROW IniFile="Flags" FileName="VIRGIL~2.INI|VirgilMailUpdater.ini" DirProperty="APPDIR" Section="General" Key="Flags" Value="NoDisableAutoCheck|PerMachine|NoUpdaterInstallGUI" Action="0" Component_="updater.exe"/>
+    <ROW IniFile="Flags" FileName="VIRGIL~2.INI|VirgilMailUpdater.ini" DirProperty="APPDIR" Section="General" Key="Flags" Value="NoDisableAutoCheck|PerMachine" Action="0" Component_="updater.exe"/>
     <ROW IniFile="ID" FileName="VIRGIL~2.INI|VirgilMailUpdater.ini" DirProperty="APPDIR" Section="General" Key="ID" Value="[UpgradeCode]" Action="0" Component_="updater.exe"/>
     <ROW IniFile="URL" FileName="VIRGIL~2.INI|VirgilMailUpdater.ini" DirProperty="APPDIR" Section="General" Key="URL" Value="https://downloads.virgilsecurity.com/apps/virgil-mail/outlook/virgil_mail_updates.txt" Action="0" Component_="updater.exe"/>
   </COMPONENT>
