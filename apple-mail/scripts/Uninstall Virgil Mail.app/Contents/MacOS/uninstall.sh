@@ -13,7 +13,7 @@ if [[ $UID -ne 0 ]] ;then
 	activate
 	display dialog question buttons {cancel, uninstall} default button uninstall
 	do shell script "'"$escape_filed_path"'" with administrator privileges
-	set succeeded to localized string "Virgil Securyty plugin was removed successfuly" in bundle bndl
+	set succeeded to localized string "Virgil Security plugin was removed successfuly" in bundle bndl
 	set ok to localized string "OK" in bundle bndl
 	activate
 	display dialog succeeded buttons {ok} default button ok
