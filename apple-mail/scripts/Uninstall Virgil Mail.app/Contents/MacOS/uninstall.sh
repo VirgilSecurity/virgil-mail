@@ -7,7 +7,7 @@ if [[ $UID -ne 0 ]] ;then
 	
 	osascript -e '
 	set bndl to POSIX file "'"$bundle"'"
-	set question to localized string "Do you want to remove Virgil Securyty plugin ?" in bundle bndl
+	set question to localized string "Do you want to remove Virgil Security plugin ?" in bundle bndl
 	set cancel to localized string "Cancel" in bundle bndl
 	set uninstall to localized string "Uninstall" in bundle bndl
 	activate
