@@ -2,7 +2,8 @@
 {
     using System.Linq;
     using System.Collections.ObjectModel;
-
+    using System.Diagnostics;
+    using System.Reflection;
     using Virgil.Mail.Common;
     using Virgil.Mail.Common.Mvvm;
     using Virgil.Mail.Models;
@@ -27,6 +28,17 @@
 
         public ObservableCollection<AccountModel> Accounts { get; set; }
 
+        public string Version
+        {
+            get
+            {
+                var assembly = Assembly.GetExecutingAssembly();
+                var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+                var version = fvi.FileVersion;
+                return version;
+            }
+        }
+
         internal void Initialize()
         {
             this.Accounts.Clear();
@@ -34,7 +46,7 @@
             var accounts = this.accountsManager.GetAccounts().ToList();
             accounts.ForEach(this.Accounts.Add);
         }
-        
+
         private void ManageAccount(AccountModel accountModel)
         {
             if (!accountModel.IsRegistered)

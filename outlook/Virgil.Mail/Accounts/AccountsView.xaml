@@ -78,14 +78,21 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </ScrollViewer>
-        <!--<Border 
+        <Border 
             Grid.Row="2" 
             BorderThickness="0 1 0 0" 
             Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" 
             Padding="20 20">
-            <Grid>
-                <Button MinWidth="90" Visibility="Hidden" Content="Export all..." Padding="0 3" HorizontalAlignment="Left" Background="White" />
-            </Grid>
-        </Border>-->
+            <StackPanel>
+                <TextBlock TextAlignment="Left">
+                    <Run Text="© 2016 Virgil Security, Inc." />
+                    <Hyperlink Command="{Binding Company}" >https://www.virgilsecurity.com</Hyperlink>
+                </TextBlock>
+                <TextBlock Margin="0 2 0 0" >
+                    <Run Text="Virgil Mail Add-In version:" />
+                    <Run Text="{Binding Version, Mode=OneWay}" />
+                </TextBlock>
+            </StackPanel>
+         </Border>
     </Grid>
 </UserControl>

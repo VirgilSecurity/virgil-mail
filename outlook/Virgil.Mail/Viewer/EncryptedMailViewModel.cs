@@ -127,7 +127,7 @@
                 return;
             }
 
-            var privateKey = this.privateKeysStorage.GetPrivateKey(account.VirgilCardId);
+            var privateKey = this.privateKeysStorage.GetPrivateKey(this.account.VirgilCardId);
             var isKeyEncrypted = VirgilKeyPair.IsPrivateKeyEncrypted(privateKey);
 
             if (isKeyEncrypted && !this.account.IsPrivateKeyPasswordNeedToStore)
@@ -169,10 +169,13 @@
             var passwordBox = (PasswordBox)parameter;
             var password = passwordBox.Password;
 
-            var privateKey = this.privateKeysStorage.GetPrivateKey(account.VirgilCardId);
-            if (this.account.IsPrivateKeyPasswordNeedToStore)
+            var privateKey = this.privateKeysStorage.GetPrivateKey(this.account.VirgilCardId);
+
+            if (this.IsStorePassword && !this.account.IsPrivateKeyPasswordNeedToStore)
             {
+                this.account.IsPrivateKeyPasswordNeedToStore = true;
                 this.passwordHolder.Keep(this.account.OutlookAccountEmail, password);
+                this.accountsManager.UpdateAccount(this.account);
             }
 
             var passwordBytes = Encoding.UTF8.GetBytes(password);

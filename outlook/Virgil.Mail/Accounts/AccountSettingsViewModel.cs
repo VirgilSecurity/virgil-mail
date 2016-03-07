@@ -103,19 +103,7 @@
 
             this.ChangeState(AccountSettingsState.Settings);
 
-            this.IsPrivateKeyHasPassword = this.cryptoProvider.HasPrivateKeyPassword(this.account.VirgilCardId);
-            this.IsPrivateKeyPasswordNeedToStore = this.account.IsPrivateKeyPasswordNeedToStore;
-
-            if (this.account.IsVirgilPrivateKeyStorage && !this.account.LastPrivateKeySyncDateTime.HasValue)
-            {
-                this.CanUploadToCloud = true;
-                return;
-            }
-
-            if (!this.account.IsVirgilPrivateKeyStorage)
-            {
-                this.CanUploadToCloud = true;
-            }
+            this.UpdateProperties();
         }
 
         private void Remove()
@@ -141,11 +129,9 @@
                 var privateKey = this.cryptoProvider.GetPrivateKey(this.account.VirgilCardId);
 
                 var privateKeyPassword = this.passwordExactor.ExactOrAlarm(this.account.OutlookAccountEmail);
-
+                
                 await this.virgilHub.PrivateKeys.Stash(this.account.VirgilCardId, privateKey, privateKeyPassword);
-
-                this.CanUploadToCloud = false;
-
+                
                 this.account.IsVirgilPrivateKeyStorage = true;
                 this.account.LastPrivateKeySyncDateTime = DateTime.Now;
 
@@ -158,6 +144,7 @@
             finally
             {
                 this.ChangeState(AccountSettingsState.Settings);
+                this.UpdateProperties();
             }
         }
 
@@ -173,9 +160,7 @@
                 var privateKeyPassword = this.passwordExactor.ExactOrAlarm(this.account.OutlookAccountEmail);
 
                 await this.virgilHub.PrivateKeys.Destroy(this.account.VirgilCardId, privateKey, privateKeyPassword);
-
-                this.CanUploadToCloud = true;
-
+                
                 this.account.IsVirgilPrivateKeyStorage = false;
                 this.account.LastPrivateKeySyncDateTime = null;
 
@@ -188,6 +173,7 @@
             finally
             {
                 this.ChangeState(AccountSettingsState.Settings);
+                this.UpdateProperties();
             }
         }
 
@@ -218,6 +204,14 @@
 
             var fileName = this.account.OutlookAccountDescription.ToLower().Replace(" ", "_");
             this.dialogPresenter.SaveFile(fileName, exportBase64, "vcard");
+        }
+
+        private void UpdateProperties()
+        {
+            this.IsPrivateKeyHasPassword = this.cryptoProvider.HasPrivateKeyPassword(this.account.VirgilCardId);
+            this.IsPrivateKeyPasswordNeedToStore = this.account.IsPrivateKeyPasswordNeedToStore;
+
+            this.CanUploadToCloud = !this.account.IsVirgilPrivateKeyStorage;
         }
     }
 }

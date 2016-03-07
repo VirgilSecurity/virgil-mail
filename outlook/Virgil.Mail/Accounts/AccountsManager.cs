@@ -41,6 +41,7 @@
                 .ToList();
 
             this.AcceptChanges(newAccounts);
+            this.internalAccounts.Clear();
         }
 
         public bool IsRegistered(string accountSmtpAddress)
