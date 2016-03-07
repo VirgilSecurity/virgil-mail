@@ -1682,7 +1682,7 @@ DQ
                             </textField>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bOb-n4-C6y">
                                 <rect key="frame" x="33" y="170" width="220" height="32"/>
-                                <buttonCell key="cell" type="push" title="Remove key from Keychain" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="8XG-pb-BUc">
+                                <buttonCell key="cell" type="push" title="Remove key from Local Storage" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="8XG-pb-BUc">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>

@@ -120,13 +120,14 @@ NSInteger _checkCounter = 0;
     _btnExport.enabled = !visible;
 }
 
-- (void) noteOfWarningToUser : (NSString *) warningMessage
+- (void) noteOfWarningToUser : (NSString *) warningTitle
+                 warningBody : (NSString *) warningBody
            completionHandler : (void(^)(BOOL isOkButtonClicked))completionHandler {
     NSAlert *alert = [[NSAlert alloc] init];
     [alert addButtonWithTitle:@"Ok"];
     [alert addButtonWithTitle:@"Cancel"];
-    [alert setMessageText:warningMessage];
-    [alert setInformativeText:@"Be carefull with current operation."];
+    [alert setMessageText:warningTitle];
+    [alert setInformativeText:warningBody];
     [alert setAlertStyle:NSWarningAlertStyle];
     
     [alert beginSheetModalForWindow : self.view.window
@@ -143,6 +144,7 @@ NSInteger _checkCounter = 0;
     if (nil == _account) return;
     
     [self noteOfWarningToUser : @"Delete Virgil Keys completely ?"
+                  warningBody : @"Be careful with current operation. You won't be able to decrypt emails linked with this key"
             completionHandler : ^(BOOL isOkButtonClicked) {
                 [self externalActionStart];
                 
@@ -171,7 +173,8 @@ NSInteger _checkCounter = 0;
 - (IBAction)onRemoveKeyFromKeyChain:(id)sender {
     if (nil == _account) return;
     
-    [self noteOfWarningToUser :  @"Delete Virgil Key from KeyChain ?"
+    [self noteOfWarningToUser : @"Delete Virgil Key from KeyChain ?"
+                  warningBody : @"Be careful with current operation."
             completionHandler : ^(BOOL isOkButtonClicked) {
                 [VirgilKeyChain removeContainer : _account];
                 [[VirgilProcessingManager sharedInstance] clearDecryptionCache];
