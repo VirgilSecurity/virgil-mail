@@ -112,7 +112,15 @@
                              unconfirmed : @NO
                        completionHandler :^(NSArray<VSSCard *> * _Nullable cards, NSError * _Nullable error) {
                            if (error == nil && cards != nil && [cards count] > 0) {
+                               // Get newest card
+                               NSDate * compareDate = cards[0].createdAt;
                                res = cards[0];
+                               for (VSSCard * card in cards) {
+                                   if([card.createdAt compare: compareDate] == NSOrderedAscending) {
+                                       compareDate = card.createdAt;
+                                       res = card;
+                                   }
+                               }
                            }
                            dispatch_semaphore_signal(semaphore);
                        }];

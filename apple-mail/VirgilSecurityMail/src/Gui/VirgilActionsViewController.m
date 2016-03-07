@@ -726,5 +726,12 @@ NSInteger _checkCounter = 0;
                  }];
 }
 
+- (IBAction)onRecteatKeys:(id)sender {
+    [VirgilKeyChain removeContainer : _account];
+    [[VirgilProcessingManager sharedInstance] clearDecryptionCache];
+    [self onCreateKeysClicked:sender];
+}
+
+
 
 @end
