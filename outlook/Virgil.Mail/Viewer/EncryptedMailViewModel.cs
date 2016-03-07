@@ -214,7 +214,7 @@
             }
         }
 
-        private static EncryptedMailModel DecryptMailData(Outlook._MailItem mail, Guid cardId, byte[] privateKey, string keyPassword)
+        private static EncryptedMailModel DecryptMailData(Outlook.MailItem mail, Guid cardId, byte[] privateKey, string keyPassword)
         {
             var mailModel = ExtractVirgilMailModel(mail);
             var data = mailModel.EmailData;
@@ -234,14 +234,17 @@
             }
         }
         
-        private static VirgilMailModel ExtractVirgilMailModel(Outlook._MailItem mail)
+        private static VirgilMailModel ExtractVirgilMailModel(Outlook.MailItem mail)
         {
             var attachment = mail.Attachments.Cast<Outlook.Attachment>()
                 .SingleOrDefault(it => it.FileName == Constants.VirgilAttachmentName);
 
+            VirgilMailModel virgilMail;
+
             if (attachment == null)
             {
-                return null;
+                virgilMail = mail.Parse();
+                return virgilMail;
             }
 
             var attachmentBytes = (byte[])attachment.PropertyAccessor.GetProperty(Constants.OutlookAttachmentDataBin);
@@ -249,7 +252,7 @@
             var attachmentJsonBytes = Convert.FromBase64String(attachmentBase64);
             var attachmentJson = Encoding.UTF8.GetString(attachmentJsonBytes);
 
-            var virgilMail = JsonConvert.DeserializeObject<VirgilMailModel>(attachmentJson);
+            virgilMail = JsonConvert.DeserializeObject<VirgilMailModel>(attachmentJson);
 
             return virgilMail;
         }
