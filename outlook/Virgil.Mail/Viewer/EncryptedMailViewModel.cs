@@ -5,8 +5,6 @@
     using System.Text;
     using System.Windows.Input;
     using System.Windows.Controls;
-    using HtmlAgilityPack;
-
     using Newtonsoft.Json;
 
     using Virgil.Mail.Common;
@@ -33,6 +31,7 @@
         private DateTime date;
         private string to;
         private string subject;
+        private bool isStorePassword;
 
         public EncryptedMailViewModel(
             IPrivateKeysStorage privateKeysStorage, 
@@ -55,12 +54,22 @@
         public ICommand DecryptCommand { get; set; }
         public ICommand RedecryptCommand { get; set; }
 
-        public string Subject
+        public bool IsStorePassword
         {
-            get { return subject; }
+            get { return this.isStorePassword; }
             set
             {
-                subject = value;
+                this.isStorePassword = value;
+                this.RaisePropertyChanged();
+            }
+        }
+
+        public string Subject
+        {
+            get { return this.subject; }
+            set
+            {
+                this.subject = value;
                 this.RaisePropertyChanged();
             }
         }
@@ -77,30 +86,30 @@
 
         public string From
         {
-            get { return @from; }
+            get { return this.@from; }
             set
             {
-                @from = value;
+                this.@from = value;
                 this.RaisePropertyChanged();
             }
         }
 
         public DateTime Date
         {
-            get { return date; }
+            get { return this.date; }
             set
             {
-                date = value;
+                this.date = value;
                 this.RaisePropertyChanged();
             }
         }
 
         public string To
         {
-            get { return to; }
+            get { return this.to; }
             set
             {
-                to = value;
+                this.to = value;
                 this.RaisePropertyChanged();
             }
         }
@@ -141,23 +150,9 @@
                 }
             }
 
-            InternalDecrypt(keyPassword);
-        }
-
-        public void OnReply(object response, ref bool cancel)
-        {
-            if (!this.account.IsRegistered)
-            {
-                this.dialogPresenter.ShowAlert("You can't reply this email because your account is not registered.");
-                cancel = true;
-
-                return;
-            }
-            
-            //mail.HTMLBody = this.Body;
+            this.InternalDecrypt(keyPassword);
         }
         
-
         private void Register()
         {
             this.dialogPresenter.ShowRegisterAccount(this.account);
@@ -210,7 +205,7 @@
 
                 this.ChangeState(EncryptedMailState.ReadMail);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 this.ChangeState(EncryptedMailState.EncryptionFailed);
             }

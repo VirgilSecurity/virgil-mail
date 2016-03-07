@@ -217,6 +217,7 @@
             var exportBase64 = Convert.ToBase64String(exportBytes);
 
             var fileName = this.account.OutlookAccountDescription.ToLower().Replace(" ", "_");
-            this.dialogPresenter.SaveFile(fileName, exportBase64, "vcard");}
+            this.dialogPresenter.SaveFile(fileName, exportBase64, "vcard");
+        }
     }
 }

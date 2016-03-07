@@ -95,12 +95,12 @@
     <ROW File="Virgil.Mail.dll.manifest" Component_="Virgil.Mail.dll.manifest" FileName="VIRGIL~1.MAN|Virgil.Mail.dll.manifest" Attributes="0" SourcePath="..\Virgil.Mail\bin\Release\Virgil.Mail.dll.manifest" SelfReg="false" NextFile="Virgil.Mail.vsto"/>
     <ROW File="Virgil.Mail.vsto" Component_="Virgil.Mail.dll.manifest" FileName="VIRGIL~1.VST|Virgil.Mail.vsto" Attributes="0" SourcePath="..\Virgil.Mail\bin\Release\Virgil.Mail.vsto" SelfReg="false" NextFile="Virgil.SDK.dll"/>
     <ROW File="Virgil.SDK.dll" Component_="Virgil.SDK.dll" FileName="VIRGIL~3.DLL|Virgil.SDK.dll" Attributes="0" SourcePath="..\Virgil.Mail\bin\Release\Virgil.SDK.dll" SelfReg="false" NextFile="virgil_crypto_net.dll"/>
-    <ROW File="updater.exe" Component_="updater.exe" FileName="VIRGIL~1.EXE|Virgil Mail Updater.exe" Version="65535.65535.65535.65535" Attributes="0" SourcePath="&lt;AI_STUBS&gt;updater.exe" SelfReg="false" NextFile="Autofac.dll" DigSign="true"/>
+    <ROW File="updater.exe" Component_="updater.exe" FileName="VIRGIL~2.EXE|VirgilMailUpdater.exe" Version="65535.65535.65535.65535" Attributes="0" SourcePath="&lt;AI_STUBS&gt;updater.exe" SelfReg="false" NextFile="Autofac.dll" DigSign="true"/>
     <ROW File="virgil_crypto_net.dll" Component_="virgil_crypto_net.dll" FileName="VIRGIL~1.DLL|virgil_crypto_net.dll" Attributes="0" SourcePath="..\Virgil.Mail\bin\Release\x64\virgil_crypto_net.dll" SelfReg="false" NextFile="virgil_crypto_net.dll_1"/>
     <ROW File="virgil_crypto_net.dll_1" Component_="virgil_crypto_net.dll_1" FileName="VIRGIL~1.DLL|virgil_crypto_net.dll" Attributes="0" SourcePath="..\Virgil.Mail\bin\Release\x86\virgil_crypto_net.dll" SelfReg="false" NextFile="updater.exe"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.BootstrOptComponent">
-    <ROW BootstrOptKey="GlobalOptions" GeneralOptions="b" DownloadFolder="[AppDataFolder][|Manufacturer]\[|ProductName]\prerequisites" UpdatesUrl="https://downloads.virgilsecurity.com/apps/virgil-mail/outlook/virgil_mail_[|ProductVersion].exe" EulaPathLocId="*" IntroTextPathLocId="*"/>
+    <ROW BootstrOptKey="GlobalOptions" GeneralOptions="b" DownloadFolder="[AppDataFolder][|Manufacturer]\[|ProductName]\prerequisites" EulaPathLocId="*" IntroTextPathLocId="*"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.BuildComponent">
     <ROW BuildKey="DefaultBuild" BuildName="DefaultBuild" BuildOrder="1" BuildType="0" PackageFolder="Output" PackageFileName="virgil_mail_[|ProductVersion]" Languages="en" InstallationType="4" CabsLocation="1" PackageType="1" FilesInsideExe="true" ExtractionFolder="[AppDataFolder][|Manufacturer]\[|ProductName] [|ProductVersion]\install" UseLargeSchema="true" ExeName="virgil_mail_[|ProductVersion]" MsiPackageType="x64" UACExecutionLevel="2"/>
@@ -206,16 +206,16 @@
     <ROW Signature_="CaspolExeSignature" Path="[WindowsFolder]Microsoft.NET\Framework\v2.0.50727" Depth="0"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiIniFileComponent">
-    <ROW IniFile="AppDir" FileName="VIRGIL~1.INI|Virgil Mail Updater.ini" DirProperty="APPDIR" Section="General" Key="AppDir" Value="[APPDIR]" Action="0" Component_="updater.exe"/>
-    <ROW IniFile="ApplicationName" FileName="VIRGIL~1.INI|Virgil Mail Updater.ini" DirProperty="APPDIR" Section="General" Key="ApplicationName" Value="[ProductName]" Action="0" Component_="updater.exe"/>
-    <ROW IniFile="ApplicationVersion" FileName="VIRGIL~1.INI|Virgil Mail Updater.ini" DirProperty="APPDIR" Section="General" Key="ApplicationVersion" Value="[ProductVersion]" Action="0" Component_="updater.exe"/>
-    <ROW IniFile="CheckFrequency" FileName="VIRGIL~1.INI|Virgil Mail Updater.ini" DirProperty="APPDIR" Section="General" Key="CheckFrequency" Value="1" Action="0" Component_="updater.exe"/>
-    <ROW IniFile="CompanyName" FileName="VIRGIL~1.INI|Virgil Mail Updater.ini" DirProperty="APPDIR" Section="General" Key="CompanyName" Value="[Manufacturer]" Action="0" Component_="updater.exe"/>
-    <ROW IniFile="DefaultCommandLine" FileName="VIRGIL~1.INI|Virgil Mail Updater.ini" DirProperty="APPDIR" Section="General" Key="DefaultCommandLine" Value="/checknow" Action="0" Component_="updater.exe"/>
-    <ROW IniFile="DownloadsFolder" FileName="VIRGIL~1.INI|Virgil Mail Updater.ini" DirProperty="APPDIR" Section="General" Key="DownloadsFolder" Value="[CommonAppDataFolder][Manufacturer]\[ProductName]\updates\" Action="0" Component_="updater.exe"/>
-    <ROW IniFile="Flags" FileName="VIRGIL~1.INI|Virgil Mail Updater.ini" DirProperty="APPDIR" Section="General" Key="Flags" Value="NoDisableAutoCheck|PerMachine|NoUpdaterInstallGUI" Action="0" Component_="updater.exe"/>
-    <ROW IniFile="ID" FileName="VIRGIL~1.INI|Virgil Mail Updater.ini" DirProperty="APPDIR" Section="General" Key="ID" Value="[UpgradeCode]" Action="0" Component_="updater.exe"/>
-    <ROW IniFile="URL" FileName="VIRGIL~1.INI|Virgil Mail Updater.ini" DirProperty="APPDIR" Section="General" Key="URL" Value="https://downloads.virgilsecurity.com/apps/virgil-mail/outlook/virgil_mail_updates.txt" Action="0" Component_="updater.exe"/>
+    <ROW IniFile="AppDir" FileName="VIRGIL~2.INI|VirgilMailUpdater.ini" DirProperty="APPDIR" Section="General" Key="AppDir" Value="[APPDIR]" Action="0" Component_="updater.exe"/>
+    <ROW IniFile="ApplicationName" FileName="VIRGIL~2.INI|VirgilMailUpdater.ini" DirProperty="APPDIR" Section="General" Key="ApplicationName" Value="[ProductName]" Action="0" Component_="updater.exe"/>
+    <ROW IniFile="ApplicationVersion" FileName="VIRGIL~2.INI|VirgilMailUpdater.ini" DirProperty="APPDIR" Section="General" Key="ApplicationVersion" Value="[ProductVersion]" Action="0" Component_="updater.exe"/>
+    <ROW IniFile="CheckFrequency" FileName="VIRGIL~2.INI|VirgilMailUpdater.ini" DirProperty="APPDIR" Section="General" Key="CheckFrequency" Value="1" Action="0" Component_="updater.exe"/>
+    <ROW IniFile="CompanyName" FileName="VIRGIL~2.INI|VirgilMailUpdater.ini" DirProperty="APPDIR" Section="General" Key="CompanyName" Value="[Manufacturer]" Action="0" Component_="updater.exe"/>
+    <ROW IniFile="DefaultCommandLine" FileName="VIRGIL~2.INI|VirgilMailUpdater.ini" DirProperty="APPDIR" Section="General" Key="DefaultCommandLine" Value="/checknow" Action="0" Component_="updater.exe"/>
+    <ROW IniFile="DownloadsFolder" FileName="VIRGIL~2.INI|VirgilMailUpdater.ini" DirProperty="APPDIR" Section="General" Key="DownloadsFolder" Value="[CommonAppDataFolder][Manufacturer]\[ProductName]\updates\" Action="0" Component_="updater.exe"/>
+    <ROW IniFile="Flags" FileName="VIRGIL~2.INI|VirgilMailUpdater.ini" DirProperty="APPDIR" Section="General" Key="Flags" Value="NoDisableAutoCheck|PerMachine|NoUpdaterInstallGUI" Action="0" Component_="updater.exe"/>
+    <ROW IniFile="ID" FileName="VIRGIL~2.INI|VirgilMailUpdater.ini" DirProperty="APPDIR" Section="General" Key="ID" Value="[UpgradeCode]" Action="0" Component_="updater.exe"/>
+    <ROW IniFile="URL" FileName="VIRGIL~2.INI|VirgilMailUpdater.ini" DirProperty="APPDIR" Section="General" Key="URL" Value="https://downloads.virgilsecurity.com/apps/virgil-mail/outlook/virgil_mail_updates.txt" Action="0" Component_="updater.exe"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiInstExSeqComponent">
     <ROW Action="AI_DOWNGRADE" Condition="AI_NEWERPRODUCTFOUND AND (UILevel &lt;&gt; 5)" Sequence="210"/>

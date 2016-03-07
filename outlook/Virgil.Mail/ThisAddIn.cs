@@ -1,6 +1,8 @@
 ﻿namespace Virgil.Mail
 {
     using System;
+    using System.Diagnostics;
+    using System.IO;
     using System.Windows;
 
     using Virgil.Mail.Common;
@@ -130,6 +132,27 @@
 
             this.Application.ItemSend += this.OnApplicationMailSend;
             this.ActiveExplorer.SelectionChange += this.OnExplorerSelectionChange;
+
+            try
+            {
+                //Get the assembly informationSystem.Reflection.Assembly
+                var assemblyInfo = System.Reflection.Assembly.GetExecutingAssembly();
+
+                //CodeBase is the location of the ClickOnce deployment files
+                var uriCodeBase = new Uri(assemblyInfo.CodeBase);
+                var clickOnceLocation = Path.GetDirectoryName(uriCodeBase.LocalPath);
+
+                if (clickOnceLocation == null)
+                {
+                    throw new Exception("Application folder is not found.");
+                }
+
+                Process.Start(Path.Combine(clickOnceLocation, "VirgilMailUpdater.exe"));
+            }
+            catch (Exception)
+            {
+                // TODO: Need to handle errors on updating the add-in.
+            }
         }
         
         private void OnAddInShutdown(object sender, EventArgs e)

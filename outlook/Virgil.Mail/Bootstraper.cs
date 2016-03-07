@@ -34,7 +34,7 @@
             builder.RegisterInstance(new MailObserver(application)).As<IMailObserver>();
             builder.RegisterInstance(virgilHub).As<VirgilHub>();
             builder.RegisterType<IsolatedStorageProvider>().As<IStorageProvider>();
-            builder.RegisterType<AccountsManager>().As<IAccountsManager>();
+            builder.RegisterType<AccountsManager>().As<IAccountsManager>().SingleInstance();
             builder.RegisterType<PrivateKeysStorage>().As<IPrivateKeysStorage>();
             builder.RegisterType<EncryptedKeyValueStorage>().As<IEncryptedKeyValueStorage>();
             builder.RegisterType<PasswordHolder>().As<IPasswordHolder>();

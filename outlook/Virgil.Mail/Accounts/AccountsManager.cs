@@ -6,18 +6,24 @@
 
     using Virgil.Mail.Common;
     using Virgil.Mail.Models;
-
+    
     internal class AccountsManager : IAccountsManager
     {
         private readonly IOutlookInteraction outlook;
         private readonly IEncryptedKeyValueStorage storage;
+        private readonly List<AccountModel> internalAccounts;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AccountsManager"/> class.
+        /// </summary>
         public AccountsManager(IOutlookInteraction outlook, IEncryptedKeyValueStorage storage)
         {
             this.outlook = outlook;
             this.storage = storage;
+
+            this.internalAccounts = new List<AccountModel>();
         }
-        
+
         public AccountModel GetAccount(string identity)
         {
             var accounts = this.GetMergedAccounts();
@@ -101,7 +107,16 @@
                 accounts.Add(accountModel);
             }
 
-            return accounts;
+            foreach (var accountModel in accounts)
+            {
+                if (!this.internalAccounts.Any(a => a.OutlookAccountEmail.Equals(accountModel.OutlookAccountEmail,
+                    StringComparison.CurrentCultureIgnoreCase)))
+                {
+                    this.internalAccounts.Add(accountModel);
+                }
+            }
+            
+            return this.internalAccounts;
         }
 
         private void AcceptChanges(IList<AccountModel> accounts)

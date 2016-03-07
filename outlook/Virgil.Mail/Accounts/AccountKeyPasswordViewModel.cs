@@ -3,26 +3,43 @@
     using System.Text;
     using System.Windows.Controls;
     using System.Windows.Input;
-
+    using Virgil.Mail.Common;
     using Virgil.Mail.Mvvm;
     using Virgil.Mail.Common.Mvvm;
 
     public class AccountKeyPasswordViewModel : ViewModel
     {
-        private string password;
+        private readonly IPasswordHolder passwordHolder;
+        private readonly IAccountsManager accountsManager;
+        
         private byte[] privateKey;
+        private string accountEmail;
+        private bool isStorePassword;
 
-        public AccountKeyPasswordViewModel()
+        public AccountKeyPasswordViewModel(IPasswordHolder passwordHolder, IAccountsManager accountsManager)
         {
+            this.passwordHolder = passwordHolder;
+            this.accountsManager = accountsManager;
             this.AcceptCommand = new RelayCommand(this.Accept);
             this.CancelCommand = new RelayCommand(this.Cancel);
         }
 
         public ICommand AcceptCommand { get; set; }
         public ICommand CancelCommand { get; set; }
-        
-        public void Initialize(byte[] checkingPrivateKey)
+
+        public bool IsStorePassword
         {
+            get { return this.isStorePassword; }
+            set
+            {
+                this.isStorePassword = value;
+                this.RaisePropertyChanged();
+            }
+        }
+
+        public void Initialize(string accountSmtpAddress, byte[] checkingPrivateKey)
+        {
+            this.accountEmail = accountSmtpAddress;
             this.privateKey = checkingPrivateKey;
         }
 
@@ -42,6 +59,15 @@
             {
                 passwordBox.Clear();
                 return;
+            }
+
+            if (this.IsStorePassword)
+            {
+                var account = this.accountsManager.GetAccount(this.accountEmail);
+                this.passwordHolder.Keep(this.accountEmail, password);
+
+                account.IsPrivateKeyPasswordNeedToStore = true;
+                this.accountsManager.UpdateAccount(account);
             }
 
             this.Result = password;
