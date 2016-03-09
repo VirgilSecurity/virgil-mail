@@ -54,7 +54,7 @@
             Outlook.NameSpace ns = null;
             Outlook.Accounts accounts = null;
             Outlook.Account account = null;
-
+            
             var result = new List<AccountIntegrationModel>();
 
             try
