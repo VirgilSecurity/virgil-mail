@@ -52,6 +52,7 @@ static VirgilAccountsViewController * currentController = nil;
     VirgilActionsViewController * _viewWaitPrivateKey;
     VirgilActionsViewController * _viewWaitDeletion;
     VirgilActionsViewController * _viewNoStatus;
+    VirgilActionsViewController * _viewAccountRecreate;
 }
 
 @synthesize items = _items;
@@ -67,6 +68,7 @@ static VirgilAccountsViewController * currentController = nil;
     _viewWaitPrivateKey = (VirgilActionsViewController *) [storyboard instantiateControllerWithIdentifier : @"viewWaitConfirmationPrivKey"];
     _viewWaitDeletion = (VirgilActionsViewController *) [storyboard instantiateControllerWithIdentifier : @"viewWaitDeletion"];
     _viewNoStatus = (VirgilActionsViewController *) [storyboard instantiateControllerWithIdentifier : @"viewNoStatus"];
+    _viewAccountRecreate = (VirgilActionsViewController *) [storyboard instantiateControllerWithIdentifier : @"viewAccountRecreate"];
     
     [super viewDidLoad];
     [self items];
@@ -106,6 +108,7 @@ static VirgilAccountsViewController * currentController = nil;
     else if (statusPublicKeyPresent == info.status) item.accountImage = [NSImage imageNamed:@"attention"];
     else if (statusWaitActivation == info.status) item.accountImage = [NSImage imageNamed:@"attention"];
     else if (statusWaitPrivateKey == info.status) item.accountImage = [NSImage imageNamed:@"attention"];
+    else if (statusWaitRecreate == info.status) item.accountImage = [NSImage imageNamed:@"attention"];
     else if (statusWaitDeletion == info.status) item.accountImage = [NSImage imageNamed:@"ok"];
     return item;
 }
@@ -191,6 +194,7 @@ static VirgilAccountsViewController * currentController = nil;
     else if (statusWaitPrivateKey == accountItem.status) return [self switchEmbedViewTo : _viewWaitPrivateKey];
     else if (statusWaitDeletion == accountItem.status) return [self switchEmbedViewTo : _viewWaitDeletion];
     else if (statusUnknown == accountItem.status) return [self switchEmbedViewTo : _viewNoStatus];
+    else if (statusWaitRecreate == accountItem.status) return [self switchEmbedViewTo : _viewAccountRecreate];
     
     return nil;
 }

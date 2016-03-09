@@ -726,12 +726,14 @@ NSInteger _checkCounter = 0;
                  }];
 }
 
-- (IBAction)onRecteatKeys:(id)sender {
-    [VirgilKeyChain removeContainer : _account];
-    [[VirgilProcessingManager sharedInstance] clearDecryptionCache];
-    [self onCreateKeysClicked:sender];
+- (IBAction)onRecreateKeys:(id)sender {
+    [[VirgilKeyManager sharedInstance] setWaitAccountRecreation:_account needRecreation:YES];
+    [self delegateRefresh];
 }
 
-
+- (IBAction)onCancelRecreate:(id)sender {
+    [[VirgilKeyManager sharedInstance] setWaitAccountRecreation:_account needRecreation:NO];
+    [self delegateRefresh];
+}
 
 @end

@@ -41,6 +41,7 @@
 #define kIsActive           @"IsActive"
 #define kIsWaitPrivateKey   @"IsWaitPrivateKey"
 #define kIsWaitForDeletion  @"IsWaitForDeletion"
+#define kIsWaitRecreation   @"IsWaitRecreation"
 
 @implementation VirgilKeyChainContainer
 
@@ -55,6 +56,7 @@
         _isActive = YES;
         _isWaitPrivateKey = NO;
         _isWaitForDeletion = NO;
+        _isWaitRecreation = NO;
     }
     return self;
 }
@@ -63,13 +65,15 @@
              andPublicKey : (VirgilPublicKey *)publicKey
                  isActive : (BOOL)isActive
          isWaitPrivateKey : (BOOL)isWaitPrivateKey
-        isWaitForDeletion : (BOOL)isWaitForDeletion {
+        isWaitForDeletion : (BOOL)isWaitForDeletion
+         isWaitRecreation : (BOOL)isWaitRecreation {
     if ([super init]) {
         _privateKey = privateKey;
         _publicKey = publicKey;
         _isActive = isActive;
         _isWaitPrivateKey = isWaitPrivateKey;
         _isWaitForDeletion = isWaitForDeletion;
+        _isWaitRecreation = isWaitRecreation;
     }
     return self;
 }
@@ -80,6 +84,7 @@
     [encoder encodeBool : _isActive forKey : kIsActive];
     [encoder encodeBool : _isWaitPrivateKey forKey : kIsWaitPrivateKey];
     [encoder encodeBool : _isWaitForDeletion forKey : kIsWaitForDeletion];
+    [encoder encodeBool : _isWaitRecreation forKey : kIsWaitRecreation];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {
@@ -88,11 +93,13 @@
     BOOL active = [decoder decodeBoolForKey : kIsActive];
     BOOL waitPrivateKey = [decoder decodeBoolForKey : kIsWaitPrivateKey];
     BOOL waitForDeletion = [decoder decodeBoolForKey : kIsWaitForDeletion];
+    BOOL waitRecreation = [decoder decodeBoolForKey : kIsWaitRecreation];
     return [self initWithPrivateKey : privateKey
                        andPublicKey : publicKey
                            isActive : active
                    isWaitPrivateKey : waitPrivateKey
-                  isWaitForDeletion : waitForDeletion];
+                  isWaitForDeletion : waitForDeletion
+                   isWaitRecreation : waitRecreation];
 }
 
 - (NSString *) description {
@@ -104,6 +111,7 @@
     [res appendFormat:@"isActive : %hhd\n", _isActive];
     [res appendFormat:@"isWaitPrivateKey : %hhd\n", _isWaitPrivateKey];
     [res appendFormat:@"isWaitForDeletion : %hhd\n", _isWaitForDeletion];
+    [res appendFormat:@"isWaitRecreation : %hhd\n", _isWaitRecreation];
     [res appendString:@"} \n"];
     return res;
 }

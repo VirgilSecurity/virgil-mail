@@ -186,6 +186,9 @@ typedef NS_ENUM(NSUInteger, VirgilSetPrivateKeyResult) {
                                                containerType : (VirgilContainerType) containerType
                                                      account : (NSString *) account;
 
+- (void) setWaitAccountRecreation : (NSString *) account
+                   needRecreation : (BOOL) needRecreation;
+
 /**
  * @brief Check is correct private key.
  * @return boolean is key correct

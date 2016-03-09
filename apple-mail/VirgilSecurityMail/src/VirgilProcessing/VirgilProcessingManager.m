@@ -602,7 +602,13 @@
                 res.status = statusWaitActivation;
             }
         } else {
-            res.status = container.isWaitPrivateKey ? statusWaitPrivateKey : statusPublicKeyPresent;
+            if (container.isWaitPrivateKey) {
+                res.status = statusWaitPrivateKey;
+            } else if (container.isWaitRecreation) {
+                res.status = statusWaitRecreate;
+            } else {
+                res.status = statusPublicKeyPresent;
+            }
         }
     } else {
         if (YES == checkInCloud) {
@@ -740,7 +746,8 @@
                                                andPublicKey : publicKey
                                                    isActive : isActive
                                            isWaitPrivateKey : NO
-                                          isWaitForDeletion : NO];
+                                          isWaitForDeletion : NO
+                                           isWaitRecreation : NO];
     
     [VirgilKeyChain saveContainer : container
                        forAccount : account];

@@ -163,13 +163,15 @@
                                                                    andPublicKey : resPubKey
                                                                        isActive : keyChainContainer.isActive
                                                                isWaitPrivateKey : keyChainContainer.isWaitPrivateKey
-                                                              isWaitForDeletion : keyChainContainer.isWaitForDeletion];
+                                                              isWaitForDeletion : keyChainContainer.isWaitForDeletion
+                                                               isWaitRecreation : NO];
     } else {
         keyChainContainer = [[VirgilKeyChainContainer alloc] initWithPrivateKey : nil
                                                                    andPublicKey : resPubKey
                                                                        isActive : YES
                                                                isWaitPrivateKey : NO
-                                                              isWaitForDeletion : NO];
+                                                              isWaitForDeletion : NO
+                                                               isWaitRecreation : NO];
     }
     [VirgilKeyChain saveContainer : keyChainContainer
                        forAccount : account];
@@ -248,7 +250,8 @@
                                            andPublicKey : publicKeyInfo
                                                isActive : NO
                                        isWaitPrivateKey : NO
-                                      isWaitForDeletion : NO];
+                                      isWaitForDeletion : NO
+                                       isWaitRecreation : NO];
     [VirgilKeyChain saveContainer : container
                        forAccount : account];
     
@@ -609,7 +612,8 @@
                                            andPublicKey : pubKey
                                                isActive : YES
                                        isWaitPrivateKey : NO
-                                      isWaitForDeletion : NO];
+                                      isWaitForDeletion : NO
+                                       isWaitRecreation : NO];
     [VirgilKeyChain saveContainer : updatedContainer
                        forAccount : updatedContainer.privateKey.account];
     
@@ -726,7 +730,8 @@
                                                                                  andPublicKey : publicKey
                                                                                      isActive : YES
                                                                              isWaitPrivateKey : NO
-                                                                            isWaitForDeletion : NO];
+                                                                            isWaitForDeletion : NO
+                                                                             isWaitRecreation : NO];
     [VirgilKeyChain saveContainer:container forAccount:account];
     return YES;
 }
@@ -896,7 +901,8 @@
                                                         andPublicKey : keyChainContainer.publicKey
                                                             isActive : YES
                                                     isWaitPrivateKey : NO
-                                                   isWaitForDeletion : NO];
+                                                   isWaitForDeletion : NO
+                                                    isWaitRecreation : NO];
                 [VirgilKeyChain saveContainer:updatedConteiner forAccount:account];
                 return updatedConteiner;
             }
@@ -942,6 +948,15 @@
     [[VirgilKeyManager sharedInstance] setPrivateKey : preparedKey
                                           forAccount : account];
     return kSaveDone;
+}
+
+- (void) setWaitAccountRecreation : (NSString *) account
+                   needRecreation : (BOOL) needRecreation {
+    VirgilKeyChainContainer * keyChainContainer = [VirgilKeyChain loadContainer : account];
+    if (keyChainContainer != nil) {
+        keyChainContainer.isWaitRecreation = needRecreation;
+        [VirgilKeyChain saveContainer:keyChainContainer forAccount:account];
+    }
 }
 
 /**

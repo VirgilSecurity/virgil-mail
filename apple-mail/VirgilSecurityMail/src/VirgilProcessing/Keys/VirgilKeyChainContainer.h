@@ -45,13 +45,15 @@
              andPublicKey : (VirgilPublicKey *)publicKey
                  isActive : (BOOL)isActive
          isWaitPrivateKey : (BOOL)isWaitPrivateKey
-        isWaitForDeletion : (BOOL)isWaitForDeletion;
+        isWaitForDeletion : (BOOL)isWaitForDeletion
+         isWaitRecreation : (BOOL)isWaitRecreation;
 
 @property (retain, readonly) VirgilPrivateKey * privateKey;
 @property (retain, readonly) VirgilPublicKey * publicKey;
 @property (readonly) BOOL isActive;
 @property BOOL isWaitPrivateKey;
 @property BOOL isWaitForDeletion;
+@property BOOL isWaitRecreation;
 
 // NSCoder
 - (void) encodeWithCoder : (NSCoder *)encoder;
