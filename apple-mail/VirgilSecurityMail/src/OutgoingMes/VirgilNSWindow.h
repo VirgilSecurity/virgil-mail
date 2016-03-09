@@ -38,7 +38,7 @@
 
 @interface NSWindow (Virgil)
 
-- (void) MAToggleFullScreen : (id)sender;
+- (void) VSMToggleFullScreen : (id)sender;
 
 - (void) addMenu : (NSView *)menu;
 - (void) setPositionOfMenu : (NSView *)menu;

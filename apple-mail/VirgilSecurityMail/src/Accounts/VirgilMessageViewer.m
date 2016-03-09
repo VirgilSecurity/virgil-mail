@@ -41,10 +41,10 @@ MessageViewer * messageViewer = nil;
 
 @implementation VirgilMessageViewer
 
-+ (void)MA_registerNewViewer:(id)arg1 {
++ (void)VSM_registerNewViewer:(id)arg1 {
     messageViewer = arg1;
-    NSLog(@"MA_registerNewViewer");
-    [self MA_registerNewViewer:arg1];
+    NSLog(@"VSM_registerNewViewer");
+    [self VSM_registerNewViewer:arg1];
 }
 
 + (BOOL)checkNewMail {

@@ -38,8 +38,8 @@
 
 @implementation VirgilMailToolbar
 
-+ (id)MA_plistForToolbarWithIdentifier:(id)arg1 {
-    id ret = [self MA_plistForToolbarWithIdentifier:arg1];
++ (id)VSM_plistForToolbarWithIdentifier:(id)arg1 {
+    id ret = [self VSM_plistForToolbarWithIdentifier:arg1];
     
     if(![arg1 isEqualToString:@"ComposeWindow"])
         return ret;

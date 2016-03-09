@@ -40,6 +40,6 @@
 
 @interface VirgilMailToolbar : NSObject
 
-+ (id)MA_plistForToolbarWithIdentifier:(id)arg1;
++ (id)VSM_plistForToolbarWithIdentifier:(id)arg1;
 
 @end

@@ -40,7 +40,7 @@
 
 @interface NSToolbar (Virgil)
 
-- (id) MAConfigureToolbarItems;
+- (id) VSMConfigureToolbarItems;
 
 @end
 

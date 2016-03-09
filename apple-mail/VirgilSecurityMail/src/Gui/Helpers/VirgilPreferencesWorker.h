@@ -38,13 +38,13 @@
 
 @interface NSPreferences (Virgil)
 
-+ (id) MASharedPreferences;
++ (id) VSMSharedPreferences;
 - (NSSize) sizeForWindowShowingAllToolbarItems : (NSWindow *)window;
-- (NSSize) MAWindowWillResize : (id)window
+- (NSSize) VSMWindowWillResize : (id)window
                        toSize : (NSSize)toSize;
 - (void) resizeWindowToShowAllToolbarItems : (NSWindow *)window;
-- (void) MAToolbarItemClicked : (id)toolbarItem;
-- (void) MAShowPreferencesPanelForOwner : (id)owner;
+- (void) VSMToolbarItemClicked : (id)toolbarItem;
+- (void) VSMShowPreferencesPanelForOwner : (id)owner;
 
 + (NSString *) virgilPreferencesName;
 

@@ -43,8 +43,8 @@
 
 @implementation VirgilHeadersEditor
 
-- (void)MAChangeFromHeader:(id)arg1 {
-    [self MAChangeFromHeader:arg1];
+- (void)VSMChangeFromHeader:(id)arg1 {
+    [self VSMChangeFromHeader:arg1];
 #if 0
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
          [self checkAccount];

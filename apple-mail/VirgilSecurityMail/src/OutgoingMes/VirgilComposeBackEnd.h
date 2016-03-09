@@ -40,12 +40,12 @@
 
 @interface VirgilComposeBackEnd : NSObject
 
-- (id) MA_makeMessageWithContents : (WebComposeMessageContents *)contents
-                          isDraft : (BOOL)isDraft
-                       shouldSign : (BOOL)shouldSign
-                    shouldEncrypt : (BOOL)shouldEncrypt
-              shouldSkipSignature : (BOOL)shouldSkipSignature
-                shouldBePlainText : (BOOL)shouldBePlainText;
+- (id) VSM_makeMessageWithContents : (WebComposeMessageContents *)contents
+                           isDraft : (BOOL)isDraft
+                        shouldSign : (BOOL)shouldSign
+                     shouldEncrypt : (BOOL)shouldEncrypt
+               shouldSkipSignature : (BOOL)shouldSkipSignature
+                 shouldBePlainText : (BOOL)shouldBePlainText;
 @end
 
 @interface VirgilComposeBackEnd (NativeComposeBackEndMethods)

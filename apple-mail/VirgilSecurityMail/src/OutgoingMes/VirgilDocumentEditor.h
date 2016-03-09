@@ -38,10 +38,10 @@
 #import "VirgilMenu.h"
 
 @interface VirgilDocumentEditor : NSObject <NSMenuDelegate, VirgilMenuViewDelegate>
-- (void) MABackEndDidLoadInitialContent : (id)content;
-- (void) MADealloc;
-- (void) MAShow;
-- (void) MASend:(id)arg1;
+- (void) VSMBackEndDidLoadInitialContent : (id)content;
+- (void) VSMDealloc;
+- (void) VSMShow;
+- (void) VSMSend:(id)arg1;
 
 - (void) addMenu;
 - (void) didExitFullScreen : (NSNotification *)notification;

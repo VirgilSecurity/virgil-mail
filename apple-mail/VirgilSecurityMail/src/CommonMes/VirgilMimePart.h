@@ -40,12 +40,12 @@
 #import <MFMimeDecodeContext.h>
 
 @interface VirgilMimePart : NSObject
-- (id)MADecodeWithContext:(id)ctx;
-- (id)MADecodeTextPlainWithContext:(MFMimeDecodeContext *)ctx;
-- (id)MADecodeTextHtmlWithContext:(MFMimeDecodeContext *)ctx;
-- (id)MADecodeApplicationOctet_streamWithContext:(MFMimeDecodeContext *)ctx;
-- (void)MAClearCachedDecryptedMessageBody;
-- (BOOL)MAHasCachedDataInStore;
+- (id)MVSMDecodeWithContext:(id)ctx;
+- (id)VSMDecodeTextPlainWithContext:(MFMimeDecodeContext *)ctx;
+- (id)VSMDecodeTextHtmlWithContext:(MFMimeDecodeContext *)ctx;
+- (id)VSMDecodeApplicationOctet_streamWithContext:(MFMimeDecodeContext *)ctx;
+- (void)VSMClearCachedDecryptedMessageBody;
+- (BOOL)VSMHasCachedDataInStore;
 @end
 
 @interface VirgilMimePart (NativeMimePartMethods)

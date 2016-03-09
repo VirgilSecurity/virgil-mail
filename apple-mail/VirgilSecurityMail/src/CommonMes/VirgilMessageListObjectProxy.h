@@ -39,8 +39,8 @@
 
 @interface VirgilMessageListObjectProxy : NSObject
 
-- (void)MA_updateSnippet;
-- (void)MA_updatePhoto;
-- (void)MA_updateContactPhotoVisibilityFromDefaults;
+- (void)VSM_updateSnippet;
+- (void)VSM_updatePhoto;
+- (void)VSM_updateContactPhotoVisibilityFromDefaults;
 
 @end

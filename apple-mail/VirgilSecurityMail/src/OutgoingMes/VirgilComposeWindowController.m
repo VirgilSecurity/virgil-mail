@@ -41,8 +41,8 @@
 
 @implementation VirgilComposeWindowController
 
-- (id)MAToolbarDefaultItemIdentifiers:(id)toolbar {
-    id defaultItemIdentifiers = [self MAToolbarDefaultItemIdentifiers:toolbar];
+- (id)VSMToolbarDefaultItemIdentifiers:(id)toolbar {
+    id defaultItemIdentifiers = [self VSMToolbarDefaultItemIdentifiers:toolbar];
     
     NSMutableArray *identifiers = [defaultItemIdentifiers mutableCopy];
     [identifiers addObject:VIRGIL_MENU_IDENTIFIER];
@@ -50,9 +50,9 @@
     return identifiers;
 }
 
-- (id)MAToolbar:(id)toolbar itemForItemIdentifier:(id)itemIdentifier willBeInsertedIntoToolbar:(BOOL)willBeInsertedIntoToolbar {
+- (id)VSMToolbar:(id)toolbar itemForItemIdentifier:(id)itemIdentifier willBeInsertedIntoToolbar:(BOOL)willBeInsertedIntoToolbar {
     if(![itemIdentifier isEqualToString:VIRGIL_MENU_IDENTIFIER]) {
-        return [self MAToolbar:toolbar itemForItemIdentifier:itemIdentifier willBeInsertedIntoToolbar:willBeInsertedIntoToolbar];
+        return [self VSMToolbar:toolbar itemForItemIdentifier:itemIdentifier willBeInsertedIntoToolbar:willBeInsertedIntoToolbar];
     }
     
     for(NSToolbarItem *item in [toolbar items]) {
@@ -72,12 +72,12 @@
     return item;
 }
 
-- (void)MA_performSendAnimation {
-    [self MA_performSendAnimation];
+- (void)VSM_performSendAnimation {
+    [self VSM_performSendAnimation];
 }
 
-- (void)MA_tabBarView:(id)tabBarView performSendAnimationOfTabBarViewItem:(id)tabBarViewItem {
-    [self MA_tabBarView:tabBarView performSendAnimationOfTabBarViewItem:tabBarViewItem];
+- (void)VSM_tabBarView:(id)tabBarView performSendAnimationOfTabBarViewItem:(id)tabBarViewItem {
+    [self VSM_tabBarView:tabBarView performSendAnimationOfTabBarViewItem:tabBarViewItem];
 }
 
 @end

@@ -89,9 +89,9 @@ static BOOL _inAction = NO;
     }
 }
 
-- (id)MADecodeWithContext:(id)ctx {
+- (id)VSMDecodeWithContext:(id)ctx {
     id decryptedPart = nil;
-    id nativePart = [self MADecodeWithContext:ctx];
+    id nativePart = [self VSMDecodeWithContext:ctx];
     
     NSString *className = NSStringFromClass([nativePart class]);
     
@@ -140,38 +140,38 @@ static BOOL _inAction = NO;
             nativePart;
 }
 
-- (id)MADecodeTextPlainWithContext:(MFMimeDecodeContext *)ctx {
+- (id)VSMDecodeTextPlainWithContext:(MFMimeDecodeContext *)ctx {
     id decryptedPart =
             [[VirgilProcessingManager sharedInstance] decryptMessagePart:(MimePart *)self];
     
     return (nil != decryptedPart) ?
             decryptedPart :
-            [self MADecodeTextPlainWithContext:ctx];
+            [self VSMDecodeTextPlainWithContext:ctx];
 }
 
-- (id)MADecodeTextHtmlWithContext:(MFMimeDecodeContext *)ctx {
+- (id)VSMDecodeTextHtmlWithContext:(MFMimeDecodeContext *)ctx {
     id decryptedPart =
                 [[VirgilProcessingManager sharedInstance] decryptMessagePart:(MimePart *)self];
     
     return (nil != decryptedPart) ?
                     decryptedPart :
-                    [self MADecodeTextHtmlWithContext:ctx];
+                    [self VSMDecodeTextHtmlWithContext:ctx];
 }
 
-- (id)MADecodeApplicationOctet_streamWithContext:(MFMimeDecodeContext *)ctx {
-    return [self MADecodeApplicationOctet_streamWithContext:ctx];
+- (id)VSMDecodeApplicationOctet_streamWithContext:(MFMimeDecodeContext *)ctx {
+    return [self VSMDecodeApplicationOctet_streamWithContext:ctx];
 }
 
-- (void)MAClearCachedDecryptedMessageBody {
-    VLogInfo(@"MAClearCachedDecryptedMessageBody");
-    return [self MAClearCachedDecryptedMessageBody];
+- (void)VSMClearCachedDecryptedMessageBody {
+    VLogInfo(@"VSMClearCachedDecryptedMessageBody");
+    return [self VSMClearCachedDecryptedMessageBody];
 }
 
-- (BOOL)MAHasCachedDataInStore {
+- (BOOL)VSMHasCachedDataInStore {
     //if (YES == [[VirgilProcessingManager sharedInstance] isEncryptedByVirgilByAnyPart:(MimePart *)self]) {
     //    return NO;
     //}
-    return [self MAHasCachedDataInStore];
+    return [self VSMHasCachedDataInStore];
 }
 
 @end

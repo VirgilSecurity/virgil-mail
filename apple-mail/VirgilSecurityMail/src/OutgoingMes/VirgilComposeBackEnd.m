@@ -41,18 +41,18 @@
 
 @implementation VirgilComposeBackEnd
 
-- (id) MA_makeMessageWithContents : (WebComposeMessageContents *)contents
+- (id) VSM_makeMessageWithContents : (WebComposeMessageContents *)contents
                           isDraft : (BOOL)isDraft
                        shouldSign : (BOOL)shouldSign
                     shouldEncrypt : (BOOL)shouldEncrypt
               shouldSkipSignature : (BOOL)shouldSkipSignature
                 shouldBePlainText : (BOOL)shouldBePlainText {
-    VLogInfo(@"MA_makeMessageWithContents");
+    VLogInfo(@"VSM_makeMessageWithContents");
 
     VirgilProcessingManager * _vpm = [VirgilProcessingManager sharedInstance];
     BOOL _needEncryption = [_vpm isNeedToEncrypt];
     
-    OutgoingMessage * result = [self MA_makeMessageWithContents : contents
+    OutgoingMessage * result = [self VSM_makeMessageWithContents : contents
                                                         isDraft : isDraft
                                                      shouldSign : shouldSign
                                                   shouldEncrypt : shouldEncrypt

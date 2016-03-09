@@ -43,7 +43,7 @@
 #import "VirgilLog.h"
 #import "VirgilVersion.h"
 
-NSString *VirgilMailMethodPrefix = @"MA";
+NSString *VirgilMailMethodPrefix = @"VSM";
 
 @interface VirgilMain (VirgilNoImplementation)
 + (void)registerBundle;

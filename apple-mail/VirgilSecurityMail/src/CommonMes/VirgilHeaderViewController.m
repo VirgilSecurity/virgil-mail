@@ -59,8 +59,8 @@
 
 @implementation VirgilHeaderViewController
 
-- (void)MA_updateTextStorageWithHardInvalidation:(BOOL)hardValidation {
-    [self MA_updateTextStorageWithHardInvalidation : hardValidation];
+- (void)VSM_updateTextStorageWithHardInvalidation:(BOOL)hardValidation {
+    [self VSM_updateTextStorageWithHardInvalidation : hardValidation];
     
     MCMessage * message = [(ConversationMember *)[(HeaderViewController *)self representedObject] originalMessage];
     MCMimeBody * mimeBody = [message messageBody];

@@ -40,7 +40,7 @@
 
 @implementation NSWindow (Virgil)
 
-- (void) MAToggleFullScreen : (id)sender {
+- (void) VSMToggleFullScreen : (id)sender {
     
 #if 0
     for(DocumentEditor * editor in [/*DocumentEditor*/NSClassFromString(@"DocumentEditor") documentEditors]) {
@@ -50,7 +50,7 @@
     }
 #endif
     
-    [self MAToggleFullScreen:sender];
+    [self VSMToggleFullScreen:sender];
 }
 
 - (void) addMenu : (NSView *)menu {

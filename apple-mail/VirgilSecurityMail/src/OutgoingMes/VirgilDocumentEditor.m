@@ -47,9 +47,9 @@
 
 @implementation VirgilDocumentEditor
 
-- (void) MABackEndDidLoadInitialContent : (id)content {
+- (void) VSMBackEndDidLoadInitialContent : (id)content {
     [self addMenu];
-    [self MABackEndDidLoadInitialContent:content];
+    [self VSMBackEndDidLoadInitialContent:content];
 }
 
 - (void) addMenu {
@@ -89,7 +89,7 @@
     [self checkAccount : nil];
 }
 
-- (void) MASend:(id)arg1 {
+- (void) VSMSend:(id)arg1 {
     NSString * senderEmail;
     
     @try {
@@ -102,7 +102,7 @@
     BOOL canSend = [[VirgilProcessingManager sharedInstance] canSendEmail:senderEmail];
     
     if (canSend) {
-        [self MASend:arg1];
+        [self VSMSend:arg1];
     } else {
         [self checkAccount:nil];
     }
@@ -121,7 +121,7 @@
     @finally {}
 }
 
-- (void)MADealloc {
+- (void)VSMDealloc {
     @try {
         [(NSNotificationCenter *)[NSNotificationCenter defaultCenter] removeObserver:self];
         [(MailNotificationCenter *)[NSClassFromString(@"MailNotificationCenter") defaultCenter] removeObserver:self];
@@ -129,7 +129,7 @@
     @catch(NSException *e) {
         
     }
-    [self MADealloc];
+    [self VSMDealloc];
 }
 
 

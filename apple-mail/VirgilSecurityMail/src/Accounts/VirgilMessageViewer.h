@@ -38,7 +38,7 @@
 
 @interface VirgilMessageViewer : NSObject
 
-+ (void)MA_registerNewViewer:(id)arg1;
++ (void)VSM_registerNewViewer:(id)arg1;
 
 + (BOOL)checkNewMail;
 

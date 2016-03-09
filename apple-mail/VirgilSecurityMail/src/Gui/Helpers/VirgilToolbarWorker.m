@@ -41,8 +41,8 @@
 
 @implementation NSToolbar (Virgil)
 
-- (id) MAConfigureToolbarItems {
-    id result = [self MAConfigureToolbarItems];
+- (id) VSMConfigureToolbarItems {
+    id result = [self VSMConfigureToolbarItems];
     
     NSString * tbName = [self identifier];
     NSArray  * toolbarArray = nil;

@@ -49,10 +49,10 @@ static NSString * _preferencesName = @"Virgil";
     return _preferencesName;
 }
 
-+ (id) MASharedPreferences {
++ (id) VSMSharedPreferences {
     static BOOL added = NO;
     
-	id preferences = [self MASharedPreferences];
+	id preferences = [self VSMSharedPreferences];
     if(nil == preferences) return nil;
     
     if (added) return preferences;
@@ -85,9 +85,9 @@ static NSString * _preferencesName = @"Virgil";
     return NSMakeSize(width > frame.size.width ? width : frame.size.width, frame.size.height);
 }
 
-- (NSSize)MAWindowWillResize:(id)window toSize:(NSSize)toSize {
+- (NSSize)VSMWindowWillResize:(id)window toSize:(NSSize)toSize {
     if(NO == _showAllItems)
-        return [self MAWindowWillResize:window toSize:toSize];
+        return [self VSMWindowWillResize:window toSize:toSize];
     
     NSSize newSize = [self sizeForWindowShowingAllToolbarItems:window];
     _showAllItems = NO;
@@ -101,13 +101,13 @@ static NSString * _preferencesName = @"Virgil";
     [window setFrame:frame display:YES];
 }
 
-- (void)MAToolbarItemClicked:(id)toolbarItem {
-    [self MAToolbarItemClicked : toolbarItem];
+- (void)VSMToolbarItemClicked:(id)toolbarItem {
+    [self VSMToolbarItemClicked : toolbarItem];
     [self resizeWindowToShowAllToolbarItems:[self valueForKey:@"_preferencesPanel"]];
 }
 
-- (void)MAShowPreferencesPanelForOwner:(id)owner {
-    [self MAShowPreferencesPanelForOwner:owner];
+- (void)VSMShowPreferencesPanelForOwner:(id)owner {
+    [self VSMShowPreferencesPanelForOwner:owner];
     [self resizeWindowToShowAllToolbarItems:[self valueForKey:@"_preferencesPanel"]];
 }
 

@@ -38,6 +38,6 @@
 
 @interface VirgilHeaderViewController : NSObject
 
-- (void)MA_updateTextStorageWithHardInvalidation:(BOOL)hardValidation;
+- (void)VSM_updateTextStorageWithHardInvalidation:(BOOL)hardValidation;
 
 @end

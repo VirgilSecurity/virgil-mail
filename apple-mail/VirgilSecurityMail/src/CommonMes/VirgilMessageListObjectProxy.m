@@ -47,8 +47,8 @@ static BOOL _virgilShowPhotos = NO;
 
 @implementation VirgilMessageListObjectProxy
 
-- (void)MA_updateSnippet {
-    [self MA_updateSnippet];
+- (void)VSM_updateSnippet {
+    [self VSM_updateSnippet];
     MCMimeBody * mimeBody = [((MFMessageThread *)((MessageListObjectProxy *)self).message).newestMessage messageBody];
     if (YES == [[VirgilProcessingManager sharedInstance] isEncryptedByVirgil:[mimeBody topLevelPart]]) {
         NSString * virgilSnippet = @"Encrypted by Virgil";
@@ -57,8 +57,8 @@ static BOOL _virgilShowPhotos = NO;
     }
 }
 
-- (void)MA_updatePhoto {
-    [self MA_updatePhoto];
+- (void)VSM_updatePhoto {
+    [self VSM_updatePhoto];
     [self highlightVirgil];
 }
 
@@ -81,10 +81,10 @@ static BOOL _virgilShowPhotos = NO;
     }
 }
 
-- (void)MA_updateContactPhotoVisibilityFromDefaults {
-    [self MA_updateContactPhotoVisibilityFromDefaults];
+- (void)VSM_updateContactPhotoVisibilityFromDefaults {
+    [self VSM_updateContactPhotoVisibilityFromDefaults];
     _virgilShowPhotos = ((MessageListObjectProxy *)self).showContactPhotos;
-    [self MA_updatePhoto];
+    [self VSM_updatePhoto];
     //[self highlightVirgil];
 }
 
