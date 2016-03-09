@@ -1,6 +1,8 @@
 ﻿namespace Virgil.Mail.Viewer
 {
     using System;
+    using System.Collections.ObjectModel;
+    using System.IO;
     using System.Linq;
     using System.Text;
     using System.Windows.Input;
@@ -28,6 +30,7 @@
         private readonly IPrivateKeysStorage privateKeysStorage;
         private readonly IAccountsManager accountsManager;
         private readonly IDialogPresenter dialogPresenter;
+        private readonly IPasswordExactor passwordExactor;
         private readonly IPasswordHolder passwordHolder;
 
         private string body;
@@ -38,26 +41,32 @@
         private string to;
         private string subject;
         private bool isStorePassword;
+        private ObservableCollection<EncryptedAttachmentViewModel> attachments;
 
         public EncryptedMailViewModel(
             IPrivateKeysStorage privateKeysStorage, 
             IAccountsManager accountsManager,
             IDialogPresenter dialogPresenter,
+            IPasswordExactor passwordExactor,
             IPasswordHolder passwordHolder)
         {
             this.privateKeysStorage = privateKeysStorage;
             this.accountsManager = accountsManager;
             this.dialogPresenter = dialogPresenter;
+            this.passwordExactor = passwordExactor;
             this.passwordHolder = passwordHolder;
 
             this.DecryptCommand = new RelayCommand(this.Decrypt);
             this.RegisterCommand = new RelayCommand(this.Register);
             this.RedecryptCommand = new RelayCommand(this.Redecrypt);
+            this.DecryptAttachmentCommand = new RelayCommand<EncryptedAttachmentViewModel>(this.DecryptAttachment);
+
+            this.attachments = new ObservableCollection<EncryptedAttachmentViewModel>();
         }
         
-
         public ICommand RegisterCommand { get; set; }
         public ICommand DecryptCommand { get; set; }
+        public ICommand DecryptAttachmentCommand { get; set; }
         public ICommand RedecryptCommand { get; set; }
 
         public bool IsStorePassword
@@ -120,6 +129,19 @@
             }
         }
 
+        public bool HasAttachments => this.attachments.Any();
+
+        public ObservableCollection<EncryptedAttachmentViewModel> Attachments
+        {
+            get { return this.attachments; }
+            set
+            {
+                this.attachments = value;
+                this.RaisePropertyChanged("HasAttachments");
+                this.RaisePropertyChanged();
+            }
+        }
+
         public void Initialize(Outlook.MailItem mail)
         {
             this.mailItem = mail;
@@ -163,9 +185,27 @@
                 }
             }
 
+            this.ParseAttachemnts();
+            
             this.InternalDecrypt(keyPassword);
         }
-        
+
+        private void ParseAttachemnts()
+        {
+            this.Attachments.Clear();
+
+            var mailAttachments = this.mailItem.Attachments
+                .Cast<Outlook.Attachment>()
+                .Where(it => it.DisplayName != Constants.VirgilAttachmentName)
+                .ToList();
+
+            foreach (var attachment in mailAttachments)
+            {
+                var attachmentModel = new EncryptedAttachmentViewModel(attachment.DisplayName, attachment.FileName);
+                this.Attachments.Add(attachmentModel);
+            }
+        }
+
         private void Register()
         {
             this.dialogPresenter.ShowRegisterAccount(this.account);
@@ -202,6 +242,24 @@
             this.InternalDecrypt(password);
         }
 
+        private void DecryptAttachment(EncryptedAttachmentViewModel attachmentModel)
+        {
+            var privateKey = this.privateKeysStorage.GetPrivateKey(this.account.VirgilCardId);
+            var privateKeyPassword = this.passwordExactor.ExactOrAlarm(this.account.OutlookAccountEmail);
+
+            var attachment = this.mailItem.Attachments
+                .Cast<Outlook.Attachment>()
+                .Single(it => it.FileName == attachmentModel.FileName);
+
+            var encryptedAttachmentData = (byte[])attachment.PropertyAccessor.GetProperty(Constants.OutlookAttachmentDataBin);
+
+            var decryptedData = CryptoHelper.Decrypt(encryptedAttachmentData, 
+                this.account.VirgilCardId.ToString(), privateKey, privateKeyPassword);
+
+            this.dialogPresenter.SaveFile(Path.GetFileNameWithoutExtension(attachmentModel.FileName), 
+                decryptedData, Path.GetExtension(attachmentModel.FileName));
+        }
+        
         private void InternalDecrypt(string keyPassword)
         {
             try

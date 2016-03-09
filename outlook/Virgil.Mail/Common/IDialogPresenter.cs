@@ -13,5 +13,6 @@
         void SaveFile(string fileName, string content, string extension);
         string OpenFile(string extension);
         void ShowAlert(string message);
+        void SaveFile(string fileName, byte[] content, string extension);
     }
 }

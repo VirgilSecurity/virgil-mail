@@ -71,6 +71,7 @@ namespace Virgil.Mail.Dialogs
         {
             var saveFileDialog = new SaveFileDialog
             {
+                RestoreDirectory = true,
                 FileName = $"{fileName}.{extension}",
                 Filter = $"{extension} files (*.{extension})|*.{extension}|All files (*.*)|*.*"
             };
@@ -81,6 +82,27 @@ namespace Virgil.Mail.Dialogs
             }
 
             var stream = saveFileDialog.OpenFile();
+            var streamWriter = new StreamWriter(stream);
+
+            streamWriter.Write(content);
+            streamWriter.Close();
+        }
+
+        public void SaveFile(string fileName, byte[] content, string extension)
+        {
+            var saveFileDialog = new SaveFileDialog
+            {
+                RestoreDirectory = true,
+                FileName = $"{fileName}.{extension}",
+                Filter = $"{extension} files (*.{extension})|*.{extension}|All files (*.*)|*.*"
+            };
+            
+            if (saveFileDialog.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+
+            var stream = new MemoryStream(content);
             var streamWriter = new StreamWriter(stream);
 
             streamWriter.Write(content);
