@@ -116,7 +116,7 @@
                                NSDate * compareDate = cards[0].createdAt;
                                res = cards[0];
                                for (VSSCard * card in cards) {
-                                   if([card.createdAt compare: compareDate] == NSOrderedAscending) {
+                                   if([card.createdAt compare: compareDate] == NSOrderedDescending) {
                                        compareDate = card.createdAt;
                                        res = card;
                                    }
