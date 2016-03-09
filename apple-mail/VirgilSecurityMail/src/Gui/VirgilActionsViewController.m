@@ -386,7 +386,7 @@ NSInteger _checkCounter = 0;
                 errorStr = @"Can't find need key or wrong password";
             } else {
                 NSString * normalizedKeyString = [container.privateKey.key stripBase64];
-                loadDone =
+                loadDone = kSaveDone ==
                 [[VirgilKeyManager sharedInstance] prepareAndSaveLoadedPrivateKey : normalizedKeyString
                                                                            containerType : VirgilContainerParanoic
                                                                                  account : container.privateKey.account];
