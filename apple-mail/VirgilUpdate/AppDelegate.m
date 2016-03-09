@@ -35,6 +35,31 @@
  */
 
 #import "AppDelegate.h"
+#include <sys/sysctl.h>
+
+@interface SWindowOfProcess : NSObject {
+}
+
+- (id) initPID : (pid_t)pid
+         title : (NSString *)title;
+
+@property pid_t pid;
+@property (retain) NSString * title;
+
+@end
+
+@implementation SWindowOfProcess
+
+- (id) initPID : (pid_t)pid
+         title : (NSString *)title {
+    if ([super init]) {
+        self.pid = pid;
+        self.title = title;
+    }
+    return self;
+}
+
+@end
 
 @interface AppDelegate ()
 
@@ -45,6 +70,7 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     [self printBundleVersion];
+    [self terminateOtherUpdaters];
     updater = [SUUpdater sharedUpdater];
     updater.delegate = self;
     updater.automaticallyDownloadsUpdates = YES;
@@ -55,6 +81,48 @@
                                    selector : @selector(terminate)
                                    userInfo : nil
                                     repeats : YES];
+}
+
+- (NSArray*) windowsInfo {
+    NSMutableArray * res = [NSMutableArray new];
+    
+    CFArrayRef windowList = CGWindowListCopyWindowInfo(kCGWindowListOptionAll, kCGNullWindowID);
+    CFIndex i, c = CFArrayGetCount(windowList);
+    
+    for (i = 0; i < c; i++) {
+        NSDictionary * windowInfo = (__bridge NSDictionary*)CFArrayGetValueAtIndex(windowList, i);
+        NSNumber * pid = windowInfo[(id)kCGWindowOwnerPID];
+        NSString * title = windowInfo[(id)kCGWindowName];
+        [res addObject:[[SWindowOfProcess alloc] initPID:[pid intValue] title:title]];
+    }
+    CFRelease(windowList);
+    
+    return [res copy];
+}
+
+- (void) terminateOtherUpdaters {
+    NSArray *runningApplications = [[NSWorkspace sharedWorkspace] runningApplications];
+    
+    NSArray * windowInfoList = [self windowsInfo];
+    
+    for (NSRunningApplication *app in runningApplications) {
+        NSString * execURL = [[app executableURL] absoluteString];
+        if ([execURL rangeOfString:@"virgil.VirgilUpdate"].location != NSNotFound) {
+            [app terminate];
+        }
+        
+        if ([[app bundleIdentifier] isEqualToString:@"com.apple.installer"]) {
+            pid_t pid = [app processIdentifier];
+            
+            for (SWindowOfProcess * winInfo in windowInfoList) {
+                if (winInfo.pid == pid) {
+                    if ([winInfo.title rangeOfString:@"Virgil Security Mail"].location != NSNotFound) {
+                        [app terminate];
+                    }
+                }
+            }
+        }
+    }
 }
 
 - (void) printBundleVersion {
