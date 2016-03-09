@@ -5,6 +5,9 @@
     using System.Text;
     using System.Windows.Input;
     using System.Windows.Controls;
+
+    using log4net;
+
     using Newtonsoft.Json;
     
     using Virgil.Crypto;
@@ -20,6 +23,8 @@
 
     public class EncryptedMailViewModel : ViewModel
     {
+        private static readonly ILog Logger = LogManager.GetLogger(typeof (EncryptedMailViewModel));
+
         private readonly IPrivateKeysStorage privateKeysStorage;
         private readonly IAccountsManager accountsManager;
         private readonly IDialogPresenter dialogPresenter;
@@ -118,19 +123,26 @@
         public void Initialize(Outlook.MailItem mail)
         {
             this.mailItem = mail;
-            
+
+            var senderEmailAddress = mail.ExtractSenderEmailAddress();
             var reciverEmailAddress = mail.ExtractReciverEmailAddress();
+            
+            Logger.InfoFormat("Start loading encrypted mail - From: {0}, To: {1}, Subject: '{2}'", 
+                senderEmailAddress, reciverEmailAddress, this.mailItem.Subject);
+            
             this.account = this.accountsManager.GetAccount(reciverEmailAddress);
             
             if (!this.account.IsRegistered)
             {
+                Logger.InfoFormat("The mail decryption is stoped becuase of accoout '{0}' private key is not registered", reciverEmailAddress);
+
                 this.ChangeState(EncryptedMailState.NotRegistered);
                 return;
             }
-
+            
             var privateKey = this.privateKeysStorage.GetPrivateKey(this.account.VirgilCardId);
             var isKeyEncrypted = VirgilKeyPair.IsPrivateKeyEncrypted(privateKey);
-
+            
             if (isKeyEncrypted && !this.account.IsPrivateKeyPasswordNeedToStore)
             {
                 this.ChangeState(EncryptedMailState.WaitPassword);
@@ -196,6 +208,8 @@
             {
                 var privateKey = this.privateKeysStorage.GetPrivateKey(this.account.VirgilCardId);
 
+                Logger.InfoFormat("Decrypt mail with account's '{0}' private key.", this.account.OutlookAccountEmail);
+
                 var mailData = DecryptMailData(this.mailItem,
                     this.account.VirgilCardId, privateKey, keyPassword);
 
@@ -209,8 +223,9 @@
 
                 this.ChangeState(EncryptedMailState.ReadMail);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Logger.ErrorFormat("Error occured on mail decryption: {0}\nStackTrace:\n{1}", ex.Message, ex.StackTrace);
                 this.ChangeState(EncryptedMailState.EncryptionFailed);
             }
         }

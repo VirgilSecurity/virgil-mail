@@ -1,16 +1,16 @@
-﻿namespace Virgil.Mail
+﻿[assembly: log4net.Config.XmlConfigurator(Watch = false)]
+namespace Virgil.Mail
 {
     using System;
     using System.Diagnostics;
     using System.IO;
     using System.Threading.Tasks;
     using System.Windows;
-
     using Virgil.Mail.Common;
     using Virgil.Mail.Integration;
 
     using Outlook = Microsoft.Office.Interop.Outlook;
-
+    
     public partial class ThisAddIn
     {
         private string previousMailId;
@@ -123,6 +123,9 @@
         
         private void OnAddInStartup(object sender, EventArgs e)
         {
+            // Initialize log4net
+            // XmlConfigurator.Configure();
+
             this.ActiveExplorer = this.Application.ActiveExplorer();
             
             // initialize bootstrapper.
