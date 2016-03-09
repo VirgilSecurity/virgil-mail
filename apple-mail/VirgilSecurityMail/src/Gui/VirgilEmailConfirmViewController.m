@@ -112,7 +112,10 @@ NSString * windowTitle = @"";
                     if (res == kSaveDone) {
                         [self setCurrentState:confirmDone];
                     } else if (res == kSaveError) {
-                        [self setCurrentState:confirmError];
+                        [self setErrorState : @"There is no private key on Virgil cloud. Please upload your key from file system"];
+                        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                            [[VirgilKeyManager sharedInstance] terminatePrivateKeyRequest:account];
+                        });
                     } else {
                         [self closeWindow];
                     }
@@ -302,6 +305,20 @@ NSString * windowTitle = @"";
         [self setButtonVisible:NO forTag:TAG_BTN_CANCEL];
         [self setButtonVisible:NO forTag:TAG_BTN_RESEND];
     }
+}
+
+- (void) setErrorState : (NSString *)errorText {
+    _state = confirmError;
+    NSTextField * infoField = [self.view viewWithTag : 8003];
+    
+    [self setProgressVisible:NO];
+    [self preventUserActivity:NO];
+    if (nil != infoField) {
+        infoField.stringValue = errorText;
+    }
+    [self setButtonVisible:YES forTag:TAG_BTN_OK];
+    [self setButtonVisible:NO forTag:TAG_BTN_CANCEL];
+    [self setButtonVisible:NO forTag:TAG_BTN_RESEND];
 }
 
 @end
