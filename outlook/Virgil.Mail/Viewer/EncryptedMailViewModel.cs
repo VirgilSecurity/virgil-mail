@@ -223,14 +223,7 @@
             var password = passwordBox.Password;
 
             var privateKey = this.privateKeysStorage.GetPrivateKey(this.account.VirgilCardId);
-
-            if (this.IsStorePassword && !this.account.IsPrivateKeyPasswordNeedToStore)
-            {
-                this.account.IsPrivateKeyPasswordNeedToStore = true;
-                this.passwordHolder.Keep(this.account.OutlookAccountEmail, password);
-                this.accountsManager.UpdateAccount(this.account);
-            }
-
+            
             var passwordBytes = Encoding.UTF8.GetBytes(password);
             var isMatch = VirgilKeyPair.CheckPrivateKeyPassword(privateKey, passwordBytes);
             if (!isMatch)
@@ -240,6 +233,13 @@
                 passwordBox.Clear();
                 this.AddCustomError("Entered private key password is wrong");
                 return;
+            }
+            
+            if (this.IsStorePassword && !this.account.IsPrivateKeyPasswordNeedToStore)
+            {
+                this.account.IsPrivateKeyPasswordNeedToStore = true;
+                this.passwordHolder.Keep(this.account.OutlookAccountEmail, password);
+                this.accountsManager.UpdateAccount(this.account);
             }
 
             this.InternalDecrypt(password);
