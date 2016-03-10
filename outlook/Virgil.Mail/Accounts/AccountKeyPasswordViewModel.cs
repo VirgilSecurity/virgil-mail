@@ -3,6 +3,7 @@
     using System.Text;
     using System.Windows.Controls;
     using System.Windows.Input;
+
     using Virgil.Mail.Common;
     using Virgil.Mail.Mvvm;
     using Virgil.Mail.Common.Mvvm;

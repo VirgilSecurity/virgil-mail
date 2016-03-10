@@ -8,7 +8,7 @@
              d:DesignHeight="400" d:DesignWidth="290" Background="White">
     <UserControl.Resources>
         <mvvm:BoolToVisibilityConverter x:Key="BoolToVisibility" />
-        <mvvm:BoolToVisibilityConverter x:Key="NotBoolToVisibility" TrueValue="Collapsed" FalseValue="Visible" />
+        <mvvm:NotBoolConverter x:Key="NotBool"  />
         <mvvm:EnumToVisibilityConverter x:Key="EnumToVisibility" />
     </UserControl.Resources>
     <Grid>
@@ -19,6 +19,7 @@
         </Grid.RowDefinitions>
         <Border 
             Grid.Row="0"
+            Grid.ColumnSpan="3"
             Background="#DC3023"
             VerticalAlignment="Top"
             Opacity=".9"
@@ -29,9 +30,10 @@
         </Border>
         <Image
             Grid.Row="0"
-            Margin="0 30" 
+            Margin="0 20" 
             Width="150"
             Source="/Virgil.Mail;component/Resources/wizard-logo.png" />
+        
         <!-- Progress Indicator -->
         <StackPanel 
                 Grid.Row="1"
@@ -47,6 +49,8 @@
                     Height="10" 
                     Width="200" />
         </StackPanel>
+        
+        
         <StackPanel
             Grid.Row="1"
             Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=Settings}"
@@ -68,7 +72,57 @@
                 Margin="20 0 0 0" 
                 Text="That option will allows you to do not enter every time password on crypto operations." />
         </StackPanel>
-        
+
+        <!-- Delete Account -->
+        <StackPanel
+            Grid.Row="1"
+            Orientation="Vertical"
+            Margin="20 0 20 0"
+            Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=DeletePrivateKey}" >
+            <TextBlock 
+                TextWrapping="Wrap" 
+                Foreground="#DC3023" 
+                Margin="0 5"
+                Visibility="{Binding IsChecked, ElementName=revokeCheckBox, Converter={StaticResource BoolToVisibility}}" 
+                Text="Please make sure that you are doing this consciously.">
+            </TextBlock>
+            <CheckBox 
+                    Margin="0 0 0 2" 
+                    x:Name="revokeCheckBox"
+                    IsChecked="{Binding IsRevokeAccount, Mode=TwoWay}" 
+                    Content="Delete Account"
+                    VerticalContentAlignment="Center" />
+            <TextBlock 
+                    FontSize="10" 
+                    Foreground="Gray" 
+                    TextWrapping="Wrap"
+                    Margin="20 0 0 0" 
+                    Text="Be careful with current operation. You won't be able to decrypt mail linked with this private key." />
+            <CheckBox 
+                    Margin="0 10 0 2" 
+                    IsEnabled="{Binding IsChecked, ElementName=revokeCheckBox, Converter={StaticResource NotBool}}"
+                    IsChecked="{Binding IsDeleteFromVirgil, Mode=TwoWay}" 
+                    Content="Delete private key from the Virgil Services"
+                    VerticalContentAlignment="Center" />
+            <TextBlock 
+                    FontSize="10" 
+                    Foreground="Gray" 
+                    TextWrapping="Wrap"
+                    Margin="20 0 0 0" 
+                    Text="Remove your private key from local storage if you need to clear your machine from personal data." />
+            <CheckBox 
+                    Margin="0 10 0 2" 
+                    IsEnabled="{Binding IsChecked, ElementName=revokeCheckBox, Converter={StaticResource NotBool}}"
+                    IsChecked="{Binding IsDeleteLocally, Mode=TwoWay}" 
+                    Content="Delete private key from the local storage"
+                    VerticalContentAlignment="Center" />
+            <TextBlock 
+                    FontSize="10" 
+                    Foreground="Gray" 
+                    TextWrapping="Wrap"
+                    Margin="20 0 0 0" 
+                    Text="Remove your private key from local storage if you need to clear your machine from personal data." />
+        </StackPanel>
         <Border 
             Grid.Row="2" 
             BorderThickness="0 1 0 0" 
@@ -77,32 +131,49 @@
             Padding="20 20">
             <StackPanel>
                 <Button 
-                    Content="Export Private Key..." 
-                    Command="{Binding ExportCommand}" 
-                    Padding="0 3" 
-                    Background="White" />
+                        Content="Export private key..." 
+                        Command="{Binding ExportCommand}" 
+                        Padding="0 3" 
+                        Background="White" />
+                <Button 
+                        Margin="0 5 0 0"
+                        Visibility="{Binding CanUploadToCloud, Converter={StaticResource BoolToVisibility}}"
+                        Content="Upload private key to Virgil Services" 
+                        Command="{Binding UploadPrivateKeyToCloudCommand}" 
+                        Padding="0 3" 
+                        Background="White"  />
+                <Button 
+                        VerticalAlignment="Bottom" 
+                        Margin="0 5 0 0"
+                        Content="Delete..." 
+                        Command="{Binding RemoveCommand}" 
+                        Padding="0 3" 
+                        BorderBrush="#BB241D" 
+                        Background="White"
+                        Foreground="#BB241D" />
+            </StackPanel>
+        </Border>
+        <Border 
+            Grid.Row="2" 
+            BorderThickness="0 1 0 0" 
+            Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=DeletePrivateKey}"
+            Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" 
+            Padding="20 20">
+            <StackPanel>
                 <Button 
                     Margin="0 5 0 0"
-                    Visibility="{Binding CanUploadToCloud, Converter={StaticResource BoolToVisibility}}"
-                    Content="Upload Private Key to Virgil Services" 
-                    Command="{Binding UploadPrivateKeyToCloudCommand}" 
+                    Content="Cancel" 
+                    Command="{Binding CancelDeleteCommand}" 
                     Padding="0 3" 
                     Background="White"  />
                 <Button 
                     Margin="0 5 0 0"
-                    Content="Delete Private Key" 
-                    Command="{Binding RemovePrivateKeyFromCloudCommand}" 
-                    Padding="0 3" 
-                    Background="White"  />
-                <Button 
-                    VerticalAlignment="Bottom" 
-                    Margin="0 5 0 0"
-                    Content="Delete Account" 
-                    Command="{Binding RemoveCommand}" 
+                    Content="Accept" 
+                    Command="{Binding AcceptDeleteCommand}" 
                     Padding="0 3" 
                     BorderBrush="#BB241D" 
                     Background="White"
-                    Foreground="#BB241D" />
+                    Foreground="#BB241D"   />
             </StackPanel>
         </Border>
     </Grid>

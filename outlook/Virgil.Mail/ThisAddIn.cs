@@ -160,7 +160,7 @@ namespace Virgil.Mail
                         throw new Exception("Application folder is not found.");
                     }
 
-                    Process.Start(Path.Combine(clickOnceLocation, "VirgilMailUpdater.exe"), "/silent");
+                    Process.Start(Path.Combine(clickOnceLocation, "VirgilMailUpdater.exe"));
                 }
                 catch (Exception)
                 {

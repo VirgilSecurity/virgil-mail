@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mvvm="clr-namespace:Virgil.Mail.Common.Mvvm"
              mc:Ignorable="d" 
-             d:DesignHeight="400" d:DesignWidth="285" Background="White">
+             d:DesignHeight="400" d:DesignWidth="285" Background="White" >
     <UserControl.Resources>
         <mvvm:BoolToVisibilityConverter x:Key="BoolToVisibility" />
         <mvvm:EnumToVisibilityConverter x:Key="EnumToVisibility" />
@@ -16,17 +16,14 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        
         <Image
             Grid.Row="0"
-            Margin="0 30" 
+            Margin="0 20" 
             Width="150"
             Source="/Virgil.Mail;component/Resources/wizard-logo.png" />
-
         <Grid 
             Grid.Row="1" 
             Margin="20 0 20 10" >
-            
             <!-- Progress Indicator -->
             <StackPanel 
                 Margin="0 30 0 0" 
@@ -41,7 +38,6 @@
                     Height="10" 
                     Width="200" />
             </StackPanel>
-
             <!-- Account Creation -->
             <StackPanel
                 Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=GenerateKeyPair}" >
@@ -114,7 +110,7 @@
                 </Grid>
 
             </StackPanel>
-
+            <!-- Download Account -->
             <StackPanel
                 Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=DownloadKeyPair}" >
 
@@ -166,7 +162,7 @@
                 </Grid>
 
             </StackPanel>
-
+            <!-- Success Screen -->
             <StackPanel
                 Orientation="Vertical"
                 Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=Done}" >
@@ -181,7 +177,6 @@
                     Text="{Binding StateText}" />
             </StackPanel>
         </Grid>
-
         <Border 
             Grid.Row="2" 
             BorderThickness="0" 
@@ -205,7 +200,6 @@
                     Background="White" />
             </Grid>
         </Border>
-
         <Border 
             Grid.Row="0"
             Background="#DC3023"
@@ -216,6 +210,5 @@
             Visibility="{Binding HasErrors, Converter={StaticResource BoolToVisibility}}">
             <TextBlock TextWrapping="Wrap" Foreground="White" Text="{Binding FirstErrorMessage}"></TextBlock>
         </Border>
-        
     </Grid>
 </UserControl>

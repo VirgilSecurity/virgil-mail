@@ -1,6 +1,5 @@
 ﻿namespace Virgil.Mail.Dialogs
 {
-    using System;
     using Virgil.Crypto;
     using Virgil.Mail.Common;
     using Virgil.Mail.Common.Exceptions;

@@ -108,14 +108,16 @@
 
         private void Remove()
         {
-            var result = this.dialogPresenter.ShowConfirmation("Delete Account Keys",
-                "Are you sure you want to delete an account's key?");
+            this.ChangeState(AccountSettingsState.DeletePrivateKey);
+
+            //var result = this.dialogPresenter.ShowConfirmation("Delete Account Keys",
+            //    "Are you sure you want to delete an account's key?");
             
-            if (result)
-            {
-                this.accountsManager.Remove(this.account.OutlookAccountEmail);
-                this.Close();
-            }
+            //if (result)
+            //{
+            //    this.accountsManager.Remove(this.account.OutlookAccountEmail);
+            //    this.Close();
+            //}
         }
 
         private async void UploadPrivateKeyToCloud()
