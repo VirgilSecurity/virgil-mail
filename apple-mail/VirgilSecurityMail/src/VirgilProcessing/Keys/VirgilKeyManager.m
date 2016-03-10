@@ -711,7 +711,7 @@
  */
 - (BOOL) setPrivateKey : (VirgilPrivateKey *) key
             forAccount : (NSString *) account {
-    if (nil == key || nil == account) return NO;
+    if (/*nil == key || */nil == account) return NO;
     
     VirgilPublicKey * publicKey = nil;
     VirgilKeyChainContainer * keyChainContainer = [VirgilKeyChain loadContainer : account];
@@ -802,14 +802,9 @@
     NSData * preparedData = nil;
     if (passwordForEncryption && passwordForEncryption.length) {
         VSSCryptor * crypto = [VSSCryptor new];
-        @try {
-            [crypto addPasswordRecipient : passwordForEncryption];
-            preparedData = [crypto encryptData : jsonData
-                              embedContentInfo : @YES];
-        }
-        @catch (NSException *exception) {
-            return NO;
-        }
+        [crypto addPasswordRecipient : passwordForEncryption];
+        preparedData = [crypto encryptData : jsonData
+                          embedContentInfo : @YES];
     } else {
         preparedData = jsonData;
     }
@@ -856,11 +851,8 @@
     
     if (passwordForDecryption && passwordForDecryption.length) {
         NSData * encryptedData = [NSData dataFromBase64String:fileContent];
-        @try {
-            jsonData = [[VSSCryptor new] decryptData : encryptedData
-                                            password : passwordForDecryption];
-        }
-        @catch (NSException *exception) {}
+        jsonData = [[VSSCryptor new] decryptData : encryptedData
+                                        password : passwordForDecryption];
     } else {
         jsonData = [NSData dataFromBase64String:fileContent];
     }
@@ -887,32 +879,37 @@
         jsonDict = [(NSArray *)resultJSON objectAtIndex:0];
     }
     
-    
     if (jsonDict) {
         NSString * privateKey = [jsonDict objectForKey:@"private_key"];
         
         NSDictionary * cardDict = [jsonDict objectForKey:@"card"];
         NSDictionary * identityDict = [cardDict objectForKey:@"identity"];
         NSString * importAccount = [identityDict objectForKey:@"value"];
+        NSString * cardID = [cardDict objectForKey:@"id"];
         
-        if ([importAccount isEqualTo:account]) {
+        if ([importAccount isEqualToString:account]) {
+            
             VirgilKeyChainContainer * keyChainContainer = [VirgilKeyChain loadContainer : account];
             if (keyChainContainer) {
-                VirgilPrivateKey * updatedPrivateKey =
-                [[VirgilPrivateKey alloc] initAccount : account
-                                        containerType : VirgilContainerNormal
-                                           privateKey : privateKey
-                                          keyPassword : nil // Password will be requested later
-                 ];
-                VirgilKeyChainContainer * updatedConteiner =
-                 [[VirgilKeyChainContainer alloc] initWithPrivateKey : updatedPrivateKey
-                                                        andPublicKey : keyChainContainer.publicKey
-                                                            isActive : YES
-                                                    isWaitPrivateKey : NO
-                                                   isWaitForDeletion : NO
-                                                    isWaitRecreation : NO];
-                [VirgilKeyChain saveContainer:updatedConteiner forAccount:account];
-                return updatedConteiner;
+                if ([keyChainContainer.publicKey.cardID isEqualToString:cardID]) {
+                    VirgilPrivateKey * updatedPrivateKey =
+                    [[VirgilPrivateKey alloc] initAccount : account
+                                            containerType : VirgilContainerNormal
+                                               privateKey : privateKey
+                                              keyPassword : nil // Password will be requested later
+                     ];
+                    VirgilKeyChainContainer * updatedConteiner =
+                    [[VirgilKeyChainContainer alloc] initWithPrivateKey : updatedPrivateKey
+                                                           andPublicKey : keyChainContainer.publicKey
+                                                               isActive : YES
+                                                       isWaitPrivateKey : NO
+                                                      isWaitForDeletion : NO
+                                                       isWaitRecreation : NO];
+                    [VirgilKeyChain saveContainer:updatedConteiner forAccount:account];
+                    return updatedConteiner;
+                }  else {
+                    [self setErrorString:@"Private key doesn't match"];
+                }
             }
         } else {
             [self setErrorString:@"These virgil keys belong to another user"];
@@ -939,6 +936,8 @@
             userPassword = [VirgilGui getUserPasswordForKeyPair : keyChainContainer.publicKey.publicKey
                                                      privateKey : key];
             if (nil == userPassword) {
+                [[VirgilKeyManager sharedInstance] setPrivateKey : nil
+                                                      forAccount : account];
                 return kSaveTerminated;
             }
         }
@@ -979,38 +978,32 @@
 + (BOOL) isCorrectKeys : (NSString *)publicKey
             privateKey : (NSString *)privateKey
               password : (NSString *)password {
-    @try {
-        if (nil == publicKey || nil == privateKey) return NO;
-        
-        NSString * tmpPublicKeyId = @"00000000000";
-        NSString * testString = @"test data";
-        
-        VSSCryptor * cryptor = [VSSCryptor new];
-        [cryptor addKeyRecipient : tmpPublicKeyId
-                       publicKey : [publicKey dataUsingEncoding:NSUTF8StringEncoding]];
-        
-        NSData * encryptedData = nil;
-        
-        [cryptor encryptData : [testString dataUsingEncoding:NSUTF8StringEncoding]
-            embedContentInfo : @YES];
-        
-        if (encryptedData == nil) return NO;
-        
-        NSData * decryptedData = nil;
-        decryptedData = [[VSSCryptor new] decryptData : encryptedData
-                                          recipientId : tmpPublicKeyId
-                                           privateKey : [privateKey dataUsingEncoding:NSUTF8StringEncoding]
-                                          keyPassword : password];
-        
-        NSString * decryptedString = [[NSString alloc] initWithData : decryptedData
-                                                           encoding : NSUTF8StringEncoding];
-        
-        return [testString isEqualToString:decryptedString];
-
-    }
-    @catch (NSException *exception) {
-        return NO;
-    }
+    if (nil == publicKey || nil == privateKey) return NO;
+    NSString * tmpPublicKeyId = @"00000000000";
+    NSString * testString = @"test data";
+    
+    VSSCryptor * cryptor = [VSSCryptor new];
+    
+    [cryptor addKeyRecipient : tmpPublicKeyId
+                   publicKey : [publicKey dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    NSData * encryptedData = nil;
+    
+    encryptedData = [cryptor encryptData : [testString dataUsingEncoding:NSUTF8StringEncoding]
+                        embedContentInfo : @YES];
+    
+    if (encryptedData == nil) return NO;
+    
+    NSData * decryptedData = nil;
+    decryptedData = [[VSSCryptor new] decryptData : encryptedData
+                                      recipientId : tmpPublicKeyId
+                                       privateKey : [privateKey dataUsingEncoding:NSUTF8StringEncoding]
+                                      keyPassword : password];
+    
+    NSString * decryptedString = [[NSString alloc] initWithData : decryptedData
+                                                       encoding : NSUTF8StringEncoding];
+    
+    return [testString isEqualToString:decryptedString];
 }
 
 /**
