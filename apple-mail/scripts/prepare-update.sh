@@ -55,7 +55,7 @@ function prepare_update() {
 		echo -e "\n----------------- Compress PKG ----------------------"
 
 		PKG_NAME="Install Virgil Mail.pkg"
-		DST_PKG_NAME="/tmp/VirgilUpdate.pkg"
+		DST_PKG_NAME="/tmp/VirgilUpdate.sparkle_guided.pkg"
 		if [ -f "${DST_PKG_NAME}" ]; then
 			rm "${DST_PKG_NAME}"
 		fi
