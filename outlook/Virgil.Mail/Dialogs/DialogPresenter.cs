@@ -101,9 +101,9 @@ namespace Virgil.Mail.Dialogs
             {
                 return;
             }
-
-            var stream = new MemoryStream(content);
-            var streamWriter = new StreamWriter(stream);
+            
+            var stream = saveFileDialog.OpenFile();
+            var streamWriter = new BinaryWriter(stream);
 
             streamWriter.Write(content);
             streamWriter.Close();
