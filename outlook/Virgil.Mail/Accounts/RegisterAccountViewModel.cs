@@ -336,7 +336,7 @@
 
                 if (!isPrivateKeyTrue)
                 {
-                    this.AddCustomError("Uploading Private Key is not matched.");
+                    this.AddCustomError("Uploaded private key doesn't match your Virgil account.");
                     this.ChangeState(RegisterAccountState.DownloadKeyPair);
                     return;
                 }
@@ -352,11 +352,11 @@
                 this.privateKeyStorage.StorePrivateKey(this.CurrentAccount.VirgilCardId, result.private_key);
                 this.accountsManager.UpdateAccount(this.CurrentAccount);
 
-                this.ChangeState(RegisterAccountState.Done, "Private Key has been successfully imported");
+                this.ChangeState(RegisterAccountState.Done, "Private Key has been successfully imported.");
             }
             catch (Exception)
             {
-                this.AddCustomError("Uploading file is invalid or has wrong format");
+                this.AddCustomError("Uploaded file is invalid or has wrong format.");
                 this.ChangeState(RegisterAccountState.DownloadKeyPair);
             }
         }
