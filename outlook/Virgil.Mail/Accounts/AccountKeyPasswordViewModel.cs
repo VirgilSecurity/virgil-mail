@@ -61,7 +61,7 @@
             if (!isMatch)
             {
                 passwordBox.Clear();
-                this.AddCustomError("Entered private key password is wrong");
+                this.AddCustomError("Incorrect private key password");
                 return;
             }
 
