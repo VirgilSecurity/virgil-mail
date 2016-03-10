@@ -1,0 +1,1 @@
+../../../VirgilFoundation/Wrapper/VSSBaseCryptor.h

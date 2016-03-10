@@ -802,9 +802,14 @@
     NSData * preparedData = nil;
     if (passwordForEncryption && passwordForEncryption.length) {
         VSSCryptor * crypto = [VSSCryptor new];
-        [crypto addPasswordRecipient : passwordForEncryption];
-        preparedData = [crypto encryptData : jsonData
-                          embedContentInfo : @YES];
+        @try {
+            [crypto addPasswordRecipient : passwordForEncryption];
+            preparedData = [crypto encryptData : jsonData
+                              embedContentInfo : @YES];
+        }
+        @catch (NSException *exception) {
+            return NO;
+        }
     } else {
         preparedData = jsonData;
     }
@@ -851,8 +856,11 @@
     
     if (passwordForDecryption && passwordForDecryption.length) {
         NSData * encryptedData = [NSData dataFromBase64String:fileContent];
-        jsonData = [[VSSCryptor new] decryptData : encryptedData
-                                        password : passwordForDecryption];
+        @try {
+            jsonData = [[VSSCryptor new] decryptData : encryptedData
+                                            password : passwordForDecryption];
+        }
+        @catch (NSException *exception) {}
     } else {
         jsonData = [NSData dataFromBase64String:fileContent];
     }
@@ -971,31 +979,38 @@
 + (BOOL) isCorrectKeys : (NSString *)publicKey
             privateKey : (NSString *)privateKey
               password : (NSString *)password {
-    
-    if (nil == publicKey || nil == privateKey) return NO;
-    
-    NSString * tmpPublicKeyId = @"00000000000";
-    NSString * testString = @"test data";
-    
-    VSSCryptor * cryptor = [VSSCryptor new];
-    
-    [cryptor addKeyRecepient : tmpPublicKeyId
-                   publicKey : [publicKey dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    NSData * encryptedData = [cryptor encryptData : [testString dataUsingEncoding:NSUTF8StringEncoding]
-                                 embedContentInfo : @YES];
-    
-    if (encryptedData == nil) return NO;
-    
-    NSData * decryptedData = [[VSSCryptor new] decryptData : encryptedData
-                                               publicKeyId : tmpPublicKeyId
-                                                privateKey : [privateKey dataUsingEncoding:NSUTF8StringEncoding]
-                                               keyPassword : password];
-    
-    NSString * decryptedString = [[NSString alloc] initWithData : decryptedData
-                                                       encoding : NSUTF8StringEncoding];
-    
-    return [testString isEqualToString:decryptedString];
+    @try {
+        if (nil == publicKey || nil == privateKey) return NO;
+        
+        NSString * tmpPublicKeyId = @"00000000000";
+        NSString * testString = @"test data";
+        
+        VSSCryptor * cryptor = [VSSCryptor new];
+        [cryptor addKeyRecipient : tmpPublicKeyId
+                       publicKey : [publicKey dataUsingEncoding:NSUTF8StringEncoding]];
+        
+        NSData * encryptedData = nil;
+        
+        [cryptor encryptData : [testString dataUsingEncoding:NSUTF8StringEncoding]
+            embedContentInfo : @YES];
+        
+        if (encryptedData == nil) return NO;
+        
+        NSData * decryptedData = nil;
+        decryptedData = [[VSSCryptor new] decryptData : encryptedData
+                                          recipientId : tmpPublicKeyId
+                                           privateKey : [privateKey dataUsingEncoding:NSUTF8StringEncoding]
+                                          keyPassword : password];
+        
+        NSString * decryptedString = [[NSString alloc] initWithData : decryptedData
+                                                           encoding : NSUTF8StringEncoding];
+        
+        return [testString isEqualToString:decryptedString];
+
+    }
+    @catch (NSException *exception) {
+        return NO;
+    }
 }
 
 /**

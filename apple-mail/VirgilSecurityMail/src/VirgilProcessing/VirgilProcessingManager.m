@@ -244,11 +244,17 @@
                                  privateKey : (NSString *) privateKey
                          privateKeyPassword : (NSString *) privateKeyPassword {
     
-    NSData * decryptedJsonData = [[VSSCryptor new] decryptData : content.emailData
-                                                   publicKeyId : recipientId
-                                                    privateKey : [privateKey dataUsingEncoding:NSUTF8StringEncoding]
-                                                   keyPassword : privateKeyPassword];
+    NSData * decryptedJsonData = nil;
+    @try {
     
+        decryptedJsonData = [[VSSCryptor new] decryptData : content.emailData
+                                              recipientId : recipientId
+                                               privateKey : [privateKey dataUsingEncoding:NSUTF8StringEncoding]
+                                              keyPassword : privateKeyPassword];
+    
+    }
+    @catch (NSException *exception) {}
+
     if (nil == decryptedJsonData) return nil;
     
     // Parse json data
@@ -434,10 +440,15 @@
         NSData * encryptedAttachement = [self getEncryptedAttachement:part];
         if (nil == encryptedAttachement) continue;
         
-        NSData * decryptedAttachement = [[VSSCryptor new] decryptData : encryptedAttachement
-                                                          publicKeyId : recipientId
-                                                           privateKey : [privateKey.key dataUsingEncoding:NSUTF8StringEncoding]
-                                                          keyPassword : privateKey.keyPassword];
+        NSData * decryptedAttachement = nil;
+        @try {
+            decryptedAttachement = [[VSSCryptor new] decryptData : encryptedAttachement
+                                                     recipientId : recipientId
+                                                      privateKey : [privateKey.key dataUsingEncoding:NSUTF8StringEncoding]
+                                                     keyPassword : privateKey.keyPassword];
+        }
+        @catch (NSException *exception) {}
+        
         if (nil == decryptedAttachement) continue;
         [_decryptedMailContainer addAttachement : decryptedAttachement
                                      attachHash : [part attachmentFilename]
@@ -791,36 +802,40 @@
     }
     
     // Encrypt email data
-    
-    VSSCryptor * cryptor = [VSSCryptor new];
-    
-    for (VirgilPublicKey * key in publicKeys) {
-        [cryptor addKeyRecepient : key.cardID
-                       publicKey : [key.publicKey dataUsingEncoding:NSUTF8StringEncoding]];
+    @try {
+        VSSCryptor * cryptor = [VSSCryptor new];
+        
+        for (VirgilPublicKey * key in publicKeys) {
+            [cryptor addKeyRecipient : key.cardID
+                           publicKey : [key.publicKey dataUsingEncoding:NSUTF8StringEncoding]];
+        }
+        NSData * encryptedEmailBody = [cryptor encryptData : jsonData
+                                          embedContentInfo : @YES];
+        
+        // Create signature
+        NSData * signature = [[VSSSigner new] signData : encryptedEmailBody
+                                            privateKey : [container.privateKey.key dataUsingEncoding:NSUTF8StringEncoding]
+                                           keyPassword : container.privateKey.keyPassword];
+        VirgilEncryptedContent * encryptedContent =
+        [[VirgilEncryptedContent alloc] initWithEmailData : encryptedEmailBody
+                                                signature : signature
+                                                   sender : fixedSender
+                                                  version : @"stub_ver"];
+        
+        // Prepare base64 result data
+        NSData *jsonEncryptedData = [NSJSONSerialization dataWithJSONObject : [encryptedContent toDictionary]
+                                                                    options : 0
+                                                                      error : &error];
+        if (!jsonEncryptedData) {
+            VLogError(@"JSON creation error: %@", error.localizedDescription);
+            return nil;
+        }
+        
+        return [jsonEncryptedData base64EncodedString];
     }
-    NSData * encryptedEmailBody = [cryptor encryptData : jsonData
-                                      embedContentInfo : @YES];
-    
-    // Create signature
-    NSData * signature = [[VSSSigner new] signData : encryptedEmailBody
-                                        privateKey : [container.privateKey.key dataUsingEncoding:NSUTF8StringEncoding]
-                                       keyPassword : container.privateKey.keyPassword];
-    VirgilEncryptedContent * encryptedContent =
-            [[VirgilEncryptedContent alloc] initWithEmailData : encryptedEmailBody
-                                                    signature : signature
-                                                       sender : fixedSender
-                                                      version : @"stub_ver"];
-
-    // Prepare base64 result data
-    NSData *jsonEncryptedData = [NSJSONSerialization dataWithJSONObject : [encryptedContent toDictionary]
-                                                                options : 0
-                                                                  error : &error];
-    if (!jsonEncryptedData) {
-        VLogError(@"JSON creation error: %@", error.localizedDescription);
+    @catch (NSException *exception) {
         return nil;
     }
-
-    return [jsonEncryptedData base64EncodedString];
 }
 
 - (NSArray *) encryptAttachments : (NSArray *) attachments
@@ -854,15 +869,19 @@
             encryptedAttach = [attach copy];
         }
         
-        VSSCryptor * cryptor = [VSSCryptor new];
-        
-        for (VirgilPublicKey * key in publicKeys) {
-            [cryptor addKeyRecepient : key.cardID
-                           publicKey : [key.publicKey dataUsingEncoding:NSUTF8StringEncoding]];
+        NSData * encryptedContent = nil;
+        @try {
+            VSSCryptor * cryptor = [VSSCryptor new];
+            
+            for (VirgilPublicKey * key in publicKeys) {
+                [cryptor addKeyRecipient : key.cardID
+                               publicKey : [key.publicKey dataUsingEncoding:NSUTF8StringEncoding]];
+            }
+            
+            encryptedContent = [cryptor encryptData : encryptedAttach.originalData
+                                   embedContentInfo : @YES];
         }
-        
-        NSData * encryptedContent = [cryptor encryptData : encryptedAttach.originalData
-                                        embedContentInfo : @YES];
+        @catch (NSException *exception) {}
         
         if (nil != encryptedContent) {
             NSString * base64Str = [encryptedContent base64EncodedString];

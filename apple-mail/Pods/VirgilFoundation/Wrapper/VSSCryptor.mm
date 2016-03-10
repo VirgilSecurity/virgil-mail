@@ -7,217 +7,226 @@
 //
 
 #import "VSSCryptor.h"
+#import "VSSBaseCryptor_Private.h"
 #import <VirgilCrypto/virgil/crypto/VirgilCipher.h>
 
 using virgil::crypto::VirgilByteArray;
 using virgil::crypto::VirgilCipher;
 
+NSString *const kVSSCryptorErrorDomain = @"VSSCryptorErrorDomain";
+
 @interface VSSCryptor ()
 
-@property (nonatomic, assign) VirgilCipher * __nullable cipher;
-
-- (VirgilCipher * __nullable)createCipher;
+- (VirgilCipher *)cryptor;
 
 @end
 
 @implementation VSSCryptor
 
-@synthesize cipher = _cipher;
-
 #pragma mark - Lifecycle
 
-- (instancetype)init {
-    self = [super init];
-    if (self == nil) {
-        return nil;
+- (void)initializeCryptor {
+    if (self.llCryptor != NULL) {
+        // llCryptor has been initialized already.
+        return;
     }
     
-    _cipher = [self createCipher];
-    return self;
+    try {
+        self.llCryptor = new VirgilCipher();
+    }
+    catch(...) {
+        self.llCryptor = NULL;
+    }
 }
 
 - (void)dealloc {
-    if (_cipher != NULL) {
-        delete(_cipher);
-        _cipher = NULL;
+    if (self.llCryptor != NULL) {
+        delete (VirgilCipher *)self.llCryptor;
+        self.llCryptor = NULL;
     }
 }
 
-- (VirgilCipher *)createCipher {
-    VirgilCipher *cipher = NULL;
-    cipher = new VirgilCipher();
-    return cipher;
+- (VirgilCipher *)cryptor {
+    if (self.llCryptor == NULL) {
+        return NULL;
+    }
+    
+    return static_cast<VirgilCipher *>(self.llCryptor);
 }
 
 #pragma mark - Public class logic
 
 - (NSData *)encryptData:(NSData *)plainData embedContentInfo:(NSNumber *) embedContentInfo {
+    return [self encryptData:plainData embedContentInfo:[embedContentInfo boolValue] error:nil];
+}
+
+- (NSData *)encryptData:(NSData *)plainData embedContentInfo:(BOOL)embedContentInfo error:(NSError **)error {
     if (plainData.length == 0) {
         // Can't encrypt.
+        if (error) {
+            *error = [NSError errorWithDomain:kVSSCryptorErrorDomain code:-1000 userInfo:@{ NSLocalizedDescriptionKey: NSLocalizedString(@"Impossible to encrypt: Required parameter is missing.", @"Encrypt data error.") }];
+        }
         return nil;
     }
     
     NSData *encData = nil;
-    if (self.cipher != NULL) {
-        // Convert NSData to
-        const char *dataToEncrypt = (const char *)[plainData bytes];
-        VirgilByteArray plainDataArray = VIRGIL_BYTE_ARRAY_FROM_PTR_AND_LEN(dataToEncrypt, [plainData length]);
-        
-        // Encrypt data.
-        try {
-            VirgilByteArray encryptedData = ((VirgilCipher *)self.cipher)->encrypt(plainDataArray, (bool)[embedContentInfo boolValue]);
+    try {
+        if ([self cryptor] != NULL) {
+            // Convert NSData to VirgilByteArray
+            const unsigned char *dataToEncrypt = static_cast<const unsigned char *>([plainData bytes]);
+            VirgilByteArray plainDataArray = VIRGIL_BYTE_ARRAY_FROM_PTR_AND_LEN(dataToEncrypt, [plainData length]);
+            
+            // Encrypt data.
+            VirgilByteArray encryptedData = [self cryptor]->encrypt(plainDataArray, (bool)embedContentInfo);
             encData = [NSData dataWithBytes:encryptedData.data() length:encryptedData.size()];
-        } catch(...) {}
+            if (error) {
+                *error = nil;
+            }
+        }
+        else {
+            if (error) {
+                *error = [NSError errorWithDomain:kVSSCryptorErrorDomain code:-1001 userInfo:@{ NSLocalizedDescriptionKey: @"Unable to encrypt. Cryptor is not initialized properly." }];
+            }
+            encData = nil;
+        }
     }
+    catch(std::exception &ex) {
+        if (error) {
+            NSString *description = [[NSString alloc] initWithCString:ex.what() encoding:NSUTF8StringEncoding];
+            if (description.length == 0) {
+                description = @"Unknown exception during encryption.";
+            }
+            *error = [NSError errorWithDomain:kVSSCryptorErrorDomain code:-1002 userInfo:@{ NSLocalizedDescriptionKey: description }];
+        }
+        encData = nil;
+    }
+    catch(...) {
+        if (error) {
+            *error = [NSError errorWithDomain:kVSSCryptorErrorDomain code:-1003 userInfo:@{ NSLocalizedDescriptionKey: @"Unknown exception during encryption." }];
+        }
+        encData = nil;
+    }
+    
     return encData;
 }
 
-- (NSData *)decryptData:(NSData *)encryptedData publicKeyId:(NSString *)publicKeyId privateKey:(NSData *)privateKey keyPassword:(NSString *)keyPassword {
-    if (encryptedData.length == 0 || publicKeyId.length == 0 || privateKey.length == 0) {
+- (NSData *)decryptData:(NSData *)encryptedData recipientId:(NSString *)recipientId privateKey:(NSData *)privateKey keyPassword:(NSString *)keyPassword {
+    return [self decryptData:encryptedData recipientId:recipientId privateKey:privateKey keyPassword:keyPassword error:nil];
+}
+
+- (NSData *)decryptData:(NSData *)encryptedData recipientId:(NSString *)recipientId privateKey:(NSData *)privateKey keyPassword:(NSString *)keyPassword error:(NSError **)error {
+    if (encryptedData.length == 0 || recipientId.length == 0 || privateKey.length == 0) {
         // Can't decrypt
+        if (error) {
+            *error = [NSError errorWithDomain:kVSSCryptorErrorDomain code:-1004 userInfo:@{ NSLocalizedDescriptionKey: NSLocalizedString(@"Impossible to decrypt with key: At least one of the required parameters is missing.", @"Decrypt data error.") }];
+        }
         return nil;
     }
     
     NSData *decData = nil;
     try {
-        if (self.cipher != NULL) {
-            const char *dataToDecrypt = (const char *)[encryptedData bytes];
+        if ([self cryptor] != NULL) {
+            const unsigned char *dataToDecrypt = static_cast<const unsigned char *>([encryptedData bytes]);
             VirgilByteArray encryptedDataArray = VIRGIL_BYTE_ARRAY_FROM_PTR_AND_LEN(dataToDecrypt, [encryptedData length]);
             
-            std::string certId = std::string([publicKeyId UTF8String]);
-            VirgilByteArray certIdArray = VIRGIL_BYTE_ARRAY_FROM_PTR_AND_LEN(certId.data(), certId.size());
+            std::string recId = std::string([recipientId UTF8String]);
+            VirgilByteArray recIdArray = VIRGIL_BYTE_ARRAY_FROM_PTR_AND_LEN(recId.data(), recId.size());
             
-            const char *pKeyData = (const char *)[privateKey bytes];
+            const unsigned char *pKeyData = static_cast<const unsigned char *>([privateKey bytes]);
             VirgilByteArray pKey = VIRGIL_BYTE_ARRAY_FROM_PTR_AND_LEN(pKeyData, [privateKey length]);
             
             VirgilByteArray decrypted;
             if (keyPassword.length > 0) {
                 std::string pKeyPassS = std::string([keyPassword UTF8String]);
                 VirgilByteArray pKeyPass = VIRGIL_BYTE_ARRAY_FROM_PTR_AND_LEN(pKeyPassS.data(), pKeyPassS.size());
-                decrypted = ((VirgilCipher *)self.cipher)->decryptWithKey(encryptedDataArray, certIdArray, pKey, pKeyPass);
+                decrypted = [self cryptor]->decryptWithKey(encryptedDataArray, recIdArray, pKey, pKeyPass);
             }
             else {
-                decrypted = ((VirgilCipher *)self.cipher)->decryptWithKey(encryptedDataArray, certIdArray, pKey);
+                decrypted = [self cryptor]->decryptWithKey(encryptedDataArray, recIdArray, pKey);
             }
             decData = [NSData dataWithBytes:decrypted.data() length:decrypted.size()];
+            if (error) {
+                *error = nil;
+            }
         }
-    } catch (...) {}
+        else {
+            if (error) {
+                *error = [NSError errorWithDomain:kVSSCryptorErrorDomain code:-1005 userInfo:@{ NSLocalizedDescriptionKey: @"Unable to decrypt with key. Cryptor is not initialized properly." }];
+            }
+            decData = nil;
+        }
+    }
+    catch(std::exception &ex) {
+        if (error) {
+            NSString *description = [[NSString alloc] initWithCString:ex.what() encoding:NSUTF8StringEncoding];
+            if (description.length == 0) {
+                description = @"Unknown exception during decryption with key.";
+            }
+            *error = [NSError errorWithDomain:kVSSCryptorErrorDomain code:-1006 userInfo:@{ NSLocalizedDescriptionKey: description }];
+        }
+        decData = nil;
+    }
+    catch(...) {
+        if (error) {
+            *error = [NSError errorWithDomain:kVSSCryptorErrorDomain code:-1007 userInfo:@{ NSLocalizedDescriptionKey: @"Unknown exception during decryption with key." }];
+        }
+        decData = nil;
+    }
     return decData;
 }
 
 - (NSData *)decryptData:(NSData *)encryptedData password:(NSString *)password {
+    return [self decryptData:encryptedData password:password error:nil];
+}
+
+- (NSData *)decryptData:(NSData *)encryptedData password:(NSString *)password error:(NSError **)error {
     if (encryptedData.length == 0 || password.length == 0) {
+        if (error) {
+            *error = [NSError errorWithDomain:kVSSCryptorErrorDomain code:-1008 userInfo:@{ NSLocalizedDescriptionKey: NSLocalizedString(@"Impossible to decrypt with password: At least one of the required parameters is missing.", @"Decrypt data error.") }];
+        }
         return nil;
     }
     
     NSData *decData = nil;
     try {
-        if (self.cipher != NULL) {
-            const char *dataToDecrypt = (const char*)[encryptedData bytes];
+        if ([self cryptor] != NULL) {
+            const unsigned char *dataToDecrypt = (const unsigned char *)[encryptedData bytes];
             VirgilByteArray data = VIRGIL_BYTE_ARRAY_FROM_PTR_AND_LEN(dataToDecrypt, [encryptedData length]);
             
             std::string pass = std::string([password UTF8String]);
             VirgilByteArray pwd = VIRGIL_BYTE_ARRAY_FROM_PTR_AND_LEN(pass.data(), pass.size());
             
-            VirgilByteArray plain = ((VirgilCipher *)self.cipher)->decryptWithPassword(data, pwd);
+            VirgilByteArray plain = [self cryptor]->decryptWithPassword(data, pwd);
             decData = [NSData dataWithBytes:plain.data() length:plain.size()];
+            if (error) {
+                *error = nil;
+            }
         }
-    } catch(...) {}
+        else {
+            if (error) {
+                *error = [NSError errorWithDomain:kVSSCryptorErrorDomain code:-1009 userInfo:@{ NSLocalizedDescriptionKey: @"Unable to decrypt with password. Cryptor is not initialized properly." }];
+            }
+            decData = nil;
+        }
+    }
+    catch(std::exception &ex) {
+        if (error) {
+            NSString *description = [[NSString alloc] initWithCString:ex.what() encoding:NSUTF8StringEncoding];
+            if (description.length == 0) {
+                description = @"Unknown exception during decryption with password.";
+            }
+            *error = [NSError errorWithDomain:kVSSCryptorErrorDomain code:-1010 userInfo:@{ NSLocalizedDescriptionKey: description }];
+        }
+        decData = nil;
+    }
+    catch(...) {
+        if (error) {
+            *error = [NSError errorWithDomain:kVSSCryptorErrorDomain code:-1011 userInfo:@{ NSLocalizedDescriptionKey: @"Unknown exception during decryption with password." }];
+        }
+        decData = nil;
+    }
+    
     return decData;
-}
-
-- (void)addKeyRecepient:(NSString *)publicKeyId publicKey:(NSData *)publicKey {
-    if (publicKeyId.length == 0 || publicKey.length == 0) {
-        // Can't add recipient.
-        return;
-    }
-    
-    try {
-        if (self.cipher != NULL) {
-            std::string certId = std::string([publicKeyId UTF8String]);
-            VirgilByteArray certIdArray = VIRGIL_BYTE_ARRAY_FROM_PTR_AND_LEN(certId.data(), certId.size());
-            
-            const char *pKeyBytes = (const char *)[publicKey bytes];
-            VirgilByteArray pKeyArray = VIRGIL_BYTE_ARRAY_FROM_PTR_AND_LEN(pKeyBytes, [publicKey length]);
-            
-            self.cipher->addKeyRecipient(certIdArray, pKeyArray);
-        }
-    } catch(...) {}
-}
-
-- (void)removeKeyRecipient:(NSString *)publicKeyId {
-    if (publicKeyId.length == 0) {
-        // Can't remove recipient
-        return;
-    }
-    
-    try {
-        if (self.cipher != NULL) {
-            std::string certId = std::string([publicKeyId UTF8String]);
-            VirgilByteArray certIdArray = VIRGIL_BYTE_ARRAY_FROM_PTR_AND_LEN(certId.data(), certId.size());
-            
-            self.cipher->removeKeyRecipient(certIdArray);
-        }
-    } catch(...) {}
-}
-
-- (void)addPasswordRecipient:(NSString *)password {
-    if (password.length == 0) {
-        return;
-    }
-    
-    try {
-        if (self.cipher != NULL) {
-            std::string pass = std::string([password UTF8String]);
-            VirgilByteArray passArray = VIRGIL_BYTE_ARRAY_FROM_PTR_AND_LEN(pass.data(), pass.size());
-            
-            self.cipher->addPasswordRecipient(passArray);
-        }
-    } catch(...) {}
-}
-
-- (void)removePasswordRecipient:(NSString *)password {
-    if (password.length == 0) {
-        return;
-    }
-    
-    try {
-        if (self.cipher != NULL) {
-            std::string pass = std::string([password UTF8String]);
-            VirgilByteArray passArray = VIRGIL_BYTE_ARRAY_FROM_PTR_AND_LEN(pass.data(), pass.size());
-            
-            self.cipher->removePasswordRecipient(passArray);
-        }
-    } catch(...) {}
-}
-
-- (void)removeAllRecipients {
-    if (self.cipher != NULL) {
-        try {
-            self.cipher->removeAllRecipients();
-        } catch (...) {}
-    }
-}
-
-- (NSData *)contentInfo {
-    NSData* contentInfo = nil;
-    try {
-        if (self.cipher != NULL) {
-            VirgilByteArray content = self.cipher->getContentInfo();
-            contentInfo = [NSData dataWithBytes:content.data() length:content.size()];
-        }
-    } catch (...) {}
-    return contentInfo;
-}
-
-- (void) setContentInfo:(NSData *) contentInfo {
-    try {
-        if (self.cipher != NULL) {
-            const char *contentInfoBytes = (const char *)[contentInfo bytes];
-            VirgilByteArray contentInfoArray = VIRGIL_BYTE_ARRAY_FROM_PTR_AND_LEN(contentInfoBytes, [contentInfo length]);
-            self.cipher->setContentInfo(contentInfoArray);
-        }
-    } catch(...) {}
 }
 
 @end

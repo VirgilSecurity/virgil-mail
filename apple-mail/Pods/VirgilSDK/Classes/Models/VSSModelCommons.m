@@ -18,7 +18,6 @@ NSString *const kVSSModelIsConfirmed = @"is_confirmed";
 NSString *const kVSSModelIdentity = @"identity";
 NSString *const kVSSModelHash = @"hash";
 NSString *const kVSSModelData = @"data";
-NSString *const kVSSModelExtraFields = @"extra_fields";
 
 NSString *const kVSSModelPublicKey = @"public_key";
 NSString *const kVSSModelCards = @"virgil_cards";
@@ -43,6 +42,7 @@ NSString *const kVSSModelConfirmationCode = @"confirmation_code";
 NSString *const kVSSModelToken = @"token";
 NSString *const kVSSModelTTL = @"time_to_live";
 NSString *const kVSSModelCTL = @"count_to_live";
+NSString *const kVSSModelExtraFields = @"extra_fields";
 
 NSString *const kVSSModelError = @"error";
 NSString *const kVSSModelCode = @"code";

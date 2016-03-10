@@ -1,14 +1,14 @@
 PODS:
-  - VirgilFoundation (1.3.4)
-  - VirgilSDK (3.0.1):
-    - VirgilFoundation
+  - VirgilFoundation (1.4.1-rc-1.3.0)
+  - VirgilSDK (3.0.5-rc-1.3.0):
+    - VirgilFoundation (= 1.4.1-rc-1.3.0)
 
 DEPENDENCIES:
   - VirgilFoundation
-  - VirgilSDK
+  - VirgilSDK (= 3.0.5-rc-1.3.0)
 
 SPEC CHECKSUMS:
-  VirgilFoundation: 4f1abecb8ac689ffa99295a37cb746ca82364160
-  VirgilSDK: 2b125c129e619ac131d1a1de5207e4a0ab7a2240
+  VirgilFoundation: 9d6bac4f2135814e2f945018c38c47cfc3d9010e
+  VirgilSDK: 67156032a3f2026b6cf544089ab82d392cfdaac8
 
 COCOAPODS: 0.39.0

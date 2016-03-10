@@ -21,7 +21,7 @@
 
 @synthesize actionId = _actionId;
 
-- (instancetype)initWithContext:(VSSRequestContext *)context type:(VSSIdentityType)type value:(NSString *)value extraFields:(NSDictionary *)extra {
+- (instancetype)initWithContext:(VSSRequestContext *)context type:(VSSIdentityType)type value:(NSString *)value extraFields:(NSDictionary *)extraFields {
     self = [super initWithContext:context];
     if (self == nil) {
         return nil;
@@ -35,16 +35,20 @@
     if (value.length > 0) {
         body[kVSSModelValue] = value;
     }
-    if (extra != nil) {
-        body[kVSSModelExtraFields] = extra;
+    if (extraFields.count > 0) {
+        body[kVSSModelExtraFields] = extraFields;
     }
     [self setRequestBodyWithObject:body];
     
     return self;
 }
 
+- (instancetype)initWithContext:(VSSRequestContext *)context type:(VSSIdentityType)type value:(NSString *)value {
+    return [self initWithContext:context type:type value:value extraFields:nil];
+}
+
 - (instancetype)initWithContext:(VSSRequestContext *)context {
-    return [self initWithContext:context type:VSSIdentityTypeUnknown value:@"" extraFields:nil];
+    return [self initWithContext:context type:VSSIdentityTypeUnknown value:@""];
 }
 
 #pragma mark - Overrides
