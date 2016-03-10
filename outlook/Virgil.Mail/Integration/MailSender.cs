@@ -127,7 +127,11 @@
 
         private static void EncryptAttachments(Outlook._MailItem mail, IDictionary<string, byte[]> recipients)
         {
-            var attachemnts = mail.Attachments.Cast<Outlook.Attachment>().ToList();
+            var attachemnts = mail.Attachments
+                .Cast<Outlook.Attachment>()
+                .Where(a => a.DisplayName != Constants.VirgilAttachmentName)
+                .ToList();
+
             foreach (var attachment in attachemnts)
             {
                 var attachemntData = (byte[])attachment.PropertyAccessor.GetProperty(Constants.OutlookAttachmentDataBin);

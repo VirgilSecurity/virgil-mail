@@ -16,6 +16,6 @@
             	<a href='https://virgilsecurity.com/demos' >Download Virgil Mail Add-In.</a>    
             </body>
             </html>";
-        internal const string OutlookAttachmentDataBin = "http://schemas.microsoft.com/mapi/proptag/0x37010102";
+        internal const string OutlookAttachmentDataBin = @"http://schemas.microsoft.com/mapi/proptag/0x37010102";
     }
 }   

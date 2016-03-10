@@ -25,7 +25,7 @@ namespace Virgil.Mail.Dialogs
 
             viewModel.Initialize(accountEmail, privateKey);
 
-            var dialog = DialogBuilder.Build(view, viewModel, $"Account ({accountEmail})", 290, 200, false);
+            var dialog = DialogBuilder.Build(view, viewModel, $"Account ({accountEmail})", 290, 250, false);
             var passwordObject = dialog.Show();
 
             return passwordObject?.ToString();

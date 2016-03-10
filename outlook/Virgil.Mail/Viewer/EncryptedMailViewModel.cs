@@ -235,7 +235,10 @@
             var isMatch = VirgilKeyPair.CheckPrivateKeyPassword(privateKey, passwordBytes);
             if (!isMatch)
             {
+                this.ClearErrors();
+
                 passwordBox.Clear();
+                this.AddCustomError("Entered private key password is wrong");
                 return;
             }
 
