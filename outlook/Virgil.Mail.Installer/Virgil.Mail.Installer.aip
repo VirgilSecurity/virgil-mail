@@ -126,7 +126,7 @@
     <ROW Path="&lt;AI_DICTS&gt;ui_en.ail"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.DigCertStoreComponent">
-    <ROW TimeStampUrl="http://timestamp.digicert.com" SignerDescription="[|ProductName]" SignOptions="0" SignTool="0" Thumbprint="1e198d4ec0d6c713b73abd2ba6ba2e82d19efb17 Subject: Virgil Security, Inc.&#10;Issuer: DigiCert SHA2 Assured ID Code Signing CA&#10;Valid from 02/26/2016 to 11/02/2016"/>
+    <ROW TimeStampUrl="http://timestamp.digicert.com" SignerDescription="[|ProductName]" SignOptions="7" SignTool="0" Thumbprint="1e198d4ec0d6c713b73abd2ba6ba2e82d19efb17 Subject: Virgil Security, Inc.&#10;Issuer: DigiCert SHA2 Assured ID Code Signing CA&#10;Valid from 02/26/2016 to 11/02/2016"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.FragmentComponent">
     <ROW Fragment="CommonUI.aip" Path="&lt;AI_FRAGS&gt;CommonUI.aip"/>
