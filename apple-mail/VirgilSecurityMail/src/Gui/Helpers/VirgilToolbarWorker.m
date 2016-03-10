@@ -63,35 +63,34 @@
         toolbarArray = [NSArray arrayWithObjects : toolbarItem, nil];
         
         itemAtRightFromDefaults = @"Search";
-        
-    }
     
-    if (nil != toolbarArray) {
-        
-        NSInteger itemsCount = [toolbarArray count];
-        NSArray * defaultItems = [result objectForKey : @"DefaultToolbarItems"];
-        NSInteger index = [defaultItems indexOfObject : itemAtRightFromDefaults];
-        
-        for (int i = 0; i < itemsCount; i++) {
+        if (nil != toolbarArray) {
             
-            id identifier = [[toolbarArray objectAtIndex : i] objectForKey : @"identifier"];
-            [result setObject: [toolbarArray objectAtIndex : i] forKey: identifier];
+            NSInteger itemsCount = [toolbarArray count];
+            NSArray * defaultItems = [result objectForKey : @"DefaultToolbarItems"];
+            NSInteger index = [defaultItems indexOfObject : itemAtRightFromDefaults];
             
-            //all
-            if(![[result objectForKey : @"AllToolbarItems"] containsObject : identifier]) {
-                [[result objectForKey : @"AllToolbarItems"] addObject : identifier];
-            }
-            
-            //defaults
-            if(![[result objectForKey : @"DefaultToolbarItems"] containsObject : identifier]) {
-                [[result objectForKey : @"DefaultToolbarItems"] insertObject : identifier
-                                                                     atIndex : index - 1];
+            for (int i = 0; i < itemsCount; i++) {
+                
+                id identifier = [[toolbarArray objectAtIndex : i] objectForKey : @"identifier"];
+                [result setObject: [toolbarArray objectAtIndex : i] forKey: identifier];
+                
+                //all
+                if(![[result objectForKey : @"AllToolbarItems"] containsObject : identifier]) {
+                    [[result objectForKey : @"AllToolbarItems"] addObject : identifier];
+                }
+                
+                //defaults
+                if(![[result objectForKey : @"DefaultToolbarItems"] containsObject : identifier]) {
+                    [[result objectForKey : @"DefaultToolbarItems"] insertObject : identifier
+                                                                         atIndex : index - 1];
+                }
             }
         }
+        
+        [[VirgilToolbarDelegate sharedInstance] setDefaultDelegate : [self delegate]];
+        [self setDelegate : [VirgilToolbarDelegate sharedInstance]];
     }
-    
-    [[VirgilToolbarDelegate sharedInstance] setDefaultDelegate : [self delegate]];
-    [self setDelegate : [VirgilToolbarDelegate sharedInstance]];
     
     return result;
 }
