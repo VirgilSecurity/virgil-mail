@@ -31,6 +31,8 @@
         private bool isPrivateKeyHasPassword;
         private bool canUploadToCloud;
 
+        private AccountSettingsState? doneReturnState;
+
         public AccountSettingsViewModel
         (
             IDialogPresenter dialogPresenter, 
@@ -59,9 +61,9 @@
             this.CancelDeleteCommand = new RelayCommand(this.CancelDelete);
             this.AcceptDeleteCommand = new RelayCommand(this.AcceptDelete);
 
-            this.DoneCommand = new RelayCommand(this.Close);
+            this.DoneCommand = new RelayCommand(this.Done);
         }
-
+        
         public ICommand DoneCommand { get; set; }
         public ICommand RemovePrivateKeyFromCloudCommand { get; set; }
         public ICommand UploadPrivateKeyToCloudCommand { get; set; }
@@ -196,8 +198,20 @@
             this.CanUploadToCloud = !this.account.IsVirgilPrivateKeyStorage;
         }
 
+        private void Done()
+        {
+            if (this.doneReturnState.HasValue)
+            {
+                this.ChangeState(this.doneReturnState.Value);
+                this.doneReturnState = null;
+                return;
+            }
+
+            this.Close();
+        }
+
         #region Delete Private Key 
-        
+
         private string deleteWarningMessage;
         private bool isDeleteAccount;
         private bool isDeletePrivateKeyFromVirgilServices;
@@ -306,7 +320,8 @@
                 if (this.IsDeletePrivateKeyFromVirgilServices && !this.IsDeletePrivateKeyFromLocalStorage)
                 {
                     await this.RemovePrivateKeyFromVirgilServices();
-                    this.ChangeState(AccountSettingsState.Settings);
+                    this.doneReturnState = AccountSettingsState.Settings;
+                    this.ChangeState(AccountSettingsState.Done, "The Private Key was deleted successfully. You can upload it at any moment again.");
                     return;
                 }
 

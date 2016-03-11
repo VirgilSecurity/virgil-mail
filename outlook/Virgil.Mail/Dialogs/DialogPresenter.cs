@@ -38,7 +38,7 @@ namespace Virgil.Mail.Dialogs
 
             viewModel.Initialize(accountModel);
 
-            var dialog = DialogBuilder.Build(view, viewModel, "Register Account", 290, 400, false);
+            var dialog = DialogBuilder.Build(view, viewModel, "Register Account", 290, 420, false);
 
             dialog.Show();
         }
@@ -62,7 +62,7 @@ namespace Virgil.Mail.Dialogs
 
             viewModel.Initialize(accountModel);
 
-            var dialog = DialogBuilder.Build(view, viewModel, "Settings", 290, 400, false);
+            var dialog = DialogBuilder.Build(view, viewModel, "Settings", 290, 420, false);
 
             dialog.Show();
         }
