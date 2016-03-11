@@ -38,5 +38,10 @@
             var privateKey = this.GetPrivateKey(id);
             return VirgilKeyPair.IsPrivateKeyEncrypted(privateKey);
         }
+
+        public void RemovePrivateKey(Guid id)
+        {
+            this.keysStorage.Delete(id.ToString());
+        }
     }
 }

@@ -320,6 +320,8 @@
 
                 if (this.IsDeletePrivateKeyFromLocalStorage)
                 {
+                    this.privateKeysStorage.RemovePrivateKey(this.account.VirgilCardId);
+                    this.passwordHolder.Remove(this.account.OutlookAccountEmail);
                     this.accountsManager.Remove(this.account.OutlookAccountEmail);
                     this.ChangeState(AccountSettingsState.Done, "The private key has been deleted successfully. You can upload it at any moment again.");
                 }
@@ -373,6 +375,8 @@
             await this.virgilHub.PublicKeys.Revoke(this.account.VirgilPublicKeyId, new[] {validationToken},
                 this.account.VirgilCardId, privateKey, password);
 
+            this.privateKeysStorage.RemovePrivateKey(this.account.VirgilCardId);
+            this.passwordHolder.Remove(this.account.OutlookAccountEmail);
             this.accountsManager.Remove(this.account.OutlookAccountEmail);
         }
 
