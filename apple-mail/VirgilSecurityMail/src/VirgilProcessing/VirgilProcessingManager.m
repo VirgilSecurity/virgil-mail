@@ -316,7 +316,7 @@
 - (MimePart *) partForReplacement : (MimePart *)topMimePart {
     NSSet * allMimeParts = [self allMimeParts : topMimePart];
     for (MimePart * part in allMimeParts) {
-        if ([part.subtype isEqualTo:@"html"] || [part.subtype isEqualTo:@"plain"]) {
+        if ([part.subtype isEqualTo:@"html"] /*|| [part.subtype isEqualTo:@"plain"]*/) {
             NSData * bodyData = [part bodyData];
             NSString * strBody = [[NSString alloc] initWithData:bodyData encoding:NSUTF8StringEncoding];
             if ([strBody containsString : @"https://virgilsecurity.com"]) {
@@ -468,6 +468,12 @@
         if (NO == [_decryptedMailContainer isMailPresent:currentMessage]) {
             [self decryptWholeMessage:topMimePart];
         }
+    
+        if (nil == [_decryptedMailContainer partByHash:mimePart forEmail:currentMessage]) {
+            [_decryptedMailContainer clear];
+            [self decryptWholeMessage:topMimePart];
+        }
+    
         res = [_decryptedMailContainer partByHash:mimePart forEmail:currentMessage];
     }
     
@@ -565,7 +571,11 @@
 
 - (NSData *) decryptedAttachementByName : (NSString *) name forEmail : (id)message {
     if (nil == name) return nil;
-    return [_decryptedMailContainer attachementByHash:name forEmail:message];
+    NSData * res = nil;
+    @synchronized (self) {
+        res = [_decryptedMailContainer attachementByHash:name forEmail:message];
+    }
+    return res;
 }
 
 + (NSArray *) accountsList {

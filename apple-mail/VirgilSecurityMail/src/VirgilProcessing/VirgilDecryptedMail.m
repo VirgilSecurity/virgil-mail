@@ -77,7 +77,7 @@
 - (id) attachementByHash:(id)attachHash {
     id res = [_mailParts valueForKey:attachHash];
     if (nil == res) {
-        VLogError(@"Error: PART NOT PRESENT");
+        VLogError(@"Error: ATTACHEMENT PART NOT PRESENT");
     }
     return res;
 }

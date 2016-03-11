@@ -69,7 +69,12 @@
         return;
     }
     
-    const DecryptStatus decryptStatus = [[VirgilProcessingManager sharedInstance] getDecriptionStatusForMessage:(Message *)message];
+    DecryptStatus decryptStatus = decryptUnknown;
+    @try {
+         decryptStatus = [[VirgilProcessingManager sharedInstance] getDecriptionStatusForMessage:(Message *)message];
+    }
+    @catch (NSException *exception) {}
+    
     [self applyVirgilStatus:decryptStatus];
     
     if (decryptUnknown == decryptStatus) {

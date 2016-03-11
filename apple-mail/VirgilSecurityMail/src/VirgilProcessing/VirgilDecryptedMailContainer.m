@@ -85,7 +85,11 @@
 }
 
 - (DecryptStatus) statusForEmail:(id)email {
-    VirgilDecryptedMail * curMail = [_mails valueForKey:[self emailHash:email]];
+    VirgilDecryptedMail * curMail = nil;
+    @try {
+        curMail = [_mails valueForKey:[self emailHash:email]];
+    }
+    @catch (NSException *exception) {}
     if (nil == curMail) return decryptUnknown;
     return curMail.decryptStatus;
 }
