@@ -8,6 +8,7 @@
     using System.ComponentModel;
     using System.Threading.Tasks;
     using System.Text.RegularExpressions;
+    using System.Windows.Input;
     using HtmlAgilityPack;
     using Newtonsoft.Json;
     
@@ -59,6 +60,7 @@
             this.CreateCommand = new RelayCommand(this.Create);
             this.BrowseFileCommand = new RelayCommand(this.BrowseFile);
             this.ImportCommand = new RelayCommand(this.Import);
+            this.DoneCommand = new RelayCommand(this.Close);
 
             this.AddValidationRules();
        }
@@ -66,7 +68,8 @@
         public RelayCommand CreateCommand { get; private set; }
         public RelayCommand ImportCommand { get; private set; }
         public RelayCommand BrowseFileCommand { get; private set; }
-        
+        public ICommand DoneCommand { get; private set; }
+
         public AccountModel CurrentAccount
         {
             get
@@ -295,7 +298,7 @@
         {
             try
             {
-                this.ChangeState(RegisterAccountState.Processing, "Extracting Private Key information...");
+                this.ChangeState(RegisterAccountState.Processing, "Extracting private key information...");
 
                 var exportObject = new
                 {
@@ -313,7 +316,7 @@
                     throw new NullReferenceException();
                 }
 
-                this.ChangeStateText("Loading Public Key details...");
+                this.ChangeStateText("Loading public key details...");
 
                 string enteredPassword = null;
 
@@ -352,7 +355,7 @@
                 this.privateKeyStorage.StorePrivateKey(this.CurrentAccount.VirgilCardId, result.private_key);
                 this.accountsManager.UpdateAccount(this.CurrentAccount);
 
-                this.ChangeState(RegisterAccountState.Done, "Private Key has been successfully imported.");
+                this.ChangeState(RegisterAccountState.Done, "Private key has been successfully imported.");
             }
             catch (Exception)
             {
@@ -365,7 +368,7 @@
         {
             try
             {
-                this.ChangeState(RegisterAccountState.Processing, "Loading Public Key information...");
+                this.ChangeState(RegisterAccountState.Processing, "Loading public key information...");
 
                 var foundCards = await this.virgilHub.Cards.Search(this.CurrentAccount.OutlookAccountEmail);
                 var card = foundCards.Single();
@@ -412,11 +415,11 @@
                 this.privateKeyStorage.StorePrivateKey(card.Id, privateKey);
                 this.accountsManager.UpdateAccount(this.CurrentAccount);
                 
-                this.ChangeState(RegisterAccountState.Done, "Private Key has been successfully imported");
+                this.ChangeState(RegisterAccountState.Done, "Private key has been successfully imported");
             }
             catch (Exception ex)
             {
-                this.AddCustomError($"Uploading Private Key failed. {ex.Message}");
+                this.AddCustomError($"Uploading private key failed. {ex.Message}");
                 this.ChangeState(RegisterAccountState.DownloadKeyPair);
             }
         }

@@ -6,6 +6,9 @@ namespace Virgil.Mail
     using System.IO;
     using System.Threading.Tasks;
     using System.Windows;
+
+    using log4net;
+
     using Virgil.Mail.Common;
     using Virgil.Mail.Integration;
 
@@ -14,6 +17,8 @@ namespace Virgil.Mail
     public partial class ThisAddIn
     {
         private string previousMailId;
+
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(ThisAddIn));
 
         private Outlook.Explorer ActiveExplorer;
 
@@ -162,9 +167,9 @@ namespace Virgil.Mail
 
                     Process.Start(Path.Combine(clickOnceLocation, "VirgilMailUpdater.exe"));
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    // TODO: Need to handle errors on updating the add-in.
+                    Logger.ErrorFormat("Updating failure: {0}", ex.Message);
                 }
             });
         }

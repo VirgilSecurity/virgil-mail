@@ -16,17 +16,22 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Image
+        <Border 
             Grid.Row="0"
-            Margin="0 20" 
-            Width="150"
-            Source="/Virgil.Mail;component/Resources/wizard-logo.png" />
+            Margin="20"
+            BorderThickness="0 0 0 1"
+            Padding="0 0 0 20"
+            BorderBrush="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" >
+            <Image
+                Width="150"
+                Source="/Virgil.Mail;component/Resources/wizard-logo.png" />
+        </Border>
         <Grid 
             Grid.Row="1" 
             Margin="20 0 20 10" >
             <!-- Progress Indicator -->
             <StackPanel 
-                Margin="0 30 0 0" 
+                Margin="0 40 0 0" 
                 Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=Processing}"
                 VerticalAlignment="Top" >
                 <TextBlock 
@@ -41,18 +46,11 @@
             <!-- Account Creation -->
             <StackPanel
                 Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=GenerateKeyPair}" >
-
-                <TextBlock 
-                    TextWrapping="Wrap" >
-                    <Run Text="Select an options for key pair generation and storage."></Run>
-                </TextBlock>
-
                 <CheckBox 
-                    Margin="0 10 0 2" 
+                    Margin="0 0 0 2" 
                     IsChecked="{Binding IsVirgilStorage, Mode=TwoWay}" 
                     Content="Keep my private key on Virgil services"
                     VerticalContentAlignment="Center" />
-
                 <TextBlock 
                     FontSize="10" 
                     Foreground="Gray" 
@@ -62,12 +60,12 @@
                 
                 <CheckBox 
                     x:Name="keyPasswordCheckBox"
-                    Margin="0 5" 
+                    Margin="0 10 0 2" 
                     IsChecked="{Binding HasPassword, Mode=TwoWay}" 
                     VerticalContentAlignment="Center" >
                     <TextBlock 
                         TextWrapping="Wrap" 
-                        Text="Protect my private key with a password (recommended)" />
+                        Text="Protect my private key with a password" />
                 </CheckBox>
 
                 <TextBlock 
@@ -108,12 +106,10 @@
                         Background="Transparent"
                         Padding="5 4" />
                 </Grid>
-
             </StackPanel>
             <!-- Download Account -->
             <StackPanel
                 Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=DownloadKeyPair}" >
-
                 <TextBlock 
                     TextWrapping="Wrap" 
                     Text="Your account is already created please select an option to getting your key.">
@@ -164,17 +160,26 @@
             </StackPanel>
             <!-- Success Screen -->
             <StackPanel
+                Margin="20 40 20 0"
+                VerticalAlignment="Top"
                 Orientation="Vertical"
                 Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=Done}" >
                 <Image
-                    Margin="0 30 0 20"
-                    Width="70"
+                    Width="50"
                     Source="/Virgil.Mail;component/Resources/success.png" />
                 <TextBlock 
                     TextWrapping="Wrap" 
-                    FontSize="14"
+                    FontSize="12"
+                    Margin="0 10"
+                    TextAlignment="Center"
                     HorizontalAlignment="Center"
                     Text="{Binding StateText}" />
+                <Button 
+                    Content="OK" 
+                    Command="{Binding DoneCommand}" 
+                    HorizontalAlignment="Center"
+                    Padding="30 5" 
+                    Background="White"  />
             </StackPanel>
         </Grid>
         <Border 

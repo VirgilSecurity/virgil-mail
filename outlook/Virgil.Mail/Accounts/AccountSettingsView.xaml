@@ -28,40 +28,40 @@
             Visibility="{Binding HasErrors, Converter={StaticResource BoolToVisibility}}">
             <TextBlock TextWrapping="Wrap" Foreground="White" Text="{Binding FirstErrorMessage}"></TextBlock>
         </Border>
-        <Image
+        <Border 
             Grid.Row="0"
-            Margin="0 20" 
-            Width="150"
-            Source="/Virgil.Mail;component/Resources/wizard-logo.png" />
-        
+            Margin="20"
+            BorderThickness="0 0 0 1"
+            Padding="0 0 0 20"
+            BorderBrush="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" >
+            <Image
+                Width="150"
+                Source="/Virgil.Mail;component/Resources/wizard-logo.png" />
+        </Border>
+
         <!-- Progress Indicator -->
         <StackPanel 
-                Grid.Row="1"
-                Margin="20 30 20 0" 
-                Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=Processing}"
-                VerticalAlignment="Top" >
+            Grid.Row="1"
+            Margin="20 40 20 0"
+            Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=Processing}"
+            VerticalAlignment="Top" >
             <TextBlock 
-                    HorizontalAlignment="Center" 
-                    Text="{Binding StateText}"
-                    Margin="0 0 0 10" />
+                HorizontalAlignment="Center" 
+                Text="{Binding StateText}"
+                Margin="0 0 0 10" />
             <ProgressBar 
-                    IsIndeterminate="True" 
-                    Height="10" 
-                    Width="200" />
+                IsIndeterminate="True" 
+                Height="10" 
+                Width="200" />
         </StackPanel>
-        
-        
+        <!-- Settings -->
         <StackPanel
             Grid.Row="1"
             Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=Settings}"
-            Margin="20 0 20 10" >
-            <TextBlock 
-                TextWrapping="Wrap" 
-                Text="Update your account's private key settings">
-            </TextBlock>
+            Margin="20 0 20 10" VerticalAlignment="Top" >
             <CheckBox 
                 IsEnabled="{Binding IsPrivateKeyHasPassword }"
-                Margin="0 10 0 2" 
+                Margin="0 0 0 2" 
                 IsChecked="{Binding IsPrivateKeyPasswordNeedToStore, Mode=TwoWay}" 
                 Content="Save private key password"
                 VerticalContentAlignment="Center" />
@@ -72,24 +72,17 @@
                 Margin="20 0 0 0" 
                 Text="That option will allows you to do not enter every time password on crypto operations." />
         </StackPanel>
-
         <!-- Delete Account -->
         <StackPanel
             Grid.Row="1"
             Orientation="Vertical"
-            Margin="20 0 20 0"
+            Margin="20 0"
+            VerticalAlignment="Top"
             Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=DeletePrivateKey}" >
-            <TextBlock 
-                TextWrapping="Wrap" 
-                Foreground="#DC3023" 
-                Margin="0 5"
-                Visibility="{Binding IsChecked, ElementName=revokeCheckBox, Converter={StaticResource BoolToVisibility}}" 
-                Text="Please make sure that you are doing this consciously.">
-            </TextBlock>
             <CheckBox 
                     Margin="0 0 0 2" 
                     x:Name="revokeCheckBox"
-                    IsChecked="{Binding IsRevokeAccount, Mode=TwoWay}" 
+                    IsChecked="{Binding IsDeleteAccount, Mode=TwoWay}" 
                     Content="Delete Account"
                     VerticalContentAlignment="Center" />
             <TextBlock 
@@ -101,7 +94,7 @@
             <CheckBox 
                     Margin="0 10 0 2" 
                     IsEnabled="{Binding IsChecked, ElementName=revokeCheckBox, Converter={StaticResource NotBool}}"
-                    IsChecked="{Binding IsDeleteFromVirgil, Mode=TwoWay}" 
+                    IsChecked="{Binding IsDeletePrivateKeyFromVirgilServices, Mode=TwoWay}" 
                     Content="Delete private key from the Virgil Services"
                     VerticalContentAlignment="Center" />
             <TextBlock 
@@ -113,7 +106,7 @@
             <CheckBox 
                     Margin="0 10 0 2" 
                     IsEnabled="{Binding IsChecked, ElementName=revokeCheckBox, Converter={StaticResource NotBool}}"
-                    IsChecked="{Binding IsDeleteLocally, Mode=TwoWay}" 
+                    IsChecked="{Binding IsDeletePrivateKeyFromLocalStorage, Mode=TwoWay}" 
                     Content="Delete private key from the local storage"
                     VerticalContentAlignment="Center" />
             <TextBlock 
@@ -122,7 +115,39 @@
                     TextWrapping="Wrap"
                     Margin="20 0 0 0" 
                     Text="Remove your private key from local storage if you need to clear your machine from personal data." />
+            <TextBlock 
+                TextWrapping="Wrap" 
+                Foreground="#DC3023" 
+                Margin="0 10 0 0"
+                TextAlignment="Center"
+                Text="{Binding DeleteWarningMessage}">
+            </TextBlock>
         </StackPanel>
+        <!-- Success Screen -->
+        <StackPanel
+            Grid.Row="1"
+            Margin="20 40 20 0"
+            VerticalAlignment="Top"
+            Orientation="Vertical"
+            Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=Done}" >
+            <Image
+                Width="50"
+                Source="/Virgil.Mail;component/Resources/success.png" />
+            <TextBlock 
+                TextWrapping="Wrap" 
+                FontSize="12"
+                Margin="0 10"
+                TextAlignment="Center"
+                HorizontalAlignment="Center"
+                Text="{Binding StateText}" />
+            <Button 
+                Content="OK" 
+                Command="{Binding DoneCommand}" 
+                HorizontalAlignment="Center"
+                Padding="30 5" 
+                Background="White"  />
+        </StackPanel>
+
         <Border 
             Grid.Row="2" 
             BorderThickness="0 1 0 0" 
@@ -161,6 +186,11 @@
             Padding="20 20">
             <StackPanel>
                 <Button 
+                    Content="Export private key..." 
+                    Command="{Binding ExportCommand}" 
+                    Padding="0 3" 
+                    Background="White" />
+                <Button 
                     Margin="0 5 0 0"
                     Content="Cancel" 
                     Command="{Binding CancelDeleteCommand}" 
@@ -171,6 +201,7 @@
                     Content="Accept" 
                     Command="{Binding AcceptDeleteCommand}" 
                     Padding="0 3" 
+                    IsEnabled="{Binding IsAnyDeleteOperation}"
                     BorderBrush="#BB241D" 
                     Background="White"
                     Foreground="#BB241D"   />
