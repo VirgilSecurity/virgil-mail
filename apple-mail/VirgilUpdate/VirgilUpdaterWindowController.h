@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Virgil Security Inc.
+ * Copyright (C) 2016 Virgil Security Inc.
  *
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  *
@@ -35,10 +35,23 @@
  */
 
 #import <Cocoa/Cocoa.h>
-#import <Sparkle/Sparkle.h>
-#import "VirgilUpdaterWindowController.h"
 
-@interface AppDelegate : NSObject <NSApplicationDelegate, SUUpdaterDelegate, VirgilUpdaterProtocol>
+@protocol VirgilUpdaterProtocol <NSObject>
+
+- (void) installUpdate;
+- (void) terminateUpdate;
 
 @end
 
+@interface VirgilUpdaterWindowController : NSWindowController
+
+- (void) showCurrentVersion : (NSString *)currentVersion
+              latestVersion : (NSString *)latestVersion;
+
+@property (weak) IBOutlet NSButton *btnHomeLink;
+@property (weak) IBOutlet NSTextField *currentVersionTextView;
+@property (weak) IBOutlet NSTextField *latestVersionTextView;
+
+@property (nonatomic, weak) id<VirgilUpdaterProtocol> delegate;
+
+@end

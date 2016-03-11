@@ -28,6 +28,10 @@
 		493F965A1BD57F0200EF1930 /* square@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 493F96561BD57F0200EF1930 /* square@2x.png */; };
 		4948BC321BCFB7F300D30AB7 /* VirgilHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4948BC311BCFB7F300D30AB7 /* VirgilHelpViewController.m */; };
 		4948BC351BCFD4D600D30AB7 /* VirgilComposeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4948BC341BCFD4D600D30AB7 /* VirgilComposeViewController.m */; };
+		4963F7291C92B8C50089193E /* VirgilUpdaterWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4963F7271C92B8C50089193E /* VirgilUpdaterWindowController.m */; };
+		4963F72A1C92B8C50089193E /* VirgilUpdaterWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4963F7281C92B8C50089193E /* VirgilUpdaterWindowController.xib */; };
+		4963F72B1C92C3940089193E /* virgil_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 4970AEC31C88499900A60D8E /* virgil_logo.png */; };
+		4963F72C1C92C3940089193E /* virgil_logo@2.png in Resources */ = {isa = PBXBuildFile; fileRef = 4970AEC41C88499900A60D8E /* virgil_logo@2.png */; };
 		4970AEC51C88499900A60D8E /* virgil_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 4970AEC31C88499900A60D8E /* virgil_logo.png */; };
 		4970AEC61C88499900A60D8E /* virgil_logo@2.png in Resources */ = {isa = PBXBuildFile; fileRef = 4970AEC41C88499900A60D8E /* virgil_logo@2.png */; };
 		4970AEC81C88617400A60D8E /* VirgilVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 4970AEC71C88617400A60D8E /* VirgilVersion.m */; };
@@ -179,6 +183,9 @@
 		4948BC311BCFB7F300D30AB7 /* VirgilHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilHelpViewController.m; path = VirgilSecurityMail/src/Gui/VirgilHelpViewController.m; sourceTree = "<group>"; };
 		4948BC331BCFD4D600D30AB7 /* VirgilComposeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VirgilComposeViewController.h; path = VirgilSecurityMail/src/OutgoingMes/VirgilComposeViewController.h; sourceTree = "<group>"; };
 		4948BC341BCFD4D600D30AB7 /* VirgilComposeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilComposeViewController.m; path = VirgilSecurityMail/src/OutgoingMes/VirgilComposeViewController.m; sourceTree = "<group>"; };
+		4963F7261C92B8C50089193E /* VirgilUpdaterWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VirgilUpdaterWindowController.h; sourceTree = "<group>"; };
+		4963F7271C92B8C50089193E /* VirgilUpdaterWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VirgilUpdaterWindowController.m; sourceTree = "<group>"; };
+		4963F7281C92B8C50089193E /* VirgilUpdaterWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VirgilUpdaterWindowController.xib; sourceTree = "<group>"; };
 		4970AEC31C88499900A60D8E /* virgil_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = virgil_logo.png; path = Resources/virgil_logo.png; sourceTree = "<group>"; };
 		4970AEC41C88499900A60D8E /* virgil_logo@2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "virgil_logo@2.png"; path = "Resources/virgil_logo@2.png"; sourceTree = "<group>"; };
 		4970AEC71C88617400A60D8E /* VirgilVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VirgilVersion.m; path = VirgilSecurityMail/src/Helpers/VirgilVersion.m; sourceTree = "<group>"; };
@@ -548,6 +555,9 @@
 				D14D647F1BA3A41000B47D22 /* MainMenu.xib */,
 				D14D649E1BA3A88700B47D22 /* Resources */,
 				D14D64761BA3A41000B47D22 /* Supporting Files */,
+				4963F7261C92B8C50089193E /* VirgilUpdaterWindowController.h */,
+				4963F7271C92B8C50089193E /* VirgilUpdaterWindowController.m */,
+				4963F7281C92B8C50089193E /* VirgilUpdaterWindowController.xib */,
 			);
 			path = VirgilUpdate;
 			sourceTree = "<group>";
@@ -823,6 +833,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4963F72B1C92C3940089193E /* virgil_logo.png in Resources */,
+				4963F72C1C92C3940089193E /* virgil_logo@2.png in Resources */,
+				4963F72A1C92B8C50089193E /* VirgilUpdaterWindowController.xib in Resources */,
 				D14D647E1BA3A41000B47D22 /* Images.xcassets in Resources */,
 				D14D64A01BA3A89A00B47D22 /* dsa_pub.pem in Resources */,
 				D10400AD1BA84DB3003FC484 /* VirgilMail.icns in Resources */,
@@ -980,6 +993,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4963F7291C92B8C50089193E /* VirgilUpdaterWindowController.m in Sources */,
 				D14D647C1BA3A41000B47D22 /* main.m in Sources */,
 				D14D647A1BA3A41000B47D22 /* AppDelegate.m in Sources */,
 			);

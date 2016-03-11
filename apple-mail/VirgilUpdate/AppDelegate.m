@@ -36,6 +36,7 @@
 
 #import "AppDelegate.h"
 #include <sys/sysctl.h>
+#import "VirgilUpdaterWindowController.h"
 
 @interface SWindowOfProcess : NSObject {
 }
@@ -68,8 +69,12 @@
 
 @implementation AppDelegate
 
+VirgilUpdaterWindowController * windowController = nil;
+SUUpdater * updater;
+NSString * version;
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-    [self printBundleVersion];
+    [self prepareBundleVersion];
     [self terminateOtherUpdaters];
     updater = [SUUpdater sharedUpdater];
     updater.delegate = self;
@@ -125,10 +130,10 @@
     }
 }
 
-- (void) printBundleVersion {
+- (void) prepareBundleVersion {
     NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
     NSString *app = [info objectForKey:@"CFBundleName"];
-    NSString *version = [info objectForKey:@"CFBundleShortVersionString"];
+    version = [info objectForKey:@"CFBundleShortVersionString"];
     NSLog(@"%@ : %@", app, version);
 }
 
@@ -141,11 +146,44 @@
 }
 
 - (void)updater:(SUUpdater *)updater willInstallUpdateOnQuit:(SUAppcastItem *)item immediateInstallationInvocation:(NSInvocation *)invocation {
-    [self terminate];
+    
+    [self showWindowWithCurrentVersion : version
+                         latestVersion : item.versionString];
+}
+
+- (void) showWindowWithCurrentVersion : (NSString *)currentVersion
+                        latestVersion : (NSString *)latestVersion {
+    if (windowController == nil) {
+        windowController = [VirgilUpdaterWindowController new];
+        windowController.delegate = self;
+    }
+    [windowController showCurrentVersion:currentVersion latestVersion:latestVersion];
+    [windowController showWindow:self];
+    [[windowController window] makeKeyAndOrderFront:nil];
 }
 
 - (void) terminate {
     [NSApp terminate:nil];
+}
+
+// MARK: - VirgilUpdaterProtocol
+
+- (void) installUpdate {
+    [self terminate];
+}
+
+- (void) terminateUpdate {
+    SEL driverSelector = NSSelectorFromString(@"driver");
+    if ([updater respondsToSelector:driverSelector]) {
+        id updateDriver = [updater performSelector:driverSelector withObject:updater];
+        if (updateDriver != nil) {
+            SEL updateStopSelector = NSSelectorFromString(@"stopUpdatingOnTermination");
+            if ([updateDriver respondsToSelector:updateStopSelector]) {
+                [updateDriver performSelector:updateStopSelector withObject:updateDriver];
+            }
+        }
+    }
+    [self terminate];
 }
 
 @end
