@@ -133,7 +133,7 @@ NSString * version;
 - (void) prepareBundleVersion {
     NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
     NSString *app = [info objectForKey:@"CFBundleName"];
-    version = [info objectForKey:@"CFBundleShortVersionString"];
+    version = [info objectForKey:@"CFBundleVersion"];
     NSLog(@"%@ : %@", app, version);
 }
 
