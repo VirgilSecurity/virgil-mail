@@ -469,10 +469,12 @@
             [self decryptWholeMessage:topMimePart];
         }
     
+#if 0
         if (nil == [_decryptedMailContainer partByHash:mimePart forEmail:currentMessage]) {
             [_decryptedMailContainer clear];
             [self decryptWholeMessage:topMimePart];
         }
+#endif
     
         res = [_decryptedMailContainer partByHash:mimePart forEmail:currentMessage];
     }
@@ -571,9 +573,6 @@
 
 - (NSData *) decryptedAttachementByName : (NSString *) name forEmail : (id)message {
     if (nil == name) return nil;
-    
-    VLogInfo(@">>>>>>>>>>>>>>>>>>>>>> decryptedAttachementByName : %@", name);
-    
     NSData * res = nil;
     @synchronized (self) {
         res = [_decryptedMailContainer attachementByHash:name forEmail:message];
