@@ -69,6 +69,7 @@ NSString * latestVersionStr = @"";
                             range : titleRange];
     
     [_btnHomeLink setAttributedTitle:normalHomeLink];
+    [[self window] setLevel:NSFloatingWindowLevel];
     viewLoaded = YES;
     [self showVersions];
 }
