@@ -20,11 +20,7 @@
         {
             // initialize SDK instances with staging environment.
 
-            var config = VirgilConfig.UseAccessToken(Constants.VirgilAccessToken)
-                .WithCustomIdentityServiceUri(new System.Uri("https://identity-stg.virgilsecurity.com"))
-                .WithCustomPublicServiceUri(new System.Uri("https://keys-stg.virgilsecurity.com"))
-                .WithCustomPrivateServiceUri(new System.Uri("https://keys-private-stg.virgilsecurity.com"));
-
+            var config = VirgilConfig.UseAccessToken(Constants.VirgilAccessToken);
             var virgilHub = VirgilHub.Create(config);
 
             // register types
