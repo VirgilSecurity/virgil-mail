@@ -123,7 +123,7 @@
             return part;
         }
         
-        if ([[part disposition] isEqualToString : @"attachment"] &&
+        if ([[[part disposition] lowercaseString] isEqualToString : @"attachment"] &&
             [part.attachmentFilename isEqualToString : VIRGIL_MAIL_INFO_ATTACH]) {
             return part;
         }
@@ -282,8 +282,8 @@
 }
 
 - (NSData *) getEncryptedAttachement : (MimePart *)part {
-    if (![[part disposition] isEqualToString:@"attachment"]) return nil;
-    if (![part.contentTransferEncoding isEqualToString:@"base64"]) return nil;
+    if (![[[part disposition] lowercaseString] isEqualToString:@"attachment"]) return nil;
+    if (![[part.contentTransferEncoding lowercaseString] isEqualToString:@"base64"]) return nil;
     if (YES == [part.attachmentFilename isEqualToString:VIRGIL_MAIL_INFO_ATTACH]) return nil;
     NSData *bodyData = [part bodyData];
     return bodyData;
@@ -310,7 +310,7 @@
 }
 
 - (BOOL) isVirgilDataInAttach : (MimePart *) virgilPart {
-    return [[virgilPart disposition] isEqualToString:@"attachment"];
+    return [[[virgilPart disposition] lowercaseString] isEqualToString:@"attachment"];
 }
 
 - (MimePart *) partForReplacement : (MimePart *)topMimePart {
@@ -577,8 +577,8 @@
     @synchronized (self) {
         res = [_decryptedMailContainer attachementByHash:name forEmail:message];
     }
-    return res;
-}
+        return res;
+    }
 
 + (NSArray *) accountsList {
     NSMutableSet * set = [[NSMutableSet alloc] init];
