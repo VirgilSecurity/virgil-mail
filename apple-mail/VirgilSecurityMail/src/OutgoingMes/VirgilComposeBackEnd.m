@@ -82,8 +82,6 @@
     
     VLogInfo(@"Attach count : %lu", [attachments count]);
     
-    [NSThread sleepForTimeInterval : 1.0f];
-    
     if (YES == [_vpm encryptMessage : contents
                         attachments : [attachments copy]
                              result : result]) {
