@@ -39,6 +39,8 @@
 
         public void EncryptAndSend(Outlook.MailItem mailItem)
         {
+           
+
            var recipients = mailItem.Recipients
                 .OfType<Outlook.Recipient>()
                 .Select(it => it.Address)
@@ -48,8 +50,7 @@
             recipients.Add(senderSmtpAddress);
 
             recipients = recipients.Distinct().ToList();
-
-
+            
             var tasks = recipients
                 .Select(r => this.virgilHub.Cards.Search(r))
                 .ToList();
@@ -72,8 +73,10 @@
 
             var account = this.accountsManager.GetAccount(senderSmtpAddress);
             var privateKey = this.privateKeysStorage.GetPrivateKey(account.VirgilCardId);
-            
+
+            mailItem.Save();
             EncryptMail(mailItem, recipientsDictionary, privateKey, password);
+            mailItem.Save();
 
             mailItem.MessageClass = Constants.VirgilMessageClass;
             mailItem.HTMLBody = Constants.EmailHtmlBodyTemplate;
@@ -82,6 +85,7 @@
         private static void EncryptMail(Outlook._MailItem mail, IDictionary<string, byte[]> recipients, byte[] privateKey, string privateKeyPassword)
         {
             EncryptAttachments(mail, recipients);
+
             var encryptedMailData = EncryptMailData(mail, recipients);
             
             var signature = privateKeyPassword == null 
@@ -134,6 +138,7 @@
 
             foreach (var attachment in attachemnts)
             {
+                
                 var attachemntData = (byte[])attachment.PropertyAccessor.GetProperty(Constants.OutlookAttachmentDataBin);
                 var encryptedAttachmentData = CryptoHelper.Encrypt(attachemntData, recipients);
                 attachment.PropertyAccessor.SetProperty(Constants.OutlookAttachmentDataBin, encryptedAttachmentData);
