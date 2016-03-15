@@ -85,30 +85,39 @@ NSMutableAttributedString * activeHomeLink = nil;
     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:updateURL]];
 }
 
+- (void) updateGuiElementsInternal {
+    @try {
+        // ----------- Load settings -----------
+        NSInteger encByDefaultState = [VirgilPreferencesContainer isUseEncryption] ? NSOnState : NSOffState;
+        [_encByDefaultCheckBox setState:encByDefaultState];
+        
+        // --------- Prepare home link ---------
+        NSColor *color = [NSColor blueColor];
+        normalHomeLink =
+        [[NSMutableAttributedString alloc] initWithAttributedString:[_btnHomeLink attributedTitle]];
+        NSRange titleRange = NSMakeRange(0, [normalHomeLink length]);
+        [normalHomeLink addAttributes : @{NSForegroundColorAttributeName:color,NSUnderlineStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]}
+                                range : titleRange];
+        
+        NSColor *colorAlt = [NSColor colorWithCalibratedRed:(30/255.0f) green:(144/255.0f) blue:(255/255.0f) alpha:1.0];
+        activeHomeLink =
+        [[NSMutableAttributedString alloc] initWithAttributedString:[_btnHomeLink attributedTitle]];
+        [activeHomeLink addAttributes : @{NSForegroundColorAttributeName:colorAlt,NSUnderlineStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]}
+                                range : titleRange];
+        
+        [_btnHomeLink setAttributedTitle:normalHomeLink];
+        
+        // -------- Load versions info ---------
+        [[VirgilVersion sharedInstance] setDelegate:self];
+        [self reloadVersionInfo];
+    }
+    @catch (NSException *exception) {}
+}
+
 - (void) updateGuiElements {
-    // ----------- Load settings -----------
-    NSInteger encByDefaultState = [VirgilPreferencesContainer isUseEncryption] ? NSOnState : NSOffState;
-    [_encByDefaultCheckBox setState:encByDefaultState];
-    
-    // --------- Prepare home link ---------
-    NSColor *color = [NSColor blueColor];
-    normalHomeLink =
-    [[NSMutableAttributedString alloc] initWithAttributedString:[_btnHomeLink attributedTitle]];
-    NSRange titleRange = NSMakeRange(0, [normalHomeLink length]);
-    [normalHomeLink addAttributes : @{NSForegroundColorAttributeName:color,NSUnderlineStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]}
-                         range : titleRange];
-    
-    NSColor *colorAlt = [NSColor colorWithCalibratedRed:(30/255.0f) green:(144/255.0f) blue:(255/255.0f) alpha:1.0];
-    activeHomeLink =
-    [[NSMutableAttributedString alloc] initWithAttributedString:[_btnHomeLink attributedTitle]];
-    [activeHomeLink addAttributes : @{NSForegroundColorAttributeName:colorAlt,NSUnderlineStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]}
-                        range : titleRange];
-    
-    [_btnHomeLink setAttributedTitle:normalHomeLink];
-    
-    // -------- Load versions info ---------
-    [[VirgilVersion sharedInstance] setDelegate:self];
-    [self reloadVersionInfo];
+    [self performSelectorOnMainThread : @selector(updateGuiElementsInternal)
+                           withObject : self
+                        waitUntilDone : NO];
 }
 
 - (void) showLatestVersion : (NSString *) latestVersion
