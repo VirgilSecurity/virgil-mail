@@ -36,7 +36,7 @@ function prepare() {
 	
 	IMAGES_FOLDER="${SCRIPT_FOLDER}/pkg_resources"
 	ICON_FILE=""
-	BACKGROUND_FILE="Installer-Background.tiff"
+	BACKGROUND_FILE="Installer-Background.png"
 	PKG_IDENTIFIER="com.virgilsecurity.app.mail"
 	DISTRIBUTION_XML="/tmp/distribution.xml"
 	PKG_BACKGROUND_FILE="background.png"
