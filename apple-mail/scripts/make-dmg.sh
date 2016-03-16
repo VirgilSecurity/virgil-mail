@@ -6,9 +6,10 @@ function make_dmg() {
 	ARG_IMG_FOLDER="${3}"
 	ARG_ICON="${4}"
 	ARG_BACKGROUND="${5}"
-	ARG_DMG_NAME="${6}"
-	ARG_VOL_NAME="${7}"
-	ARG_VERSION="${8}"
+	ARG_BACKGROUND_2X="${6}"
+	ARG_DMG_NAME="${7}"
+	ARG_VOL_NAME="${8}"
+	ARG_VERSION="${9}"
 	ARG_TMP_DIR="./tmp"
 
 	SRC_DIR_NAME="${ARG_SRC_DIR_NAME}"
@@ -46,6 +47,7 @@ function make_dmg() {
 
 
 	BG_IMG_NAME=${ARG_BACKGROUND}
+	BG_IMG_NAME_2X=${ARG_BACKGROUND_2X}
 	echo "BG_IMG_NAME=$BG_IMG_NAME";
 	VOL_ICON_NAME=${ARG_ICON}
 	echo "VOL_ICON_NAME=$VOL_ICON_NAME";
@@ -96,6 +98,9 @@ function make_dmg() {
 		mkdir "${BG_FOLDER}"
 		IMG_TO_COPY="${ARG_IMG_FOLDER}"/"${BG_IMG_NAME}"
 		cp "${IMG_TO_COPY}" "${BG_FOLDER}/"
+		
+		IMG_TO_COPY_2X="${ARG_IMG_FOLDER}"/"${ARG_BACKGROUND_2X}"
+		cp "IMG_TO_COPY_2X" "${BG_FOLDER}/"
 		
 		DS_STORE="${ARG_IMG_FOLDER}"/_DS_Store
 		perl -pe "s/1.0.0.101/${ARG_VERSION}/g" < "${DS_STORE}" > "/Volumes/${VOL_NAME}/.DS_Store"
