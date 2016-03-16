@@ -36,8 +36,7 @@ function prepare() {
 	
 	IMAGES_FOLDER="${SCRIPT_FOLDER}/pkg_resources"
 	ICON_FILE=""
-	BACKGROUND_FILE="Installer-Background.png"
-	BACKGROUND_FILE_2X="Installer-Background@2x.png"
+	BACKGROUND_FILE="Installer-Background.tiff"
 	PKG_IDENTIFIER="com.virgilsecurity.app.mail"
 	DISTRIBUTION_XML="/tmp/distribution.xml"
 	PKG_BACKGROUND_FILE="background.png"
@@ -219,10 +218,9 @@ function create_dmg() {
 #	ARG_IMG_FOLDER="${3}"
 #	ARG_ICON="${4}"
 #	ARG_BACKGROUND="${5}"
-#	ARG_BACKGROUND_2X="${6}"
-#	ARG_DMG_NAME="${7}"
-#	ARG_VOL_NAME="${8}"
-#	ARG_VERSION="${9}"
+#	ARG_DMG_NAME="${6}"
+#	ARG_VOL_NAME="${7}"
+#	ARG_VERSION="${8}"
 #	ARG_TMP_DIR="./tmp"
 	
 	#DMG_RESULT="$DMG_PREPARE_FOLDER/${MAIL_BUNDLE_NAME}-${CUR_VERSION}"
@@ -232,7 +230,6 @@ function create_dmg() {
 				"${IMAGES_FOLDER}" 					\
 				"${ICON_FILE}" 						\
 				"${BACKGROUND_FILE}" 				\
-				"${BACKGROUND_FILE_2X}" 			\
 				"${DMG_RESULT}" 					\
 				"${MAIL_BUNDLE_NAME} $CUR_VERSION"	\
 				"$CUR_VERSION"
