@@ -101,7 +101,7 @@ function make_dmg() {
 		cp "${IMG_TO_COPY}" "${BG_FOLDER}/"
 		
 		IMG_TO_COPY_2X="${ARG_IMG_FOLDER}"/"${BG_IMG_NAME_2X}"
-		cp "IMG_TO_COPY_2X" "${BG_FOLDER}/"
+		cp "${IMG_TO_COPY_2X}" "${BG_FOLDER}/"
 		
 		DS_STORE="${ARG_IMG_FOLDER}"/_DS_Store
 		perl -pe "s/1.0.0.101/${ARG_VERSION}/g" < "${DS_STORE}" > "/Volumes/${VOL_NAME}/.DS_Store"
