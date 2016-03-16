@@ -133,20 +133,17 @@ function setIcon() {
 	local FILE_TO_APPLY="${3}"
 	
 	pushd "${ICON_FOLDER}"
-		local TMP_RESOURCE="tmpicns.rsrc"
-		
-		sips -i "${ICON_FILE}"
-		
-		# Extract the icon to its own resource file:
-		DeRez -only icns "${ICON_FILE}" > "${TMP_RESOURCE}"
-
-		# append this resource to the file you want to icon-ize.
-		Rez -append "${TMP_RESOURCE}" -o "${FILE_TO_APPLY}"
-
-		# Use the resource to set the icon.
-		SetFile -a C "${FILE_TO_APPLY}"
-
-		rm "${TMP_RESOURCE}"
+		./setfileicon "${ICON_FILE}" "${FILE_TO_APPLY}"
+	
+		#local TMP_RESOURCE="tmpicns.rsrc"
+		#sips -i "${ICON_FILE}"
+		## Extract the icon to its own resource file:
+		#DeRez -only icns "${ICON_FILE}" > "${TMP_RESOURCE}"
+		## append this resource to the file you want to icon-ize.
+		#Rez -append "${TMP_RESOURCE}" -o "${FILE_TO_APPLY}"
+		## Use the resource to set the icon.
+		#SetFile -a C "${FILE_TO_APPLY}"
+		#rm "${TMP_RESOURCE}"
 	popd
 }
 
