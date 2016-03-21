@@ -80,12 +80,6 @@ NSString * version;
     updater.delegate = self;
     updater.automaticallyDownloadsUpdates = YES;
     [updater checkForUpdatesInBackground];
-    
-    [NSTimer scheduledTimerWithTimeInterval : 300
-                                     target : self
-                                   selector : @selector(terminate)
-                                   userInfo : nil
-                                    repeats : YES];
 }
 
 - (NSArray*) windowsInfo {
