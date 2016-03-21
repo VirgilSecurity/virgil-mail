@@ -42,7 +42,7 @@
 @implementation VirgilPreferences
 
 NSString * homePage = @"https://virgilsecurity.com";
-NSString * updateURL = @"https://virgilsecurity.com/demos";
+NSString * updateURLFormat = @"https://downloads.virgilsecurity.com/apps/virgil-mail/apple-mail/VirgilSecurityMail-%@.dmg";
 
 NSMutableAttributedString * normalHomeLink = nil;
 NSMutableAttributedString * activeHomeLink = nil;
@@ -82,6 +82,9 @@ NSMutableAttributedString * activeHomeLink = nil;
 }
 
 - (IBAction)onDownloadUpdate:(id)sender {
+    NSString * latestVersionString = [[VirgilVersion sharedInstance] cachedLatestVersion];
+    if (latestVersionString == nil) return;
+    NSString * updateURL = [NSString stringWithFormat:updateURLFormat, latestVersionString];
     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:updateURL]];
 }
 
