@@ -59,26 +59,32 @@ static BOOL _virgilShowPhotos = NO;
 
 - (void)VSM_updatePhoto {
     [self VSM_updatePhoto];
-    [self highlightVirgil];
+    @try {
+        [self highlightVirgil];
+    }
+    @catch (NSException *exception) {}
 }
 
 - (void) highlightVirgil {
-    MCMimeBody * mimeBody = [((MFMessageThread *)((MessageListObjectProxy *)self).message).newestMessage messageBody];
-    if (YES == [[VirgilProcessingManager sharedInstance] isEncryptedByVirgil:[mimeBody topLevelPart]]) {
-        NSImage * virgilImage;
-        if (YES == _virgilShowPhotos) {
-            virgilImage = [VirgilImageProcessing imageWithStatusPicture : ((MessageListObjectProxy *)self).photo
-                                                        statusImageName : @"encrypt_ok_small"
-                                                               minWidth : 70
-                                                              minHeight : 48];
-        } else {
-            ((MessageListObjectProxy *)self).showContactPhotos = YES;
-            virgilImage = [NSImage imageNamed:@"encrypt_mail_small"];
+    @try {
+        MCMimeBody * mimeBody = [((MFMessageThread *)((MessageListObjectProxy *)self).message).newestMessage messageBody];
+        if (YES == [[VirgilProcessingManager sharedInstance] isEncryptedByVirgil:[mimeBody topLevelPart]]) {
+            NSImage * virgilImage;
+            if (YES == _virgilShowPhotos) {
+                virgilImage = [VirgilImageProcessing imageWithStatusPicture : ((MessageListObjectProxy *)self).photo
+                                                            statusImageName : @"encrypt_ok_small"
+                                                                   minWidth : 70
+                                                                  minHeight : 48];
+            } else {
+                ((MessageListObjectProxy *)self).showContactPhotos = YES;
+                virgilImage = [NSImage imageNamed:@"encrypt_mail_small"];
+            }
+            
+            [self setValue:virgilImage forKey:@"selectedPhoto"];
+            [self setValue:virgilImage forKey:@"unselectedPhoto"];
         }
-        
-        [self setValue:virgilImage forKey:@"selectedPhoto"];
-        [self setValue:virgilImage forKey:@"unselectedPhoto"];
     }
+    @catch (NSException *exception) {}
 }
 
 - (void)VSM_updateContactPhotoVisibilityFromDefaults {
