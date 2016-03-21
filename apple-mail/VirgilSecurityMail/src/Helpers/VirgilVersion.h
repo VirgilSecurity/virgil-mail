@@ -52,6 +52,7 @@
 - (NSString * _Nonnull) currentVersion;
 - (NSString * _Nullable) cachedLatestVersion;
 - (BOOL) isNeedUpdate;
+- (void) requestLatestVersion;
 
 @end
 

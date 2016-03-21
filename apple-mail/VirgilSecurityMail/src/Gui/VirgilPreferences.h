@@ -48,6 +48,8 @@
 @property (weak) IBOutlet NSButton *btnUpdate;
 
 @property (weak) IBOutlet NSButton *btnHomeLink;
+@property (weak) IBOutlet NSButton *btnCheckUpdates;
+@property (weak) IBOutlet NSProgressIndicator *progressBar;
 
 @end
 
