@@ -40,19 +40,25 @@
 
                     foreach (var unreadItem in unreadItems)
                     {
-                        Outlook.MailItem mail = unreadItem as Outlook.MailItem;
-                        if (mail != null && mail.SenderEmailAddress.Equals(from, StringComparison.CurrentCultureIgnoreCase))
+                        var itemModel = ExtractIsMatch(@from, unreadItem);
+                        if (itemModel != null)
                         {
-                            var mailModel = new OutlookMailModel
-                            {
-                                EntryID = mail.EntryID,
-                                From = mail.SenderEmailAddress,
-                                Body = mail.HTMLBody
-                            };
+                            return itemModel;
+                        }
+                    }
 
-                            mail.ReleaseCom();
+                    var junk = this.application.Session.Folders[accountSmtpAddress]
+                        .Store.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderJunk);
 
-                            return mailModel;
+                    Outlook.Items junkItems = junk.Items; //.Restrict("[Unread]=true");
+
+                    foreach (var unreadItem in junkItems)
+                    {
+                        var itemModel = ExtractIsMatch(@from, unreadItem);
+                        if (itemModel != null)
+                        {
+                            itemModel.IsJunk = true;
+                            return itemModel;
                         }
                     }
                 }
@@ -63,6 +69,25 @@
             {
                 nameSpace.ReleaseCom();
             }
+        }
+
+        private static OutlookMailModel ExtractIsMatch(string @from, object unreadItem)
+        {
+            Outlook.MailItem mail = unreadItem as Outlook.MailItem;
+            if (mail == null || !mail.SenderEmailAddress.Equals(@from, StringComparison.CurrentCultureIgnoreCase))
+            {
+                return null;
+            }
+
+            var mailModel = new OutlookMailModel
+            {
+                EntryID = mail.EntryID,
+                From = mail.SenderEmailAddress,
+                Body = mail.HTMLBody
+            };
+
+            mail.ReleaseCom();
+            return mailModel;
         }
     }
 }

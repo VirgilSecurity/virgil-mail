@@ -274,6 +274,12 @@
                     throw new Exception("The message with confirmation code is not arrived. Try again later.");
                 }
 
+                if (mail.IsJunk)
+                {
+                    this.outlook.UnJunkMailById(mail.EntryID);
+                    continue;
+                }
+
                 var htmlDoc = new HtmlDocument();
                 htmlDoc.LoadHtml(mail.Body);
 

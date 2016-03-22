@@ -49,6 +49,20 @@
             attachemnt?.Delete();
         }
 
+        public void UnJunkMailById(string mailId)
+        {
+            Outlook.NameSpace nameSpace = this.application.GetNamespace("MAPI");
+            Outlook.MailItem mail = (Outlook.MailItem)nameSpace.GetItemFromID(mailId);
+
+            var accountSmtpAddress =  mail.ExtractReciverEmailAddress();
+
+            var inbox = this.application.Session.Folders[accountSmtpAddress]
+                        .Store.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderInbox);
+
+            mail.UnRead = true;
+            mail.Move(inbox);
+        }
+
         public IEnumerable<AccountIntegrationModel> GetOutlookAccounts()
         {
             Outlook.NameSpace ns = null;

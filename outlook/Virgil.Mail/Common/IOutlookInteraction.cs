@@ -9,5 +9,6 @@
         void MarkMailAsRead(string mailId);
         void DeleteMail(string mailId);
         void DeleteAttachment(Microsoft.Office.Interop.Outlook.MailItem mail, string attachmentName);
+        void UnJunkMailById(string mailId);
     }
 }
