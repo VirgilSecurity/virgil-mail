@@ -137,7 +137,6 @@
             set
             {
                 this.attachments = value;
-                this.RaisePropertyChanged("HasAttachments");
                 this.RaisePropertyChanged();
             }
         }
@@ -204,6 +203,8 @@
                 var attachmentModel = new EncryptedAttachmentViewModel(attachment.DisplayName, attachment.FileName);
                 this.Attachments.Add(attachmentModel);
             }
+
+            this.RaisePropertyChanged(@"HasAttachments");
         }
 
         private void Register()
@@ -267,6 +268,8 @@
         {
             try
             {
+                this.ParseAttachemnts();
+
                 var privateKey = this.privateKeysStorage.GetPrivateKey(this.account.VirgilCardId);
 
                 Logger.InfoFormat("Decrypt mail with account's '{0}' private key.", this.account.OutlookAccountEmail);

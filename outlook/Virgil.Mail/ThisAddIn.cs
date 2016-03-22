@@ -125,7 +125,10 @@ namespace Virgil.Mail
                 mail.ReleaseCom();
             }
         }
-        
+
+        /// <summary>
+        /// Called when add-in stared up.
+        /// </summary>
         private void OnAddInStartup(object sender, EventArgs e)
         {
             // Initialize log4net
@@ -143,6 +146,15 @@ namespace Virgil.Mail
             this.ActiveExplorer.SelectionChange += this.OnExplorerSelectionChange;
 
             this.CheckUpdates();
+        }
+
+        /// <summary>
+        /// Occurs when add-in shouted down.
+        /// </summary>
+        private void OnAddInShutdown(object sender, EventArgs e)
+        {
+            // Note: Outlook no longer raises this event. If you have code that 
+            // must run when Outlook shuts down, see http://go.microsoft.com/fwlink/?LinkId=506785
         }
 
         private void CheckUpdates()
@@ -173,13 +185,7 @@ namespace Virgil.Mail
                 }
             });
         }
-
-        private void OnAddInShutdown(object sender, EventArgs e)
-        {
-            // Note: Outlook no longer raises this event. If you have code that 
-            // must run when Outlook shuts down, see http://go.microsoft.com/fwlink/?LinkId=506785
-        }
-
+        
         #region VSTO generated code
 
         /// <summary>

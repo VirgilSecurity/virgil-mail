@@ -18,4 +18,4 @@
             </html>";
         internal const string OutlookAttachmentDataBin = @"http://schemas.microsoft.com/mapi/proptag/0x37010102";
     }
-}   
+}

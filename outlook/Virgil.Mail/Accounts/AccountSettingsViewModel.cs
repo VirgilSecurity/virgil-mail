@@ -5,6 +5,7 @@
     using System.Text;
     using System.Threading.Tasks;
     using System.Windows.Input;
+
     using HtmlAgilityPack;
     using Newtonsoft.Json;
 
@@ -12,6 +13,7 @@
     using Virgil.Mail.Common.Mvvm;
     using Virgil.Mail.Models;
     using Virgil.Mail.Mvvm;
+
     using Virgil.SDK.Infrastructure;
     using Virgil.SDK.TransferObject;
 
@@ -29,7 +31,7 @@
         private AccountModel account;
         private bool isPrivateKeyPasswordNeedToStore;
         private bool isPrivateKeyHasPassword;
-        private bool canUploadToCloud;
+        private bool canUploadToCloud; 
 
         private AccountSettingsState? doneReturnState;
 
@@ -116,7 +118,6 @@
         public void Initialize(AccountModel accountModel)
         {
             this.account = accountModel;
-
             this.ChangeState(AccountSettingsState.Settings);
 
             this.UpdateProperties();
