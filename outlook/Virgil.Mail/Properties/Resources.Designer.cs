@@ -124,6 +124,15 @@ namespace Virgil.Mail.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Recipients aren&apos;t exists.
+        /// </summary>
+        public static string Caption_AccountsAreNotFoundSendInvitation {
+            get {
+                return ResourceManager.GetString("Caption_AccountsAreNotFoundSendInvitation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Use this option if your key has been previously uploaded to Virgil Security services..
         /// </summary>
         public static string Description_DownloadPrivateKeyFromVirgilServices {
@@ -201,6 +210,30 @@ namespace Virgil.Mail.Properties {
         public static string Description_StorePrivateKeyOnVirgilServices {
             get {
                 return ResourceManager.GetString("Description_StorePrivateKeyOnVirgilServices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start using Virgil Mail.
+        /// </summary>
+        public static string Email_Subject_Invitation {
+            get {
+                return ResourceManager.GetString("Email_Subject_Invitation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;html&gt;
+        ///            &lt;body&gt;
+        ///                   &lt;p&gt;Hello&lt;/p&gt;
+        ///            	&lt;p&gt;Please install Virgil Mail plugin so that we can continue our secure communication. You can download it from website here.&lt;/p&gt;
+        ///            	&lt;a href=&apos;https://virgilsecurity.com/demos&apos; &gt;Download Virgil Mail Add-In.&lt;/a&gt;    
+        ///            &lt;/body&gt;
+        ///&lt;/html&gt;.
+        /// </summary>
+        public static string Email_Template_InvitationEmail {
+            get {
+                return ResourceManager.GetString("Email_Template_InvitationEmail", resourceCulture);
             }
         }
         
@@ -663,6 +696,17 @@ namespace Virgil.Mail.Properties {
         public static string Log_Info_PrivateKeysStorage_StorePrivateKey {
             get {
                 return ResourceManager.GetString("Log_Info_PrivateKeysStorage_StorePrivateKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The folowing accounts are not registered yet. Do you want to send them an invitation email?
+        ///
+        ///{0}.
+        /// </summary>
+        public static string Message_AccoutnsAreNotRegisteredSendInvitation {
+            get {
+                return ResourceManager.GetString("Message_AccoutnsAreNotRegisteredSendInvitation", resourceCulture);
             }
         }
         

@@ -336,4 +336,24 @@ StackTrace:
   <data name="Button_Decrypt" xml:space="preserve">
     <value>Decrypt</value>
   </data>
+  <data name="Caption_AccountsAreNotFoundSendInvitation" xml:space="preserve">
+    <value>Recipients aren't exists</value>
+  </data>
+  <data name="Message_AccoutnsAreNotRegisteredSendInvitation" xml:space="preserve">
+    <value>The folowing accounts are not registered yet. Do you want to send them an invitation email?
+
+{0}</value>
+  </data>
+  <data name="Email_Subject_Invitation" xml:space="preserve">
+    <value>Start using Virgil Mail</value>
+  </data>
+  <data name="Email_Template_InvitationEmail" xml:space="preserve">
+    <value>&lt;html&gt;
+            &lt;body&gt;
+                   &lt;p&gt;Hello&lt;/p&gt;
+            	&lt;p&gt;Please install Virgil Mail plugin so that we can continue our secure communication. You can download it from website here.&lt;/p&gt;
+            	&lt;a href='https://virgilsecurity.com/demos' &gt;Download Virgil Mail Add-In.&lt;/a&gt;    
+            &lt;/body&gt;
+&lt;/html&gt;</value>
+  </data>
 </root>

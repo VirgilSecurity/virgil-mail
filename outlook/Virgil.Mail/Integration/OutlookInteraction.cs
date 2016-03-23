@@ -63,6 +63,18 @@
             mail.Move(inbox);
         }
 
+        public void SendEmail(string emailTo, string subject, string body, Outlook.OlImportance importance = Outlook.OlImportance.olImportanceNormal)
+        {
+            Outlook.MailItem mailItem = (Outlook.MailItem)this.application.CreateItem(Outlook.OlItemType.olMailItem);
+            mailItem.Subject = subject;
+            mailItem.To = emailTo;
+            mailItem.HTMLBody = body;
+            mailItem.Importance = Outlook.OlImportance.olImportanceHigh;
+            mailItem.Send();
+
+            mailItem.ReleaseCom();
+        }
+
         public IEnumerable<AccountIntegrationModel> GetOutlookAccounts()
         {
             Outlook.NameSpace ns = null;

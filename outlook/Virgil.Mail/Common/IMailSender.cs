@@ -4,6 +4,6 @@
 
     public interface IMailSender : IService
     {
-        void EncryptAndSend(Outlook.MailItem mailItem);
+        bool EncryptAndSend(Outlook.MailItem mailItem);
     }
 }

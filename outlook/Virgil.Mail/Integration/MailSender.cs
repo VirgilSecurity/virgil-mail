@@ -13,61 +13,81 @@
 
     using Virgil.Mail.Common;
     using Virgil.Mail.Models;
-    using Virgil.SDK.Infrastructure;
+    using Virgil.Mail.Properties;
 
     public class MailSender : IMailSender
     {
-        private readonly VirgilHub virgilHub;
-        private readonly IDialogPresenter dialogs;
+        private readonly IDialogPresenter dialog;
+        private readonly IRecipientsService recipientsService;
         private readonly IAccountsManager accountsManager;
+        private readonly IOutlookInteraction outlook;
         private readonly IPasswordExactor passwordExactor;
         private readonly IPrivateKeysStorage privateKeysStorage;
 
         public MailSender(
-            VirgilHub virgilHub, 
-            IDialogPresenter dialogs,
+            IDialogPresenter dialog,
+            IRecipientsService recipientsService,
             IAccountsManager accountsManager,
+            IOutlookInteraction outlook,
             IPasswordExactor passwordExactor,
             IPrivateKeysStorage privateKeysStorage)
         {
-            this.virgilHub = virgilHub;
-            this.dialogs = dialogs;
+            this.dialog = dialog;
+            this.recipientsService = recipientsService;
             this.accountsManager = accountsManager;
+            this.outlook = outlook;
             this.passwordExactor = passwordExactor;
             this.privateKeysStorage = privateKeysStorage;
         }
 
-        public void EncryptAndSend(Outlook.MailItem mailItem)
+        public bool EncryptAndSend(Outlook.MailItem mailItem)
         {
-           
-
-           var recipients = mailItem.Recipients
+           var identites = mailItem.Recipients
                 .OfType<Outlook.Recipient>()
                 .Select(it => it.Address)
                 .ToList();
 
             var senderSmtpAddress = mailItem.ExtractSenderEmailAddress();
-            recipients.Add(senderSmtpAddress);
+            identites.Add(senderSmtpAddress);
 
-            recipients = recipients.Distinct().ToList();
-            
-            var tasks = recipients
-                .Select(r => this.virgilHub.Cards.Search(r))
-                .ToList();
-            
-            var searchResults = tasks.Select(it => it.Result).ToList();
-            var recipientsDictionary = new Dictionary<string, byte[]>();
+            identites = identites.Distinct().ToList();
+            var searchedRecipients = this.recipientsService.Search(identites.ToArray())
+                .Result.ToList();
 
-            foreach (var recipient in recipients)
+            if (searchedRecipients.Any(it => !it.IsFound))
             {
-                var searchResult = searchResults.SingleOrDefault(sr => sr.Any(c => c.Identity.Value.Equals(recipient)));
-                var recipientCard = searchResult?.First();
+                var invitationIdentities = searchedRecipients
+                    .Where(it => !it.IsFound)
+                    .Select(a => a.Identity)
+                    .ToList();
 
-                if (recipientCard != null)
+                var accountsString = string.Join("\n", invitationIdentities);
+
+                var result = this.dialog.ShowConfirmation(Resources.Caption_AccountsAreNotFoundSendInvitation, 
+                    string.Format(Resources.Message_AccoutnsAreNotRegisteredSendInvitation, accountsString));
+
+                if (result)
                 {
-                    recipientsDictionary.Add(recipientCard.Id.ToString(), recipientCard.PublicKey.PublicKey);
+                    this.SendInvitationEmails(invitationIdentities.ToArray());
+
+                    var isAnyFound = searchedRecipients
+                        .Where(it => !it.Identity.Equals(senderSmtpAddress, StringComparison.CurrentCultureIgnoreCase))
+                        .Any(it => it.IsFound);
+
+                    if (!isAnyFound)
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
                 }
             }
+
+            var recipients = searchedRecipients
+                .Where(it => it.IsFound)
+                .ToDictionary(it => it.CardId?.ToString(), it => it.PublicKey);
 
             var password = this.passwordExactor.ExactOrAlarm(senderSmtpAddress);
 
@@ -75,11 +95,13 @@
             var privateKey = this.privateKeysStorage.GetPrivateKey(account.VirgilCardId);
 
             mailItem.Save();
-            EncryptMail(mailItem, recipientsDictionary, privateKey, password);
+            EncryptMail(mailItem, recipients, privateKey, password);
             mailItem.Save();
 
             mailItem.MessageClass = Constants.VirgilMessageClass;
             mailItem.HTMLBody = Constants.EmailHtmlBodyTemplate;
+
+            return true;
         }
 
         private static void EncryptMail(Outlook._MailItem mail, IDictionary<string, byte[]> recipients, byte[] privateKey, string privateKeyPassword)
@@ -142,6 +164,15 @@
                 var attachemntData = (byte[])attachment.PropertyAccessor.GetProperty(Constants.OutlookAttachmentDataBin);
                 var encryptedAttachmentData = CryptoHelper.Encrypt(attachemntData, recipients);
                 attachment.PropertyAccessor.SetProperty(Constants.OutlookAttachmentDataBin, encryptedAttachmentData);
+            }
+        }
+
+        private void SendInvitationEmails(string[] recipients)
+        {
+            foreach (var recipient in recipients)
+            {
+                 this.outlook.SendEmail(recipient, Resources.Email_Subject_Invitation, 
+                     Resources.Email_Template_InvitationEmail, Outlook.OlImportance.olImportanceHigh);
             }
         }
     }

@@ -244,9 +244,12 @@
     <Compile Include="Common\IPasswordExactor.cs" />
     <Compile Include="Common\IPrivateKeysStorage.cs" />
     <Compile Include="Common\IPasswordHolder.cs" />
+    <Compile Include="Common\IRecipientsService.cs" />
     <Compile Include="Common\IStorageProvider.cs" />
     <Compile Include="Common\IDialogPresenter.cs" />
     <Compile Include="Common\IViewBuilder.cs" />
+    <Compile Include="Common\RecipientsService.cs" />
+    <Compile Include="Models\RecipientSearchResultModel.cs" />
     <Compile Include="Dialogs\Dialog.cs" />
     <Compile Include="Dialogs\DialogBuilder.cs" />
     <Compile Include="Dialogs\PasswordExactor.cs" />
@@ -338,6 +341,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="VirgilMailFormRegion.resx">
       <DependentUpon>VirgilMailFormRegion.cs</DependentUpon>

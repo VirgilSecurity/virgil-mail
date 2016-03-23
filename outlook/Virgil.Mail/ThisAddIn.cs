@@ -33,11 +33,6 @@ namespace Virgil.Mail
             {
                 mail = (Outlook.MailItem)item;
 
-                //if (mail.ConversationIndex.Length > 45 && !mail.IsVirgilMail())
-                //{
-                //    return;
-                //}
-
                 if (!Properties.Settings.Default.AutoEncryptEmails)
                 {
                     return;
@@ -55,7 +50,11 @@ namespace Virgil.Mail
                         return;
                     }
                 }
-                ServiceLocator.MailSender.EncryptAndSend(mail);
+
+                if (!ServiceLocator.MailSender.EncryptAndSend(mail))
+                {
+                    cancel = true;
+                }
             }
             catch (Exception ex)
             {

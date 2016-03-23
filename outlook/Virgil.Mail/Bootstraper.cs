@@ -36,6 +36,7 @@
             builder.RegisterType<PasswordHolder>().As<IPasswordHolder>();
             builder.RegisterType<MailSender>().As<IMailSender>();
             builder.RegisterType<PasswordExactor>().As<IPasswordExactor>();
+            builder.RegisterType<RecipientsService>().As<IRecipientsService>().SingleInstance();
 
             builder.RegisterType<RegisterAccountView>();
             builder.RegisterType<RegisterAccountViewModel>();
