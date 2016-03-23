@@ -5,6 +5,7 @@
     using Virgil.Crypto;
     using Virgil.Mail.Common;
     using Virgil.Mail.Models;
+    using Virgil.Mail.Properties;
 
     public class PrivateKeysStorage : IPrivateKeysStorage
     {
@@ -18,14 +19,14 @@
 
         public void StorePrivateKey(Guid id, byte[] privateKey)
         {
-            Logger.InfoFormat("Storing a Private Key in encrypted storage");
+            Logger.InfoFormat(Resources.Log_Info_PrivateKeysStorage_StorePrivateKey);
 
             this.keysStorage.Set(id.ToString(), new PrivateKeyStorageModel { PrivateKey = privateKey });
         }
 
         public byte[] GetPrivateKey(Guid id)
         {
-            Logger.InfoFormat("Getting Private Key from encrypted storage");
+            Logger.InfoFormat(Resources.Log_Info_PrivateKeysStorage_GetPrivateKey);
 
             var privateKey = this.keysStorage.Get<PrivateKeyStorageModel>(id.ToString()).PrivateKey;
             return privateKey;
@@ -33,7 +34,7 @@
 
         public bool HasPrivateKeyPassword(Guid id)
         {
-            Logger.InfoFormat("Checking if Private Key has a password");
+            Logger.InfoFormat(Resources.Log_Info_PrivateKeysStorage_HasPrivateKeyPassword);
 
             var privateKey = this.GetPrivateKey(id);
             return VirgilKeyPair.IsPrivateKeyEncrypted(privateKey);

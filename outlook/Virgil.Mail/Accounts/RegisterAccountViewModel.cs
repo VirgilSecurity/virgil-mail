@@ -17,7 +17,7 @@
     using Virgil.Mail.Models;
     using Virgil.Mail.Mvvm;
     using Virgil.Crypto;
-
+    using Virgil.Mail.Properties;
     using Virgil.SDK.Infrastructure;
     using Virgil.SDK.TransferObject;
 
@@ -157,7 +157,7 @@
             {
                 this.CurrentAccount = accountModel;
 
-                this.ChangeState(RegisterAccountState.Processing, "Search account information...");
+                this.ChangeState(RegisterAccountState.Processing, Resources.Label_SearchAccountInformation);
 
                 var foundCards = await this.virgilHub.Cards.Search(accountModel.OutlookAccountEmail, IdentityType.Email);
 
@@ -204,27 +204,27 @@
             {
                 var keyPassword = this.HasPassword ? this.Password : null;
 
-                this.ChangeState(RegisterAccountState.Processing, "Sending verification request...");
+                this.ChangeState(RegisterAccountState.Processing, Resources.Label_SendingVerificationRequest);
 
                 var attemptId = Guid.NewGuid().ToString();
                 var verifyResponse = await this.virgilHub.Identity.Verify(this.CurrentAccount.OutlookAccountEmail, 
                     IdentityType.Email, new Dictionary<string, string> { { "attempt_id", attemptId } });
 
-                this.ChangeStateText("Waiting for confirmation email...");
+                this.ChangeStateText(Resources.Label_WaitingForConfirmationEmail);
 
                 var code = await this.ExtractConfirmationCode(this.CurrentAccount.OutlookAccountEmail, attemptId);
 
-                this.ChangeStateText("Confirming email account...");
+                this.ChangeStateText(Resources.Label_ConfirmingEmailAccount);
 
                 var validationToken = await this.virgilHub.Identity.Confirm(verifyResponse.ActionId, code);
 
-                this.ChangeStateText("Generating public/private key pair...");
+                this.ChangeStateText(Resources.Label_GeneratingPublicAndPrivateKeyPair);
 
                 var keyPair = this.HasPassword
                     ? VirgilKeyPair.Generate(VirgilKeyPair.Type.Default, Encoding.UTF8.GetBytes(this.Password))
                     : VirgilKeyPair.Generate(VirgilKeyPair.Type.Default);
                 
-                this.ChangeStateText("Publishing public key...");
+                this.ChangeStateText(Resources.Label_PublishingPublicKey);
 
                 var createdCard = await this.virgilHub.Cards
                     .Create(validationToken, keyPair.PublicKey(), keyPair.PrivateKey(), keyPassword);
@@ -248,14 +248,14 @@
 
                 if (this.IsVirgilStorage)
                 {
-                    this.ChangeStateText("Uploading private key...");
+                    this.ChangeStateText(Resources.Label_UploadingPrivateKey);
                     await this.virgilHub.PrivateKeys.Stash(createdCard.Id, keyPair.PrivateKey(), keyPassword);
 
                     this.CurrentAccount.LastPrivateKeySyncDateTime = DateTime.Now;
                     this.accountsManager.UpdateAccount(this.CurrentAccount);
                 }
 
-                this.ChangeState(RegisterAccountState.Done, "Account's keys has been successfully generated and published.");
+                this.ChangeState(RegisterAccountState.Done, Resources.Label_AccountsKeysHasBeenSuccessfullyGenerated);
             }
             catch (Exception ex)
             {
@@ -271,7 +271,7 @@
                 var mail = await this.mailObserver.WaitFor(accountSmtpAddress, "no-reply@virgilsecurity.com");
                 if (mail == null)
                 {
-                    throw new Exception("The message with confirmation code is not arrived. Try again later.");
+                    throw new Exception(Resources.Error_ConfirmationCodeIsNotArrived);
                 }
 
                 if (mail.IsJunk)
@@ -304,7 +304,7 @@
         {
             try
             {
-                this.ChangeState(RegisterAccountState.Processing, "Extracting private key information...");
+                this.ChangeState(RegisterAccountState.Processing, Resources.Label_ExtractingPrivateKeyInfo);
 
                 var exportObject = new
                 {
@@ -322,7 +322,7 @@
                     throw new NullReferenceException();
                 }
 
-                this.ChangeStateText("Loading public key details...");
+                this.ChangeStateText(Resources.Label_LoadingPublicKeyDetails);
 
                 string enteredPassword = null;
 
@@ -345,7 +345,7 @@
 
                 if (!isPrivateKeyTrue)
                 {
-                    this.AddCustomError("Uploaded private key doesn't match your Virgil account.");
+                    this.AddCustomError(Resources.Label_UploadedPrivateKeyDoesnIsNotMatch);
                     this.ChangeState(RegisterAccountState.DownloadKeyPair);
                     return;
                 }
@@ -361,11 +361,11 @@
                 this.privateKeyStorage.StorePrivateKey(this.CurrentAccount.VirgilCardId, result.private_key);
                 this.accountsManager.UpdateAccount(this.CurrentAccount);
 
-                this.ChangeState(RegisterAccountState.Done, "Private key has been successfully imported.");
+                this.ChangeState(RegisterAccountState.Done, Resources.Label_PrivateKeyImportedSuccessfully);
             }
             catch (Exception)
             {
-                this.AddCustomError("Uploaded file is invalid or has wrong format.");
+                this.AddCustomError(Resources.Error_UploadedFileInvalid);
                 this.ChangeState(RegisterAccountState.DownloadKeyPair);
             }
         }
@@ -374,22 +374,22 @@
         {
             try
             {
-                this.ChangeState(RegisterAccountState.Processing, "Loading public key information...");
+                this.ChangeState(RegisterAccountState.Processing, Resources.Label_LoadingPublicKeyDetails);
 
                 var foundCards = await this.virgilHub.Cards.Search(this.CurrentAccount.OutlookAccountEmail);
                 var card = foundCards.Single();
 
-                this.ChangeState(RegisterAccountState.Processing, "Sending verification request...");
+                this.ChangeState(RegisterAccountState.Processing, Resources.Label_SendingVerificationRequest);
 
                 var attemptId = Guid.NewGuid().ToString();
                 var verifyResponse = await this.virgilHub.Identity.Verify(this.CurrentAccount.OutlookAccountEmail, 
                     IdentityType.Email, new Dictionary<string, string> { { "attempt_id", attemptId } });
 
-                this.ChangeStateText("Waiting for confirmation email...");
+                this.ChangeStateText(Resources.Label_WaitingForConfirmationEmail);
 
                 var code = await this.ExtractConfirmationCode(this.CurrentAccount.OutlookAccountEmail, attemptId);
 
-                this.ChangeStateText("Confirming an account's email...");
+                this.ChangeStateText(Resources.Label_ConfirmingEmailAccount);
 
                 var validationToken = await this.virgilHub.Identity.Confirm(verifyResponse.ActionId, code);
                 var response = await this.virgilHub.PrivateKeys.Get(card.Id, validationToken);
@@ -421,11 +421,11 @@
                 this.privateKeyStorage.StorePrivateKey(card.Id, privateKey);
                 this.accountsManager.UpdateAccount(this.CurrentAccount);
                 
-                this.ChangeState(RegisterAccountState.Done, "Private key has been successfully imported");
+                this.ChangeState(RegisterAccountState.Done, Resources.Label_PrivateKeyImportedSuccessfully);
             }
             catch (Exception ex)
             {
-                this.AddCustomError($"Uploading private key failed. {ex.Message}");
+                this.AddCustomError(Resources.Error_UploadingPrivateKeyFailed + $". {ex.Message}");
                 this.ChangeState(RegisterAccountState.DownloadKeyPair);
             }
         }
@@ -439,8 +439,8 @@
 
         private void AddValidationRules()
         {
-            this.AddValidationRule(this.ValidatePasswordsMatches, "Your passwords don't match. Please retype your passwords to confirm it.");
-            this.AddValidationRule(this.ValidatePassword, "Password must be 4 - 15 characters. Only letters (a-z), digits (0-9) and special characters are allowed.");
+            this.AddValidationRule(this.ValidatePasswordsMatches, Resources.Error_PasswordNotMatchWithConfirmation);
+            this.AddValidationRule(this.ValidatePassword, Resources.Error_PasswordRulesAreNotComplied);
         }
 
         private bool ValidatePassword()

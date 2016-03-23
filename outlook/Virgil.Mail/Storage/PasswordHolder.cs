@@ -4,6 +4,7 @@ namespace Virgil.Mail.Storage
     using Virgil.Mail.Common;
     using Virgil.Mail.Common.Exceptions;
     using Virgil.Mail.Models;
+    using Virgil.Mail.Properties;
 
     public class PasswordHolder : IPasswordHolder
     {
@@ -17,21 +18,21 @@ namespace Virgil.Mail.Storage
         
         public void Keep(string identity, string password)
         {
-            Logger.InfoFormat("Store a Private Key password in encrypted storage");
+            Logger.InfoFormat(Resources.Log_Info_PasswordHolder_SetAccountPrivateKeyPassword);
 
             this.keysStorage.Set($"password_{identity}".ToUpper(), new PasswordStorageModel { Password = password });
         }
 
         public void Remove(string identity)
         {
-            Logger.InfoFormat("Remove a Private Key password form encrypted storage");
+            Logger.InfoFormat(Resources.Log_Info_PasswordHolder_RemoveAccountPrivateKeyPassword);
 
             this.keysStorage.Delete($"password_{identity}".ToUpper());
         }
 
         public string Get(string identity)
         {
-            Logger.InfoFormat("Get a Private Key password from encrypted storage");
+            Logger.InfoFormat(Resources.Log_Info_PasswordHolder_GetAccountPrivateKeyPassword);
 
             var passwordModel = this.keysStorage.Get<PasswordStorageModel>($"password_{identity}".ToUpper());
             if (passwordModel == null)

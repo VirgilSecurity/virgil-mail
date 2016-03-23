@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mvvm="clr-namespace:Virgil.Mail.Common.Mvvm"
+             xmlns:Properties="clr-namespace:Virgil.Mail.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="285" Background="White" >
     <UserControl.Resources>
@@ -49,14 +50,14 @@
                 <CheckBox 
                     Margin="0 0 0 2" 
                     IsChecked="{Binding IsVirgilStorage, Mode=TwoWay}" 
-                    Content="Keep my private key on Virgil services"
+                    Content="{x:Static Properties:Resources.Label_KeepMyPrivateKeyOnVirgilServices}"
                     VerticalContentAlignment="Center" />
                 <TextBlock 
                     FontSize="10" 
                     Foreground="Gray" 
                     TextWrapping="Wrap"
                     Margin="20 0 0 0" 
-                    Text="Your private key will be safely stored in your Virgil Security account and can easily be synchronized to another device." />
+                    Text="{x:Static Properties:Resources.Description_StorePrivateKeyOnVirgilServices}" />
                 
                 <CheckBox 
                     x:Name="keyPasswordCheckBox"
@@ -65,7 +66,7 @@
                     VerticalContentAlignment="Center" >
                     <TextBlock 
                         TextWrapping="Wrap" 
-                        Text="Protect my private key with a password" />
+                        Text="{x:Static Properties:Resources.Label_ProtectMyPrivateKey}" />
                 </CheckBox>
 
                 <TextBlock 
@@ -74,7 +75,7 @@
                     TextWrapping="Wrap"
                     Visibility="{Binding IsChecked, ElementName=keyPasswordCheckBox, Converter={StaticResource BoolToVisibility}}"
                     Margin="20 0 0 0" 
-                    Text="Only letters (a-z), digits (0-9) and special characters are allowed." />
+                    Text="{x:Static Properties:Resources.Description_PrivateKeyPassword}" />
 
                 <Grid 
                     Background="White" 
@@ -85,7 +86,7 @@
                         Padding="6 0" 
                         Foreground="Silver" 
                         VerticalAlignment="Center" 
-                        Text="Password"  />
+                        Text="{x:Static Properties:Resources.Watermark_Password}"  />
                     <PasswordBox 
                         Name="password"
                         Background="Transparent"
@@ -100,7 +101,7 @@
                         Padding="6 0" 
                         Foreground="Silver" 
                         VerticalAlignment="Center" 
-                        Text="Confirm Password" />
+                        Text="{x:Static Properties:Resources.Watermark_ConfirmPassword}" />
                     <PasswordBox 
                         Name="confirmPassword"
                         Background="Transparent"
@@ -112,32 +113,32 @@
                 Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=DownloadKeyPair}" >
                 <TextBlock 
                     TextWrapping="Wrap" 
-                    Text="Your account is already created please select an option to getting your key.">
+                    Text="{x:Static Properties:Resources.Label_SelectOptionToGetPrivateKey}">
                 </TextBlock>
                 <RadioButton 
                     Margin="0 10 0 2" 
                     IsChecked="{Binding IsVirgilStorage, Mode=TwoWay}" 
                     GroupName="DownloadKeyOption"
-                    Content="Download from Virgil Security services"
+                    Content="{x:Static Properties:Resources.Label_DownloadPrivateKeyFromVirgilServices}"
                     VerticalContentAlignment="Center" />
                 <TextBlock 
                     FontSize="10" 
                     Foreground="Gray" 
                     TextWrapping="Wrap"
                     Margin="20 0 0 0" 
-                    Text="Use this option if your key has been previously uploaded to Virgil Security services." />
+                    Text="{x:Static Properties:Resources.Description_DownloadPrivateKeyFromVirgilServices}" />
                 <RadioButton 
                     Margin="0 10 0 2" 
                     x:Name="fromFileRadioButton"
                     GroupName="DownloadKeyOption"
-                    Content="Select from a file on your computer"
+                    Content="{x:Static Properties:Resources.Label_SelectPrivateKeyFromFile}"
                     VerticalContentAlignment="Center" />
                 <TextBlock 
                     FontSize="10" 
                     Foreground="Gray" 
                     TextWrapping="Wrap"
                     Margin="20 0 0 0" 
-                    Text="Use this option if you previously exported your key to the file. " />
+                    Text="{x:Static Properties:Resources.Description_SelectPrivateKeyFromFile}" />
                 <Grid Margin="0 5 0 0" IsEnabled="{Binding IsChecked, ElementName=fromFileRadioButton}" >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />

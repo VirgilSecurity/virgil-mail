@@ -9,6 +9,7 @@
     using HtmlAgilityPack;
     using Newtonsoft.Json;
 
+    using Virgil.Mail.Properties;
     using Virgil.Mail.Common;
     using Virgil.Mail.Common.Mvvm;
     using Virgil.Mail.Models;
@@ -138,7 +139,7 @@
 
             try
             {
-                this.ChangeState(AccountSettingsState.Processing, "Uploading Private Key....");
+                this.ChangeState(AccountSettingsState.Processing, Resources.Label_UploadingPrivateKey);
 
                 var privateKey = this.privateKeysStorage.GetPrivateKey(this.account.VirgilCardId);
 
@@ -284,19 +285,19 @@
         {
             if (this.IsDeleteAccount)
             {
-                this.DeleteWarningMessage = "Once you delete your account, there is no going back. Please be certain.";
+                this.DeleteWarningMessage = Resources.Warning_RemoveAccount;
                 return;
             }
 
             if (this.IsDeletePrivateKeyFromVirgilServices && !this.IsDeletePrivateKeyFromLocalStorage)
             {
-                this.DeleteWarningMessage = "Your private key won’t be synchronised from Virgil Cloud. You will have to upload your key from local storage manually on other devices.";
+                this.DeleteWarningMessage = Resources.Warning_RemovePrivateKeyFormVirgilServices;
                 return;
             }
 
             if (this.IsDeletePrivateKeyFromVirgilServices && this.IsDeletePrivateKeyFromLocalStorage)
             {
-                this.DeleteWarningMessage = "The private key will be deleted permanently. Make sure you have saved it in some secure place.";
+                this.DeleteWarningMessage = Resources.Warning_RemovePrivateKeyFormLocalStorage;
                 return;
             }
 
@@ -314,7 +315,7 @@
                 if (this.IsDeleteAccount)
                 {
                     await this.RemoveAccount();
-                    this.ChangeState(AccountSettingsState.Done, "The Account has been deleted successfully.");
+                    this.ChangeState(AccountSettingsState.Done, Resources.Label_AccountRemovedSuccessfully);
                     return;
                 }
 
@@ -322,7 +323,7 @@
                 {
                     await this.RemovePrivateKeyFromVirgilServices();
                     this.doneReturnState = AccountSettingsState.Settings;
-                    this.ChangeState(AccountSettingsState.Done, "The Private Key was deleted successfully. You can upload it at any moment again.");
+                    this.ChangeState(AccountSettingsState.Done, Resources.Label_PrivateKeyRemovedFromVirgilServicesSuccessfully);
                     return;
                 }
 
@@ -330,7 +331,7 @@
                 {
                     await this.RemovePrivateKeyFromVirgilServices();
                     this.accountsManager.Remove(this.account.OutlookAccountEmail);
-                    this.ChangeState(AccountSettingsState.Done, "The private key has been deleted from Virgil Services and local storage successfully.");
+                    this.ChangeState(AccountSettingsState.Done, Resources.Label_PrivateKeyRemovedFromLocalStorageAndVirgilServicesSuccessfully);
                     return;
                 }
 
@@ -339,7 +340,7 @@
                     this.privateKeysStorage.RemovePrivateKey(this.account.VirgilCardId);
                     this.passwordHolder.Remove(this.account.OutlookAccountEmail);
                     this.accountsManager.Remove(this.account.OutlookAccountEmail);
-                    this.ChangeState(AccountSettingsState.Done, "The private key has been deleted successfully. You can upload it at any moment again.");
+                    this.ChangeState(AccountSettingsState.Done, Resources.Label_PrivateKeyRemovedFromLocalStorageSuccessfully);
                 }
             }
             catch (Exception ex)
@@ -359,17 +360,17 @@
         {
             var password = this.passwordExactor.ExactOrAlarm(this.account.OutlookAccountEmail);
 
-            this.ChangeStateText("Sending verification request...");
+            this.ChangeStateText(Resources.Label_SendingVerificationRequest);
 
             var attemptId = Guid.NewGuid().ToString();
             var verifyResponse = await this.virgilHub.Identity.Verify(this.account.OutlookAccountEmail,
                 IdentityType.Email, new Dictionary<string, string> { { "attempt_id", attemptId } });
 
-            this.ChangeStateText("Waiting for confirmation email...");
+            this.ChangeStateText(Resources.Label_WaitingForConfirmationEmail);
 
             var code = await this.ExtractConfirmationCode(this.account.OutlookAccountEmail, attemptId);
 
-            this.ChangeStateText("Confirming email account...");
+            this.ChangeStateText(Resources.Label_ConfirmingEmailAccount);
             
             var validationToken = await this.virgilHub.Identity.Confirm(verifyResponse.ActionId, code);
 
@@ -377,7 +378,7 @@
 
             try
             {
-                this.ChangeStateText("Deleting private key from Virgil Services...");
+                this.ChangeStateText(Resources.Label_DeletingPrivateKeyFromVirgilServices);
 
                 await this.virgilHub.PrivateKeys.Destroy(this.account.VirgilCardId, privateKey, password);
             }
@@ -386,7 +387,7 @@
                 // TODO: We need to check if private key exists first.
             }
 
-            this.ChangeStateText("Revoking public key from Virgil Services...");
+            this.ChangeStateText(Resources.Label_RevokingPublicKeyFromVirgilServices);
 
             await this.virgilHub.PublicKeys.Revoke(this.account.VirgilPublicKeyId, new[] {validationToken},
                 this.account.VirgilCardId, privateKey, password);
@@ -398,7 +399,7 @@
 
         private async Task RemovePrivateKeyFromVirgilServices()
         {
-            this.ChangeState(AccountSettingsState.Processing, "Removing Private Key....");
+            this.ChangeState(AccountSettingsState.Processing, Resources.Label_RemovingPrivateKey);
 
             var privateKey = this.privateKeysStorage.GetPrivateKey(this.account.VirgilCardId);
             var privateKeyPassword = this.passwordExactor.ExactOrAlarm(this.account.OutlookAccountEmail);
@@ -419,7 +420,7 @@
                 var mail = await this.mailObserver.WaitFor(accountSmtpAddress, "no-reply@virgilsecurity.com");
                 if (mail == null)
                 {
-                    throw new Exception("The message with confirmation code is not arrived. Try again later.");
+                    throw new Exception(Resources.Error_ConfirmationCodeIsNotArrived);
                 }
 
                 if (mail.IsJunk)

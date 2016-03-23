@@ -7,6 +7,7 @@
     using Virgil.Mail.Common;
     using Virgil.Mail.Mvvm;
     using Virgil.Mail.Common.Mvvm;
+    using Virgil.Mail.Properties;
 
     public class AccountKeyPasswordViewModel : ViewModel
     {
@@ -62,7 +63,7 @@
             if (!isMatch)
             {
                 passwordBox.Clear();
-                this.AddCustomError("Incorrect private key password");
+                this.AddCustomError(Resources.Error_IncorrectPrivateKeyPassword);
                 return;
             }
 

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mvvm="clr-namespace:Virgil.Mail.Common.Mvvm"
+             xmlns:Properties="clr-namespace:Virgil.Mail.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="400" Background="White">
     <UserControl.Resources>
@@ -17,8 +18,8 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <StackPanel Margin="20 20 20 0">
-            <TextBlock Text="Manage Accounts" FontWeight="Bold" FontSize="14" />
-            <TextBlock Text="Please manage your Virgil Keys by clicking on one of your Outlook Accounts wich shown below:" TextWrapping="Wrap" Margin="0 7" />
+            <TextBlock Text="{x:Static Properties:Resources.Label_ManageAccounts}" FontWeight="Bold" FontSize="14" />
+            <TextBlock Text="{x:Static Properties:Resources.Description_ManageAccounts}" TextWrapping="Wrap" Margin="0 7" />
         </StackPanel>
         <ScrollViewer 
             Margin="20 5 20 10" 
@@ -85,12 +86,11 @@
             Padding="20 20">
             <StackPanel>
                 <TextBlock TextAlignment="Left">
-                    <Run Text="© 2016 Virgil Security, Inc." />
+                    <Run Text="{x:Static Properties:Resources.Label_Copyright}" />
                     <Hyperlink Command="{Binding Company}" >https://www.virgilsecurity.com</Hyperlink>
                 </TextBlock>
                 <TextBlock Margin="0 2 0 0" >
-                    <Run Text="Virgil Mail Add-In version:" />
-                    <Run Text="{Binding Version, Mode=OneWay}" />
+                    <Run Text="{Binding Path=Version, Mode=OneWay, StringFormat={x:Static Properties:Resources.Label_Version}}" />
                 </TextBlock>
             </StackPanel>
          </Border>

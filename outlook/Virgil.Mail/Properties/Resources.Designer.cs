@@ -22,7 +22,7 @@ namespace Virgil.Mail.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Virgil.Mail.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Virgil.Mail.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace Virgil.Mail.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,12 +61,653 @@ namespace Virgil.Mail.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accept.
+        /// </summary>
+        public static string Button_Accept {
+            get {
+                return ResourceManager.GetString("Button_Accept", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string Button_Cancel {
+            get {
+                return ResourceManager.GetString("Button_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Decrypt.
+        /// </summary>
+        public static string Button_Decrypt {
+            get {
+                return ResourceManager.GetString("Button_Decrypt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export private key....
+        /// </summary>
+        public static string Button_ExportPrivateKey {
+            get {
+                return ResourceManager.GetString("Button_ExportPrivateKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Register.
+        /// </summary>
+        public static string Button_Register {
+            get {
+                return ResourceManager.GetString("Button_Register", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete....
+        /// </summary>
+        public static string Button_RemoveAccount {
+            get {
+                return ResourceManager.GetString("Button_RemoveAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upload private key to Virgil Services.
+        /// </summary>
+        public static string Button_UploadPrivateKeyToVirgilServices {
+            get {
+                return ResourceManager.GetString("Button_UploadPrivateKeyToVirgilServices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use this option if your key has been previously uploaded to Virgil Security services..
+        /// </summary>
+        public static string Description_DownloadPrivateKeyFromVirgilServices {
+            get {
+                return ResourceManager.GetString("Description_DownloadPrivateKeyFromVirgilServices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please manage your Virgil Keys by clicking on one of your Outlook Accounts wich shown below:.
+        /// </summary>
+        public static string Description_ManageAccounts {
+            get {
+                return ResourceManager.GetString("Description_ManageAccounts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only letters (a-z), digits (0-9) and special characters are allowed..
+        /// </summary>
+        public static string Description_PrivateKeyPassword {
+            get {
+                return ResourceManager.GetString("Description_PrivateKeyPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Be careful with current operation. You won&apos;t be able to decrypt mail linked with this private key..
+        /// </summary>
+        public static string Description_RemoveAccount {
+            get {
+                return ResourceManager.GetString("Description_RemoveAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove your private key from local storage if you need to clear your machine from personal data..
+        /// </summary>
+        public static string Description_RemovePrivateKeyFormVirgilServices {
+            get {
+                return ResourceManager.GetString("Description_RemovePrivateKeyFormVirgilServices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove your private key from local storage if you need to clear your machine from personal data..
+        /// </summary>
+        public static string Description_RemovePrivateKeyFromLocalStorage {
+            get {
+                return ResourceManager.GetString("Description_RemovePrivateKeyFromLocalStorage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to That option will allows you to do not enter every time password on crypto operations..
+        /// </summary>
+        public static string Description_SavePrivateKeyPassword {
+            get {
+                return ResourceManager.GetString("Description_SavePrivateKeyPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use this option if you previously exported your key to the file..
+        /// </summary>
+        public static string Description_SelectPrivateKeyFromFile {
+            get {
+                return ResourceManager.GetString("Description_SelectPrivateKeyFromFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your private key will be safely stored in your Virgil Security account and can easily be synchronized to another device..
+        /// </summary>
+        public static string Description_StorePrivateKeyOnVirgilServices {
+            get {
+                return ResourceManager.GetString("Description_StorePrivateKeyOnVirgilServices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The message with confirmation code is not arrived. Try again later..
+        /// </summary>
+        public static string Error_ConfirmationCodeIsNotArrived {
+            get {
+                return ResourceManager.GetString("Error_ConfirmationCodeIsNotArrived", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Something went wrong, decryption failed..
+        /// </summary>
+        public static string Error_EmailDecryptionFailed {
+            get {
+                return ResourceManager.GetString("Error_EmailDecryptionFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incorrect private key password.
+        /// </summary>
+        public static string Error_IncorrectPrivateKeyPassword {
+            get {
+                return ResourceManager.GetString("Error_IncorrectPrivateKeyPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your passwords is not match. Please retype your passwords to confirm it..
+        /// </summary>
+        public static string Error_PasswordNotMatchWithConfirmation {
+            get {
+                return ResourceManager.GetString("Error_PasswordNotMatchWithConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password must be 4 - 15 characters. Only letters (a-z), digits (0-9) and special characters are allowed..
+        /// </summary>
+        public static string Error_PasswordRulesAreNotComplied {
+            get {
+                return ResourceManager.GetString("Error_PasswordRulesAreNotComplied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uploaded file is invalid or has wrong format..
+        /// </summary>
+        public static string Error_UploadedFileInvalid {
+            get {
+                return ResourceManager.GetString("Error_UploadedFileInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uploading private key failed.
+        /// </summary>
+        public static string Error_UploadingPrivateKeyFailed {
+            get {
+                return ResourceManager.GetString("Error_UploadingPrivateKeyFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap icon_512x512_2x {
+        public static System.Drawing.Bitmap icon_512x512_2x {
             get {
                 object obj = ResourceManager.GetObject("icon_512x512@2x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Account has been deleted successfully.
+        /// </summary>
+        public static string Label_AccountRemovedSuccessfully {
+            get {
+                return ResourceManager.GetString("Label_AccountRemovedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Account&apos;s keys has been successfully generated and published..
+        /// </summary>
+        public static string Label_AccountsKeysHasBeenSuccessfullyGenerated {
+            get {
+                return ResourceManager.GetString("Label_AccountsKeysHasBeenSuccessfullyGenerated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can&apos;t read this email because your private key is not registered for this account..
+        /// </summary>
+        public static string Label_CanNotReadEmailBecauseOfUnregisteredAccount {
+            get {
+                return ResourceManager.GetString("Label_CanNotReadEmailBecauseOfUnregisteredAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirming email account....
+        /// </summary>
+        public static string Label_ConfirmingEmailAccount {
+            get {
+                return ResourceManager.GetString("Label_ConfirmingEmailAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to © 2016 Virgil Security, Inc..
+        /// </summary>
+        public static string Label_Copyright {
+            get {
+                return ResourceManager.GetString("Label_Copyright", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleting private key from Virgil Services....
+        /// </summary>
+        public static string Label_DeletingPrivateKeyFromVirgilServices {
+            get {
+                return ResourceManager.GetString("Label_DeletingPrivateKeyFromVirgilServices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download from Virgil Security services.
+        /// </summary>
+        public static string Label_DownloadPrivateKeyFromVirgilServices {
+            get {
+                return ResourceManager.GetString("Label_DownloadPrivateKeyFromVirgilServices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter account&apos;s private key password.
+        /// </summary>
+        public static string Label_EnterAccountPrivateKeyPassword {
+            get {
+                return ResourceManager.GetString("Label_EnterAccountPrivateKeyPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extracting private key information....
+        /// </summary>
+        public static string Label_ExtractingPrivateKeyInfo {
+            get {
+                return ResourceManager.GetString("Label_ExtractingPrivateKeyInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generating public/private key pair....
+        /// </summary>
+        public static string Label_GeneratingPublicAndPrivateKeyPair {
+            get {
+                return ResourceManager.GetString("Label_GeneratingPublicAndPrivateKeyPair", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keep my private key on Virgil services.
+        /// </summary>
+        public static string Label_KeepMyPrivateKeyOnVirgilServices {
+            get {
+                return ResourceManager.GetString("Label_KeepMyPrivateKeyOnVirgilServices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading public key details....
+        /// </summary>
+        public static string Label_LoadingPublicKeyDetails {
+            get {
+                return ResourceManager.GetString("Label_LoadingPublicKeyDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage Accounts.
+        /// </summary>
+        public static string Label_ManageAccounts {
+            get {
+                return ResourceManager.GetString("Label_ManageAccounts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Private key has been successfully imported..
+        /// </summary>
+        public static string Label_PrivateKeyImportedSuccessfully {
+            get {
+                return ResourceManager.GetString("Label_PrivateKeyImportedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The private key has been deleted from Virgil Services and local storage successfully..
+        /// </summary>
+        public static string Label_PrivateKeyRemovedFromLocalStorageAndVirgilServicesSuccessfully {
+            get {
+                return ResourceManager.GetString("Label_PrivateKeyRemovedFromLocalStorageAndVirgilServicesSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The private key has been deleted successfully. You can upload it at any moment again..
+        /// </summary>
+        public static string Label_PrivateKeyRemovedFromLocalStorageSuccessfully {
+            get {
+                return ResourceManager.GetString("Label_PrivateKeyRemovedFromLocalStorageSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Private Key was deleted successfully. You can upload it at any moment again..
+        /// </summary>
+        public static string Label_PrivateKeyRemovedFromVirgilServicesSuccessfully {
+            get {
+                return ResourceManager.GetString("Label_PrivateKeyRemovedFromVirgilServicesSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Protect my private key with a password.
+        /// </summary>
+        public static string Label_ProtectMyPrivateKey {
+            get {
+                return ResourceManager.GetString("Label_ProtectMyPrivateKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Publishing public key....
+        /// </summary>
+        public static string Label_PublishingPublicKey {
+            get {
+                return ResourceManager.GetString("Label_PublishingPublicKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete Account.
+        /// </summary>
+        public static string Label_RemoveAccount {
+            get {
+                return ResourceManager.GetString("Label_RemoveAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete private key from the local storage.
+        /// </summary>
+        public static string Label_RemovePrivateKeyFormLocalStorage {
+            get {
+                return ResourceManager.GetString("Label_RemovePrivateKeyFormLocalStorage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete private key from the Virgil Services.
+        /// </summary>
+        public static string Label_RemovePrivateKeyFormVirgilServices {
+            get {
+                return ResourceManager.GetString("Label_RemovePrivateKeyFormVirgilServices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removing Private Key.....
+        /// </summary>
+        public static string Label_RemovingPrivateKey {
+            get {
+                return ResourceManager.GetString("Label_RemovingPrivateKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Revoking public key from Virgil Services....
+        /// </summary>
+        public static string Label_RevokingPublicKeyFromVirgilServices {
+            get {
+                return ResourceManager.GetString("Label_RevokingPublicKeyFromVirgilServices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save private key password.
+        /// </summary>
+        public static string Label_SavePrivateKeyPassword {
+            get {
+                return ResourceManager.GetString("Label_SavePrivateKeyPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search account information....
+        /// </summary>
+        public static string Label_SearchAccountInformation {
+            get {
+                return ResourceManager.GetString("Label_SearchAccountInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your account is already created please select an option to get your key..
+        /// </summary>
+        public static string Label_SelectOptionToGetPrivateKey {
+            get {
+                return ResourceManager.GetString("Label_SelectOptionToGetPrivateKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select from a file on your computer.
+        /// </summary>
+        public static string Label_SelectPrivateKeyFromFile {
+            get {
+                return ResourceManager.GetString("Label_SelectPrivateKeyFromFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sending verification request....
+        /// </summary>
+        public static string Label_SendingVerificationRequest {
+            get {
+                return ResourceManager.GetString("Label_SendingVerificationRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uploaded private key doesn&apos;t match your Virgil account..
+        /// </summary>
+        public static string Label_UploadedPrivateKeyDoesnIsNotMatch {
+            get {
+                return ResourceManager.GetString("Label_UploadedPrivateKeyDoesnIsNotMatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uploading private key.....
+        /// </summary>
+        public static string Label_UploadingPrivateKey {
+            get {
+                return ResourceManager.GetString("Label_UploadingPrivateKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Virgil Mail Add-In version: {0}.
+        /// </summary>
+        public static string Label_Version {
+            get {
+                return ResourceManager.GetString("Label_Version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Waiting for confirmation email....
+        /// </summary>
+        public static string Label_WaitingForConfirmationEmail {
+            get {
+                return ResourceManager.GetString("Label_WaitingForConfirmationEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error occured on mail decryption: {0}
+        ///StackTrace:
+        ///{1}.
+        /// </summary>
+        public static string Log_Error_EncryptedMailViewModel_MailDecryptionException {
+            get {
+                return ResourceManager.GetString("Log_Error_EncryptedMailViewModel_MailDecryptionException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The mail decryption is canceled becuase of accoout &apos;{0}&apos; private key is not registered.
+        /// </summary>
+        public static string Log_Info_EncryptedMailViewModel_DecryptMailCanceledBecauseOfRegistration {
+            get {
+                return ResourceManager.GetString("Log_Info_EncryptedMailViewModel_DecryptMailCanceledBecauseOfRegistration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Decrypt mail with account&apos;s &apos;{0}&apos; private key..
+        /// </summary>
+        public static string Log_Info_EncryptedMailViewModel_DecryptMailWithAccountPrivateKey {
+            get {
+                return ResourceManager.GetString("Log_Info_EncryptedMailViewModel_DecryptMailWithAccountPrivateKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start loading encrypted mail - From: {0}, To: {1}, Subject: &apos;{2}&apos;.
+        /// </summary>
+        public static string Log_Info_EncryptedMailViewModel_StartLoadingEmail {
+            get {
+                return ResourceManager.GetString("Log_Info_EncryptedMailViewModel_StartLoadingEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get a Private Key password from encrypted storage.
+        /// </summary>
+        public static string Log_Info_PasswordHolder_GetAccountPrivateKeyPassword {
+            get {
+                return ResourceManager.GetString("Log_Info_PasswordHolder_GetAccountPrivateKeyPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove a Private Key password form encrypted storage.
+        /// </summary>
+        public static string Log_Info_PasswordHolder_RemoveAccountPrivateKeyPassword {
+            get {
+                return ResourceManager.GetString("Log_Info_PasswordHolder_RemoveAccountPrivateKeyPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Store a Private Key password in encrypted storage.
+        /// </summary>
+        public static string Log_Info_PasswordHolder_SetAccountPrivateKeyPassword {
+            get {
+                return ResourceManager.GetString("Log_Info_PasswordHolder_SetAccountPrivateKeyPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Getting Private Key from encrypted storage.
+        /// </summary>
+        public static string Log_Info_PrivateKeysStorage_GetPrivateKey {
+            get {
+                return ResourceManager.GetString("Log_Info_PrivateKeysStorage_GetPrivateKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checking if Private Key has a password.
+        /// </summary>
+        public static string Log_Info_PrivateKeysStorage_HasPrivateKeyPassword {
+            get {
+                return ResourceManager.GetString("Log_Info_PrivateKeysStorage_HasPrivateKeyPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Storing a Private Key in encrypted storage.
+        /// </summary>
+        public static string Log_Info_PrivateKeysStorage_StorePrivateKey {
+            get {
+                return ResourceManager.GetString("Log_Info_PrivateKeysStorage_StorePrivateKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Once you delete your account, there is no going back. Please be certain..
+        /// </summary>
+        public static string Warning_RemoveAccount {
+            get {
+                return ResourceManager.GetString("Warning_RemoveAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The private key will be deleted permanently. Make sure you have saved it in some secure place..
+        /// </summary>
+        public static string Warning_RemovePrivateKeyFormLocalStorage {
+            get {
+                return ResourceManager.GetString("Warning_RemovePrivateKeyFormLocalStorage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your private key won’t be synchronised from Virgil Cloud. You will have to upload your key from local storage manually on other devices..
+        /// </summary>
+        public static string Warning_RemovePrivateKeyFormVirgilServices {
+            get {
+                return ResourceManager.GetString("Warning_RemovePrivateKeyFormVirgilServices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm Password.
+        /// </summary>
+        public static string Watermark_ConfirmPassword {
+            get {
+                return ResourceManager.GetString("Watermark_ConfirmPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string Watermark_Password {
+            get {
+                return ResourceManager.GetString("Watermark_Password", resourceCulture);
             }
         }
     }

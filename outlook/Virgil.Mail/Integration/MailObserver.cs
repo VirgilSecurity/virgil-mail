@@ -1,7 +1,6 @@
 ﻿namespace Virgil.Mail.Integration
 {
     using System;
-    using System.Threading;
     using System.Threading.Tasks;
 
     using Virgil.Mail.Common;
@@ -51,7 +50,6 @@
                         .Store.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderJunk);
 
                     Outlook.Items junkItems = junk.Items; //.Restrict("[Unread]=true");
-
                     foreach (var unreadItem in junkItems)
                     {
                         var itemModel = ExtractIsMatch(@from, unreadItem);

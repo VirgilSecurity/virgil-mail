@@ -121,4 +121,219 @@
   <data name="icon_512x512@2x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\icon_512x512@2x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Button_Accept" xml:space="preserve">
+    <value>Accept</value>
+  </data>
+  <data name="Button_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Button_ExportPrivateKey" xml:space="preserve">
+    <value>Export private key...</value>
+  </data>
+  <data name="Button_RemoveAccount" xml:space="preserve">
+    <value>Delete...</value>
+  </data>
+  <data name="Button_UploadPrivateKeyToVirgilServices" xml:space="preserve">
+    <value>Upload private key to Virgil Services</value>
+  </data>
+  <data name="Description_RemoveAccount" xml:space="preserve">
+    <value>Be careful with current operation. You won't be able to decrypt mail linked with this private key.</value>
+  </data>
+  <data name="Description_RemovePrivateKeyFormVirgilServices" xml:space="preserve">
+    <value>Remove your private key from local storage if you need to clear your machine from personal data.</value>
+  </data>
+  <data name="Description_RemovePrivateKeyFromLocalStorage" xml:space="preserve">
+    <value>Remove your private key from local storage if you need to clear your machine from personal data.</value>
+  </data>
+  <data name="Description_SavePrivateKeyPassword" xml:space="preserve">
+    <value>That option will allows you to do not enter every time password on crypto operations.</value>
+  </data>
+  <data name="Error_ConfirmationCodeIsNotArrived" xml:space="preserve">
+    <value>The message with confirmation code is not arrived. Try again later.</value>
+  </data>
+  <data name="Error_IncorrectPrivateKeyPassword" xml:space="preserve">
+    <value>Incorrect private key password</value>
+  </data>
+  <data name="Label_AccountRemovedSuccessfully" xml:space="preserve">
+    <value>The Account has been deleted successfully</value>
+  </data>
+  <data name="Label_EnterAccountPrivateKeyPassword" xml:space="preserve">
+    <value>Enter account's private key password</value>
+  </data>
+  <data name="Label_PrivateKeyRemovedFromLocalStorageAndVirgilServicesSuccessfully" xml:space="preserve">
+    <value>The private key has been deleted from Virgil Services and local storage successfully.</value>
+  </data>
+  <data name="Label_PrivateKeyRemovedFromLocalStorageSuccessfully" xml:space="preserve">
+    <value>The private key has been deleted successfully. You can upload it at any moment again.</value>
+  </data>
+  <data name="Label_PrivateKeyRemovedFromVirgilServicesSuccessfully" xml:space="preserve">
+    <value>The Private Key was deleted successfully. You can upload it at any moment again.</value>
+  </data>
+  <data name="Label_RemoveAccount" xml:space="preserve">
+    <value>Delete Account</value>
+  </data>
+  <data name="Label_RemovePrivateKeyFormLocalStorage" xml:space="preserve">
+    <value>Delete private key from the local storage</value>
+  </data>
+  <data name="Label_RemovePrivateKeyFormVirgilServices" xml:space="preserve">
+    <value>Delete private key from the Virgil Services</value>
+  </data>
+  <data name="Label_SavePrivateKeyPassword" xml:space="preserve">
+    <value>Save private key password</value>
+  </data>
+  <data name="Label_SendingVerificationRequest" xml:space="preserve">
+    <value>Sending verification request...</value>
+  </data>
+  <data name="Label_UploadingPrivateKey" xml:space="preserve">
+    <value>Uploading private key....</value>
+  </data>
+  <data name="Label_WaitingForConfirmationEmail" xml:space="preserve">
+    <value>Waiting for confirmation email...</value>
+  </data>
+  <data name="Warning_RemoveAccount" xml:space="preserve">
+    <value>Once you delete your account, there is no going back. Please be certain.</value>
+  </data>
+  <data name="Warning_RemovePrivateKeyFormLocalStorage" xml:space="preserve">
+    <value>The private key will be deleted permanently. Make sure you have saved it in some secure place.</value>
+  </data>
+  <data name="Warning_RemovePrivateKeyFormVirgilServices" xml:space="preserve">
+    <value>Your private key won’t be synchronised from Virgil Cloud. You will have to upload your key from local storage manually on other devices.</value>
+  </data>
+  <data name="Label_ConfirmingEmailAccount" xml:space="preserve">
+    <value>Confirming email account...</value>
+  </data>
+  <data name="Label_DeletingPrivateKeyFromVirgilServices" xml:space="preserve">
+    <value>Deleting private key from Virgil Services...</value>
+  </data>
+  <data name="Label_RevokingPublicKeyFromVirgilServices" xml:space="preserve">
+    <value>Revoking public key from Virgil Services...</value>
+  </data>
+  <data name="Label_RemovingPrivateKey" xml:space="preserve">
+    <value>Removing Private Key....</value>
+  </data>
+  <data name="Label_ManageAccounts" xml:space="preserve">
+    <value>Manage Accounts</value>
+  </data>
+  <data name="Description_ManageAccounts" xml:space="preserve">
+    <value>Please manage your Virgil Keys by clicking on one of your Outlook Accounts wich shown below:</value>
+  </data>
+  <data name="Label_Copyright" xml:space="preserve">
+    <value>© 2016 Virgil Security, Inc.</value>
+  </data>
+  <data name="Label_Version" xml:space="preserve">
+    <value>Virgil Mail Add-In version: {0}</value>
+  </data>
+  <data name="Label_KeepMyPrivateKeyOnVirgilServices" xml:space="preserve">
+    <value>Keep my private key on Virgil services</value>
+  </data>
+  <data name="Description_StorePrivateKeyOnVirgilServices" xml:space="preserve">
+    <value>Your private key will be safely stored in your Virgil Security account and can easily be synchronized to another device.</value>
+  </data>
+  <data name="Label_ProtectMyPrivateKey" xml:space="preserve">
+    <value>Protect my private key with a password</value>
+  </data>
+  <data name="Description_PrivateKeyPassword" xml:space="preserve">
+    <value>Only letters (a-z), digits (0-9) and special characters are allowed.</value>
+  </data>
+  <data name="Watermark_Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="Watermark_ConfirmPassword" xml:space="preserve">
+    <value>Confirm Password</value>
+  </data>
+  <data name="Label_SelectOptionToGetPrivateKey" xml:space="preserve">
+    <value>Your account is already created please select an option to get your key.</value>
+  </data>
+  <data name="Label_DownloadPrivateKeyFromVirgilServices" xml:space="preserve">
+    <value>Download from Virgil Security services</value>
+  </data>
+  <data name="Description_DownloadPrivateKeyFromVirgilServices" xml:space="preserve">
+    <value>Use this option if your key has been previously uploaded to Virgil Security services.</value>
+  </data>
+  <data name="Label_SelectPrivateKeyFromFile" xml:space="preserve">
+    <value>Select from a file on your computer</value>
+  </data>
+  <data name="Description_SelectPrivateKeyFromFile" xml:space="preserve">
+    <value>Use this option if you previously exported your key to the file.</value>
+  </data>
+  <data name="Label_SearchAccountInformation" xml:space="preserve">
+    <value>Search account information...</value>
+  </data>
+  <data name="Label_GeneratingPublicAndPrivateKeyPair" xml:space="preserve">
+    <value>Generating public/private key pair...</value>
+  </data>
+  <data name="Label_PublishingPublicKey" xml:space="preserve">
+    <value>Publishing public key...</value>
+  </data>
+  <data name="Label_AccountsKeysHasBeenSuccessfullyGenerated" xml:space="preserve">
+    <value>Account's keys has been successfully generated and published.</value>
+  </data>
+  <data name="Label_ExtractingPrivateKeyInfo" xml:space="preserve">
+    <value>Extracting private key information...</value>
+  </data>
+  <data name="Label_LoadingPublicKeyDetails" xml:space="preserve">
+    <value>Loading public key details...</value>
+  </data>
+  <data name="Label_UploadedPrivateKeyDoesnIsNotMatch" xml:space="preserve">
+    <value>Uploaded private key doesn't match your Virgil account.</value>
+  </data>
+  <data name="Label_PrivateKeyImportedSuccessfully" xml:space="preserve">
+    <value>Private key has been successfully imported.</value>
+  </data>
+  <data name="Error_UploadedFileInvalid" xml:space="preserve">
+    <value>Uploaded file is invalid or has wrong format.</value>
+  </data>
+  <data name="Error_PasswordNotMatchWithConfirmation" xml:space="preserve">
+    <value>Your passwords is not match. Please retype your passwords to confirm it.</value>
+  </data>
+  <data name="Error_PasswordRulesAreNotComplied" xml:space="preserve">
+    <value>Password must be 4 - 15 characters. Only letters (a-z), digits (0-9) and special characters are allowed.</value>
+  </data>
+  <data name="Error_UploadingPrivateKeyFailed" xml:space="preserve">
+    <value>Uploading private key failed</value>
+  </data>
+  <data name="Log_Info_PasswordHolder_SetAccountPrivateKeyPassword" xml:space="preserve">
+    <value>Store a Private Key password in encrypted storage</value>
+  </data>
+  <data name="Log_Info_PasswordHolder_RemoveAccountPrivateKeyPassword" xml:space="preserve">
+    <value>Remove a Private Key password form encrypted storage</value>
+  </data>
+  <data name="Log_Info_PasswordHolder_GetAccountPrivateKeyPassword" xml:space="preserve">
+    <value>Get a Private Key password from encrypted storage</value>
+  </data>
+  <data name="Log_Info_PrivateKeysStorage_StorePrivateKey" xml:space="preserve">
+    <value>Storing a Private Key in encrypted storage</value>
+  </data>
+  <data name="Log_Info_PrivateKeysStorage_GetPrivateKey" xml:space="preserve">
+    <value>Getting Private Key from encrypted storage</value>
+  </data>
+  <data name="Log_Info_PrivateKeysStorage_HasPrivateKeyPassword" xml:space="preserve">
+    <value>Checking if Private Key has a password</value>
+  </data>
+  <data name="Log_Info_EncryptedMailViewModel_DecryptMailCanceledBecauseOfRegistration" xml:space="preserve">
+    <value>The mail decryption is canceled becuase of accoout '{0}' private key is not registered</value>
+  </data>
+  <data name="Log_Info_EncryptedMailViewModel_StartLoadingEmail" xml:space="preserve">
+    <value>Start loading encrypted mail - From: {0}, To: {1}, Subject: '{2}'</value>
+  </data>
+  <data name="Log_Info_EncryptedMailViewModel_DecryptMailWithAccountPrivateKey" xml:space="preserve">
+    <value>Decrypt mail with account's '{0}' private key.</value>
+  </data>
+  <data name="Error_EmailDecryptionFailed" xml:space="preserve">
+    <value>Something went wrong, decryption failed.</value>
+  </data>
+  <data name="Log_Error_EncryptedMailViewModel_MailDecryptionException" xml:space="preserve">
+    <value>Error occured on mail decryption: {0}
+StackTrace:
+{1}</value>
+  </data>
+  <data name="Label_CanNotReadEmailBecauseOfUnregisteredAccount" xml:space="preserve">
+    <value>You can't read this email because your private key is not registered for this account.</value>
+  </data>
+  <data name="Button_Register" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="Button_Decrypt" xml:space="preserve">
+    <value>Decrypt</value>
+  </data>
 </root>

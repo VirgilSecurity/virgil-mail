@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mvvm="clr-namespace:Virgil.Mail.Common.Mvvm"
+             xmlns:res="clr-namespace:Virgil.Mail.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="290" Background="White">
     <UserControl.Resources>
@@ -60,17 +61,17 @@
             Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=Settings}"
             Margin="20 0 20 10" VerticalAlignment="Top" >
             <CheckBox 
-                IsEnabled="{Binding IsPrivateKeyHasPassword }"
+                IsEnabled="{Binding IsPrivateKeyHasPassword}"
                 Margin="0 0 0 2" 
                 IsChecked="{Binding IsPrivateKeyPasswordNeedToStore, Mode=TwoWay}" 
-                Content="Save private key password"
+                Content="{x:Static res:Resources.Label_SavePrivateKeyPassword}"
                 VerticalContentAlignment="Center" />
             <TextBlock 
                 FontSize="10" 
                 Foreground="Gray" 
                 TextWrapping="Wrap"
                 Margin="20 0 0 0" 
-                Text="That option will allows you to do not enter every time password on crypto operations." />
+                Text="{x:Static res:Resources.Description_SavePrivateKeyPassword}" />
         </StackPanel>
         <!-- Delete Account -->
         <StackPanel
@@ -83,38 +84,38 @@
                     Margin="0 0 0 2" 
                     x:Name="revokeCheckBox"
                     IsChecked="{Binding IsDeleteAccount, Mode=TwoWay}" 
-                    Content="Delete Account"
+                    Content="{x:Static res:Resources.Label_RemoveAccount}"
                     VerticalContentAlignment="Center" />
             <TextBlock 
                     FontSize="10" 
                     Foreground="Gray" 
                     TextWrapping="Wrap"
                     Margin="20 0 0 0" 
-                    Text="Be careful with current operation. You won't be able to decrypt mail linked with this private key." />
+                    Text="{x:Static res:Resources.Description_RemoveAccount}" />
             <CheckBox 
                     Margin="0 10 0 2" 
                     IsEnabled="{Binding IsChecked, ElementName=revokeCheckBox, Converter={StaticResource NotBool}}"
                     IsChecked="{Binding IsDeletePrivateKeyFromVirgilServices, Mode=TwoWay}" 
-                    Content="Delete private key from the Virgil Services"
+                    Content="{x:Static res:Resources.Label_RemovePrivateKeyFormVirgilServices}"
                     VerticalContentAlignment="Center" />
             <TextBlock 
                     FontSize="10" 
                     Foreground="Gray" 
                     TextWrapping="Wrap"
                     Margin="20 0 0 0" 
-                    Text="Remove your private key from local storage if you need to clear your machine from personal data." />
+                    Text="{x:Static res:Resources.Description_RemovePrivateKeyFormVirgilServices}" />
             <CheckBox 
                     Margin="0 10 0 2" 
                     IsEnabled="{Binding IsChecked, ElementName=revokeCheckBox, Converter={StaticResource NotBool}}"
                     IsChecked="{Binding IsDeletePrivateKeyFromLocalStorage, Mode=TwoWay}" 
-                    Content="Delete private key from the local storage"
+                    Content="{x:Static res:Resources.Label_RemovePrivateKeyFormLocalStorage}"
                     VerticalContentAlignment="Center" />
             <TextBlock 
                     FontSize="10" 
                     Foreground="Gray" 
                     TextWrapping="Wrap"
                     Margin="20 0 0 0" 
-                    Text="Remove your private key from local storage if you need to clear your machine from personal data." />
+                    Text="{x:Static res:Resources.Description_RemovePrivateKeyFromLocalStorage}" />
             <TextBlock 
                 TextWrapping="Wrap" 
                 Foreground="#DC3023" 
@@ -156,21 +157,21 @@
             Padding="20 20">
             <StackPanel>
                 <Button 
-                        Content="Export private key..." 
+                        Content="{x:Static res:Resources.Button_ExportPrivateKey}" 
                         Command="{Binding ExportCommand}" 
                         Padding="0 3" 
                         Background="White" />
                 <Button 
                         Margin="0 5 0 0"
                         Visibility="{Binding CanUploadToCloud, Converter={StaticResource BoolToVisibility}}"
-                        Content="Upload private key to Virgil Services" 
+                        Content="{x:Static res:Resources.Button_UploadPrivateKeyToVirgilServices}" 
                         Command="{Binding UploadPrivateKeyToCloudCommand}" 
                         Padding="0 3" 
                         Background="White"  />
                 <Button 
                         VerticalAlignment="Bottom" 
                         Margin="0 5 0 0"
-                        Content="Delete..." 
+                        Content="{x:Static res:Resources.Button_RemoveAccount}" 
                         Command="{Binding RemoveCommand}" 
                         Padding="0 3" 
                         BorderBrush="#BB241D" 
@@ -186,19 +187,19 @@
             Padding="20 20">
             <StackPanel>
                 <Button 
-                    Content="Export private key..." 
+                    Content="{x:Static res:Resources.Button_ExportPrivateKey}" 
                     Command="{Binding ExportCommand}" 
                     Padding="0 3" 
                     Background="White" />
                 <Button 
                     Margin="0 5 0 0"
-                    Content="Cancel" 
+                    Content="{x:Static res:Resources.Button_Cancel}" 
                     Command="{Binding CancelDeleteCommand}" 
                     Padding="0 3" 
                     Background="White"  />
                 <Button 
                     Margin="0 5 0 0"
-                    Content="Accept" 
+                    Content="{x:Static res:Resources.Button_Accept}" 
                     Command="{Binding AcceptDeleteCommand}" 
                     Padding="0 3" 
                     IsEnabled="{Binding IsAnyDeleteOperation}"
