@@ -63,16 +63,23 @@
             mail.Move(inbox);
         }
 
-        public void SendEmail(string emailTo, string subject, string body, Outlook.OlImportance importance = Outlook.OlImportance.olImportanceNormal)
+        public void SendEmail(string from, string emailTo, string subject, string body, Outlook.OlImportance importance = Outlook.OlImportance.olImportanceNormal)
         {
+            var ns = this.application.Session;
+            var accounts = ns.Accounts;
+
             Outlook.MailItem mailItem = (Outlook.MailItem)this.application.CreateItem(Outlook.OlItemType.olMailItem);
             mailItem.Subject = subject;
+            mailItem.Sender = accounts[from].CurrentUser.AddressEntry;
+            mailItem.SendUsingAccount = accounts[from];
             mailItem.To = emailTo;
             mailItem.HTMLBody = body;
             mailItem.Importance = Outlook.OlImportance.olImportanceHigh;
             mailItem.Send();
 
             mailItem.ReleaseCom();
+            ns.ReleaseCom();
+            accounts.ReleaseCom();
         }
 
         public IEnumerable<AccountIntegrationModel> GetOutlookAccounts()

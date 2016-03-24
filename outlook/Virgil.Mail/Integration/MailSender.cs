@@ -68,7 +68,7 @@
 
                 if (result)
                 {
-                    this.SendInvitationEmails(invitationIdentities.ToArray());
+                    this.SendInvitationEmails(senderSmtpAddress, invitationIdentities.ToArray());
 
                     var isAnyFound = searchedRecipients
                         .Where(it => !it.Identity.Equals(senderSmtpAddress, StringComparison.CurrentCultureIgnoreCase))
@@ -167,11 +167,11 @@
             }
         }
 
-        private void SendInvitationEmails(string[] recipients)
+        private void SendInvitationEmails(string senderSmtpAddress, string[] recipients)
         {
             foreach (var recipient in recipients)
             {
-                 this.outlook.SendEmail(recipient, Resources.Email_Subject_Invitation, 
+                 this.outlook.SendEmail(senderSmtpAddress, recipient, Resources.Email_Subject_Invitation, 
                      Resources.Email_Template_InvitationEmail, Outlook.OlImportance.olImportanceHigh);
             }
         }
