@@ -79,6 +79,15 @@ namespace Virgil.Mail.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check for Updates.
+        /// </summary>
+        public static string Button_CheckForUpdates {
+            get {
+                return ResourceManager.GetString("Button_CheckForUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Decrypt.
         /// </summary>
         public static string Button_Decrypt {

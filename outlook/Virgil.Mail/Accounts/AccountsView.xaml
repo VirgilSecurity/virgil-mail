@@ -85,11 +85,17 @@
             Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" 
             Padding="20 20">
             <StackPanel>
+                <Button 
+                    Margin="0 0 0 10"
+                    Content="{x:Static Properties:Resources.Button_CheckForUpdates}" 
+                    Command="{Binding CheckForUpdatesCommand}" 
+                    Padding="0 3" 
+                    Background="White"  />
                 <TextBlock TextAlignment="Left">
                     <Run Text="{x:Static Properties:Resources.Label_Copyright}" />
-                    <Hyperlink Command="{Binding Company}" >https://www.virgilsecurity.com</Hyperlink>
+                    <Hyperlink Command="{Binding CompanyRedirectCommand}" >https://www.virgilsecurity.com</Hyperlink>
                 </TextBlock>
-                <TextBlock Margin="0 2 0 0" >
+                <TextBlock Margin="0 5 0 0" >
                     <Run Text="{Binding Path=Version, Mode=OneWay, StringFormat={x:Static Properties:Resources.Label_Version}}" />
                 </TextBlock>
             </StackPanel>

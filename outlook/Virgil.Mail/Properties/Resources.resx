@@ -356,4 +356,7 @@ StackTrace:
             &lt;/body&gt;
 &lt;/html&gt;</value>
   </data>
+  <data name="Button_CheckForUpdates" xml:space="preserve">
+    <value>Check for Updates</value>
+  </data>
 </root>
