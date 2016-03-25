@@ -178,7 +178,7 @@ namespace Virgil.Mail.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Remove your private key from local storage if you need to clear your machine from personal data..
+        ///   Looks up a localized string similar to Remove your private key from Virgil Services if you decided to keep it locally instead. Keep in mind that it won’t be restored in case you lose or forget it..
         /// </summary>
         public static string Description_RemovePrivateKeyFormVirgilServices {
             get {
@@ -738,7 +738,7 @@ namespace Virgil.Mail.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your private key won’t be synchronised from Virgil Cloud. You will have to upload your key from local storage manually on other devices..
+        ///   Looks up a localized string similar to Your private key won’t be synchronised from Virgil Services. You will have to upload your key from local storage manually on other devices..
         /// </summary>
         public static string Warning_RemovePrivateKeyFormVirgilServices {
             get {

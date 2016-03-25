@@ -62,7 +62,7 @@ namespace Virgil.Mail.Dialogs
 
             viewModel.Initialize(accountModel);
 
-            var dialog = DialogBuilder.Build(view, viewModel, "Settings", 290, 420, false);
+            var dialog = DialogBuilder.Build(view, viewModel, "Settings", 290, 430, false);
 
             dialog.Show();
         }

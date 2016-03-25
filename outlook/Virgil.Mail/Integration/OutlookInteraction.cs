@@ -92,7 +92,7 @@
 
             try
             {
-                ns = this.application.Session;
+                ns = this.application.GetNamespace("MAPI");
                 accounts = ns.Accounts;
                 for (int i = 1; i <= accounts.Count; i++)
                 {
