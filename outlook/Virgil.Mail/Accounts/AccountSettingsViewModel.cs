@@ -184,7 +184,7 @@
                 private_key = this.privateKeysStorage.GetPrivateKey(this.account.VirgilCardId)
             };
 
-            var exportJson = JsonConvert.SerializeObject(exportObject);
+            var exportJson = JsonConvert.SerializeObject(new[] { exportObject });
             var exportBytes = Encoding.UTF8.GetBytes(exportJson);
             var exportBase64 = Convert.ToBase64String(exportBytes);
 

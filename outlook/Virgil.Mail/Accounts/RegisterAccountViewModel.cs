@@ -320,7 +320,7 @@
                 var fileKeyBase64 = File.ReadAllText(this.FilePath);
                 var fileKeyBytes = Convert.FromBase64String(fileKeyBase64);
                 var fileKeyJson = Encoding.UTF8.GetString(fileKeyBytes);
-                var result = JsonConvert.DeserializeAnonymousType(fileKeyJson, exportObject);
+                var result = JsonConvert.DeserializeAnonymousType(fileKeyJson, new[] { exportObject }).First();
 
                 if (result?.card == null || result.private_key == null)
                 {
