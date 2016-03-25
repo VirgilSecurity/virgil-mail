@@ -23,7 +23,17 @@
 
             try
             {
-                nameSpace.SendAndReceive(false);
+                var inbox = this.application.Session.Folders[accountSmtpAddress]
+                    .Store.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderInbox);
+
+                var junk = this.application.Session.Folders[accountSmtpAddress]
+                        .Store.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderJunk);
+
+                inbox.InAppFolderSyncObject = true;
+                junk.InAppFolderSyncObject = true;
+
+                nameSpace.SyncObjects.AppFolders.Start();
+                                
                 var attempts = 0;
 
                 while (attempts <= 40)
@@ -31,10 +41,6 @@
                     attempts++;
 
                     await Task.Delay(1000);
-
-                    var inbox = this.application.Session.Folders[accountSmtpAddress]
-                        .Store.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderInbox);
-
                     Outlook.Items unreadItems = inbox.Items.Restrict("[Unread]=true");
 
                     foreach (var unreadItem in unreadItems)
@@ -45,9 +51,6 @@
                             return itemModel;
                         }
                     }
-
-                    var junk = this.application.Session.Folders[accountSmtpAddress]
-                        .Store.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderJunk);
 
                     Outlook.Items junkItems = junk.Items; //.Restrict("[Unread]=true");
                     foreach (var unreadItem in junkItems)
@@ -65,10 +68,11 @@
             }
             finally
             {
+                nameSpace.SyncObjects.AppFolders.Stop();
                 nameSpace.ReleaseCom();
             }
         }
-
+        
         private static OutlookMailModel ExtractIsMatch(string @from, object unreadItem)
         {
             Outlook.MailItem mail = unreadItem as Outlook.MailItem;

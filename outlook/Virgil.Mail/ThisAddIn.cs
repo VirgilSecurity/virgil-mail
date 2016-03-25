@@ -146,7 +146,7 @@ namespace Virgil.Mail
 
             this.CheckUpdates();
         }
-
+        
         /// <summary>
         /// Occurs when add-in shouted down.
         /// </summary>

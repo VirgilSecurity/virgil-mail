@@ -286,6 +286,7 @@
                 var attemptIdElem = htmlDoc.GetElementbyId("attempt_id");
                 if (attemptIdElem == null)
                 {
+                    this.outlook.DeleteMail(mail.EntryID);
                     continue;
                 }
 
