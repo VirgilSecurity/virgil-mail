@@ -284,6 +284,11 @@
                 htmlDoc.LoadHtml(mail.Body);
 
                 var attemptIdElem = htmlDoc.GetElementbyId("attempt_id");
+                if (attemptIdElem == null)
+                {
+                    continue;
+                }
+
                 var attemptId = attemptIdElem.GetAttributeValue("value", "");
 
                 if (!attemptId.Equals(waitingAttemptId, StringComparison.CurrentCultureIgnoreCase))
