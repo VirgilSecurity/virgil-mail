@@ -10,6 +10,7 @@
     
     using Virgil.Mail.Common;
     using Virgil.Mail.Models;
+
     using Outlook = Microsoft.Office.Interop.Outlook;
 
     /// <summary>

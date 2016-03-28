@@ -143,50 +143,56 @@
 
         public void Initialize(Outlook.MailItem mail)
         {
-            this.mailItem = mail;
-
-            var senderEmailAddress = mail.ExtractSenderEmailAddress();
-            var reciverEmailAddress = mail.ExtractReciverEmailAddress();
-            
-            Logger.InfoFormat(Resources.Log_Info_EncryptedMailViewModel_StartLoadingEmail, 
-                senderEmailAddress, reciverEmailAddress, this.mailItem.Subject);
-            
-            this.account = this.accountsManager.GetAccount(reciverEmailAddress);
-            
-            if (!this.account.IsRegistered)
+            try
             {
-                Logger.InfoFormat(Resources.Log_Info_EncryptedMailViewModel_DecryptMailCanceledBecauseOfRegistration, reciverEmailAddress);
+                this.mailItem = mail;
 
-                this.ChangeState(EncryptedMailState.NotRegistered);
-                return;
-            }
+                var senderEmailAddress = mail.ExtractSenderEmailAddress();
+                var reciverEmailAddress = mail.ExtractReciverEmailAddress();
             
-            var privateKey = this.privateKeysStorage.GetPrivateKey(this.account.VirgilCardId);
-            var isKeyEncrypted = VirgilKeyPair.IsPrivateKeyEncrypted(privateKey);
+                Logger.InfoFormat(Resources.Log_Info_EncryptedMailViewModel_StartLoadingEmail, 
+                    senderEmailAddress, reciverEmailAddress, this.mailItem.Subject);
             
-            if (isKeyEncrypted && !this.account.IsPrivateKeyPasswordNeedToStore)
-            {
-                this.ChangeState(EncryptedMailState.WaitPassword);
-                return;
-            }
-
-            string keyPassword = null; 
-            if (isKeyEncrypted)
-            {
-                try
+                this.account = this.accountsManager.GetAccount(reciverEmailAddress);
+            
+                if (!this.account.IsRegistered)
                 {
-                    keyPassword = this.passwordHolder.Get(this.account.OutlookAccountEmail);
+                    Logger.InfoFormat(Resources.Log_Info_EncryptedMailViewModel_DecryptMailCanceledBecauseOfRegistration, reciverEmailAddress);
+
+                    this.ChangeState(EncryptedMailState.NotRegistered);
+                    return;
                 }
-                catch (PrivateKeyPasswordIsNotFoundException)
+            
+                var privateKey = this.privateKeysStorage.GetPrivateKey(this.account.VirgilCardId);
+                var isKeyEncrypted = VirgilKeyPair.IsPrivateKeyEncrypted(privateKey);
+            
+                if (isKeyEncrypted && !this.account.IsPrivateKeyPasswordNeedToStore)
                 {
                     this.ChangeState(EncryptedMailState.WaitPassword);
                     return;
                 }
-            }
 
-            this.ParseAttachemnts();
-            
-            this.InternalDecrypt(keyPassword);
+                string keyPassword = null; 
+                if (isKeyEncrypted)
+                {
+                    try
+                    {
+                        keyPassword = this.passwordHolder.Get(this.account.OutlookAccountEmail);
+                    }
+                    catch (PrivateKeyPasswordIsNotFoundException)
+                    {
+                        this.ChangeState(EncryptedMailState.WaitPassword);
+                        return;
+                    }
+                }
+
+                this.ParseAttachemnts();
+                this.InternalDecrypt(keyPassword);
+            }
+            catch (Exception ex)
+            {
+                Logger.InfoFormat("Error occured: {0}\nStackTrace: {1}", ex.Message, ex.StackTrace);
+            }
         }
 
         private void ParseAttachemnts()
