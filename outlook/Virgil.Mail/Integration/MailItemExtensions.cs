@@ -95,23 +95,8 @@
         /// </summary>
         internal static string ExtractReciverEmailAddress(this Outlook.MailItem mail)
         {
-            var folder = mail.Parent as Outlook.Folder;
-
-            if (folder != null)
-            {
-                var path = folder.FullFolderPath;
-                var ourEmail = path.Substring(2);
-                var match = EmailFinder.Match(ourEmail);
-
-                var captureCollection = match.Groups.Cast<Group>().FirstOrDefault();
-                var capture = captureCollection?.Captures.Cast<Capture>().FirstOrDefault();
-                if (capture != null)
-                {
-                    return capture.Value;
-                }
-            }
-
-            return mail.To;
+            var propertyValue = mail.PropertyAccessor.GetProperty("http://schemas.microsoft.com/mapi/proptag/0x0076001F") as string;
+            return propertyValue;
         }
 
         internal static string ExtractSenderEmailAddress(this Outlook.MailItem mail)
