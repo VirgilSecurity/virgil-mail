@@ -266,7 +266,7 @@
     <ROW IniFile="DownloadsFolder" FileName="VIRGIL~2.INI|VirgilMailUpdater.ini" DirProperty="APPDIR" Section="General" Key="DownloadsFolder" Value="[CommonAppDataFolder][Manufacturer]\[ProductName]\updates\" Action="0" Component_="updater.exe"/>
     <ROW IniFile="Flags" FileName="VIRGIL~2.INI|VirgilMailUpdater.ini" DirProperty="APPDIR" Section="General" Key="Flags" Value="NoDisableAutoCheck|PerMachine" Action="0" Component_="updater.exe"/>
     <ROW IniFile="ID" FileName="VIRGIL~2.INI|VirgilMailUpdater.ini" DirProperty="APPDIR" Section="General" Key="ID" Value="[UpgradeCode]" Action="0" Component_="updater.exe"/>
-    <ROW IniFile="URL" FileName="VIRGIL~2.INI|VirgilMailUpdater.ini" DirProperty="APPDIR" Section="General" Key="URL" Value="https://downloads.virgilsecurity.com/apps/virgil-mail/outlook/virgil_mail_updates.txt" Action="0" Component_="updater.exe"/>
+    <ROW IniFile="URL" FileName="VIRGIL~2.INI|VirgilMailUpdater.ini" DirProperty="APPDIR" Section="General" Key="URL" Value="https://cdn.virgilsecurity.com/apps/virgil-mail/outlook/virgil_mail_updates.txt" Action="0" Component_="updater.exe"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiInstExSeqComponent">
     <ROW Action="AI_DOWNGRADE" Condition="AI_NEWERPRODUCTFOUND AND (UILevel &lt;&gt; 5)" Sequence="210"/>

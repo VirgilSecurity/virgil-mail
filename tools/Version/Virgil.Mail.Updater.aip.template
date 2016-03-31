@@ -7,7 +7,7 @@
   <COMPONENT cid="caphyon.advinst.msicomp.UpdaterEditorComponent">
     <ROW Section="%VERSION%" Key="Name" Value="Virgil Mail"/>
     <ROW Section="%VERSION%" Key="ProductVersion" Value="%VERSION%"/>
-    <ROW Section="%VERSION%" Key="URL" Value="https://downloads.virgilsecurity.com/apps/virgil-mail/outlook/virgil_mail_%VERSION%.exe"/>
+    <ROW Section="%VERSION%" Key="URL" Value="https://cdn.virgilsecurity.com/apps/virgil-mail/outlook/virgil_mail_%VERSION%.exe"/>
     <ROW Section="%VERSION%" Key="Size" Value="Output\virgil_mail_%VERSION%.exe"/>
     <ROW Section="%VERSION%" Key="MD5" Value="Output\virgil_mail_%VERSION%.exe"/>
     <ROW Section="%VERSION%" Key="ServerFileName" Value="virgil_mail_%VERSION%.exe"/>
