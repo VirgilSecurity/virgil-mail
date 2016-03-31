@@ -114,7 +114,7 @@
     return [mimeParts copy];
 }
 
-- (MimePart *) partWithVirgilSignature : (MimePart *)topMimePart {
+- (MimePart *) partWithVirgilSignatureInternal : (MimePart *)topMimePart {
     // Iterate throw all MimePart to find part with virgil marker
     NSSet * mimeParts = [self allMimeParts:topMimePart];
     
@@ -131,33 +131,54 @@
     return nil;
 }
 
+- (MimePart *) partWithVirgilSignature : (MimePart *)topMimePart {
+    __block MimePart * res = nil;
+    if ([NSThread isMainThread]) {
+        res = [self partWithVirgilSignatureInternal:topMimePart];
+    } else {
+        @try {
+            dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                res = [self partWithVirgilSignatureInternal:topMimePart];
+                dispatch_semaphore_signal(semaphore);
+            });
+            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+        }
+        @catch (NSException *exception) {}
+    }
+    return res;
+}
+
 - (BOOL) isPartContainsVirgilSignature : (MimePart *)mimePart {
-    if(![mimePart isType:@"text" subtype:@"html"]) {
-        // Exit.
-        // Because our encrypted information places to test/html part.
-        return NO;
-    }
+    @try {
+        if(![mimePart isType:@"text" subtype:@"html"]) {
+            // Exit.
+            // Because our encrypted information places to test/html part.
+            return NO;
+        }
         
-    NSData *bodyData = [mimePart bodyData];
-    NSString* strBody = [[NSString alloc] initWithData:bodyData encoding:NSUTF8StringEncoding];
-    NSError *error = nil;
-    HTMLParser *parser = [[HTMLParser alloc] initWithString:strBody error:&error];
-    
-    if (error) {
-        VLogError(@"Error: %@", error);
-        return NO;
-    }
-    
-    HTMLNode *bodyNode = [parser body];
-    NSArray *inputNodes = [bodyNode findChildTags:@"input"];
-    
-    for (HTMLNode *inputNode in inputNodes) {
-        if ([[inputNode getAttributeNamed:@"id"] isEqualToString:@"virgil-info"]) {
-            if ([[inputNode getAttributeNamed:@"type"] isEqualToString:@"hidden"]) {
-                return YES;
+        NSData *bodyData = [mimePart bodyData];
+        NSString* strBody = [[NSString alloc] initWithData:bodyData encoding:NSUTF8StringEncoding];
+        NSError *error = nil;
+        HTMLParser *parser = [[HTMLParser alloc] initWithString:strBody error:&error];
+        
+        if (error) {
+            VLogError(@"Error: %@", error);
+            return NO;
+        }
+        
+        HTMLNode *bodyNode = [parser body];
+        NSArray *inputNodes = [bodyNode findChildTags:@"input"];
+        
+        for (HTMLNode *inputNode in inputNodes) {
+            if ([[inputNode getAttributeNamed:@"id"] isEqualToString:@"virgil-info"]) {
+                if ([[inputNode getAttributeNamed:@"type"] isEqualToString:@"hidden"]) {
+                    return YES;
+                }
             }
         }
     }
+    @catch (NSException *exception) {}
     return NO;
 }
 
