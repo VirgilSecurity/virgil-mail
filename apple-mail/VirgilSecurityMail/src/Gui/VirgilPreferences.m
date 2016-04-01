@@ -42,7 +42,7 @@
 @implementation VirgilPreferences
 
 NSString * homePage = @"https://virgilsecurity.com";
-NSString * updateURLFormat = @"https://downloads.virgilsecurity.com/apps/virgil-mail/apple-mail/VirgilSecurityMail-%@.dmg";
+NSString * updateURLFormat = @"https://cdn.virgilsecurity.com/apps/virgil-mail/apple-mail/VirgilSecurityMail-%@.dmg";
 
 NSMutableAttributedString * normalHomeLink = nil;
 NSMutableAttributedString * activeHomeLink = nil;
