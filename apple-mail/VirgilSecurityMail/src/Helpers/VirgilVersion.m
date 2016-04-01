@@ -43,7 +43,7 @@
 
 #define kElementsCount 4
 
-NSString * rssURL = @"https://downloads.virgilsecurity.com/apps/virgil-mail/apple-mail/updates/virgilmailcast.xml";
+NSString * rssURL = @"https://cdn.virgilsecurity.com/apps/virgil-mail/apple-mail/updates/virgilmailcast.xml";
 
 NSXMLParser * rssParser = nil;
 NSString * latestVersion = nil;
