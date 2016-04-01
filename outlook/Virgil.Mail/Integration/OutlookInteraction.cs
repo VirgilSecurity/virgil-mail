@@ -89,12 +89,12 @@
             Outlook.Account account = null;
             
             var result = new List<AccountIntegrationModel>();
-
+            
             try
             {
                 ns = this.application.GetNamespace("MAPI");
                 accounts = ns.Accounts;
-                for (int i = 1; i <= accounts.Count; i++)
+                for (var i = 1; i <= accounts.Count; i++)
                 {
                     account = accounts[i];
 

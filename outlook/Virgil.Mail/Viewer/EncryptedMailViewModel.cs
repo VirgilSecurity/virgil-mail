@@ -21,6 +21,7 @@
     using Virgil.Mail.Models;
     using Virgil.Mail.Mvvm;
     using Virgil.Mail.Properties;
+
     using Outlook = Microsoft.Office.Interop.Outlook;
 
     public class EncryptedMailViewModel : ViewModel
