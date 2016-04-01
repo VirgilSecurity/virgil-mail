@@ -137,7 +137,7 @@
     <value>Upload private key to Virgil Services</value>
   </data>
   <data name="Description_RemoveAccount" xml:space="preserve">
-    <value>Be careful with current operation. You won't be able to decrypt mail linked with this private key.</value>
+    <value>Be careful with the current operation. You won't be able to decrypt mail linked with this private key.</value>
   </data>
   <data name="Description_RemovePrivateKeyFormVirgilServices" xml:space="preserve">
     <value>Remove your private key from Virgil Services if you decided to keep it locally instead. Keep in mind that it won’t be restored in case you lose or forget it.</value>
@@ -146,10 +146,10 @@
     <value>Remove your private key from local storage if you need to clear your machine from personal data.</value>
   </data>
   <data name="Description_SavePrivateKeyPassword" xml:space="preserve">
-    <value>That option will allows you to do not enter every time password on crypto operations.</value>
+    <value>This option will allow you to do not enter every time password on crypto operations.</value>
   </data>
   <data name="Error_ConfirmationCodeIsNotArrived" xml:space="preserve">
-    <value>The message with confirmation code is not arrived. Try again later.</value>
+    <value>The message with confirmation code has not arrived. Try again later.</value>
   </data>
   <data name="Error_IncorrectPrivateKeyPassword" xml:space="preserve">
     <value>Incorrect private key password</value>
@@ -167,7 +167,7 @@
     <value>The private key has been deleted successfully. You can upload it at any moment again.</value>
   </data>
   <data name="Label_PrivateKeyRemovedFromVirgilServicesSuccessfully" xml:space="preserve">
-    <value>The Private Key was deleted successfully. You can upload it at any moment again.</value>
+    <value>The private key was deleted successfully. You can upload it at any moment again.</value>
   </data>
   <data name="Label_RemoveAccount" xml:space="preserve">
     <value>Delete Account</value>
@@ -215,7 +215,7 @@
     <value>Manage Accounts</value>
   </data>
   <data name="Description_ManageAccounts" xml:space="preserve">
-    <value>Please manage your Virgil Keys by clicking on one of your Outlook Accounts wich shown below:</value>
+    <value>Please manage your Virgil Keys by clicking on one of your Outlook Accounts which shown below:</value>
   </data>
   <data name="Label_Copyright" xml:space="preserve">
     <value>© 2016 Virgil Security, Inc.</value>
@@ -251,7 +251,7 @@
     <value>Use this option if your key has been previously uploaded to Virgil Security services.</value>
   </data>
   <data name="Label_SelectPrivateKeyFromFile" xml:space="preserve">
-    <value>Select from a file on your computer</value>
+    <value>Select a file on your computer</value>
   </data>
   <data name="Description_SelectPrivateKeyFromFile" xml:space="preserve">
     <value>Use this option if you previously exported your key to the file.</value>
@@ -266,7 +266,7 @@
     <value>Publishing public key...</value>
   </data>
   <data name="Label_AccountsKeysHasBeenSuccessfullyGenerated" xml:space="preserve">
-    <value>Account's keys has been successfully generated and published.</value>
+    <value>Account's keys have been successfully generated and published.</value>
   </data>
   <data name="Label_ExtractingPrivateKeyInfo" xml:space="preserve">
     <value>Extracting private key information...</value>
@@ -281,10 +281,10 @@
     <value>Private key has been successfully imported.</value>
   </data>
   <data name="Error_UploadedFileInvalid" xml:space="preserve">
-    <value>Uploaded file is invalid or has wrong format.</value>
+    <value>Uploaded file is invalid or has the wrong format.</value>
   </data>
   <data name="Error_PasswordNotMatchWithConfirmation" xml:space="preserve">
-    <value>Your passwords is not match. Please retype your passwords to confirm it.</value>
+    <value>Your passwords do not match. Please retype your passwords to confirm it.</value>
   </data>
   <data name="Error_PasswordRulesAreNotComplied" xml:space="preserve">
     <value>Password must be 4 - 15 characters. Only letters (a-z), digits (0-9) and special characters are allowed.</value>
@@ -293,25 +293,25 @@
     <value>Uploading private key failed</value>
   </data>
   <data name="Log_Info_PasswordHolder_SetAccountPrivateKeyPassword" xml:space="preserve">
-    <value>Store a Private Key password in encrypted storage</value>
+    <value>Store a private key password in encrypted storage</value>
   </data>
   <data name="Log_Info_PasswordHolder_RemoveAccountPrivateKeyPassword" xml:space="preserve">
-    <value>Remove a Private Key password form encrypted storage</value>
+    <value>Remove a private key password from encrypted storage</value>
   </data>
   <data name="Log_Info_PasswordHolder_GetAccountPrivateKeyPassword" xml:space="preserve">
-    <value>Get a Private Key password from encrypted storage</value>
+    <value>Get a private key password from encrypted storage</value>
   </data>
   <data name="Log_Info_PrivateKeysStorage_StorePrivateKey" xml:space="preserve">
-    <value>Storing a Private Key in encrypted storage</value>
+    <value>Storing a private key in encrypted storage</value>
   </data>
   <data name="Log_Info_PrivateKeysStorage_GetPrivateKey" xml:space="preserve">
-    <value>Getting Private Key from encrypted storage</value>
+    <value>Getting private key from encrypted storage</value>
   </data>
   <data name="Log_Info_PrivateKeysStorage_HasPrivateKeyPassword" xml:space="preserve">
-    <value>Checking if Private Key has a password</value>
+    <value>Checking if private key has a password</value>
   </data>
   <data name="Log_Info_EncryptedMailViewModel_DecryptMailCanceledBecauseOfRegistration" xml:space="preserve">
-    <value>The mail decryption is canceled becuase of accoout '{0}' private key is not registered</value>
+    <value>The mail decryption is canceled because of account '{0}' private key is not registered</value>
   </data>
   <data name="Log_Info_EncryptedMailViewModel_StartLoadingEmail" xml:space="preserve">
     <value>Start loading encrypted mail - From: {0}, To: {1}, Subject: '{2}'</value>
@@ -340,7 +340,7 @@ StackTrace:
     <value>Recipients aren't exists</value>
   </data>
   <data name="Message_AccoutnsAreNotRegisteredSendInvitation" xml:space="preserve">
-    <value>The folowing accounts are not registered yet. Do you want to send them an invitation email?
+    <value>The following accounts are not registered yet. Do you want to send them an invitation email?
 
 {0}</value>
   </data>
@@ -351,7 +351,7 @@ StackTrace:
     <value>&lt;html&gt;
             &lt;body&gt;
                    &lt;p&gt;Hello&lt;/p&gt;
-            	&lt;p&gt;Please install Virgil Mail plugin so that we can continue our secure communication. You can download it from website here.&lt;/p&gt;
+            	&lt;p&gt;Please install Virgil Mail plugin so that we can continue our secure communication. You can download it from the website here.&lt;/p&gt;
             	&lt;a href='https://virgilsecurity.com/demos' &gt;Download Virgil Mail Add-In.&lt;/a&gt;    
             &lt;/body&gt;
 &lt;/html&gt;</value>
