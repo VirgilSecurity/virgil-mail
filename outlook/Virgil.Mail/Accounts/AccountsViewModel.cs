@@ -1,18 +1,21 @@
 ﻿namespace Virgil.Mail.Accounts
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Collections.ObjectModel;
     using System.Diagnostics;
     using System.IO;
     using System.Reflection;
     using log4net;
+
     using Virgil.Mail.Common;
     using Virgil.Mail.Common.Mvvm;
+    using Virgil.Mail.Dialogs;
     using Virgil.Mail.Models;
     using Virgil.Mail.Mvvm;
 
-    public class AccountsViewModel : ViewModel
+    public class AccountsViewModel : ViewModel, IShellContentViewModel
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(AccountsViewModel));
 
@@ -99,6 +102,11 @@
                 this.dialogPresenter.ShowAccountSettings(accountModel);
             }
             
+            this.Initialize();
+        }
+
+        public void Initialize(IDictionary<string, object> args)
+        {
             this.Initialize();
         }
     }

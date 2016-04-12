@@ -3,7 +3,7 @@
     using System;
 
     using Microsoft.Office.Tools.Ribbon;
-
+    using Virgil.Mail.Accounts;
     using Virgil.Mail.Common;
 
     public partial class VirgilMailRibbon
@@ -21,7 +21,8 @@
         
         private void mailKeysButton_Click(object sender, RibbonControlEventArgs e)
         {
-            ServiceLocator.Dialogs.ShowAccounts();
+            ServiceLocator.Dialogs.ShowDialog<AccountsViewModel>();
+            // ServiceLocator.Dialogs.ShowAccounts();
         }
 
         private void ExceptionHandler(Exception exception)

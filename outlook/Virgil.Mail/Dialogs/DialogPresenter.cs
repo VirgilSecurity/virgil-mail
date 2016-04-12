@@ -18,6 +18,21 @@ namespace Virgil.Mail.Dialogs
             this.container = container;
         }
 
+        public void ShowDialog<TViewModel>() where TViewModel : IShellContentViewModel
+        {
+            var shellView = this.container.Resolve<ShellView>();
+            var shellViewModel = this.container.Resolve<ShellViewModel>();
+
+            shellView.DataContext = shellViewModel;
+
+            var contentModel = this.container.Resolve<TViewModel>();
+            shellViewModel.SetContentModel(contentModel);
+
+            contentModel.Initialize(null);
+
+            shellView.Show();
+        }
+
         public string ShowPrivateKeyPassword(string accountEmail, byte[] privateKey)
         {
             var view = this.container.Resolve<AccountKeyPasswordView>();

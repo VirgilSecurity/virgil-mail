@@ -245,10 +245,17 @@
     <Compile Include="Common\IPrivateKeysStorage.cs" />
     <Compile Include="Common\IPasswordHolder.cs" />
     <Compile Include="Common\IRecipientsService.cs" />
+    <Compile Include="Common\IShellTemplateSelector.cs" />
     <Compile Include="Common\IStorageProvider.cs" />
     <Compile Include="Common\IDialogPresenter.cs" />
     <Compile Include="Common\IViewBuilder.cs" />
     <Compile Include="Common\RecipientsService.cs" />
+    <Compile Include="Dialogs\IShellContentViewModel.cs" />
+    <Compile Include="Dialogs\ShellTemplateSelector.cs" />
+    <Compile Include="Dialogs\ShellView.xaml.cs">
+      <DependentUpon>ShellView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\ShellViewModel.cs" />
     <Compile Include="Models\RecipientSearchResultModel.cs" />
     <Compile Include="Dialogs\Dialog.cs" />
     <Compile Include="Dialogs\DialogBuilder.cs" />
@@ -364,6 +371,13 @@
     <Compile Include="ThisAddIn.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Resource Include="Resources\ProximaNova-Bold.otf" />
+    <Resource Include="Resources\ProximaNova-Light.otf" />
+    <Resource Include="Resources\ProximaNova-Regular.otf" />
+    <Resource Include="Resources\ProximaNova-Semibold.otf" />
+    <Resource Include="Resources\ProximaNovaCond-Light.otf" />
+    <Resource Include="Resources\ProximaNovaCond-Regular.otf" />
+    <Resource Include="Resources\ProximaNovaCond-Semibold.otf" />
     <None Include="ThisAddIn.Designer.xml">
       <DependentUpon>ThisAddIn.cs</DependentUpon>
     </None>
@@ -389,6 +403,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Accounts\RegisterAccountView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\ShellView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\Styles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

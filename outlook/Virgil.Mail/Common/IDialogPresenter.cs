@@ -1,5 +1,6 @@
 ﻿namespace Virgil.Mail.Common
 {
+    using Virgil.Mail.Dialogs;
     using Virgil.Mail.Models;
 
     public interface IDialogPresenter : IService
@@ -14,5 +15,6 @@
         string OpenFile(string extension);
         void ShowAlert(string message);
         void SaveFile(string fileName, byte[] content, string extension);
+        void ShowDialog<TViewModel>() where TViewModel : IShellContentViewModel;
     }
 }

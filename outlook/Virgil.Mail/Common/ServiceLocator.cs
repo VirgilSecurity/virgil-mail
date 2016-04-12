@@ -6,12 +6,13 @@
     {
         private static IContainer container;
 
-        internal static IOutlookInteraction Outlook => Get<IOutlookInteraction>();
-        internal static IDialogPresenter Dialogs => Get<IDialogPresenter>();
-        internal static IViewBuilder ViewBuilder => Get<IViewBuilder>();
-        internal static IMailSender MailSender => Get<IMailSender>();
-        internal static IAccountsManager Accounts => Get<IAccountsManager>();
-        internal static IPasswordExactor PasswordExactor => Get<IPasswordExactor>();
+        public static IOutlookInteraction Outlook => Get<IOutlookInteraction>();
+        public static IDialogPresenter Dialogs => Get<IDialogPresenter>();
+        public static IViewBuilder ViewBuilder => Get<IViewBuilder>();
+        public static IMailSender MailSender => Get<IMailSender>();
+        public static IAccountsManager Accounts => Get<IAccountsManager>();
+        public static IPasswordExactor PasswordExactor => Get<IPasswordExactor>();
+        public static IShellTemplateSelector ShellTemplateSelector => Get<IShellTemplateSelector>();
 
         internal static void SetContainer(IContainer serviceContainer)
         {
