@@ -20,7 +20,7 @@
         {
             this.outlook = outlook;
             this.storage = storage;
-
+            
             this.internalAccounts = new List<AccountModel>();
         }
 

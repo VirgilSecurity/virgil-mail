@@ -28,6 +28,7 @@
         private readonly IOutlookInteraction outlook;
         private readonly IMailObserver mailObserver;
         private readonly VirgilHub virgilHub;
+        private readonly IMessageBus messageBus;
 
         private AccountModel account;
         private bool isPrivateKeyPasswordNeedToStore;
@@ -45,7 +46,8 @@
             IPasswordExactor passwordExactor,
             IOutlookInteraction outlook,
             IMailObserver mailObserver,
-            VirgilHub virgilHub
+            VirgilHub virgilHub,
+            IMessageBus messageBus
         )
         {
             this.dialogPresenter = dialogPresenter;
@@ -56,6 +58,7 @@
             this.outlook = outlook;
             this.mailObserver = mailObserver;
             this.virgilHub = virgilHub;
+            this.messageBus = messageBus;
 
             this.ExportCommand = new RelayCommand(this.Export);
             this.RemoveCommand = new RelayCommand(this.Remove);
@@ -316,6 +319,7 @@
                 {
                     await this.RemoveAccount();
                     this.ChangeState(AccountSettingsState.Done, Resources.Label_AccountRemovedSuccessfully);
+                    this.messageBus.Publish(new AccountDeletedMessage(this.account.VirgilCardId.ToString()));
                     return;
                 }
 
@@ -332,6 +336,7 @@
                     await this.RemovePrivateKeyFromVirgilServices();
                     this.accountsManager.Remove(this.account.OutlookAccountEmail);
                     this.ChangeState(AccountSettingsState.Done, Resources.Label_PrivateKeyRemovedFromLocalStorageAndVirgilServicesSuccessfully);
+                    this.messageBus.Publish(new AccountDeletedMessage(this.account.VirgilCardId.ToString()));
                     return;
                 }
 
@@ -341,6 +346,7 @@
                     this.passwordHolder.Remove(this.account.OutlookAccountEmail);
                     this.accountsManager.Remove(this.account.OutlookAccountEmail);
                     this.ChangeState(AccountSettingsState.Done, Resources.Label_PrivateKeyRemovedFromLocalStorageSuccessfully);
+                    this.messageBus.Publish(new AccountDeletedMessage(this.account.VirgilCardId.ToString()));
                 }
             }
             catch (Exception ex)

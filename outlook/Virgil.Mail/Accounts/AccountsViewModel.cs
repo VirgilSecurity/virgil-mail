@@ -19,7 +19,7 @@
         private readonly IAccountsManager accountsManager;
         private readonly IDialogPresenter dialogPresenter;
 
-        public AccountsViewModel(IAccountsManager accountsManager, IDialogPresenter dialogPresenter)
+        public AccountsViewModel(IAccountsManager accountsManager, IDialogPresenter dialogPresenter, IMessageBus messageBus)
         {
             this.accountsManager = accountsManager;
             this.dialogPresenter = dialogPresenter;
@@ -29,6 +29,10 @@
             this.ManageAccountCommand = new RelayCommand<AccountModel>(this.ManageAccount);
             this.CompanyRedirectCommand = new RelayCommand(this.CompanyRedirect);
             this.CheckForUpdatesCommand = new RelayCommand(this.CheckForUpdates);
+
+
+            messageBus.Subscribe<AccountDeletedMessage>(this, this.AccountDeleted);
+            messageBus.Subscribe<AccountUpdatedMessage>(this, this.AccountUpdated);
         }
         
         public RelayCommand CheckForUpdatesCommand { get; private set; }
@@ -60,7 +64,6 @@
 
         private void CompanyRedirect()
         {
-            
             Process.Start("https://www.virgilsecurity.com/");
         }
 
@@ -88,6 +91,16 @@
             }
         }
 
+        private void AccountDeleted(AccountDeletedMessage deletedMessage)
+        {
+            this.Initialize();
+        }
+
+        private void AccountUpdated(AccountUpdatedMessage message)
+        {
+            this.Initialize();
+        }
+
         private void ManageAccount(AccountModel accountModel)
         {
             if (!accountModel.IsRegistered)
@@ -98,8 +111,6 @@
             {
                 this.dialogPresenter.ShowAccountSettings(accountModel);
             }
-            
-            this.Initialize();
         }
     }
 }

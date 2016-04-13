@@ -4,6 +4,7 @@
 
     using Virgil.Mail.Accounts;
     using Virgil.Mail.Common;
+    using Virgil.Mail.Common.Messaging;
     using Virgil.Mail.Dialogs;
     using Virgil.Mail.Integration;
     using Virgil.Mail.Storage;
@@ -37,6 +38,7 @@
             builder.RegisterType<MailSender>().As<IMailSender>();
             builder.RegisterType<PasswordExactor>().As<IPasswordExactor>();
             builder.RegisterType<RecipientsService>().As<IRecipientsService>().SingleInstance();
+            builder.RegisterType<MessageBus>().As<IMessageBus>().SingleInstance();
 
             builder.RegisterType<RegisterAccountView>();
             builder.RegisterType<RegisterAccountViewModel>();

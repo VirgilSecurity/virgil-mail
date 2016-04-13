@@ -218,6 +218,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="Accounts\AccountUpdatedMessage.cs" />
     <Compile Include="Accounts\AccountKeyPasswordView.xaml.cs">
       <DependentUpon>AccountKeyPasswordView.xaml</DependentUpon>
     </Compile>
@@ -232,6 +233,7 @@
       <DependentUpon>AccountsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Accounts\AccountsViewModel.cs" />
+    <Compile Include="Accounts\AccountDeletedMessage.cs" />
     <Compile Include="Bootstraper.cs" />
     <Compile Include="Common\Constants.cs" />
     <Compile Include="Common\Exceptions\PasswordExactionException.cs" />
@@ -241,6 +243,8 @@
     <Compile Include="Common\IEncryptedKeyValueStorage.cs" />
     <Compile Include="Common\IMailSender.cs" />
     <Compile Include="Common\IMailObserver.cs" />
+    <Compile Include="Common\Messaging\IMessage.cs" />
+    <Compile Include="Common\IMessageBus.cs" />
     <Compile Include="Common\IPasswordExactor.cs" />
     <Compile Include="Common\IPrivateKeysStorage.cs" />
     <Compile Include="Common\IPasswordHolder.cs" />
@@ -248,6 +252,7 @@
     <Compile Include="Common\IStorageProvider.cs" />
     <Compile Include="Common\IDialogPresenter.cs" />
     <Compile Include="Common\IViewBuilder.cs" />
+    <Compile Include="Common\Messaging\MessageBus.cs" />
     <Compile Include="Common\RecipientsService.cs" />
     <Compile Include="Models\RecipientSearchResultModel.cs" />
     <Compile Include="Dialogs\Dialog.cs" />

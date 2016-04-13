@@ -1,5 +1,8 @@
 namespace Virgil.Mail.Dialogs
 {
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Linq;
     using System.Windows;
     using System.Windows.Forms;
     using System.Windows.Interop;
@@ -9,6 +12,8 @@ namespace Virgil.Mail.Dialogs
 
     public class DialogBuilder
     {
+        public static Dictionary<string, Dialog> dialogs = new Dictionary<string, Dialog>(); 
+
         public static Dialog Build
         (
             System.Windows.Controls.UserControl view,
@@ -17,10 +22,20 @@ namespace Virgil.Mail.Dialogs
             int width, 
             int height,
             bool showIcon = true,
-            bool showInTaskbar = false
+            bool showInTaskbar = false,
+            bool isModal = true
         )
         {
+            var viewName = view.GetType().FullName;
             view.DataContext = viewModel;
+
+            if (dialogs.ContainsKey(viewName))
+            {
+                var cachedDialog = dialogs[viewName];
+                cachedDialog.Shell.ElementHost.Child = view;
+                return cachedDialog;
+            }
+            
             var shell = new ShellWindow
             {
                 ClientSize = GetRealSize(width, height),
@@ -34,8 +49,18 @@ namespace Virgil.Mail.Dialogs
                 ShowInTaskbar = showInTaskbar
             };
 
-            var dialog = new Dialog(shell, view, viewModel);
+            shell.Closing += ShellOnClosing;
+
+            var dialog = new Dialog(shell, view, viewModel, isModal);
+            dialogs.Add(viewName, dialog);
+
             return dialog;
+        }
+
+        private static void ShellOnClosing(object sender, CancelEventArgs args)
+        {
+            var dialog = dialogs.Single(it => it.Value.Shell == (ShellWindow)sender);
+            dialogs.Remove(dialog.Key);
         }
 
         private static System.Drawing.Size GetRealSize(int width, int height)

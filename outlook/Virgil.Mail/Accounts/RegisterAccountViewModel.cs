@@ -30,6 +30,7 @@
         private readonly IMailObserver mailObserver;
         private readonly IPasswordHolder passwordHolder;
         private readonly VirgilHub virgilHub;
+        private readonly IMessageBus messageBus;
 
         private AccountModel currentAccount;
         private bool hasPassword;
@@ -46,7 +47,8 @@
             IDialogPresenter dialogs,
             IMailObserver mailObserver,
             IPasswordHolder passwordHolder,
-            VirgilHub virgilHub
+            VirgilHub virgilHub,
+            IMessageBus messageBus
         )
         {
             this.outlook = outlook;
@@ -56,6 +58,7 @@
             this.mailObserver = mailObserver;
             this.passwordHolder = passwordHolder;
             this.virgilHub = virgilHub;
+            this.messageBus = messageBus;
 
             this.CreateCommand = new RelayCommand(this.Create);
             this.BrowseFileCommand = new RelayCommand(this.BrowseFile);
@@ -256,6 +259,7 @@
                 }
 
                 this.ChangeState(RegisterAccountState.Done, Resources.Label_AccountsKeysHasBeenSuccessfullyGenerated);
+                this.messageBus.Publish(new AccountUpdatedMessage(createdCard.Id));
             }
             catch (Exception ex)
             {
@@ -368,6 +372,7 @@
                 this.accountsManager.UpdateAccount(this.CurrentAccount);
 
                 this.ChangeState(RegisterAccountState.Done, Resources.Label_PrivateKeyImportedSuccessfully);
+                this.messageBus.Publish(new AccountUpdatedMessage(card.Id));
             }
             catch (Exception)
             {
@@ -428,6 +433,7 @@
                 this.accountsManager.UpdateAccount(this.CurrentAccount);
                 
                 this.ChangeState(RegisterAccountState.Done, Resources.Label_PrivateKeyImportedSuccessfully);
+                this.messageBus.Publish(new AccountUpdatedMessage(card.Id));
             }
             catch (Exception ex)
             {

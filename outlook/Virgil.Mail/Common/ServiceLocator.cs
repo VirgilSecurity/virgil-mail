@@ -12,6 +12,7 @@
         internal static IMailSender MailSender => Get<IMailSender>();
         internal static IAccountsManager Accounts => Get<IAccountsManager>();
         internal static IPasswordExactor PasswordExactor => Get<IPasswordExactor>();
+        internal static IMessageBus MessageBus => Get<IMessageBus>();
 
         internal static void SetContainer(IContainer serviceContainer)
         {
