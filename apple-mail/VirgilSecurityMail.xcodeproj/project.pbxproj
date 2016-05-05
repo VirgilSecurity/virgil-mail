@@ -64,7 +64,6 @@
 		49E32FA31BC29DB600A37F42 /* VirgilUserMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E32FA21BC29DB600A37F42 /* VirgilUserMessageViewController.m */; };
 		49FBE6AB1BBA86C5001EC529 /* VirgilMessageListObjectProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 49FBE6AA1BBA86C5001EC529 /* VirgilMessageListObjectProxy.m */; };
 		49FBE6AD1BBA9C8F001EC529 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49FBE6AC1BBA9C8F001EC529 /* QuartzCore.framework */; };
-		5057ECB6BE2ADBC35EC2A15B /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C380A1941DE75E4EB3861AA6 /* Pods.framework */; };
 		D10400AD1BA84DB3003FC484 /* VirgilMail.icns in Resources */ = {isa = PBXBuildFile; fileRef = D10400AC1BA84DB3003FC484 /* VirgilMail.icns */; };
 		D11174371B67FBEE00DD9A39 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D11174361B67FBEE00DD9A39 /* CoreFoundation.framework */; };
 		D11174461B6805D400DD9A39 /* VirgilMain.m in Sources */ = {isa = PBXBuildFile; fileRef = D11174451B6805D400DD9A39 /* VirgilMain.m */; };
