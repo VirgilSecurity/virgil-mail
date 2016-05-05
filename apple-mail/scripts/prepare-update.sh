@@ -62,8 +62,8 @@ function prepare_version_file() {
 	echo "   \"version\":\"${CUR_VERSION}\""					>> "${VERSION_FILE}"
 	echo "}"													>> "${VERSION_FILE}"
 	
-	cat "${VERSION_LINK}"
-	mv "${VERSION_LINK}" "${ZIP_PREPARE_FOLDER}/"
+	cat "${VERSION_FILE}"
+	mv "${VERSION_FILE}" "${ZIP_PREPARE_FOLDER}/"
 }
 
 function prepare_update() {
