@@ -32,13 +32,16 @@ function prepare() {
 	else
 		BASE_LINK="https://cdn.virgilsecurity.com/apps/virgil-mail/apple-mail/updates"
 		APPCAST_FILE="virgilmailcast.xml"
+		VERSION_FILE="version.json"
 		RELEASE_NOTES_FILE="release-notes.html"
 		ZIP_FILE="${MAIL_BUNDLE_NAME}-${CUR_VERSION}.zip"
+		DMG_JSON_LINK="https:\/\/downloads.virgilsecurity.com\/apps\/virgil-mail\/apple-mail\/${MAIL_BUNDLE_NAME}-${CUR_VERSION}.dmg"
 	fi
 	
 	SPARKLE_ICON_FILE="icon_128x128.png"
 	
 	APPCAST_LINK="${BASE_LINK}/${APPCAST_FILE}"
+	VERSION_LINK="${BASE_LINK}/${VERSION_FILE}"
 	RELEASE_NOTES_LINK="${BASE_LINK}/${RELEASE_NOTES_FILE}"
 	DOWNLOAD_LINK="${BASE_LINK}/${ZIP_FILE}"
 	SPARKLE_ICON_LINK="${BASE_LINK}/${RELEASE_NOTES_FILE}"
@@ -47,6 +50,20 @@ function prepare() {
 	
 	PRIVATE_KEY="/updater_keys/dsa_priv.pem"
 	OPENSSL="/usr/bin/openssl"
+}
+
+function prepare_version_file() {
+	echo -e "\n------------- Create version.json -------------------"
+	
+	echo "{  "													> "${VERSION_LINK}"
+	echo "   \"description\":\"Virgil Apple Mail Plugin\","		>> "${VERSION_LINK}"
+	echo "   \"download_url\":\"${DMG_JSON_LINK}\","			>> "${VERSION_LINK}"
+	echo "   \"setup_url\":\"${DMG_JSON_LINK}\","				>> "${VERSION_LINK}"
+	echo "   \"version\":\"${CUR_VERSION}\""					>> "${VERSION_LINK}"
+	echo "}"													>> "${VERSION_LINK}"
+	
+	cat "${VERSION_LINK}"
+	mv "${VERSION_LINK}" "${ZIP_PREPARE_FOLDER}/"
 }
 
 function prepare_update() {
@@ -126,4 +143,5 @@ function prepare_update() {
 	
 }
 
+prepare_version_file
 prepare_update
