@@ -42,6 +42,7 @@
 #import "NSData+Base64.h"
 #import "NSString+Base64.h"
 
+#import "VSSIdentityInfo.h"
 #import "VSSClient.h"
 #import "VSSCard.h"
 #import "VSSPublicKey.h"
@@ -106,23 +107,21 @@
     
     __block VSSCard * res = nil;
     dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-    [_client searchCardWithIdentityValue : account
-                                    type : VSSIdentityTypeEmail
-                               relations : nil
-                             unconfirmed : @NO
-                       completionHandler :^(NSArray<VSSCard *> * _Nullable cards, NSError * _Nullable error) {
-                           if (error == nil && cards != nil && [cards count] > 0) {
-                               // Get newest card
-                               NSDate * compareDate = cards[0].createdAt;
-                               res = cards[0];
-                               for (VSSCard * card in cards) {
-                                   if([card.createdAt compare: compareDate] == NSOrderedDescending) {
-                                       compareDate = card.createdAt;
-                                       res = card;
-                                   }
-                               }
-                           }
-                           dispatch_semaphore_signal(semaphore);
+    [_client searchEmailCardWithIdentityValue : account
+                            completionHandler :^(NSArray<VSSCard *> * _Nullable cards, NSError * _Nullable error) {
+                                NSLog(@"FOUND CARDS : %@", cards);
+                                if (error == nil && cards != nil && [cards count] > 0) {
+                                    // Get newest card
+                                    NSDate * compareDate = cards[0].createdAt;
+                                    res = cards[0];
+                                    for (VSSCard * card in cards) {
+                                        if([card.createdAt compare: compareDate] == NSOrderedDescending) {
+                                            compareDate = card.createdAt;
+                                            res = card;
+                                        }
+                                    }
+                                }
+                                dispatch_semaphore_signal(semaphore);
                        }];
     dispatch_semaphore_wait(semaphore, [self timeout]);
     return res;
@@ -189,17 +188,16 @@
     
     dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
     
-    [_client verifyIdentityWithType : VSSIdentityTypeEmail
-                              value : account
-                        extraFields : extra
-                  completionHandler : ^(GUID * _Nullable actionId, NSError * _Nullable error) {
-                      if (error == nil) {
-                          res = actionId;
-                      } else {
-                          _lastError = error.localizedDescription;
-                      }
-                      dispatch_semaphore_signal(semaphore);
-                  }];
+    [_client verifyEmailIdentityWithValue : account
+                              extraFields : extra
+                        completionHandler : ^(GUID * _Nullable actionId, NSError * _Nullable error) {
+                            if (error == nil) {
+                                res = actionId;
+                            } else {
+                                _lastError = error.localizedDescription;
+                            }
+                            dispatch_semaphore_signal(semaphore);
+                        }];
     dispatch_semaphore_wait(semaphore, [self timeout]);
     
     return res;
@@ -285,7 +283,7 @@
 }
 
 - (BOOL) deleteCardWithCardId : (GUID *)cardId
-                     identity : (NSDictionary *)identity
+                     identity : (VSSIdentityInfo *)identity
                    privateKey : (VirgilPrivateKey *)privateKey {
     _lastError = nil;
     if (nil == cardId ||
@@ -302,7 +300,7 @@
     [[VSSPrivateKey alloc] initWithKey : [privateKey.key dataUsingEncoding : NSUTF8StringEncoding]
                               password : privateKey.keyPassword];
     [_client deleteCardWithCardId : cardId
-                         identity : identity
+                     identityInfo : identity
                        privateKey : vssPrivKey
                 completionHandler : ^(NSError * _Nullable error) {
                     if (error == nil) {
@@ -342,8 +340,8 @@
         return NO;
     }
     
-    NSDictionary * identity = [self confirmIdentityWithActionId : keyChainContainer.publicKey.actionID
-                                                       withCode : code];
+    VSSIdentityInfo * identity = [self confirmIdentityWithActionId : keyChainContainer.publicKey.actionID
+                                                          withCode : code];
     if (identity == nil) return NO;
     
     return [self deleteCardWithCardId : keyChainContainer.publicKey.cardID
@@ -409,52 +407,50 @@
                                      keyContainer : keyChainContainer];
 }
 
-- (NSDictionary *) confirmIdentityWithActionId : (GUID *) actionId
+- (VSSIdentityInfo *) confirmIdentityWithActionId : (GUID *) actionId
                                       withCode : (NSString *) confirmationCode {
     if (nil == confirmationCode) {
         [self setErrorString : @"wrong params for account confirmation"];
         return nil;
     }
     
-    __block NSDictionary * res = nil;
+    __block VSSIdentityInfo * res = nil;
     _lastError = nil;
     
     dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-    [_client confirmIdentityWithActionId : actionId
-                                    code : confirmationCode
-                                     ttl : nil
-                                     ctl : nil
-                       completionHandler :^(VSSIdentityType type, NSString * _Nullable value, NSString * _Nullable validationToken, NSError * _Nullable error) {
-                           if (error == nil) {
-                               res = @{kVSSModelType : kVSSIdentityTypeEmail,
-                                       kVSSModelValue: value,
-                                       kVSSModelValidationToken : validationToken};
-                           } else {
-                               _lastError = error.localizedDescription;
-                           }
-                           dispatch_semaphore_signal(semaphore);
-                       }];
+    [_client confirmEmailIdentityWithActionId : actionId
+                                         code : confirmationCode
+                                     tokenTtl : 30
+                                     tokenCtl : 20
+                            completionHandler : ^(VSSIdentityInfo * _Nullable identityInfo, NSError * _Nullable error) {
+                                if (error == nil) {
+                                    res = identityInfo;
+                                } else {
+                                    _lastError = error.localizedDescription;
+                                }
+                                dispatch_semaphore_signal(semaphore);
+                            }];
     dispatch_semaphore_wait(semaphore, [self timeout]);
     
     return res;
 }
 
-- (NSString *) grabPrivateKeyWithIdentity : (NSDictionary *)identity
+- (NSString *) grabPrivateKeyWithIdentity : (VSSIdentityInfo *)identity
                                    cardId : (GUID *)cardId {
     __block NSString * res = nil;
     
     dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-    [_client grabPrivateKeyWithIdentity : identity
-                                 cardId : cardId
-                               password : @""
-                      completionHandler : ^(NSData * _Nullable keyData, GUID * _Nullable cardId, NSError * _Nullable error) {
-                          if (error == nil) {
-                              res = [[NSString alloc] initWithData:keyData encoding:NSUTF8StringEncoding];
-                          } else {
-                              _lastError = error.localizedDescription;
-                          }
-                          dispatch_semaphore_signal(semaphore);
-                      }];
+    [_client getPrivateKeyWithCardId : cardId
+                        identityInfo : identity
+                            password : @""
+                   completionHandler : ^(NSData * _Nullable keyData, GUID * _Nullable cardId, NSError * _Nullable error) {
+                       if (error == nil) {
+                           res = [[NSString alloc] initWithData:keyData encoding:NSUTF8StringEncoding];
+                       } else {
+                           _lastError = error.localizedDescription;
+                       }
+                       dispatch_semaphore_signal(semaphore);
+                   }];
     dispatch_semaphore_wait(semaphore, [self timeout]);
     
     return res;
@@ -476,7 +472,7 @@
         return kSaveError;
     }
     
-    NSDictionary * identity = [self confirmIdentityWithActionId : container.publicKey.actionID
+    VSSIdentityInfo * identity = [self confirmIdentityWithActionId : container.publicKey.actionID
                                                        withCode : code];
     if (identity == nil) return kSaveError;
     
@@ -512,7 +508,7 @@
                                    keyContainer : keyChainContainer];
 }
 
-- (VSSCard *) createCardWithIdentity : (NSDictionary *) identity
+- (VSSCard *) createCardWithIdentity : (VSSIdentityInfo *) identity
                            publicKey : (VirgilPublicKey *) publicKey
                           privateKey : (VirgilPrivateKey *) privateKey {
     if (identity == nil || publicKey == nil || privateKey == nil) {
@@ -528,9 +524,8 @@
     
     dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
     [_client createCardWithPublicKey : [publicKey.publicKey dataUsingEncoding : NSUTF8StringEncoding]
-                            identity : identity
+                        identityInfo : identity
                                 data : nil
-                               signs : nil
                           privateKey : vssPrivKey
                    completionHandler : ^(VSSCard * _Nullable card, NSError * _Nullable error) {
                        if (error == nil) {
@@ -587,7 +582,7 @@
         return NO;
     }
     
-    NSDictionary * identity = [self confirmIdentityWithActionId : container.publicKey.actionID
+    VSSIdentityInfo * identity = [self confirmIdentityWithActionId : container.publicKey.actionID
                                                        withCode : code];
     if (identity == nil) return NO;
     
@@ -802,9 +797,11 @@
     NSData * preparedData = nil;
     if (passwordForEncryption && passwordForEncryption.length) {
         VSSCryptor * crypto = [VSSCryptor new];
-        [crypto addPasswordRecipient : passwordForEncryption];
+        [crypto addPasswordRecipient : passwordForEncryption
+                               error : nil];
         preparedData = [crypto encryptData : jsonData
-                          embedContentInfo : @YES];
+                          embedContentInfo : YES
+                                     error : nil];
     } else {
         preparedData = jsonData;
     }
@@ -852,7 +849,8 @@
     if (passwordForDecryption && passwordForDecryption.length) {
         NSData * encryptedData = [NSData dataFromBase64String:fileContent];
         jsonData = [[VSSCryptor new] decryptData : encryptedData
-                                        password : passwordForDecryption];
+                                        password : passwordForDecryption
+                                           error : nil];
     } else {
         jsonData = [NSData dataFromBase64String:fileContent];
     }
@@ -985,12 +983,14 @@
     VSSCryptor * cryptor = [VSSCryptor new];
     
     [cryptor addKeyRecipient : tmpPublicKeyId
-                   publicKey : [publicKey dataUsingEncoding:NSUTF8StringEncoding]];
+                   publicKey : [publicKey dataUsingEncoding:NSUTF8StringEncoding]
+                       error : nil];
     
     NSData * encryptedData = nil;
     
     encryptedData = [cryptor encryptData : [testString dataUsingEncoding:NSUTF8StringEncoding]
-                        embedContentInfo : @YES];
+                        embedContentInfo : YES
+                                   error : nil];
     
     if (encryptedData == nil) return NO;
     
@@ -998,7 +998,8 @@
     decryptedData = [[VSSCryptor new] decryptData : encryptedData
                                       recipientId : tmpPublicKeyId
                                        privateKey : [privateKey dataUsingEncoding:NSUTF8StringEncoding]
-                                      keyPassword : password];
+                                      keyPassword : password
+                                            error : nil];
     
     NSString * decryptedString = [[NSString alloc] initWithData : decryptedData
                                                        encoding : NSUTF8StringEncoding];
