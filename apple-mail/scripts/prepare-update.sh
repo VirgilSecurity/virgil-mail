@@ -52,20 +52,6 @@ function prepare() {
 	OPENSSL="/usr/bin/openssl"
 }
 
-function prepare_version_file() {
-	echo -e "\n------------- Create version.json -------------------"
-	
-	echo "{  "													> "${VERSION_FILE}"
-	echo "   \"description\":\"Virgil Apple Mail Plugin\","		>> "${VERSION_FILE}"
-	echo "   \"download_url\":\"${DMG_JSON_LINK}\","			>> "${VERSION_FILE}"
-	echo "   \"setup_url\":\"${DMG_JSON_LINK}\","				>> "${VERSION_FILE}"
-	echo "   \"version\":\"${CUR_VERSION}\""					>> "${VERSION_FILE}"
-	echo "}"													>> "${VERSION_FILE}"
-	
-	cat "${VERSION_FILE}"
-	mv "${VERSION_FILE}" "${ZIP_PREPARE_FOLDER}/"
-}
-
 function prepare_update() {
 	prepare
 	pushd "${DMG_PREPARE_FOLDER}"
@@ -134,6 +120,19 @@ function prepare_update() {
 		
 		cat "${APPCAST_FILE}"
 		mv "${APPCAST_FILE}" "${ZIP_PREPARE_FOLDER}/"
+		
+		echo -e "\n------------- Create version.json -------------------"
+		echo "${VERSION_LINK}"
+	
+		echo "{  "													> "${VERSION_FILE}"
+		echo "   \"description\":\"Virgil Apple Mail Plugin\","		>> "${VERSION_FILE}"
+		echo "   \"download_url\":\"${DMG_JSON_LINK}\","			>> "${VERSION_FILE}"
+		echo "   \"setup_url\":\"${DMG_JSON_LINK}\","				>> "${VERSION_FILE}"
+		echo "   \"version\":\"${CUR_VERSION}\""					>> "${VERSION_FILE}"
+		echo "}"													>> "${VERSION_FILE}"
+	
+		cat "${VERSION_FILE}"
+		mv "${VERSION_FILE}" "${ZIP_PREPARE_FOLDER}/"
 		
 		echo -e "\n-------------- Remove tmp folder --------------------"
 		rm -rf "${MAIL_BUNDLE_NAME}"
