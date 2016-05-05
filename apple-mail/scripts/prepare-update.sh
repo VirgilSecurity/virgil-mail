@@ -55,12 +55,12 @@ function prepare() {
 function prepare_version_file() {
 	echo -e "\n------------- Create version.json -------------------"
 	
-	echo "{  "													> "${VERSION_LINK}"
-	echo "   \"description\":\"Virgil Apple Mail Plugin\","		>> "${VERSION_LINK}"
-	echo "   \"download_url\":\"${DMG_JSON_LINK}\","			>> "${VERSION_LINK}"
-	echo "   \"setup_url\":\"${DMG_JSON_LINK}\","				>> "${VERSION_LINK}"
-	echo "   \"version\":\"${CUR_VERSION}\""					>> "${VERSION_LINK}"
-	echo "}"													>> "${VERSION_LINK}"
+	echo "{  "													> "${VERSION_FILE}"
+	echo "   \"description\":\"Virgil Apple Mail Plugin\","		>> "${VERSION_FILE}"
+	echo "   \"download_url\":\"${DMG_JSON_LINK}\","			>> "${VERSION_FILE}"
+	echo "   \"setup_url\":\"${DMG_JSON_LINK}\","				>> "${VERSION_FILE}"
+	echo "   \"version\":\"${CUR_VERSION}\""					>> "${VERSION_FILE}"
+	echo "}"													>> "${VERSION_FILE}"
 	
 	cat "${VERSION_LINK}"
 	mv "${VERSION_LINK}" "${ZIP_PREPARE_FOLDER}/"
@@ -69,6 +69,7 @@ function prepare_version_file() {
 function prepare_update() {
 	prepare
 	pushd "${DMG_PREPARE_FOLDER}"
+		prepare_version_file
 		echo -e "\n----------------- Compress PKG ----------------------"
 
 		PKG_NAME="Install Virgil Mail.pkg"
@@ -143,5 +144,4 @@ function prepare_update() {
 	
 }
 
-prepare_version_file
 prepare_update
