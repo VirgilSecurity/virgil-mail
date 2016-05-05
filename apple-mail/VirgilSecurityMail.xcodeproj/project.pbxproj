@@ -344,7 +344,7 @@
 				D11174371B67FBEE00DD9A39 /* CoreFoundation.framework in Frameworks */,
 				4976551B1C7BB0D6003057F7 /* VirgilFoundation.framework in Frameworks */,
 				4976551C1C7BB0D6003057F7 /* VirgilSDK.framework in Frameworks */,
-				026758B5B1EE0232E046175B /* Pods.framework in Frameworks */,
+				5057ECB6BE2ADBC35EC2A15B /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

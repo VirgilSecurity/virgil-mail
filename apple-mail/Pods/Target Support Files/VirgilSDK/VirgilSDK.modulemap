@@ -15,6 +15,7 @@ framework module VirgilSDK {
   private header "VSSKeysBaseRequest.h"
   private header "VSSSearchAppCardRequest.h"
   private header "VSSSearchCardRequest.h"
+  private header "VSSSearchEmailCardRequest.h"
   private header "VSSSignCardRequest.h"
   private header "VSSUnsignCardRequest.h"
   private header "VSSDeletePrivateKeyRequest.h"

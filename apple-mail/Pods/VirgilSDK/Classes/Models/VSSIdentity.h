@@ -7,19 +7,17 @@
 //
 
 #import "VSSBaseModel.h"
-#import "VSSModelTypes.h"
+#import "VSSModelCommons.h"
+
+@class VSSIdentityInfo;
 
 @interface VSSIdentity : VSSBaseModel
 
-@property (nonatomic, assign, readonly) VSSIdentityType type;
+@property (nonatomic, copy, readonly) NSString * __nonnull type;
 @property (nonatomic, copy, readonly) NSString * __nonnull value;
-@property (nonatomic, copy, readonly) NSNumber * __nonnull isConfirmed;
 
-- (instancetype __nonnull)initWithId:(GUID * __nonnull)Id createdAt:(NSDate * __nullable)createdAt type:(VSSIdentityType)type value:(NSString * __nonnull)value isConfirmed:(NSNumber * __nonnull)isConfirmed NS_DESIGNATED_INITIALIZER;
-- (instancetype __nonnull)initWithId:(GUID * __nonnull)Id createdAt:(NSDate *__nullable)createdAt typeString:(NSString * __nonnull)typeString value:(NSString * __nonnull)value isConfirmed:(NSNumber * __nonnull)isConfirmed;
+- (instancetype __nonnull)initWithId:(GUID * __nonnull)Id createdAt:(NSDate *__nullable)createdAt type:(NSString * __nonnull)type value:(NSString * __nonnull)value NS_DESIGNATED_INITIALIZER;
 
-// Convenient methods for converting enums to strings and vice-versa.
-+ (NSString * __nonnull)stringFromIdentityType:(VSSIdentityType)identityType;
-+ (VSSIdentityType)identityTypeFromString:(NSString * __nullable)itCandidate;
+- (VSSIdentityInfo * __nonnull)asIdentityInfo;
 
 @end
