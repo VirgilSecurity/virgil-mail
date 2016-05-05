@@ -47,7 +47,6 @@ NSString * rssURL = @"https://cdn.virgilsecurity.com/apps/virgil-mail/apple-mail
 
 NSXMLParser * rssParser = nil;
 NSString * latestVersion = nil;
-BOOL inAction = NO;
 
 + (VirgilVersion *) sharedInstance {
     static VirgilVersion * singletonObject = nil;
@@ -107,8 +106,6 @@ BOOL inAction = NO;
 }
 
 - (void) requestLatestVersion {
-    if (inAction) return;
-    inAction = YES;
     [self parseXMLFileAtURL:rssURL];
 }
 
@@ -135,7 +132,6 @@ BOOL inAction = NO;
 
 - (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError {
     NSLog(@"error parsing XML: %@", [parseError localizedDescription]);
-    inAction = NO;
     [self repeatRequestLatest];
 }
 
@@ -156,7 +152,6 @@ BOOL inAction = NO;
 }
 
 - (void)parserDidEndDocument:(NSXMLParser *)parser {
-    inAction = NO;
     if (_delegate != nil) {
         [_delegate versionUpdated:latestVersion];
     }
