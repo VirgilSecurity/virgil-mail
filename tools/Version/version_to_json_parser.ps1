@@ -3,7 +3,9 @@ Param(
     [string]$FilePath
 )
 
-$file = [System.IO.File]::ReadAllText($FilePath)
+$fullFilePath = [System.IO.Path]::GetFullPath($FilePath)
+
+$file = [System.IO.File]::ReadAllText($fullFilePath)
 
 $name = [RegEx]::Match($file,"\nName\s=\s(.*)").Captures.Groups[1].Value.Trim()
 $productVersion = [RegEx]::Match($file,"\nProductVersion\s=\s(.*)").Captures.Groups[1].Value.Trim()
@@ -29,7 +31,7 @@ $json = "{
 $destinationFolder = [System.IO.Path]::GetDirectoryName($FilePath)
 $jsonFilePath = [System.IO.Path]::Combine($destinationFolder, "version.json")
 
-[System.IO.File]::WriteAllText($jsonFilePath, $json)
+[System.IO.File]::WriteAllText($jsonFilePath, $json)#>
 
 
 
