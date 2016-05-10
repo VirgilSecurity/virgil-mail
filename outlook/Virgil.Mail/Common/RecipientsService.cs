@@ -3,17 +3,20 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+
+    using Virgil.SDK;
+    using Virgil.SDK.Identities;
+
     using Virgil.Mail.Models;
-    using Virgil.SDK.Infrastructure;
 
     public class RecipientsService : IRecipientsService
     {
-        private readonly VirgilHub hub;
+        private readonly ServiceHub serviceHub;
         private readonly List<RecipientSearchResultModel> cache;
 
-        public RecipientsService(VirgilHub hub)
+        public RecipientsService(ServiceHub serviceHub)
         {
-            this.hub = hub;
+            this.serviceHub = serviceHub;
             this.cache = new List<RecipientSearchResultModel>();
         }
         
@@ -31,7 +34,7 @@
                 .ToList();
 
             var tasks = identitiesToLoad
-                .Select(r => this.hub.Cards.Search(r))
+                .Select(r => this.serviceHub.Cards.Search(r, IdentityType.Email))
                 .ToList();
 
             await Task.WhenAll(tasks);
@@ -48,7 +51,7 @@
                     var recipientCard = searchResult.OrderBy(it => it.CreatedAt).Last();
                     recipient.CardId = recipientCard.Id;
                     recipient.PublicKeyId = recipientCard.PublicKey.Id;
-                    recipient.PublicKey = recipientCard.PublicKey.PublicKey;
+                    recipient.PublicKey = recipientCard.PublicKey.Value;
                 }
 
                 // add to cache the found recipient.

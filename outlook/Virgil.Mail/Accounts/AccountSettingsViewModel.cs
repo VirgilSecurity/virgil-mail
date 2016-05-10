@@ -8,16 +8,14 @@
 
     using HtmlAgilityPack;
     using Newtonsoft.Json;
-
+    using SDK;
+    using SDK.Identities;
     using Virgil.Mail.Properties;
     using Virgil.Mail.Common;
     using Virgil.Mail.Common.Mvvm;
     using Virgil.Mail.Models;
     using Virgil.Mail.Mvvm;
-
-    using Virgil.SDK.Infrastructure;
-    using Virgil.SDK.TransferObject;
-
+    
     public class AccountSettingsViewModel : ViewModel
     {
         private readonly IDialogPresenter dialogPresenter;
@@ -27,7 +25,7 @@
         private readonly IPasswordExactor passwordExactor;
         private readonly IOutlookInteraction outlook;
         private readonly IMailObserver mailObserver;
-        private readonly VirgilHub virgilHub;
+        private readonly ServiceHub virgilHub;
         private readonly IMessageBus messageBus;
 
         private AccountModel account;
@@ -46,7 +44,7 @@
             IPasswordExactor passwordExactor,
             IOutlookInteraction outlook,
             IMailObserver mailObserver,
-            VirgilHub virgilHub,
+            ServiceHub virgilHub,
             IMessageBus messageBus
         )
         {
@@ -369,8 +367,8 @@
             this.ChangeStateText(Resources.Label_SendingVerificationRequest);
 
             var attemptId = Guid.NewGuid().ToString();
-            var verifyResponse = await this.virgilHub.Identity.Verify(this.account.OutlookAccountEmail,
-                IdentityType.Email, new Dictionary<string, string> { { "attempt_id", attemptId } });
+            var emailVerifier = await this.virgilHub.Identity.VerifyEmail(this.account.OutlookAccountEmail
+                , new Dictionary<string, string> {{"attempt_id", attemptId}});
 
             this.ChangeStateText(Resources.Label_WaitingForConfirmationEmail);
 
@@ -378,7 +376,7 @@
 
             this.ChangeStateText(Resources.Label_ConfirmingEmailAccount);
             
-            var validationToken = await this.virgilHub.Identity.Confirm(verifyResponse.ActionId, code);
+            var identityInfo = await emailVerifier.Confirm(code);
 
             var privateKey = this.privateKeysStorage.GetPrivateKey(this.account.VirgilCardId);
 
@@ -395,7 +393,7 @@
 
             this.ChangeStateText(Resources.Label_RevokingPublicKeyFromVirgilServices);
 
-            await this.virgilHub.PublicKeys.Revoke(this.account.VirgilPublicKeyId, new[] {validationToken},
+            await this.virgilHub.PublicKeys.Revoke(this.account.VirgilPublicKeyId, new[] {identityInfo},
                 this.account.VirgilCardId, privateKey, password);
 
             this.privateKeysStorage.RemovePrivateKey(this.account.VirgilCardId);
