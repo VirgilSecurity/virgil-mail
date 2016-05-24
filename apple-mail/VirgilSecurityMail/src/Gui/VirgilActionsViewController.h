@@ -59,12 +59,17 @@
 @property (nonatomic, weak) IBOutlet NSButton * btnExport;
 
 @property (nonatomic, weak) IBOutlet NSButton * btnCancel;
-@property (nonatomic, weak) IBOutlet NSButton * btnContinue;
-@property (nonatomic, weak) IBOutlet NSTextField * prograssExplain;
 @property (weak) IBOutlet NSButton * saveToCloudCheckBox;
 
 @property (weak) IBOutlet NSButton *btnConfirm;
 @property (weak) IBOutlet NSTextField *confirmationTextField;
 
+
+@property (weak) IBOutlet NSButton *advancedModeCheckBox;
+
+@property (weak) IBOutlet NSTextField *advancedTextField;
+
+@property (weak) IBOutlet NSProgressIndicator *progressIndicator;
+@property (weak) IBOutlet NSButton *btnKeysCreation;
 
 @end

@@ -45,6 +45,8 @@
 #import "NSString+Base64.h"
 #import "VirgilLog.h"
 
+#import <CoreGraphics/CoreGraphics.h>
+
 #define VIRGILKEY_EXTENTION @"vcard"
 
 #define kCheckInterval      2
@@ -86,38 +88,8 @@ NSInteger _checkCounter = 0;
 }
 
 - (void) reset {
-    [self setVisibleExportControls:NO];
+    [self onAdvancedMode : nil];
     [self externalActionDone];
-}
-
-- (IBAction)onExportKeyClicked:(id)sender {
-    [self setVisibleExportControls:YES];
-}
-
-- (IBAction)onCancelExportClicked:(id)sender {
-    [self setVisibleExportControls:NO];
-}
-
-- (void) setVisibleExportControls : (BOOL) visible {
-    if (nil == _btnCancel) return;
-    
-    _btnCancel.hidden = !visible;
-    _btnCancel.enabled = visible;
-    
-    _btnContinue.hidden = !visible;
-    _btnContinue.enabled = visible;
-    
-    _prograssExplain.hidden = !visible;
-    
-    _keyPassword.hidden = !visible;
-    _keyPassword.enabled = visible;
-    
-    _keyPasswordConfirm.hidden = !visible;
-    _keyPasswordConfirm.enabled = visible;
-    
-    _btnRemoveFromCloud.enabled = !visible;
-    _btnRemoveFromKeyChain.enabled = !visible;
-    _btnExport.enabled = !visible;
 }
 
 - (void) noteOfWarningToUser : (NSString *) warningTitle
@@ -128,7 +100,7 @@ NSInteger _checkCounter = 0;
     [alert addButtonWithTitle:@"Cancel"];
     [alert setMessageText:warningTitle];
     [alert setInformativeText:warningBody];
-    [alert setAlertStyle:NSWarningAlertStyle];
+    [alert setAlertStyle:NSCriticalAlertStyle];
     
     [alert beginSheetModalForWindow : self.view.window
                   completionHandler : ^(NSModalResponse returnCode) {
@@ -144,7 +116,7 @@ NSInteger _checkCounter = 0;
     if (nil == _account) return;
     
     [self noteOfWarningToUser : @"Delete Virgil Keys completely ?"
-                  warningBody : @"Be careful with current operation. You won't be able to decrypt emails linked with this key"
+                  warningBody : @"Be careful with the current operation. If you recreate your Virgil Keys, you won't be able to decrypt all existing encrypted data."
             completionHandler : ^(BOOL isOkButtonClicked) {
                 [self externalActionStart];
                 
@@ -193,11 +165,11 @@ NSInteger _checkCounter = 0;
         }
     }
     
-    [self setVisibleExportControls:NO];
-    
     [VirgilActionsViewController safeAction:^{
         currentController = self;
     }];
+    
+    [self onAdvancedMode : nil];
 }
 
 - (void) dealloc {
@@ -298,7 +270,6 @@ NSInteger _checkCounter = 0;
             if (!fileName) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self externalActionDone];
-                    [self setVisibleExportControls:NO];
                 });
                 return;
             }
@@ -309,9 +280,7 @@ NSInteger _checkCounter = 0;
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self externalActionDone];
-                if (res) {
-                    [self setVisibleExportControls:NO];
-                } else {
+                if (!res) {
                     [self showErrorView : [[VirgilKeyManager sharedInstance] lastError]];
                 }
             });
@@ -621,13 +590,7 @@ NSInteger _checkCounter = 0;
 - (IBAction)onShowHelp_CreateAccount:(id)sender {
     NSString * helpString;
     
-    BOOL useCloudStorage = NSOnState == [[_matrixField cellAtRow:0 column:0] state];
-    
-    if (useCloudStorage) {
-        helpString = @"Your private key will be safely stored in your Virgil account and can easily be restored.\n\n1. Create a password for your Virgil account.\n\n2. Create a password for your private key encryption. It will be used to decrypt secure messages sent to you by Virgil users.";
-    } else {
-        helpString = @"Save your private key in a secure local storage. It can’t be restored in case you lose or forget it.\n\nCreate a password for your private key encryption. It will be used to decrypt secure messages sent to you by Virgil users.";
-    }
+    helpString = @"We recommend saving your keys in Virgil Cloud.\n\nYou can also save your private key in some secure local storage. Then we can't restore it in case you lose or forget it.\n\nAdvanced mode lets you create an additional password for your private key encryption. Be careful using this option because the password can't be restored in case you lose or forget it.";
     
     [self showCompactErrorView : helpString
                         atView : sender];
@@ -734,6 +697,33 @@ NSInteger _checkCounter = 0;
 - (IBAction)onCancelRecreate:(id)sender {
     [[VirgilKeyManager sharedInstance] setWaitAccountRecreation:_account needRecreation:NO];
     [self delegateRefresh];
+}
+
+- (IBAction)onAdvancedMode:(id)sender {
+    if (nil == _advancedModeCheckBox) return;
+    BOOL isAdvancedMode = [_advancedModeCheckBox state] == NSOnState;
+    
+    _advancedTextField.hidden = !isAdvancedMode;
+    _advancedTextField.enabled = isAdvancedMode;
+    
+    _keyPassword.hidden = !isAdvancedMode;
+    _keyPassword.enabled = isAdvancedMode;
+    
+    _keyPasswordConfirm.hidden = !isAdvancedMode;
+    _keyPasswordConfirm.enabled = isAdvancedMode;
+    
+    float y = 22;
+    if (!isAdvancedMode) {
+        _keyPassword.stringValue = @"";
+        _keyPasswordConfirm.stringValue = @"";
+        y = 140;
+    }
+    
+    [_progressIndicator setFrameOrigin : NSMakePoint(_progressIndicator.frame.origin.x, y + 10)];
+    [_btnKeysCreation setFrameOrigin : NSMakePoint(_btnKeysCreation.frame.origin.x, y)];
+    if (_btnCancel) {
+        [_btnCancel setFrameOrigin : NSMakePoint(_btnCancel.frame.origin.x, y)];
+    }
 }
 
 @end
