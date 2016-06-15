@@ -35,7 +35,7 @@ function prepare() {
 		VERSION_FILE="version.json"
 		RELEASE_NOTES_FILE="release-notes.html"
 		ZIP_FILE="${MAIL_BUNDLE_NAME}-${CUR_VERSION}.zip"
-		DMG_JSON_LINK="https:\/\/downloads.virgilsecurity.com\/apps\/virgil-mail\/apple-mail\/${MAIL_BUNDLE_NAME}-${CUR_VERSION}.dmg"
+		DMG_JSON_LINK="https:\/\/cdn.virgilsecurity.com\/apps\/virgil-mail\/apple-mail\/${MAIL_BUNDLE_NAME}-${CUR_VERSION}.dmg"
 	fi
 	
 	SPARKLE_ICON_FILE="icon_128x128.png"
