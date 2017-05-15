@@ -146,7 +146,7 @@
     <value>Remove your private key from local storage if you need to clear your machine from personal data.</value>
   </data>
   <data name="Description_SavePrivateKeyPassword" xml:space="preserve">
-    <value>This option will allow you to do not enter every time password on crypto operations.</value>
+    <value>This option allows you to avoid entering your password for every crypto operation.</value>
   </data>
   <data name="Error_ConfirmationCodeIsNotArrived" xml:space="preserve">
     <value>The message with confirmation code has not arrived. Try again later.</value>

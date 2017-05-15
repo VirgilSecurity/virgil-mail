@@ -16,10 +16,9 @@
     using Virgil.Mail.Common.Mvvm;
     using Virgil.Mail.Models;
     using Virgil.Mail.Mvvm;
-    using Virgil.Crypto;
-    using Virgil.SDK;
-    using Virgil.SDK.Identities;
     using Virgil.Mail.Properties;
+    using Crypto;
+    using SDK;
 
     public class RegisterAccountViewModel : ViewModel
     {

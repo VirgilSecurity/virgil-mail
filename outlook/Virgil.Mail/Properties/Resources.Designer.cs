@@ -151,7 +151,7 @@ namespace Virgil.Mail.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please manage your Virgil Keys by clicking on one of your Outlook Accounts wich shown below:.
+        ///   Looks up a localized string similar to Please manage your Virgil Keys by clicking on one of your Outlook Accounts which shown below:.
         /// </summary>
         public static string Description_ManageAccounts {
             get {
@@ -169,7 +169,7 @@ namespace Virgil.Mail.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Be careful with current operation. You won&apos;t be able to decrypt mail linked with this private key..
+        ///   Looks up a localized string similar to Be careful with the current operation. You won&apos;t be able to decrypt mail linked with this private key..
         /// </summary>
         public static string Description_RemoveAccount {
             get {
@@ -196,7 +196,7 @@ namespace Virgil.Mail.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to That option will allows you to do not enter every time password on crypto operations..
+        ///   Looks up a localized string similar to This option allows you to avoid entering your password for every crypto operation..
         /// </summary>
         public static string Description_SavePrivateKeyPassword {
             get {
@@ -235,7 +235,7 @@ namespace Virgil.Mail.Properties {
         ///   Looks up a localized string similar to &lt;html&gt;
         ///            &lt;body&gt;
         ///                   &lt;p&gt;Hello&lt;/p&gt;
-        ///            	&lt;p&gt;Please install Virgil Mail plugin so that we can continue our secure communication. You can download it from website here.&lt;/p&gt;
+        ///            	&lt;p&gt;Please install Virgil Mail plugin so that we can continue our secure communication. You can download it from the website here.&lt;/p&gt;
         ///            	&lt;a href=&apos;https://virgilsecurity.com/demos&apos; &gt;Download Virgil Mail Add-In.&lt;/a&gt;    
         ///            &lt;/body&gt;
         ///&lt;/html&gt;.
@@ -247,7 +247,7 @@ namespace Virgil.Mail.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The message with confirmation code is not arrived. Try again later..
+        ///   Looks up a localized string similar to The message with confirmation code has not arrived. Try again later..
         /// </summary>
         public static string Error_ConfirmationCodeIsNotArrived {
             get {
@@ -274,7 +274,7 @@ namespace Virgil.Mail.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your passwords is not match. Please retype your passwords to confirm it..
+        ///   Looks up a localized string similar to Your passwords do not match. Please retype your passwords to confirm it..
         /// </summary>
         public static string Error_PasswordNotMatchWithConfirmation {
             get {
@@ -292,7 +292,7 @@ namespace Virgil.Mail.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Uploaded file is invalid or has wrong format..
+        ///   Looks up a localized string similar to Uploaded file is invalid or has the wrong format..
         /// </summary>
         public static string Error_UploadedFileInvalid {
             get {
@@ -329,7 +329,7 @@ namespace Virgil.Mail.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Account&apos;s keys has been successfully generated and published..
+        ///   Looks up a localized string similar to Account&apos;s keys have been successfully generated and published..
         /// </summary>
         public static string Label_AccountsKeysHasBeenSuccessfullyGenerated {
             get {
@@ -464,7 +464,7 @@ namespace Virgil.Mail.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Private Key was deleted successfully. You can upload it at any moment again..
+        ///   Looks up a localized string similar to The private key was deleted successfully. You can upload it at any moment again..
         /// </summary>
         public static string Label_PrivateKeyRemovedFromVirgilServicesSuccessfully {
             get {
@@ -563,7 +563,7 @@ namespace Virgil.Mail.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select from a file on your computer.
+        ///   Looks up a localized string similar to Select a file on your computer.
         /// </summary>
         public static string Label_SelectPrivateKeyFromFile {
             get {
@@ -628,7 +628,7 @@ namespace Virgil.Mail.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The mail decryption is canceled becuase of accoout &apos;{0}&apos; private key is not registered.
+        ///   Looks up a localized string similar to The mail decryption is canceled because of account &apos;{0}&apos; private key is not registered.
         /// </summary>
         public static string Log_Info_EncryptedMailViewModel_DecryptMailCanceledBecauseOfRegistration {
             get {
@@ -655,7 +655,7 @@ namespace Virgil.Mail.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Get a Private Key password from encrypted storage.
+        ///   Looks up a localized string similar to Get a private key password from encrypted storage.
         /// </summary>
         public static string Log_Info_PasswordHolder_GetAccountPrivateKeyPassword {
             get {
@@ -664,7 +664,7 @@ namespace Virgil.Mail.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Remove a Private Key password form encrypted storage.
+        ///   Looks up a localized string similar to Remove a private key password from encrypted storage.
         /// </summary>
         public static string Log_Info_PasswordHolder_RemoveAccountPrivateKeyPassword {
             get {
@@ -673,7 +673,7 @@ namespace Virgil.Mail.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Store a Private Key password in encrypted storage.
+        ///   Looks up a localized string similar to Store a private key password in encrypted storage.
         /// </summary>
         public static string Log_Info_PasswordHolder_SetAccountPrivateKeyPassword {
             get {
@@ -682,7 +682,7 @@ namespace Virgil.Mail.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Getting Private Key from encrypted storage.
+        ///   Looks up a localized string similar to Getting private key from encrypted storage.
         /// </summary>
         public static string Log_Info_PrivateKeysStorage_GetPrivateKey {
             get {
@@ -691,7 +691,7 @@ namespace Virgil.Mail.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Checking if Private Key has a password.
+        ///   Looks up a localized string similar to Checking if private key has a password.
         /// </summary>
         public static string Log_Info_PrivateKeysStorage_HasPrivateKeyPassword {
             get {
@@ -700,7 +700,7 @@ namespace Virgil.Mail.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Storing a Private Key in encrypted storage.
+        ///   Looks up a localized string similar to Storing a private key in encrypted storage.
         /// </summary>
         public static string Log_Info_PrivateKeysStorage_StorePrivateKey {
             get {
@@ -709,7 +709,7 @@ namespace Virgil.Mail.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The folowing accounts are not registered yet. Do you want to send them an invitation email?
+        ///   Looks up a localized string similar to The following accounts are not registered yet. Do you want to send them an invitation email?
         ///
         ///{0}.
         /// </summary>
