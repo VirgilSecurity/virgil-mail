@@ -19,6 +19,7 @@
     using Virgil.Mail.Properties;
     using Crypto;
     using SDK;
+    using System.Threading;
 
     public class RegisterAccountViewModel : ViewModel
     {
@@ -65,7 +66,7 @@
             this.DoneCommand = new RelayCommand(this.Close);
 
             this.AddValidationRules();
-       }
+        }
 
         public RelayCommand CreateCommand { get; private set; }
         public RelayCommand ImportCommand { get; private set; }
@@ -210,6 +211,9 @@
                 this.ChangeState(RegisterAccountState.Processing, Resources.Label_SendingVerificationRequest);
 
                 var attemptId = Guid.NewGuid().ToString();
+
+                cts.Token.ThrowIfCancellationRequested();
+
                 var emailVerifier = await this.virgilHub.Identity.VerifyEmail(this.CurrentAccount.OutlookAccountEmail, 
                     new Dictionary<string, string> { { "attempt_id", attemptId } });
 
@@ -217,9 +221,13 @@
 
                 var code = await this.ExtractConfirmationCode(this.CurrentAccount.OutlookAccountEmail, attemptId);
 
+                cts.Token.ThrowIfCancellationRequested();
+
                 this.ChangeStateText(Resources.Label_ConfirmingEmailAccount);
 
                 var identityInfo = await emailVerifier.Confirm(code);
+
+                cts.Token.ThrowIfCancellationRequested();
 
                 this.ChangeStateText(Resources.Label_GeneratingPublicAndPrivateKeyPair);
 
@@ -228,6 +236,8 @@
                     : VirgilKeyPair.Generate(VirgilKeyPair.Type.Default);
                 
                 this.ChangeStateText(Resources.Label_PublishingPublicKey);
+
+                cts.Token.ThrowIfCancellationRequested();
 
                 var createdCard = await this.virgilHub.Cards
                     .Create(identityInfo, keyPair.PublicKey(), keyPair.PrivateKey(), keyPassword);
@@ -263,6 +273,8 @@
             }
             catch (Exception ex)
             {
+                if (!cts.Token.IsCancellationRequested)
+                    cts.Cancel();
                 this.AddCustomError(ex.Message);
                 this.ChangeState(RegisterAccountState.GenerateKeyPair);
             }
@@ -272,7 +284,7 @@
         {
             while (true)
             {
-                var mail = await this.mailObserver.WaitFor(accountSmtpAddress, "no-reply@virgilsecurity.com");
+                var mail = await this.mailObserver.WaitFor(accountSmtpAddress, "no-reply@virgilsecurity.com", this.cts.Token);
                 if (mail == null)
                 {
                     throw new Exception(Resources.Error_ConfirmationCodeIsNotArrived);
@@ -444,9 +456,11 @@
 
         public override void OnMandatoryClosing(object sender, CancelEventArgs cancelEventArgs)
         {
-            cancelEventArgs.Cancel = this.State.Equals(RegisterAccountState.Processing);
+            this.cts.Cancel();
+            cancelEventArgs.Cancel = false;
         }
-        
+
+
         #region Validation Rules
 
         private void AddValidationRules()

@@ -60,6 +60,7 @@ namespace Virgil.Mail.Dialogs
         private static void ShellOnClosing(object sender, CancelEventArgs args)
         {
             var dialog = dialogs.Single(it => it.Value.Shell == (ShellWindow)sender);
+            
             dialogs.Remove(dialog.Key);
         }
 

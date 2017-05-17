@@ -2,13 +2,16 @@ namespace Virgil.Mail.Mvvm
 {
     using System;
     using System.ComponentModel;
+    using System.Threading;
 
     public class ViewModel : ValidatableModel
     {
         private Enum state;
         private string stateText;
         private Action closeAction;
-        
+        protected CancellationTokenSource cts = new CancellationTokenSource();
+
+
         public Enum State
         {
             get

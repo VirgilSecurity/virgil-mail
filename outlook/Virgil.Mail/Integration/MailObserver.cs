@@ -1,6 +1,7 @@
 ﻿namespace Virgil.Mail.Integration
 {
     using System;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using Virgil.Mail.Common;
@@ -11,14 +12,16 @@
     public class MailObserver : IMailObserver
     {
         private readonly Outlook.Application application;
+        
 
         public MailObserver(Outlook.Application application)
         {
             this.application = application;
         }
 
-        public async Task<OutlookMailModel> WaitFor(string accountSmtpAddress, string from)
+        public async Task<OutlookMailModel> WaitFor(string accountSmtpAddress, string from, CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             Outlook.NameSpace nameSpace = this.application.GetNamespace("MAPI");
 
             try
@@ -40,7 +43,10 @@
                 {
                     attempts++;
 
-                    await Task.Delay(1000);
+                    await Task.Delay(4000);
+
+                    cancellationToken.ThrowIfCancellationRequested();
+
                     Outlook.Items unreadItems = inbox.Items.Restrict("[Unread]=true");
 
                     foreach (var unreadItem in unreadItems)
@@ -91,5 +97,7 @@
             mail.ReleaseCom();
             return mailModel;
         }
+
+
     }
 }
