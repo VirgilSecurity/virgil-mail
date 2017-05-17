@@ -9,7 +9,7 @@ namespace Virgil.Mail.Mvvm
         private Enum state;
         private string stateText;
         private Action closeAction;
-        protected CancellationTokenSource cts = new CancellationTokenSource();
+        protected CancellationTokenSource cancallationTokenSource = new CancellationTokenSource();
 
 
         public Enum State

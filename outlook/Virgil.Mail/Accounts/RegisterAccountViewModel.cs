@@ -212,7 +212,7 @@
 
                 var attemptId = Guid.NewGuid().ToString();
 
-                cts.Token.ThrowIfCancellationRequested();
+                cancallationTokenSource.Token.ThrowIfCancellationRequested();
 
                 var emailVerifier = await this.virgilHub.Identity.VerifyEmail(this.CurrentAccount.OutlookAccountEmail, 
                     new Dictionary<string, string> { { "attempt_id", attemptId } });
@@ -221,13 +221,13 @@
 
                 var code = await this.ExtractConfirmationCode(this.CurrentAccount.OutlookAccountEmail, attemptId);
 
-                cts.Token.ThrowIfCancellationRequested();
+                cancallationTokenSource.Token.ThrowIfCancellationRequested();
 
                 this.ChangeStateText(Resources.Label_ConfirmingEmailAccount);
 
                 var identityInfo = await emailVerifier.Confirm(code);
 
-                cts.Token.ThrowIfCancellationRequested();
+                cancallationTokenSource.Token.ThrowIfCancellationRequested();
 
                 this.ChangeStateText(Resources.Label_GeneratingPublicAndPrivateKeyPair);
 
@@ -237,7 +237,7 @@
                 
                 this.ChangeStateText(Resources.Label_PublishingPublicKey);
 
-                cts.Token.ThrowIfCancellationRequested();
+                cancallationTokenSource.Token.ThrowIfCancellationRequested();
 
                 var createdCard = await this.virgilHub.Cards
                     .Create(identityInfo, keyPair.PublicKey(), keyPair.PrivateKey(), keyPassword);
@@ -273,8 +273,8 @@
             }
             catch (Exception ex)
             {
-                if (!cts.Token.IsCancellationRequested)
-                    cts.Cancel();
+                if (!cancallationTokenSource.Token.IsCancellationRequested)
+                    cancallationTokenSource.Cancel();
                 this.AddCustomError(ex.Message);
                 this.ChangeState(RegisterAccountState.GenerateKeyPair);
             }
@@ -284,7 +284,7 @@
         {
             while (true)
             {
-                var mail = await this.mailObserver.WaitFor(accountSmtpAddress, "no-reply@virgilsecurity.com", this.cts.Token);
+                var mail = await this.mailObserver.WaitFor(accountSmtpAddress, "no-reply@virgilsecurity.com", this.cancallationTokenSource.Token);
                 if (mail == null)
                 {
                     throw new Exception(Resources.Error_ConfirmationCodeIsNotArrived);
@@ -456,7 +456,7 @@
 
         public override void OnMandatoryClosing(object sender, CancelEventArgs cancelEventArgs)
         {
-            this.cts.Cancel();
+            this.cancallationTokenSource.Cancel();
             cancelEventArgs.Cancel = false;
         }
 

@@ -39,11 +39,11 @@
                                 
                 var attempts = 0;
 
-                while (attempts <= 40)
+                while (attempts <= 240)
                 {
                     attempts++;
 
-                    await Task.Delay(4000);
+                    await Task.Delay(1000);
 
                     cancellationToken.ThrowIfCancellationRequested();
 

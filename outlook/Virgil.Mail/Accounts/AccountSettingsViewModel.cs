@@ -421,7 +421,7 @@
         {
             while (true)
             {
-                var mail = await this.mailObserver.WaitFor(accountSmtpAddress, "no-reply@virgilsecurity.com", this.cts.Token);
+                var mail = await this.mailObserver.WaitFor(accountSmtpAddress, "no-reply@virgilsecurity.com", this.cancallationTokenSource.Token);
                 if (mail == null)
                 {
                     throw new Exception(Resources.Error_ConfirmationCodeIsNotArrived);
