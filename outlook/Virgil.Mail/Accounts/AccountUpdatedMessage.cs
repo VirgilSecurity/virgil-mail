@@ -5,11 +5,11 @@
 
     public class AccountUpdatedMessage : IMessage
     {
-        public AccountUpdatedMessage(Guid cardId)
+        public AccountUpdatedMessage(String cardId)
         {
             this.CardId = cardId;
         }
 
-        public Guid CardId { get; private set; }
+        public String CardId { get; private set; }
     }
 }

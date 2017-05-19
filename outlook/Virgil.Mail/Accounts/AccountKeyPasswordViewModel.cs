@@ -8,13 +8,14 @@
     using Virgil.Mail.Mvvm;
     using Virgil.Mail.Common.Mvvm;
     using Virgil.Mail.Properties;
+    using SDK;
 
     public class AccountKeyPasswordViewModel : ViewModel
     {
         private readonly IPasswordHolder passwordHolder;
         private readonly IAccountsManager accountsManager;
         
-        private byte[] privateKey;
+        private string keyName;
         private string accountEmail;
         private bool isStorePassword;
 
@@ -39,10 +40,10 @@
             }
         }
 
-        public void Initialize(string accountSmtpAddress, byte[] checkingPrivateKey)
+        public void Initialize(string accountSmtpAddress, string checkingKeyName)
         {
             this.accountEmail = accountSmtpAddress;
-            this.privateKey = checkingPrivateKey;
+            this.keyName = checkingKeyName;
         }
 
         private void Cancel()
@@ -58,14 +59,21 @@
             var password = passwordBox.Password;
             
             var passwordBytes = Encoding.UTF8.GetBytes(password);
-            var isMatch = Crypto.VirgilKeyPair.CheckPrivateKeyPassword(this.privateKey, passwordBytes);
-            
-            if (!isMatch)
+
+
+            try
             {
+                var virgil = new VirgilApi();
+                virgil.Keys.Load(keyName, password);
+            }
+            catch
+            {
+
                 passwordBox.Clear();
                 this.AddCustomError(Resources.Error_IncorrectPrivateKeyPassword);
                 return;
             }
+          
 
             if (this.IsStorePassword)
             {

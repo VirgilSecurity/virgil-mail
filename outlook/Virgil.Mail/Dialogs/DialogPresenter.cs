@@ -18,12 +18,12 @@ namespace Virgil.Mail.Dialogs
             this.container = container;
         }
 
-        public string ShowPrivateKeyPassword(string accountEmail, byte[] privateKey)
+        public string ShowPrivateKeyPassword(string accountEmail, string keyName)
         {
             var view = this.container.Resolve<AccountKeyPasswordView>();
             var viewModel = this.container.Resolve<AccountKeyPasswordViewModel>();
 
-            viewModel.Initialize(accountEmail, privateKey);
+            viewModel.Initialize(accountEmail, keyName);
 
             var dialog = DialogBuilder.Build(view, viewModel, $"Account ({accountEmail})", 290, 250, false);
             var passwordObject = dialog.Show();

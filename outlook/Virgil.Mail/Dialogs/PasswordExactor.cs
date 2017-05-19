@@ -14,25 +14,17 @@
         public PasswordExactor(
             IPasswordHolder passwordHolder, 
             IDialogPresenter presenter, 
-            IAccountsManager accountsManager,
-            IPrivateKeysStorage privateKeysStorage)
+            IAccountsManager accountsManager)
         {
             this.passwordHolder = passwordHolder;
             this.presenter = presenter;
             this.accountsManager = accountsManager;
-            this.privateKeysStorage = privateKeysStorage;
         }
         
         public string ExactOrAlarm(string accountSmtpAddress)
         {
             var account = this.accountsManager.GetAccount(accountSmtpAddress);
-            var privateKey = this.privateKeysStorage.GetPrivateKey(account.VirgilCardId);
-
-            if (!VirgilKeyPair.IsPrivateKeyEncrypted(privateKey))
-            {
-                return null;
-            }
-
+ 
             var isNotSet = false;
 
             // check if password can be extracted from password storage.
@@ -49,12 +41,12 @@
                 }
             }
 
-            var enteredPassword = this.presenter.ShowPrivateKeyPassword(account.OutlookAccountEmail, privateKey);
+            var enteredPassword = this.presenter.ShowPrivateKeyPassword(account.OutlookAccountEmail, account.VirgilCardId);
 
-            if (string.IsNullOrEmpty(enteredPassword))
+/*            if (string.IsNullOrEmpty(enteredPassword))
             {
                 throw new PasswordExactionException();
-            }
+            }*/
 
             if (isNotSet)
             {

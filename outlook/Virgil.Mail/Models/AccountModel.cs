@@ -5,11 +5,7 @@
 
     public class AccountModel
     {
-        public Guid VirgilCardId { get; set; }
-        public string VirgilCardHash { get; set; }
-        public Guid VirgilPublicKeyId { get; set; }
-        public byte[] VirgilPublicKey { get; set; }
-        public IDictionary<string, string> VirgilCardCustomData { get; set; }
+        public string VirgilCardId { get; set; }
 
         public string OutlookAccountDescription { get; set; }
         public string OutlookAccountEmail { get; set; }
@@ -19,7 +15,28 @@
         public bool IsVirgilPrivateKeyStorage { get; set; }
         public DateTime? LastPrivateKeySyncDateTime { get; set; }
 
-        public bool IsRegistered => default(Guid) != this.VirgilCardId;
+        public bool IsRegistered => default(string) != this.VirgilCardId;
     }
-}   
-    
+}
+
+
+/*namespace Virgil.Mail.Models
+{
+    using SDK;
+    using System;
+    using System.Collections.Generic;
+
+    public class AccountModel
+    {
+        public VirgilCard VirgilCard { get; set; }
+
+        public string OutlookAccountDescription { get; set; }
+        public string OutlookAccountEmail { get; set; }
+
+        public bool IsPrivateKeyPasswordNeedToStore { get; set; }
+
+        public DateTime? LastPrivateKeySyncDateTime { get; set; }
+
+        public bool IsRegistered => default(String) != this.VirgilCard.Id;
+    }
+}*/

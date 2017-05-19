@@ -25,6 +25,7 @@
         private readonly IOutlookInteraction outlook;
         private readonly IMailObserver mailObserver;
         private readonly ServiceHub virgilHub;
+        private readonly VirgilApi virgilApi;
         private readonly IMessageBus messageBus;
 
         private AccountModel account;
@@ -37,7 +38,6 @@
         public AccountSettingsViewModel
         (
             IDialogPresenter dialogPresenter, 
-            IPrivateKeysStorage privateKeysStorage,
             IPasswordHolder passwordHolder,
             IAccountsManager accountsManager,
             IPasswordExactor passwordExactor,
@@ -48,18 +48,17 @@
         )
         {
             this.dialogPresenter = dialogPresenter;
-            this.privateKeysStorage = privateKeysStorage;
             this.passwordHolder = passwordHolder;
             this.accountsManager = accountsManager;
             this.passwordExactor = passwordExactor;
             this.outlook = outlook;
             this.mailObserver = mailObserver;
             this.virgilHub = virgilHub;
+            this.virgilApi = new VirgilApi();
             this.messageBus = messageBus;
 
             this.ExportCommand = new RelayCommand(this.Export);
             this.RemoveCommand = new RelayCommand(this.Remove);
-            this.UploadPrivateKeyToCloudCommand = new RelayCommand(this.UploadPrivateKeyToCloud);
 
             this.CancelDeleteCommand = new RelayCommand(this.CancelDelete);
             this.AcceptDeleteCommand = new RelayCommand(this.AcceptDelete);
@@ -68,8 +67,6 @@
         }
         
         public ICommand DoneCommand { get; set; }
-        public ICommand RemovePrivateKeyFromCloudCommand { get; set; }
-        public ICommand UploadPrivateKeyToCloudCommand { get; set; }
         public ICommand ExportCommand { get; private set; }
         public ICommand RemoveCommand { get; private set; }
 
@@ -105,16 +102,6 @@
             }
         }
 
-        public bool CanUploadToCloud
-        {
-            get { return this.canUploadToCloud; }
-            set
-            {
-                
-                this.canUploadToCloud = value;
-                this.RaisePropertyChanged();
-            }
-        }
         
         public void Initialize(AccountModel accountModel)
         {
@@ -133,71 +120,54 @@
             this.IsDeletePrivateKeyFromVirgilServices = false;
         }
 
-        private async void UploadPrivateKeyToCloud()
-        {
-            this.ClearErrors();
-
-            try
-            {
-                this.ChangeState(AccountSettingsState.Processing, Resources.Label_UploadingPrivateKey);
-
-                var privateKey = this.privateKeysStorage.GetPrivateKey(this.account.VirgilCardId);
-
-                var privateKeyPassword = this.passwordExactor.ExactOrAlarm(this.account.OutlookAccountEmail);
-                
-                await this.virgilHub.PrivateKeys.Stash(this.account.VirgilCardId, privateKey, privateKeyPassword);
-                
-                this.account.IsVirgilPrivateKeyStorage = true;
-                this.account.LastPrivateKeySyncDateTime = DateTime.Now;
-
-                this.accountsManager.UpdateAccount(this.account);
-            }
-            catch (Exception ex)
-            {
-                this.AddCustomError(ex.Message);
-            }
-            finally
-            {
-                this.ChangeState(AccountSettingsState.Settings);
-                this.UpdateProperties();
-            }
-        }
         
         private void Export()
         {
+            /*    var exportObject = new
+                {
+                    card = new
+                    {
+                        id = this.account.VirgilCardId,
+                        idenity = new
+                        {
+                            value = this.account.OutlookAccountEmail.ToLower(),
+                            type = "email"
+                        },
+                        public_key = new
+                        {
+                            id = this.account.VirgilPublicKeyId,
+                            value = this.account.VirgilPublicKey
+                        }
+                    },
+                    private_key = this.privateKeysStorage.GetPrivateKey(this.account.VirgilCard.Id)
+                }; */
+            var password = this.account.IsPrivateKeyHasPassword ?
+            this.passwordExactor.ExactOrAlarm(this.account.OutlookAccountEmail) : null;
+            
+
+            var exportedKey = this.virgilApi.Keys.Load(this.account.VirgilCardId, password).Export();
+            var keyBase64 = Convert.ToBase64String(exportedKey.GetBytes());
             var exportObject = new
             {
-                card = new
-                {
-                    id = this.account.VirgilCardId,
-                    idenity = new
-                    {
-                        value = this.account.OutlookAccountEmail.ToLower(),
-                        type = "email"
-                    },
-                    public_key = new
-                    {
-                        id = this.account.VirgilPublicKeyId,
-                        value = this.account.VirgilPublicKey
-                    }
-                },
-                private_key = this.privateKeysStorage.GetPrivateKey(this.account.VirgilCardId)
+                id = this.account.VirgilCardId,
+                private_key_base64 = keyBase64,
+                private_key_has_password = this.account.IsPrivateKeyHasPassword
             };
 
             var exportJson = JsonConvert.SerializeObject(new[] { exportObject });
             var exportBytes = Encoding.UTF8.GetBytes(exportJson);
             var exportBase64 = Convert.ToBase64String(exportBytes);
 
+
             var fileName = this.account.OutlookAccountDescription.ToLower().Replace(" ", "_");
-            this.dialogPresenter.SaveFile(fileName, exportBase64, "vcard");
+            this.dialogPresenter.SaveFile(fileName, exportBase64, "virgilkey");
         }
 
         private void UpdateProperties()
         {
-            this.IsPrivateKeyHasPassword = this.privateKeysStorage.HasPrivateKeyPassword(this.account.VirgilCardId);
+            this.IsPrivateKeyHasPassword = this.account.IsPrivateKeyHasPassword;
             this.IsPrivateKeyPasswordNeedToStore = this.account.IsPrivateKeyPasswordNeedToStore;
 
-            this.CanUploadToCloud = !this.account.IsVirgilPrivateKeyStorage;
         }
 
         private void Done()
@@ -320,30 +290,16 @@
                     return;
                 }
 
-                if (this.IsDeletePrivateKeyFromVirgilServices && !this.IsDeletePrivateKeyFromLocalStorage)
-                {
-                    await this.RemovePrivateKeyFromVirgilServices();
-                    this.doneReturnState = AccountSettingsState.Settings;
-                    this.ChangeState(AccountSettingsState.Done, Resources.Label_PrivateKeyRemovedFromVirgilServicesSuccessfully);
-                    return;
-                }
 
-                if (this.IsDeletePrivateKeyFromVirgilServices && this.IsDeletePrivateKeyFromLocalStorage)
-                {
-                    await this.RemovePrivateKeyFromVirgilServices();
-                    this.accountsManager.Remove(this.account.OutlookAccountEmail);
-                    this.ChangeState(AccountSettingsState.Done, Resources.Label_PrivateKeyRemovedFromLocalStorageAndVirgilServicesSuccessfully);
-                    this.messageBus.Publish(new AccountDeletedMessage(this.account.VirgilCardId.ToString()));
-                    return;
-                }
+
 
                 if (this.IsDeletePrivateKeyFromLocalStorage)
                 {
-                    this.privateKeysStorage.RemovePrivateKey(this.account.VirgilCardId);
+                    this.virgilApi.Keys.Destroy(this.account.VirgilCardId);
                     this.passwordHolder.Remove(this.account.OutlookAccountEmail);
                     this.accountsManager.Remove(this.account.OutlookAccountEmail);
                     this.ChangeState(AccountSettingsState.Done, Resources.Label_PrivateKeyRemovedFromLocalStorageSuccessfully);
-                    this.messageBus.Publish(new AccountDeletedMessage(this.account.VirgilCardId.ToString()));
+                    this.messageBus.Publish(new AccountDeletedMessage(this.account.VirgilCardId));
                 }
             }
             catch (Exception ex)
@@ -361,6 +317,7 @@
 
         private async Task RemoveAccount()
         {
+            
             var password = this.passwordExactor.ExactOrAlarm(this.account.OutlookAccountEmail);
 
             this.ChangeStateText(Resources.Label_SendingVerificationRequest);
@@ -400,21 +357,6 @@
             this.accountsManager.Remove(this.account.OutlookAccountEmail);
         }
 
-        private async Task RemovePrivateKeyFromVirgilServices()
-        {
-            this.ChangeState(AccountSettingsState.Processing, Resources.Label_RemovingPrivateKey);
-
-            var privateKey = this.privateKeysStorage.GetPrivateKey(this.account.VirgilCardId);
-            var privateKeyPassword = this.passwordExactor.ExactOrAlarm(this.account.OutlookAccountEmail);
-
-            await this.virgilHub.PrivateKeys.Destroy(this.account.VirgilCardId, privateKey, privateKeyPassword);
-
-            this.account.IsVirgilPrivateKeyStorage = false;
-            this.account.LastPrivateKeySyncDateTime = null;
-
-            this.accountsManager.UpdateAccount(this.account);
-            this.UpdateProperties();
-        }
 
         private async Task<string> ExtractConfirmationCode(string accountSmtpAddress, string waitingAttemptId)
         {

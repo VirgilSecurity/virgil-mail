@@ -11,7 +11,6 @@
     using System.Windows.Input;
     using HtmlAgilityPack;
     using Newtonsoft.Json;
-    using SDK.Cards;
     using Virgil.Mail.Common;
     using Virgil.Mail.Common.Mvvm;
     using Virgil.Mail.Models;
@@ -30,11 +29,11 @@
         private readonly IMailObserver mailObserver;
         private readonly IPasswordHolder passwordHolder;
         private readonly ServiceHub virgilHub;
+        private readonly VirgilApi virgilApi;
         private readonly IMessageBus messageBus;
 
         private AccountModel currentAccount;
         private bool hasPassword;
-        private bool isVirgilStorage;
         private string password;
         private string confirmPassword;
         private string filePath;
@@ -58,6 +57,7 @@
             this.mailObserver = mailObserver;
             this.passwordHolder = passwordHolder;
             this.virgilHub = virgilHub;
+            this.virgilApi = new VirgilApi() { };
             this.messageBus = messageBus;
 
             this.CreateCommand = new RelayCommand(this.Create);
@@ -113,18 +113,6 @@
             }
         }
 
-        public bool IsVirgilStorage
-        {
-            get
-            {
-                return this.isVirgilStorage;
-            }
-            set
-            {
-                this.isVirgilStorage = value;
-                this.RaisePropertyChanged();
-            }
-        }
 
         public string Password
         {
@@ -162,14 +150,13 @@
 
                 this.ChangeState(RegisterAccountState.Processing, Resources.Label_SearchAccountInformation);
 
-                var card = await this.virgilHub.Cards
-                    .SearchLatestOrDefault(accountModel.OutlookAccountEmail);
+                var cards = await this.virgilApi.Cards.FindGlobalAsync(accountModel.OutlookAccountEmail);
+                var card = cards.LastOrDefault();
 
                 this.ChangeState(card != null
                     ? RegisterAccountState.DownloadKeyPair
                     : RegisterAccountState.GenerateKeyPair);
 
-                this.IsVirgilStorage = true;
             }
             catch (Exception)
             {
@@ -185,15 +172,7 @@
         private async void Import()
         {
             this.ClearErrors();
-
-            if (!this.IsVirgilStorage)
-            {
-                await this.ImportFromFile();
-            }
-            else
-            {
-                await this.ImportFromVirgilServices();
-            }
+            await this.ImportFromFile();
         }
 
         private async void Create()
@@ -212,63 +191,50 @@
 
                 this.ChangeState(RegisterAccountState.Processing, Resources.Label_SendingVerificationRequest);
 
-                var attemptId = Guid.NewGuid().ToString();
+                this.ChangeStateText(Resources.Label_GeneratingPublicAndPrivateKeyPair);
+
+                var virgilKey = virgilApi.Keys.Generate();
+
+                var createdCard = virgilApi.Cards.CreateGlobal(
+                    identity: this.CurrentAccount.OutlookAccountEmail,
+                    identityType: IdentityType.Email,
+                    ownerKey: virgilKey
+                );
 
                 cancallationTokenSource.Token.ThrowIfCancellationRequested();
 
-                var emailVerifier = await this.virgilHub.Identity.VerifyEmail(this.CurrentAccount.OutlookAccountEmail, 
-                    new Dictionary<string, string> { { "attempt_id", attemptId } });
-
                 this.ChangeStateText(Resources.Label_WaitingForConfirmationEmail);
 
-                var code = await this.ExtractConfirmationCode(this.CurrentAccount.OutlookAccountEmail, attemptId);
+                var attempt = await createdCard.CheckIdentityAsync();
+
+                var code = await this.ExtractConfirmationCode(this.CurrentAccount.OutlookAccountEmail, 
+                    attempt.ActionId.ToString());
 
                 cancallationTokenSource.Token.ThrowIfCancellationRequested();
 
                 this.ChangeStateText(Resources.Label_ConfirmingEmailAccount);
 
-                var identityInfo = await emailVerifier.Confirm(code);
+                var identityToken = await attempt.ConfirmAsync(new EmailConfirmation(code));
 
                 cancallationTokenSource.Token.ThrowIfCancellationRequested();
 
-                this.ChangeStateText(Resources.Label_GeneratingPublicAndPrivateKeyPair);
-
-                var keyPair = this.HasPassword
-                    ? VirgilKeyPair.Generate(VirgilKeyPair.Type.Default, Encoding.UTF8.GetBytes(this.Password))
-                    : VirgilKeyPair.Generate(VirgilKeyPair.Type.Default);
-                
                 this.ChangeStateText(Resources.Label_PublishingPublicKey);
 
-                cancallationTokenSource.Token.ThrowIfCancellationRequested();
+                await virgilApi.Cards.PublishGlobalAsync(createdCard, identityToken);
 
-                var createdCard = await this.virgilHub.Cards
-                    .Create(identityInfo, keyPair.PublicKey(), keyPair.PrivateKey(), keyPassword);
-
-                this.privateKeyStorage.StorePrivateKey(createdCard.Id, keyPair.PrivateKey());
+                virgilKey.Save(createdCard.Id, this.hasPassword ? this.Password : null);
+              
 
                 this.CurrentAccount.VirgilCardId = createdCard.Id;
-                this.CurrentAccount.VirgilCardHash = createdCard.Hash;
-                this.CurrentAccount.VirgilCardCustomData = createdCard.CustomData;
-                this.CurrentAccount.VirgilPublicKey = createdCard.PublicKey.Value;
-                this.CurrentAccount.VirgilPublicKeyId = createdCard.PublicKey.Id;
-                this.CurrentAccount.IsVirgilPrivateKeyStorage = this.IsVirgilStorage;
 
-                if (VirgilKeyPair.IsPrivateKeyEncrypted(keyPair.PrivateKey()))
+                if (this.hasPassword)
                 {
                     this.passwordHolder.Keep(this.CurrentAccount.OutlookAccountEmail, keyPassword);
                     this.CurrentAccount.IsPrivateKeyPasswordNeedToStore = true;
+                    this.CurrentAccount.IsPrivateKeyHasPassword = true;
                 }
 
                 this.accountsManager.UpdateAccount(this.CurrentAccount);
-
-                if (this.IsVirgilStorage)
-                {
-                    this.ChangeStateText(Resources.Label_UploadingPrivateKey);
-                    await this.virgilHub.PrivateKeys.Stash(createdCard.Id, keyPair.PrivateKey(), keyPassword);
-
-                    this.CurrentAccount.LastPrivateKeySyncDateTime = DateTime.Now;
-                    this.accountsManager.UpdateAccount(this.CurrentAccount);
-                }
 
                 this.ChangeState(RegisterAccountState.Done, Resources.Label_AccountsKeysHasBeenSuccessfullyGenerated);
                 this.messageBus.Publish(new AccountUpdatedMessage(createdCard.Id));
@@ -332,19 +298,27 @@
 
                 var exportObject = new
                 {
-                    card = new { id = default(Guid) },
-                    private_key = default(byte[])
+                    id = default(string),
+                    private_key = default(VirgilBuffer),
+                    is_private_key_has_password = default(bool)
                 };
 
-                var fileKeyBase64 = File.ReadAllText(this.FilePath);
-                var fileKeyBytes = Convert.FromBase64String(fileKeyBase64);
+              
+                var fileKeyBytes = VirgilBuffer.FromFile(this.FilePath).GetBytes();
                 var fileKeyJson = Encoding.UTF8.GetString(fileKeyBytes);
                 var result = JsonConvert.DeserializeAnonymousType(fileKeyJson, new[] { exportObject }).First();
 
-                if (result?.card == null || result.private_key == null)
+                if (result?.id == null || result.private_key == null)
                 {
                     throw new NullReferenceException();
                 }
+
+                if (result.is_private_key_has_password)
+                {
+                    //ShowPrivateKeyPassword
+                }
+                virgilApi.Keys.Import(result.private_key)
+
 
                 this.ChangeStateText(Resources.Label_LoadingPublicKeyDetails);
 
@@ -379,7 +353,6 @@
                 this.CurrentAccount.VirgilCardCustomData = card.CustomData;
                 this.CurrentAccount.VirgilPublicKey = card.PublicKey.Value;
                 this.CurrentAccount.VirgilPublicKeyId = card.PublicKey.Id;
-                this.CurrentAccount.IsVirgilPrivateKeyStorage = this.IsVirgilStorage;
                 this.CurrentAccount.IsPrivateKeyPasswordNeedToStore = true;
                 
                 this.privateKeyStorage.StorePrivateKey(this.CurrentAccount.VirgilCardId, result.private_key);
@@ -395,66 +368,7 @@
             }
         }
 
-        private async Task ImportFromVirgilServices()
-        {
-            try
-            {
-                this.ChangeState(RegisterAccountState.Processing, Resources.Label_LoadingPublicKeyDetails);
-
-                var card = await this.virgilHub.Cards
-                    .SearchLatestOrDefault(this.CurrentAccount.OutlookAccountEmail);
-
-                this.ChangeState(RegisterAccountState.Processing, Resources.Label_SendingVerificationRequest);
-
-                var attemptId = Guid.NewGuid().ToString();
-                var emailVerifier = await this.virgilHub.Identity.VerifyEmail(this.CurrentAccount.OutlookAccountEmail, 
-                    new Dictionary<string, string> { { "attempt_id", attemptId } });
-
-                this.ChangeStateText(Resources.Label_WaitingForConfirmationEmail);
-
-                var code = await this.ExtractConfirmationCode(this.CurrentAccount.OutlookAccountEmail, attemptId);
-
-                this.ChangeStateText(Resources.Label_ConfirmingEmailAccount);
-
-                var validationToken = await emailVerifier.Confirm(code);
-                var response = await this.virgilHub.PrivateKeys.Get(card.Id, validationToken);
-
-                var privateKey = response.PrivateKey;
-
-                if (VirgilKeyPair.IsPrivateKeyEncrypted(privateKey))
-                {
-                    var enteredPassword = this.dialogs.ShowPrivateKeyPassword(this.CurrentAccount.OutlookAccountEmail, privateKey);
-                    if (enteredPassword == null)
-                    {
-                        this.ChangeState(RegisterAccountState.DownloadKeyPair);
-                        return;
-                    }
-
-                    this.passwordHolder.Keep(this.CurrentAccount.OutlookAccountEmail, enteredPassword);
-                    this.CurrentAccount.IsPrivateKeyPasswordNeedToStore = true;
-                }
-
-                this.CurrentAccount.VirgilCardId = card.Id;
-                this.CurrentAccount.VirgilCardHash = card.Hash;
-                this.CurrentAccount.VirgilCardCustomData = card.CustomData;
-                this.CurrentAccount.VirgilPublicKey = card.PublicKey.Value;
-                this.CurrentAccount.VirgilPublicKeyId = card.PublicKey.Id;
-                this.CurrentAccount.IsVirgilPrivateKeyStorage = this.IsVirgilStorage;
-                this.CurrentAccount.IsPrivateKeyPasswordNeedToStore = true;
-                this.CurrentAccount.LastPrivateKeySyncDateTime = DateTime.Now;
-                
-                this.privateKeyStorage.StorePrivateKey(card.Id, privateKey);
-                this.accountsManager.UpdateAccount(this.CurrentAccount);
-                
-                this.ChangeState(RegisterAccountState.Done, Resources.Label_PrivateKeyImportedSuccessfully);
-                this.messageBus.Publish(new AccountUpdatedMessage(card.Id));
-            }
-            catch (Exception ex)
-            {
-                this.AddCustomError(Resources.Error_UploadingPrivateKeyFailed + $". {ex.Message}");
-                this.ChangeState(RegisterAccountState.DownloadKeyPair);
-            }
-        }
+       
 
         public override void OnMandatoryClosing(object sender, CancelEventArgs cancelEventArgs)
         {
