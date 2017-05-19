@@ -160,7 +160,7 @@ namespace Virgil.Mail.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only letters (a-z), digits (0-9) and special characters are allowed..
+        ///   Looks up a localized string similar to Any characters are allowed..
         /// </summary>
         public static string Description_PrivateKeyPassword {
             get {
@@ -283,7 +283,7 @@ namespace Virgil.Mail.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Password must be 4 - 15 characters. Only letters (a-z), digits (0-9) and special characters are allowed..
+        ///   Looks up a localized string similar to Password must be 3 - 128 characters. Any characters are allowed..
         /// </summary>
         public static string Error_PasswordRulesAreNotComplied {
             get {

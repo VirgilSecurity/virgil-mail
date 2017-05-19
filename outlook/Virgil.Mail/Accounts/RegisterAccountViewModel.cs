@@ -199,6 +199,8 @@
         private async void Create()
         {
             this.Validate();
+            this.cancallationTokenSource = new CancellationTokenSource();
+
             if (this.HasErrors)
             {
                 return;
@@ -486,7 +488,8 @@
                 return false;
             }
 
-            var isValid = Regex.IsMatch(this.Password, @"^[a-zA-Z\d\!\#\$\%\&\(\)\*\+\,\-\.\/\:\;\<\=\>\?\@\[\\\]\^\{\|\}\~]{4,15}$");
+            var isValid = Regex.IsMatch(this.Password, @"^.{3,128}$");
+
             return isValid;
         }
 

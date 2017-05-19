@@ -233,7 +233,7 @@
     <value>Protect my private key with a password</value>
   </data>
   <data name="Description_PrivateKeyPassword" xml:space="preserve">
-    <value>Only letters (a-z), digits (0-9) and special characters are allowed.</value>
+    <value>Any characters are allowed.</value>
   </data>
   <data name="Watermark_Password" xml:space="preserve">
     <value>Password</value>
@@ -287,7 +287,7 @@
     <value>Your passwords do not match. Please retype your passwords to confirm it.</value>
   </data>
   <data name="Error_PasswordRulesAreNotComplied" xml:space="preserve">
-    <value>Password must be 4 - 15 characters. Only letters (a-z), digits (0-9) and special characters are allowed.</value>
+    <value>Password must be 3 - 128 characters. Any characters are allowed.</value>
   </data>
   <data name="Error_UploadingPrivateKeyFailed" xml:space="preserve">
     <value>Uploading private key failed</value>

@@ -9,7 +9,6 @@
     using HtmlAgilityPack;
     using Newtonsoft.Json;
     using SDK;
-    using SDK.Identities;
     using Virgil.Mail.Properties;
     using Virgil.Mail.Common;
     using Virgil.Mail.Common.Mvvm;
