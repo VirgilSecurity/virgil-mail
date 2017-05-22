@@ -12,12 +12,12 @@
 
     public class AccountKeyPasswordViewModel : ViewModel
     {
-        private readonly IPasswordHolder passwordHolder;
-        private readonly IAccountsManager accountsManager;
+        protected readonly IPasswordHolder passwordHolder;
+        protected readonly IAccountsManager accountsManager;
         
-        private string keyName;
-        private string accountEmail;
-        private bool isStorePassword;
+        protected string keyName;
+        protected string accountEmail;
+        protected bool isStorePassword;
 
         public AccountKeyPasswordViewModel(IPasswordHolder passwordHolder, IAccountsManager accountsManager)
         {
@@ -46,12 +46,12 @@
             this.keyName = checkingKeyName;
         }
 
-        private void Cancel()
+        protected void Cancel()
         {
             this.Close();
         }
 
-        private void Accept(object parameter)
+        protected void Accept(object parameter)
         {
             this.ClearErrors();
 
@@ -63,8 +63,7 @@
 
             try
             {
-                var virgil = new VirgilApi();
-                virgil.Keys.Load(keyName, password);
+                TryPassword(password);
             }
             catch
             {
@@ -87,5 +86,12 @@
             this.Result = password;
             this.Close();
         }
+
+        protected void TryPassword(string password)
+        {
+            var virgil = new VirgilApi();
+            virgil.Keys.Load(this.keyName, password);
+        }
+
     }
 }

@@ -9,7 +9,6 @@
         private readonly IPasswordHolder passwordHolder;
         private readonly IDialogPresenter presenter;
         private readonly IAccountsManager accountsManager;
-        private readonly IPrivateKeysStorage privateKeysStorage;
 
         public PasswordExactor(
             IPasswordHolder passwordHolder, 
@@ -43,10 +42,10 @@
 
             var enteredPassword = this.presenter.ShowPrivateKeyPassword(account.OutlookAccountEmail, account.VirgilCardId);
 
-/*            if (string.IsNullOrEmpty(enteredPassword))
+            if (string.IsNullOrEmpty(enteredPassword))
             {
                 throw new PasswordExactionException();
-            }*/
+            }
 
             if (isNotSet)
             {

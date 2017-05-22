@@ -18,20 +18,17 @@
     public class AccountSettingsViewModel : ViewModel
     {
         private readonly IDialogPresenter dialogPresenter;
-        private readonly IPrivateKeysStorage privateKeysStorage;
         private readonly IPasswordHolder passwordHolder;
         private readonly IAccountsManager accountsManager;
         private readonly IPasswordExactor passwordExactor;
         private readonly IOutlookInteraction outlook;
         private readonly IMailObserver mailObserver;
-        private readonly ServiceHub virgilHub;
         private readonly VirgilApi virgilApi;
         private readonly IMessageBus messageBus;
 
         private AccountModel account;
         private bool isPrivateKeyPasswordNeedToStore;
         private bool isPrivateKeyHasPassword;
-        private bool canUploadToCloud; 
 
         private AccountSettingsState? doneReturnState;
 
@@ -43,7 +40,6 @@
             IPasswordExactor passwordExactor,
             IOutlookInteraction outlook,
             IMailObserver mailObserver,
-            ServiceHub virgilHub,
             IMessageBus messageBus
         )
         {
@@ -53,7 +49,6 @@
             this.passwordExactor = passwordExactor;
             this.outlook = outlook;
             this.mailObserver = mailObserver;
-            this.virgilHub = virgilHub;
             this.virgilApi = new VirgilApi();
             this.messageBus = messageBus;
 
@@ -123,35 +118,17 @@
         
         private void Export()
         {
-            /*    var exportObject = new
-                {
-                    card = new
-                    {
-                        id = this.account.VirgilCardId,
-                        idenity = new
-                        {
-                            value = this.account.OutlookAccountEmail.ToLower(),
-                            type = "email"
-                        },
-                        public_key = new
-                        {
-                            id = this.account.VirgilPublicKeyId,
-                            value = this.account.VirgilPublicKey
-                        }
-                    },
-                    private_key = this.privateKeysStorage.GetPrivateKey(this.account.VirgilCard.Id)
-                }; */
             var password = this.account.IsPrivateKeyHasPassword ?
             this.passwordExactor.ExactOrAlarm(this.account.OutlookAccountEmail) : null;
             
 
             var exportedKey = this.virgilApi.Keys.Load(this.account.VirgilCardId, password).Export();
-            var keyBase64 = Convert.ToBase64String(exportedKey.GetBytes());
+            
             var exportObject = new
             {
                 id = this.account.VirgilCardId,
-                private_key_base64 = keyBase64,
-                private_key_has_password = this.account.IsPrivateKeyHasPassword
+                private_key = exportedKey,
+                is_private_key_has_password = this.account.IsPrivateKeyHasPassword
             };
 
             var exportJson = JsonConvert.SerializeObject(new[] { exportObject });
@@ -259,13 +236,8 @@
                 return;
             }
 
-            if (this.IsDeletePrivateKeyFromVirgilServices && !this.IsDeletePrivateKeyFromLocalStorage)
-            {
-                this.DeleteWarningMessage = Resources.Warning_RemovePrivateKeyFormVirgilServices;
-                return;
-            }
 
-            if (this.IsDeletePrivateKeyFromVirgilServices && this.IsDeletePrivateKeyFromLocalStorage)
+            if (this.IsDeletePrivateKeyFromLocalStorage)
             {
                 this.DeleteWarningMessage = Resources.Warning_RemovePrivateKeyFormLocalStorage;
                 return;
@@ -291,13 +263,9 @@
                 }
 
 
-
-
                 if (this.IsDeletePrivateKeyFromLocalStorage)
                 {
-                    this.virgilApi.Keys.Destroy(this.account.VirgilCardId);
-                    this.passwordHolder.Remove(this.account.OutlookAccountEmail);
-                    this.accountsManager.Remove(this.account.OutlookAccountEmail);
+                    DeletePrivateKeyAndOutlookAccount();
                     this.ChangeState(AccountSettingsState.Done, Resources.Label_PrivateKeyRemovedFromLocalStorageSuccessfully);
                     this.messageBus.Publish(new AccountDeletedMessage(this.account.VirgilCardId));
                 }
@@ -308,7 +276,16 @@
                 this.ChangeState(AccountSettingsState.DeletePrivateKey);
             }
         }
-        
+
+        private void DeletePrivateKeyAndOutlookAccount()
+        {
+            this.virgilApi.Keys.Destroy(this.account.VirgilCardId);
+            this.passwordHolder.Remove(this.account.OutlookAccountEmail);
+            this.accountsManager.Remove(this.account.OutlookAccountEmail);
+
+        }
+
+
         private void CancelDelete()
         {
             this.ClearErrors();
@@ -322,39 +299,24 @@
 
             this.ChangeStateText(Resources.Label_SendingVerificationRequest);
 
-            var attemptId = Guid.NewGuid().ToString();
-            var emailVerifier = await this.virgilHub.Identity.VerifyEmail(this.account.OutlookAccountEmail
-                , new Dictionary<string, string> {{"attempt_id", attemptId}});
-
+            var virgilCard = await virgilApi.Cards.GetAsync(this.account.VirgilCardId);
+            var attempt = await virgilCard.CheckIdentityAsync();
+           
             this.ChangeStateText(Resources.Label_WaitingForConfirmationEmail);
 
-            var code = await this.ExtractConfirmationCode(this.account.OutlookAccountEmail, attemptId);
+            var code = await this.ExtractConfirmationCode(this.account.OutlookAccountEmail, 
+                attempt.ActionId.ToString());
 
             this.ChangeStateText(Resources.Label_ConfirmingEmailAccount);
-            
-            var identityInfo = await emailVerifier.Confirm(code);
 
-            var privateKey = this.privateKeysStorage.GetPrivateKey(this.account.VirgilCardId);
-
-            try
-            {
-                this.ChangeStateText(Resources.Label_DeletingPrivateKeyFromVirgilServices);
-
-                await this.virgilHub.PrivateKeys.Destroy(this.account.VirgilCardId, privateKey, password);
-            }
-            catch (SDK.Exceptions.VirgilPrivateServicesException)
-            {
-                // TODO: We need to check if private key exists first.
-            }
+            var token = await attempt.ConfirmAsync(new EmailConfirmation(code));
 
             this.ChangeStateText(Resources.Label_RevokingPublicKeyFromVirgilServices);
 
-            await this.virgilHub.PublicKeys.Revoke(this.account.VirgilPublicKeyId, new[] {identityInfo},
-                this.account.VirgilCardId, privateKey, password);
+            var virgilKey = virgilApi.Keys.Load(virgilCard.Id, password);
+            await virgilApi.Cards.RevokeGlobalAsync(virgilCard, virgilKey, token);
 
-            this.privateKeysStorage.RemovePrivateKey(this.account.VirgilCardId);
-            this.passwordHolder.Remove(this.account.OutlookAccountEmail);
-            this.accountsManager.Remove(this.account.OutlookAccountEmail);
+            DeletePrivateKeyAndOutlookAccount();
         }
 
 

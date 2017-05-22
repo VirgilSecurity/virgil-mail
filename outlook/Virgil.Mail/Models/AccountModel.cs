@@ -11,7 +11,7 @@
         public string OutlookAccountEmail { get; set; }
 
         public bool IsPrivateKeyPasswordNeedToStore { get; set; }
-
+        public bool IsPrivateKeyHasPassword { get; set; }
         public bool IsVirgilPrivateKeyStorage { get; set; }
         public DateTime? LastPrivateKeySyncDateTime { get; set; }
 

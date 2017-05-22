@@ -61,13 +61,10 @@
                 StringComparison.CurrentCultureIgnoreCase));
 
             account.VirgilCardId = accountModel.VirgilCardId;
-            account.VirgilCardHash = accountModel.VirgilCardHash;
-            account.VirgilCardCustomData = account.VirgilCardCustomData;
-            account.VirgilPublicKey = account.VirgilPublicKey;
-            account.VirgilPublicKeyId = account.VirgilPublicKeyId;
 
             account.IsVirgilPrivateKeyStorage = accountModel.IsVirgilPrivateKeyStorage;
             account.IsPrivateKeyPasswordNeedToStore = accountModel.IsPrivateKeyPasswordNeedToStore;
+            account.IsPrivateKeyHasPassword = accountModel.IsPrivateKeyHasPassword;
             account.LastPrivateKeySyncDateTime = accountModel.LastPrivateKeySyncDateTime;
 
             this.AcceptChanges(accounts);

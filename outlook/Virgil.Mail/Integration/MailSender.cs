@@ -22,22 +22,19 @@
         private readonly IAccountsManager accountsManager;
         private readonly IOutlookInteraction outlook;
         private readonly IPasswordExactor passwordExactor;
-        private readonly IPrivateKeysStorage privateKeysStorage;
 
         public MailSender(
             IDialogPresenter dialog,
             IRecipientsService recipientsService,
             IAccountsManager accountsManager,
             IOutlookInteraction outlook,
-            IPasswordExactor passwordExactor,
-            IPrivateKeysStorage privateKeysStorage)
+            IPasswordExactor passwordExactor)
         {
             this.dialog = dialog;
             this.recipientsService = recipientsService;
             this.accountsManager = accountsManager;
             this.outlook = outlook;
             this.passwordExactor = passwordExactor;
-            this.privateKeysStorage = privateKeysStorage;
         }
 
         public bool EncryptAndSend(Outlook.MailItem mailItem)

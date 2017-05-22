@@ -8,6 +8,7 @@ namespace Virgil.Mail.Dialogs
     using Virgil.Mail.Accounts;
     using Virgil.Mail.Common;
     using Virgil.Mail.Models;
+    using SDK;
 
     public class DialogPresenter : IDialogPresenter
     {
@@ -24,6 +25,19 @@ namespace Virgil.Mail.Dialogs
             var viewModel = this.container.Resolve<AccountKeyPasswordViewModel>();
 
             viewModel.Initialize(accountEmail, keyName);
+
+            var dialog = DialogBuilder.Build(view, viewModel, $"Account ({accountEmail})", 290, 250, false);
+            var passwordObject = dialog.Show();
+
+            return passwordObject?.ToString();
+        }
+
+        public string ShowImportedPrivateKeyPassword(string accountEmail, string keyName, VirgilBuffer keyValue)
+        {
+            var view = this.container.Resolve<AccountKeyPasswordView>();
+            var viewModel = this.container.Resolve<AccountImportedKeyPasswordViewModel>();
+
+            viewModel.Initialize(accountEmail, keyName, keyValue);
 
             var dialog = DialogBuilder.Build(view, viewModel, $"Account ({accountEmail})", 290, 250, false);
             var passwordObject = dialog.Show();

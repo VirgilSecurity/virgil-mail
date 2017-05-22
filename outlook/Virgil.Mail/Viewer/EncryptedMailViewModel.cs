@@ -11,7 +11,7 @@
     using log4net;
 
     using Newtonsoft.Json;
-    
+
     using Virgil.Crypto;
 
     using Virgil.Mail.Common;
@@ -23,12 +23,12 @@
     using Virgil.Mail.Properties;
 
     using Outlook = Microsoft.Office.Interop.Outlook;
+    using SDK;
 
     public class EncryptedMailViewModel : ViewModel
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof (EncryptedMailViewModel));
 
-        private readonly IPrivateKeysStorage privateKeysStorage;
         private readonly IAccountsManager accountsManager;
         private readonly IDialogPresenter dialogPresenter;
         private readonly IPasswordExactor passwordExactor;
@@ -42,16 +42,15 @@
         private string to;
         private string subject;
         private bool isStorePassword;
+        private VirgilApi virgilApi;
         private ObservableCollection<EncryptedAttachmentViewModel> attachments;
 
         public EncryptedMailViewModel(
-            IPrivateKeysStorage privateKeysStorage, 
             IAccountsManager accountsManager,
             IDialogPresenter dialogPresenter,
             IPasswordExactor passwordExactor,
             IPasswordHolder passwordHolder)
         {
-            this.privateKeysStorage = privateKeysStorage;
             this.accountsManager = accountsManager;
             this.dialogPresenter = dialogPresenter;
             this.passwordExactor = passwordExactor;
@@ -63,6 +62,8 @@
             this.DecryptAttachmentCommand = new RelayCommand<EncryptedAttachmentViewModel>(this.DecryptAttachment);
 
             this.attachments = new ObservableCollection<EncryptedAttachmentViewModel>();
+
+            this.virgilApi = new VirgilApi();
         }
         
         public ICommand RegisterCommand { get; set; }
@@ -164,17 +165,16 @@
                     return;
                 }
             
-                var privateKey = this.privateKeysStorage.GetPrivateKey(this.account.VirgilCardId);
-                var isKeyEncrypted = VirgilKeyPair.IsPrivateKeyEncrypted(privateKey);
+               
             
-                if (isKeyEncrypted && !this.account.IsPrivateKeyPasswordNeedToStore)
+                if (this.account.IsPrivateKeyHasPassword && !this.account.IsPrivateKeyPasswordNeedToStore)
                 {
                     this.ChangeState(EncryptedMailState.WaitPassword);
                     return;
                 }
 
                 string keyPassword = null; 
-                if (isKeyEncrypted)
+                if (this.account.IsPrivateKeyHasPassword)
                 {
                     try
                     {
@@ -277,9 +277,10 @@
             {
                 this.ParseAttachemnts();
 
-                var privateKey = this.privateKeysStorage.GetPrivateKey(this.account.VirgilCardId);
+                var privateKey = this.virgilApi.Keys.Load(this.account.VirgilCardId, keyPassword);
 
-                Logger.InfoFormat(Resources.Log_Info_EncryptedMailViewModel_DecryptMailWithAccountPrivateKey, this.account.OutlookAccountEmail);
+                Logger.InfoFormat(Resources.Log_Info_EncryptedMailViewModel_DecryptMailWithAccountPrivateKey, 
+                    this.account.OutlookAccountEmail);
 
                 var mailData = DecryptMailData(this.mailItem,
                     this.account.VirgilCardId, privateKey, keyPassword);
@@ -301,24 +302,16 @@
             }
         }
 
-        private static EncryptedMailModel DecryptMailData(Outlook.MailItem mail, Guid cardId, byte[] privateKey, string keyPassword)
+        private static EncryptedMailModel DecryptMailData(Outlook.MailItem mail, Guid cardId, VirgilKey virgilKey)
         {
             var mailModel = ExtractVirgilMailModel(mail);
-            var data = mailModel.EmailData;
+            var data = VirgilBuffer.From(mailModel.EmailData);
+            var decryptedData = virgilKey.Decrypt(data);
 
-            using (var crypto = new VirgilCipher())
-            {
-                var cardIdBytes = Encoding.UTF8.GetBytes(cardId.ToString());
+            var attachmentData = decryptedData.ToString();
+            var mailData = JsonConvert.DeserializeObject<EncryptedMailModel>(attachmentData);
 
-                var decryptedData = keyPassword == null
-                    ? crypto.DecryptWithKey(data, cardIdBytes, privateKey)
-                    : crypto.DecryptWithKey(data, cardIdBytes, privateKey, Encoding.UTF8.GetBytes(keyPassword));
-
-                var attachmentData = Encoding.UTF8.GetString(decryptedData);
-                var mailData = JsonConvert.DeserializeObject<EncryptedMailModel>(attachmentData);
-
-                return mailData;
-            }
+            return mailData;
         }
         
         private static VirgilMailModel ExtractVirgilMailModel(Outlook.MailItem mail)

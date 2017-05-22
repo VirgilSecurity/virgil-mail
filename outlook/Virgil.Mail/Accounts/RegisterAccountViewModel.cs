@@ -24,11 +24,9 @@
     {
         private readonly IOutlookInteraction outlook;
         private readonly IAccountsManager accountsManager;
-        private readonly IPrivateKeysStorage privateKeyStorage;
         private readonly IDialogPresenter dialogs;
         private readonly IMailObserver mailObserver;
         private readonly IPasswordHolder passwordHolder;
-        private readonly ServiceHub virgilHub;
         private readonly VirgilApi virgilApi;
         private readonly IMessageBus messageBus;
 
@@ -42,21 +40,17 @@
         (
             IOutlookInteraction outlook, 
             IAccountsManager accountsManager,
-            IPrivateKeysStorage privateKeyStorage, 
             IDialogPresenter dialogs,
             IMailObserver mailObserver,
             IPasswordHolder passwordHolder,
-            ServiceHub virgilHub,
             IMessageBus messageBus
         )
         {
             this.outlook = outlook;
             this.accountsManager = accountsManager;
-            this.privateKeyStorage = privateKeyStorage;
             this.dialogs = dialogs;
             this.mailObserver = mailObserver;
             this.passwordHolder = passwordHolder;
-            this.virgilHub = virgilHub;
             this.virgilApi = new VirgilApi() { };
             this.messageBus = messageBus;
 
@@ -306,6 +300,9 @@
               
                 var fileKeyBytes = VirgilBuffer.FromFile(this.FilePath).GetBytes();
                 var fileKeyJson = Encoding.UTF8.GetString(fileKeyBytes);
+
+                this.ChangeStateText(Resources.Label_LoadingPublicKeyDetails);
+
                 var result = JsonConvert.DeserializeAnonymousType(fileKeyJson, new[] { exportObject }).First();
 
                 if (result?.id == null || result.private_key == null)
@@ -313,49 +310,42 @@
                     throw new NullReferenceException();
                 }
 
-                if (result.is_private_key_has_password)
-                {
-                    //ShowPrivateKeyPassword
-                }
-                virgilApi.Keys.Import(result.private_key)
-
-
-                this.ChangeStateText(Resources.Label_LoadingPublicKeyDetails);
-
                 string enteredPassword = null;
 
-                if (VirgilKeyPair.IsPrivateKeyEncrypted(result.private_key))
+                if (result.is_private_key_has_password)
                 {
-                    enteredPassword = this.dialogs.ShowPrivateKeyPassword(this.CurrentAccount.OutlookAccountEmail, result.private_key);
-                    if (enteredPassword == null)
-                    {
-                        this.ChangeState(RegisterAccountState.DownloadKeyPair);
-                        return;
-                    }
+                    enteredPassword = this.dialogs.ShowImportedPrivateKeyPassword(
+                        this.CurrentAccount.OutlookAccountEmail, 
+                        result.id, 
+                        result.private_key);
                 }
-                
-                var card = await this.virgilHub.Cards
-                    .SearchLatestOrDefault(this.CurrentAccount.OutlookAccountEmail);
 
-                var isPrivateKeyTrue = string.IsNullOrEmpty(enteredPassword)
-                    ? VirgilKeyPair.IsKeyPairMatch(card.PublicKey.Value, result.private_key)
-                    : VirgilKeyPair.IsKeyPairMatch(card.PublicKey.Value, result.private_key, Encoding.UTF8.GetBytes(enteredPassword));
+                this.ChangeState(RegisterAccountState.DownloadKeyPair);
 
-                if (!isPrivateKeyTrue)
+                var virgilKey = virgilApi.Keys.Import(result.private_key, enteredPassword);
+                var card = await virgilApi.Cards.GetAsync(result.id);
+
+                if (card != null && card.Export() != virgilKey.ExportPublicKey().ToString())
+                {
+                    virgilKey.Save(result.id, enteredPassword);
+                }
+                else
                 {
                     this.AddCustomError(Resources.Label_UploadedPrivateKeyDoesnIsNotMatch);
                     this.ChangeState(RegisterAccountState.DownloadKeyPair);
                     return;
                 }
 
+
+                if (enteredPassword != null)
+                {
+                    this.HasPassword = true;
+                    this.passwordHolder.Keep(this.CurrentAccount.OutlookAccountEmail, enteredPassword);
+                    this.CurrentAccount.IsPrivateKeyPasswordNeedToStore = true;
+                    this.CurrentAccount.IsPrivateKeyHasPassword = true;
+                }
+
                 this.CurrentAccount.VirgilCardId = card.Id;
-                this.CurrentAccount.VirgilCardHash = card.Hash;
-                this.CurrentAccount.VirgilCardCustomData = card.CustomData;
-                this.CurrentAccount.VirgilPublicKey = card.PublicKey.Value;
-                this.CurrentAccount.VirgilPublicKeyId = card.PublicKey.Id;
-                this.CurrentAccount.IsPrivateKeyPasswordNeedToStore = true;
-                
-                this.privateKeyStorage.StorePrivateKey(this.CurrentAccount.VirgilCardId, result.private_key);
                 this.accountsManager.UpdateAccount(this.CurrentAccount);
 
                 this.ChangeState(RegisterAccountState.Done, Resources.Label_PrivateKeyImportedSuccessfully);

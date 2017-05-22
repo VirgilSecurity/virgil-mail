@@ -18,21 +18,13 @@
 
         internal static void Initialize(Outlook.Application application)
         {
-            // initialize SDK instances with staging environment.
-
-            var config = ServiceHubConfig.UseAccessToken(Constants.VirgilAccessToken);
-            var virgilHub = ServiceHub.Create(config);
-
             // register types
 
             var builder = new ContainerBuilder();
             builder.RegisterInstance(new OutlookInteraction(application)).As<IOutlookInteraction>();
             builder.RegisterInstance(new MailObserver(application)).As<IMailObserver>();
-            builder.RegisterInstance(virgilHub).As<ServiceHub>();
             builder.RegisterType<IsolatedStorageProvider>().As<IStorageProvider>();
             builder.RegisterType<AccountsManager>().As<IAccountsManager>().SingleInstance();
-            builder.RegisterType<PrivateKeysStorage>().As<IPrivateKeysStorage>();
-            builder.RegisterType<EncryptedKeyValueStorage>().As<IEncryptedKeyValueStorage>();
             builder.RegisterType<PasswordHolder>().As<IPasswordHolder>();
             builder.RegisterType<MailSender>().As<IMailSender>();
             builder.RegisterType<PasswordExactor>().As<IPasswordExactor>();

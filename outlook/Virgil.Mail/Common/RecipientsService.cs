@@ -5,18 +5,18 @@
     using System.Threading.Tasks;
 
     using Virgil.SDK;
-    using Virgil.SDK.Identities;
 
     using Virgil.Mail.Models;
+    using System;
 
     public class RecipientsService : IRecipientsService
     {
-        private readonly ServiceHub serviceHub;
+        private readonly VirgilApi virgilApi;
         private readonly List<RecipientSearchResultModel> cache;
 
-        public RecipientsService(ServiceHub serviceHub)
+        public RecipientsService()
         {
-            this.serviceHub = serviceHub;
+            this.virgilApi = new VirgilApi();
             this.cache = new List<RecipientSearchResultModel>();
         }
         
@@ -34,7 +34,7 @@
                 .ToList();
 
             var tasks = identitiesToLoad
-                .Select(r => this.serviceHub.Cards.Search(r, IdentityType.Email))
+                .Select(r => this.virgilApi.Cards.FindGlobalAsync(r))
                 .ToList();
 
             await Task.WhenAll(tasks);
@@ -44,18 +44,15 @@
             foreach (var identity in identitiesToLoad)
             {
                 var recipient = new RecipientSearchResultModel { Identity = identity };
-                var searchResult = searchResults.SingleOrDefault(sr => sr.Any(c => c.Identity.Value.Equals(identity)));
+                var searchResult = searchResults.SingleOrDefault(sr => sr.Any(c => c.Identity.Equals(identity)));
 
                 if (searchResult != null)
                 {
-                    var recipientCard = searchResult.OrderBy(it => it.CreatedAt).Last();
-                    recipient.CardId = recipientCard.Id;
-                    recipient.PublicKeyId = recipientCard.PublicKey.Id;
-                    recipient.PublicKey = recipientCard.PublicKey.Value;
+                    recipient.virgilCard = searchResult.Last(); //OrderBy(it => it.CreatedAt)
                 }
 
                 // add to cache the found recipient.
-                if (!this.cache.Exists(it => it.CardId == recipient.CardId) && recipient.IsFound)
+                if (!this.cache.Exists(it => it.virgilCard.Id == recipient.virgilCard.Id) && recipient.IsFound)
                 {
                     this.cache.Add(recipient);
                 }

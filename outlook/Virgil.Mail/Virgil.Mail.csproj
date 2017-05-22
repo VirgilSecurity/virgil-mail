@@ -218,6 +218,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="Accounts\AccountImportedKeyPasswordViewModel.cs" />
     <Compile Include="Accounts\AccountUpdatedMessage.cs" />
     <Compile Include="Accounts\AccountKeyPasswordView.xaml.cs">
       <DependentUpon>AccountKeyPasswordView.xaml</DependentUpon>
@@ -246,7 +247,6 @@
     <Compile Include="Common\Messaging\IMessage.cs" />
     <Compile Include="Common\IMessageBus.cs" />
     <Compile Include="Common\IPasswordExactor.cs" />
-    <Compile Include="Common\IPrivateKeysStorage.cs" />
     <Compile Include="Common\IPasswordHolder.cs" />
     <Compile Include="Common\IRecipientsService.cs" />
     <Compile Include="Common\IStorageProvider.cs" />
@@ -254,7 +254,6 @@
     <Compile Include="Common\IViewBuilder.cs" />
     <Compile Include="Common\Messaging\MessageBus.cs" />
     <Compile Include="Common\RecipientsService.cs" />
-    <Compile Include="Common\ServiceHubExtensions.cs" />
     <Compile Include="Models\RecipientSearchResultModel.cs" />
     <Compile Include="Dialogs\Dialog.cs" />
     <Compile Include="Dialogs\DialogBuilder.cs" />
@@ -271,9 +270,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Storage\EncryptedKeyValueStorage.cs" />
     <Compile Include="Storage\PasswordHolder.cs" />
-    <Compile Include="Storage\PrivateKeysStorage.cs" />
     <Compile Include="Dialogs\DialogPresenter.cs" />
     <Compile Include="Dialogs\ShellWindow.cs">
       <SubType>Form</SubType>
