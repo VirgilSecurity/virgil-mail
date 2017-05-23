@@ -72,6 +72,13 @@
 
                 return null;
             }
+            catch(Exception e)
+            {
+                var s = e.Message;
+                ///lalalala
+                ///
+                return null;
+            }
             finally
             {
                 nameSpace.SyncObjects.AppFolders.Stop();

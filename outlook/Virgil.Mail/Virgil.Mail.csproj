@@ -176,6 +176,10 @@
       <HintPath>..\packages\Virgil.SDK.4.3.0.0\lib\net45\Virgil.SDK.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Virgil.SDK.Contracts, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Virgil.SDK.Contracts.1.1.2.0\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\Virgil.SDK.Contracts.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
@@ -270,6 +274,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Storage\EncryptedKeyValueStorage.cs" />
     <Compile Include="Storage\PasswordHolder.cs" />
     <Compile Include="Dialogs\DialogPresenter.cs" />
     <Compile Include="Dialogs\ShellWindow.cs">
@@ -344,6 +349,9 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="VirgilMailFormRegion.resx">

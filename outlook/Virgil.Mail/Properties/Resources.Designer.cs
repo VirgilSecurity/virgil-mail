@@ -124,29 +124,11 @@ namespace Virgil.Mail.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Upload private key to Virgil Services.
-        /// </summary>
-        public static string Button_UploadPrivateKeyToVirgilServices {
-            get {
-                return ResourceManager.GetString("Button_UploadPrivateKeyToVirgilServices", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Recipients aren&apos;t exists.
         /// </summary>
         public static string Caption_AccountsAreNotFoundSendInvitation {
             get {
                 return ResourceManager.GetString("Caption_AccountsAreNotFoundSendInvitation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Use this option if your key has been previously uploaded to Virgil Security services..
-        /// </summary>
-        public static string Description_DownloadPrivateKeyFromVirgilServices {
-            get {
-                return ResourceManager.GetString("Description_DownloadPrivateKeyFromVirgilServices", resourceCulture);
             }
         }
         
@@ -178,15 +160,6 @@ namespace Virgil.Mail.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Remove your private key from Virgil Services if you decided to keep it locally instead. Keep in mind that it won’t be restored in case you lose or forget it..
-        /// </summary>
-        public static string Description_RemovePrivateKeyFormVirgilServices {
-            get {
-                return ResourceManager.GetString("Description_RemovePrivateKeyFormVirgilServices", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Remove your private key from local storage if you need to clear your machine from personal data..
         /// </summary>
         public static string Description_RemovePrivateKeyFromLocalStorage {
@@ -210,15 +183,6 @@ namespace Virgil.Mail.Properties {
         public static string Description_SelectPrivateKeyFromFile {
             get {
                 return ResourceManager.GetString("Description_SelectPrivateKeyFromFile", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Your private key will be safely stored in your Virgil Security account and can easily be synchronized to another device..
-        /// </summary>
-        public static string Description_StorePrivateKeyOnVirgilServices {
-            get {
-                return ResourceManager.GetString("Description_StorePrivateKeyOnVirgilServices", resourceCulture);
             }
         }
         
@@ -365,24 +329,6 @@ namespace Virgil.Mail.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deleting private key from Virgil Services....
-        /// </summary>
-        public static string Label_DeletingPrivateKeyFromVirgilServices {
-            get {
-                return ResourceManager.GetString("Label_DeletingPrivateKeyFromVirgilServices", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Download from Virgil Security services.
-        /// </summary>
-        public static string Label_DownloadPrivateKeyFromVirgilServices {
-            get {
-                return ResourceManager.GetString("Label_DownloadPrivateKeyFromVirgilServices", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Enter account&apos;s private key password.
         /// </summary>
         public static string Label_EnterAccountPrivateKeyPassword {
@@ -406,15 +352,6 @@ namespace Virgil.Mail.Properties {
         public static string Label_GeneratingPublicAndPrivateKeyPair {
             get {
                 return ResourceManager.GetString("Label_GeneratingPublicAndPrivateKeyPair", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Keep my private key on Virgil services.
-        /// </summary>
-        public static string Label_KeepMyPrivateKeyOnVirgilServices {
-            get {
-                return ResourceManager.GetString("Label_KeepMyPrivateKeyOnVirgilServices", resourceCulture);
             }
         }
         
@@ -446,29 +383,11 @@ namespace Virgil.Mail.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The private key has been deleted from Virgil Services and local storage successfully..
-        /// </summary>
-        public static string Label_PrivateKeyRemovedFromLocalStorageAndVirgilServicesSuccessfully {
-            get {
-                return ResourceManager.GetString("Label_PrivateKeyRemovedFromLocalStorageAndVirgilServicesSuccessfully", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The private key has been deleted successfully. You can upload it at any moment again..
         /// </summary>
         public static string Label_PrivateKeyRemovedFromLocalStorageSuccessfully {
             get {
                 return ResourceManager.GetString("Label_PrivateKeyRemovedFromLocalStorageSuccessfully", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The private key was deleted successfully. You can upload it at any moment again..
-        /// </summary>
-        public static string Label_PrivateKeyRemovedFromVirgilServicesSuccessfully {
-            get {
-                return ResourceManager.GetString("Label_PrivateKeyRemovedFromVirgilServicesSuccessfully", resourceCulture);
             }
         }
         
@@ -505,15 +424,6 @@ namespace Virgil.Mail.Properties {
         public static string Label_RemovePrivateKeyFormLocalStorage {
             get {
                 return ResourceManager.GetString("Label_RemovePrivateKeyFormLocalStorage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Delete private key from the Virgil Services.
-        /// </summary>
-        public static string Label_RemovePrivateKeyFormVirgilServices {
-            get {
-                return ResourceManager.GetString("Label_RemovePrivateKeyFormVirgilServices", resourceCulture);
             }
         }
         
@@ -734,15 +644,6 @@ namespace Virgil.Mail.Properties {
         public static string Warning_RemovePrivateKeyFormLocalStorage {
             get {
                 return ResourceManager.GetString("Warning_RemovePrivateKeyFormLocalStorage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Your private key won’t be synchronised from Virgil Services. You will have to upload your key from local storage manually on other devices..
-        /// </summary>
-        public static string Warning_RemovePrivateKeyFormVirgilServices {
-            get {
-                return ResourceManager.GetString("Warning_RemovePrivateKeyFormVirgilServices", resourceCulture);
             }
         }
         

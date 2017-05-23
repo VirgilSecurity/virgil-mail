@@ -48,20 +48,8 @@
             <StackPanel
                 Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=GenerateKeyPair}" >
                 <CheckBox 
-                    Margin="0 0 0 2" 
-                    IsChecked="{Binding IsVirgilStorage, Mode=TwoWay}" 
-                    Content="{x:Static Properties:Resources.Label_KeepMyPrivateKeyOnVirgilServices}"
-                    VerticalContentAlignment="Center" />
-                <TextBlock 
-                    FontSize="10" 
-                    Foreground="Gray" 
-                    TextWrapping="Wrap"
-                    Margin="20 0 0 0" 
-                    Text="{x:Static Properties:Resources.Description_StorePrivateKeyOnVirgilServices}" />
-                
-                <CheckBox 
                     x:Name="keyPasswordCheckBox"
-                    Margin="0 10 0 2" 
+                    Margin="0 0 0 2" 
                     IsChecked="{Binding HasPassword, Mode=TwoWay}" 
                     VerticalContentAlignment="Center" >
                     <TextBlock 
@@ -115,18 +103,6 @@
                     TextWrapping="Wrap" 
                     Text="{x:Static Properties:Resources.Label_SelectOptionToGetPrivateKey}">
                 </TextBlock>
-                <RadioButton 
-                    Margin="0 10 0 2" 
-                    IsChecked="{Binding IsVirgilStorage, Mode=TwoWay}" 
-                    GroupName="DownloadKeyOption"
-                    Content="{x:Static Properties:Resources.Label_DownloadPrivateKeyFromVirgilServices}"
-                    VerticalContentAlignment="Center" />
-                <TextBlock 
-                    FontSize="10" 
-                    Foreground="Gray" 
-                    TextWrapping="Wrap"
-                    Margin="20 0 0 0" 
-                    Text="{x:Static Properties:Resources.Description_DownloadPrivateKeyFromVirgilServices}" />
                 <RadioButton 
                     Margin="0 10 0 2" 
                     x:Name="fromFileRadioButton"

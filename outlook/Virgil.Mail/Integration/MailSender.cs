@@ -14,6 +14,7 @@
     using Virgil.Mail.Common;
     using Virgil.Mail.Models;
     using Virgil.Mail.Properties;
+    using SDK;
 
     public class MailSender : IMailSender
     {
@@ -84,15 +85,21 @@
 
             var recipients = searchedRecipients
                 .Where(it => it.IsFound)
-                .ToDictionary(it => it.CardId?.ToString(), it => it.PublicKey);
-
-            var password = this.passwordExactor.ExactOrAlarm(senderSmtpAddress);
+                .Select(it => it.virgilCard).ToList();
 
             var account = this.accountsManager.GetAccount(senderSmtpAddress);
-            var privateKey = this.privateKeysStorage.GetPrivateKey(account.VirgilCardId);
+
+            string password = null;
+            
+            if (account.IsPrivateKeyHasPassword)
+            {
+                password = this.passwordExactor.ExactOrAlarm(senderSmtpAddress);
+            }
+            var virgilApi = new VirgilApi();
+            var virgilKey = virgilApi.Keys.Load(account.VirgilCardId, password);
 
             mailItem.Save();
-            EncryptMail(mailItem, recipients, privateKey, password);
+            EncryptMail(mailItem, recipients, virgilKey);
             mailItem.Save();
 
             mailItem.MessageClass = Constants.VirgilMessageClass;
@@ -101,15 +108,14 @@
             return true;
         }
 
-        private static void EncryptMail(Outlook._MailItem mail, IDictionary<string, byte[]> recipients, byte[] privateKey, string privateKeyPassword)
+        private static void EncryptMail(Outlook._MailItem mail, List<VirgilCard> recipients, VirgilKey virgilKey)
         {
             EncryptAttachments(mail, recipients);
 
             var encryptedMailData = EncryptMailData(mail, recipients);
-            
-            var signature = privateKeyPassword == null 
-                ? CryptoHelper.Sign(encryptedMailData, privateKey)
-                : CryptoHelper.Sign(encryptedMailData, privateKey, privateKeyPassword);
+
+            var signature = virgilKey.Sign(encryptedMailData);
+          
 
             var mailModel = new VirgilMailModel
             {
@@ -133,7 +139,7 @@
             File.Delete(Constants.VirgilAttachmentName);
         }
 
-        private static byte[] EncryptMailData(Outlook._MailItem mail, IDictionary<string, byte[]> recipients)
+        private static VirgilBuffer EncryptMailData(Outlook._MailItem mail, List<VirgilCard> recipients)
         {
             var mailDataModel = new EncryptedMailModel
             {
@@ -144,22 +150,24 @@
             };
 
             var mailData = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(mailDataModel));
-            var encryptedMailData = CryptoHelper.Encrypt(mailData, recipients);
+            var encryptedMailData = recipients.Encrypt(mailData);
             return encryptedMailData;
         }
 
-        private static void EncryptAttachments(Outlook._MailItem mail, IDictionary<string, byte[]> recipients)
+        private static void EncryptAttachments(Outlook._MailItem mail, List<VirgilCard> recipients)
         {
             var attachemnts = mail.Attachments
                 .Cast<Outlook.Attachment>()
                 .Where(a => a.DisplayName != Constants.VirgilAttachmentName)
                 .ToList();
 
+
             foreach (var attachment in attachemnts)
             {
-                
                 var attachemntData = (byte[])attachment.PropertyAccessor.GetProperty(Constants.OutlookAttachmentDataBin);
-                var encryptedAttachmentData = CryptoHelper.Encrypt(attachemntData, recipients);
+
+                var encryptedAttachmentData = recipients.Encrypt(attachemntData);
+
                 attachment.PropertyAccessor.SetProperty(Constants.OutlookAttachmentDataBin, encryptedAttachmentData);
             }
         }

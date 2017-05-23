@@ -187,8 +187,10 @@
                     }
                 }
 
+                var virgilKey = this.virgilApi.Keys.Load(this.account.VirgilCardId, keyPassword);
+
                 this.ParseAttachemnts();
-                this.InternalDecrypt(keyPassword);
+                this.InternalDecrypt(virgilKey);
             }
             catch (Exception ex)
             {
@@ -230,11 +232,12 @@
             var passwordBox = (PasswordBox)parameter;
             var password = passwordBox.Password;
 
-            var privateKey = this.privateKeysStorage.GetPrivateKey(this.account.VirgilCardId);
-            
-            var passwordBytes = Encoding.UTF8.GetBytes(password);
-            var isMatch = VirgilKeyPair.CheckPrivateKeyPassword(privateKey, passwordBytes);
-            if (!isMatch)
+            VirgilKey virgilKey = null;
+
+            try {
+                virgilKey = this.virgilApi.Keys.Load(this.account.VirgilCardId, password);
+            }
+            catch
             {
                 this.ClearErrors();
 
@@ -242,48 +245,51 @@
                 this.AddCustomError(Resources.Error_IncorrectPrivateKeyPassword);
                 return;
             }
+
             
             if (this.IsStorePassword && !this.account.IsPrivateKeyPasswordNeedToStore)
             {
                 this.account.IsPrivateKeyPasswordNeedToStore = true;
+                this.account.IsPrivateKeyHasPassword = true;
                 this.passwordHolder.Keep(this.account.OutlookAccountEmail, password);
                 this.accountsManager.UpdateAccount(this.account);
             }
 
-            this.InternalDecrypt(password);
+            this.InternalDecrypt(virgilKey);
         }
 
         private void DecryptAttachment(EncryptedAttachmentViewModel attachmentModel)
         {
-            var privateKey = this.privateKeysStorage.GetPrivateKey(this.account.VirgilCardId);
-            var privateKeyPassword = this.passwordExactor.ExactOrAlarm(this.account.OutlookAccountEmail);
+            string privateKeyPassword = null;
+            if (this.account.IsPrivateKeyHasPassword)
+            {
+                privateKeyPassword = this.passwordExactor.ExactOrAlarm(this.account.OutlookAccountEmail);
+            }
 
+            var virgilKey = virgilApi.Keys.Load(this.account.VirgilCardId, privateKeyPassword);
             var attachment = this.mailItem.Attachments
                 .Cast<Outlook.Attachment>()
                 .Single(it => it.FileName == attachmentModel.FileName);
 
             var encryptedAttachmentData = (byte[])attachment.PropertyAccessor.GetProperty(Constants.OutlookAttachmentDataBin);
 
-            var decryptedData = CryptoHelper.Decrypt(encryptedAttachmentData, 
-                this.account.VirgilCardId.ToString(), privateKey, privateKeyPassword);
-
+            var decryptedData = virgilKey.Decrypt(VirgilBuffer.From(encryptedAttachmentData));
+                
             this.dialogPresenter.SaveFile(Path.GetFileNameWithoutExtension(attachmentModel.FileName), 
-                decryptedData, Path.GetExtension(attachmentModel.FileName));
+                decryptedData.ToString(), Path.GetExtension(attachmentModel.FileName));
         }
         
-        private void InternalDecrypt(string keyPassword)
+        private void InternalDecrypt(VirgilKey virgilKey)
         {
             try
             {
                 this.ParseAttachemnts();
 
-                var privateKey = this.virgilApi.Keys.Load(this.account.VirgilCardId, keyPassword);
-
+                
                 Logger.InfoFormat(Resources.Log_Info_EncryptedMailViewModel_DecryptMailWithAccountPrivateKey, 
                     this.account.OutlookAccountEmail);
 
-                var mailData = DecryptMailData(this.mailItem,
-                    this.account.VirgilCardId, privateKey, keyPassword);
+                var mailData = DecryptMailData(this.mailItem, virgilKey);
 
                 this.Subject = mailData.Subject;
                 this.Body = mailData.HtmlBody;
@@ -302,11 +308,10 @@
             }
         }
 
-        private static EncryptedMailModel DecryptMailData(Outlook.MailItem mail, Guid cardId, VirgilKey virgilKey)
+        private static EncryptedMailModel DecryptMailData(Outlook.MailItem mail, VirgilKey virgilKey)
         {
             var mailModel = ExtractVirgilMailModel(mail);
-            var data = VirgilBuffer.From(mailModel.EmailData);
-            var decryptedData = virgilKey.Decrypt(data);
+            var decryptedData = virgilKey.Decrypt(mailModel.EmailData);
 
             var attachmentData = decryptedData.ToString();
             var mailData = JsonConvert.DeserializeObject<EncryptedMailModel>(attachmentData);

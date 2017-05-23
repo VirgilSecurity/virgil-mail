@@ -27,6 +27,7 @@
             builder.RegisterType<AccountsManager>().As<IAccountsManager>().SingleInstance();
             builder.RegisterType<PasswordHolder>().As<IPasswordHolder>();
             builder.RegisterType<MailSender>().As<IMailSender>();
+            builder.RegisterType<EncryptedKeyValueStorage>().As<IEncryptedKeyValueStorage>();
             builder.RegisterType<PasswordExactor>().As<IPasswordExactor>();
             builder.RegisterType<RecipientsService>().As<IRecipientsService>().SingleInstance();
             builder.RegisterType<MessageBus>().As<IMessageBus>().SingleInstance();

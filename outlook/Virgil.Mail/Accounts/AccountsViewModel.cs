@@ -11,6 +11,7 @@
     using Virgil.Mail.Common.Mvvm;
     using Virgil.Mail.Models;
     using Virgil.Mail.Mvvm;
+    using SDK;
 
     public class AccountsViewModel : ViewModel
     {
@@ -23,7 +24,6 @@
         {
             this.accountsManager = accountsManager;
             this.dialogPresenter = dialogPresenter;
-
             this.Accounts = new ObservableCollection<AccountModel>();
 
             this.ManageAccountCommand = new RelayCommand<AccountModel>(this.ManageAccount);

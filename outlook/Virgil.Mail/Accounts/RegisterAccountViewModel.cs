@@ -144,12 +144,16 @@
 
                 this.ChangeState(RegisterAccountState.Processing, Resources.Label_SearchAccountInformation);
 
-                var cards = await this.virgilApi.Cards.FindGlobalAsync(accountModel.OutlookAccountEmail);
-                var card = cards.LastOrDefault();
+                /* this.ChangeState(RegisterAccountState.Processing, Resources.Label_SearchAccountInformation);
 
-                this.ChangeState(card != null
-                    ? RegisterAccountState.DownloadKeyPair
-                    : RegisterAccountState.GenerateKeyPair);
+                 var cards = await this.virgilApi.Cards.FindGlobalAsync(accountModel.OutlookAccountEmail);
+                 var card = cards.LastOrDefault();
+
+                 this.ChangeState(card != null
+                     ? RegisterAccountState.DownloadKeyPair
+                     : RegisterAccountState.GenerateKeyPair);*/
+
+                this.ChangeState(RegisterAccountState.GenerateKeyPair);
 
             }
             catch (Exception)
@@ -199,14 +203,28 @@
 
                 this.ChangeStateText(Resources.Label_WaitingForConfirmationEmail);
 
-                var attempt = await createdCard.CheckIdentityAsync();
+                var attemptId = Guid.NewGuid().ToString();
+                var option = new IdentityVerificationOptions();
 
-                var code = await this.ExtractConfirmationCode(this.CurrentAccount.OutlookAccountEmail, 
-                    attempt.ActionId.ToString());
+                //TODO upgrade SDK version
+                option.TimeToLive = TimeSpan.FromSeconds(3600);
+                option.CountToLive = 1;
+                //TODO upgrade SDK version
+
+                option.ExtraFields = new Dictionary<string, string> {
+                    { "attempt_id", attemptId.ToString() }
+                };
+
+                var attempt = await createdCard.CheckIdentityAsync(option);
+               
+
+                var code = await this.ExtractConfirmationCode(this.CurrentAccount.OutlookAccountEmail,
+                    attemptId.ToString());
 
                 cancallationTokenSource.Token.ThrowIfCancellationRequested();
 
                 this.ChangeStateText(Resources.Label_ConfirmingEmailAccount);
+
 
                 var identityToken = await attempt.ConfirmAsync(new EmailConfirmation(code));
 

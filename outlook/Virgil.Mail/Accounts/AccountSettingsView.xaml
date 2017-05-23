@@ -95,18 +95,6 @@
             <CheckBox 
                     Margin="0 10 0 2" 
                     IsEnabled="{Binding IsChecked, ElementName=revokeCheckBox, Converter={StaticResource NotBool}}"
-                    IsChecked="{Binding IsDeletePrivateKeyFromVirgilServices, Mode=TwoWay}" 
-                    Content="{x:Static res:Resources.Label_RemovePrivateKeyFormVirgilServices}"
-                    VerticalContentAlignment="Center" />
-            <TextBlock 
-                    FontSize="10" 
-                    Foreground="Gray" 
-                    TextWrapping="Wrap"
-                    Margin="20 0 0 0" 
-                    Text="{x:Static res:Resources.Description_RemovePrivateKeyFormVirgilServices}" />
-            <CheckBox 
-                    Margin="0 10 0 2" 
-                    IsEnabled="{Binding IsChecked, ElementName=revokeCheckBox, Converter={StaticResource NotBool}}"
                     IsChecked="{Binding IsDeletePrivateKeyFromLocalStorage, Mode=TwoWay}" 
                     Content="{x:Static res:Resources.Label_RemovePrivateKeyFormLocalStorage}"
                     VerticalContentAlignment="Center" />
@@ -161,13 +149,6 @@
                         Command="{Binding ExportCommand}" 
                         Padding="0 3" 
                         Background="White" />
-                <Button 
-                        Margin="0 5 0 0"
-                        Visibility="{Binding CanUploadToCloud, Converter={StaticResource BoolToVisibility}}"
-                        Content="{x:Static res:Resources.Button_UploadPrivateKeyToVirgilServices}" 
-                        Command="{Binding UploadPrivateKeyToCloudCommand}" 
-                        Padding="0 3" 
-                        Background="White"  />
                 <Button 
                         VerticalAlignment="Bottom" 
                         Margin="0 5 0 0"

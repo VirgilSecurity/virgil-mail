@@ -300,12 +300,25 @@
             this.ChangeStateText(Resources.Label_SendingVerificationRequest);
 
             var virgilCard = await virgilApi.Cards.GetAsync(this.account.VirgilCardId);
-            var attempt = await virgilCard.CheckIdentityAsync();
-           
+
+            var attemptId = Guid.NewGuid().ToString();
+            var option = new IdentityVerificationOptions();
+
+            //TODO upgrade SDK version
+            option.TimeToLive = TimeSpan.FromSeconds(3600);
+            option.CountToLive = 1;
+            //TODO upgrade SDK version
+
+            option.ExtraFields = new Dictionary<string, string> {
+                    { "attempt_id", attemptId.ToString() }
+                };
+
+            var attempt = await virgilCard.CheckIdentityAsync(option);
+
             this.ChangeStateText(Resources.Label_WaitingForConfirmationEmail);
 
             var code = await this.ExtractConfirmationCode(this.account.OutlookAccountEmail, 
-                attempt.ActionId.ToString());
+                attemptId.ToString());
 
             this.ChangeStateText(Resources.Label_ConfirmingEmailAccount);
 

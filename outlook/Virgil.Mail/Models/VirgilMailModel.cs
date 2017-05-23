@@ -1,8 +1,10 @@
-﻿namespace Virgil.Mail.Models
+﻿using Virgil.SDK;
+
+namespace Virgil.Mail.Models
 {
     public class VirgilMailModel
     {
-        public byte[] EmailData { get; set; }
-        public byte[] Sign { get; set; }
+        public VirgilBuffer EmailData { get; set; }
+        public VirgilBuffer Sign { get; set; }
     }
 }
