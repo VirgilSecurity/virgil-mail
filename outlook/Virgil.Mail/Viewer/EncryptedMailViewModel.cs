@@ -311,7 +311,7 @@
         private static EncryptedMailModel DecryptMailData(Outlook.MailItem mail, VirgilKey virgilKey)
         {
             var mailModel = ExtractVirgilMailModel(mail);
-            var decryptedData = virgilKey.Decrypt(mailModel.EmailData);
+            var decryptedData = virgilKey.Decrypt(VirgilBuffer.From(mailModel.EmailData));
 
             var attachmentData = decryptedData.ToString();
             var mailData = JsonConvert.DeserializeObject<EncryptedMailModel>(attachmentData);

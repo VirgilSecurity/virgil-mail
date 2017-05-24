@@ -4,7 +4,7 @@ namespace Virgil.Mail.Models
 {
     public class VirgilMailModel
     {
-        public VirgilBuffer EmailData { get; set; }
-        public VirgilBuffer Sign { get; set; }
+        public byte[] EmailData { get; set; }
+        public byte[] Sign { get; set; }
     }
 }

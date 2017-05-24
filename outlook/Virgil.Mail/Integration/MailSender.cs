@@ -119,8 +119,8 @@
 
             var mailModel = new VirgilMailModel
             {
-                EmailData = encryptedMailData,
-                Sign = signature
+                EmailData = encryptedMailData.GetBytes(),
+                Sign = signature.GetBytes()
             };
             
             AddEncryptedBodyAttachment(mail, mailModel);
@@ -168,7 +168,7 @@
 
                 var encryptedAttachmentData = recipients.Encrypt(attachemntData);
 
-                attachment.PropertyAccessor.SetProperty(Constants.OutlookAttachmentDataBin, encryptedAttachmentData);
+                attachment.PropertyAccessor.SetProperty(Constants.OutlookAttachmentDataBin, encryptedAttachmentData.GetBytes());
             }
         }
 

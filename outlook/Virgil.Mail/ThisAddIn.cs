@@ -13,7 +13,8 @@ namespace Virgil.Mail
     using Virgil.Mail.Integration;
 
     using Outlook = Microsoft.Office.Interop.Outlook;
-    
+    using Common.Exceptions;
+
     public partial class ThisAddIn
     {
         private string previousMailId;
@@ -56,8 +57,16 @@ namespace Virgil.Mail
                     cancel = true;
                 }
             }
-            catch
+            catch(PasswordExactionException ex)
             {
+                MessageBox.Show(ex.Message,
+                                      @"Warning", MessageBoxButton.OK);
+                cancel = true;
+
+            }
+            catch (Exception ex)
+            {
+                var s = ex.Message;
                 cancel = true;
                 MessageBox.Show("Please restart the Outlook to use this account with the Virgil Mail Add-In.",
                                       @"Warning", MessageBoxButton.OK);
