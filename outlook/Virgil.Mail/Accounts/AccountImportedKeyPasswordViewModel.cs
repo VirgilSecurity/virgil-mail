@@ -24,7 +24,7 @@ namespace Virgil.Mail.Accounts
         }
 
 
-        protected new void TryPassword(string password)
+        protected override void TryPassword(string password)
         {
             var virgil = new VirgilApi();
             virgil.Keys.Import(this.keyValue, password);

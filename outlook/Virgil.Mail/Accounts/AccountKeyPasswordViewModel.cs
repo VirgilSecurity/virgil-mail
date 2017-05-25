@@ -87,7 +87,7 @@
             this.Close();
         }
 
-        protected void TryPassword(string password)
+        protected virtual void TryPassword(string password)
         {
             var virgil = new VirgilApi();
             virgil.Keys.Load(this.keyName, password);

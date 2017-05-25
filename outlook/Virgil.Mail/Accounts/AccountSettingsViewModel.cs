@@ -122,7 +122,7 @@
             this.passwordExactor.ExactOrAlarm(this.account.OutlookAccountEmail) : null;
             
 
-            var exportedKey = this.virgilApi.Keys.Load(this.account.VirgilCardId, password).Export();
+            var exportedKey = this.virgilApi.Keys.Load(this.account.VirgilCardId, password).Export(password);
             
             var exportObject = new
             {

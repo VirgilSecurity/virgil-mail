@@ -153,7 +153,7 @@
                   ? RegisterAccountState.DownloadKeyPair
                   : RegisterAccountState.GenerateKeyPair);
 
-               // this.ChangeState(RegisterAccountState.GenerateKeyPair);
+                //this.ChangeState(RegisterAccountState.GenerateKeyPair);
             }
             catch (Exception)
             {
