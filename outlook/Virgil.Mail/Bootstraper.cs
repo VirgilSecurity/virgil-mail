@@ -40,6 +40,7 @@
             builder.RegisterType<AccountSettingsViewModel>();
             builder.RegisterType<AccountKeyPasswordView>();
             builder.RegisterType<AccountKeyPasswordViewModel>();
+            builder.RegisterType<AccountImportedKeyPasswordViewModel>();
             builder.RegisterType<EncryptedMailView>();
             builder.RegisterType<EncryptedMailViewModel>();
 

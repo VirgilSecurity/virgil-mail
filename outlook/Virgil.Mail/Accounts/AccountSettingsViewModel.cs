@@ -127,7 +127,7 @@
             var exportObject = new
             {
                 id = this.account.VirgilCardId,
-                private_key = exportedKey,
+                private_key = exportedKey.GetBytes(),
                 is_private_key_has_password = this.account.IsPrivateKeyHasPassword
             };
 

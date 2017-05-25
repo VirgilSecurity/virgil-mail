@@ -144,17 +144,16 @@
 
                 this.ChangeState(RegisterAccountState.Processing, Resources.Label_SearchAccountInformation);
 
-                /* this.ChangeState(RegisterAccountState.Processing, Resources.Label_SearchAccountInformation);
 
-                 var cards = await this.virgilApi.Cards.FindGlobalAsync(accountModel.OutlookAccountEmail);
-                 var card = cards.LastOrDefault();
 
-                 this.ChangeState(card != null
-                     ? RegisterAccountState.DownloadKeyPair
-                     : RegisterAccountState.GenerateKeyPair);*/
+                  var cards = await this.virgilApi.Cards.FindGlobalAsync(accountModel.OutlookAccountEmail);
+                  var card = cards.LastOrDefault();
 
-                this.ChangeState(RegisterAccountState.GenerateKeyPair);
+                  this.ChangeState(card != null
+                  ? RegisterAccountState.DownloadKeyPair
+                  : RegisterAccountState.GenerateKeyPair);
 
+               // this.ChangeState(RegisterAccountState.GenerateKeyPair);
             }
             catch (Exception)
             {
@@ -164,7 +163,7 @@
         
         private void BrowseFile()
         {
-            this.FilePath = this.dialogs.OpenFile("vcard");
+            this.FilePath = this.dialogs.OpenFile("virgilkey");
         }
 
         private async void Import()
@@ -311,13 +310,12 @@
                 var exportObject = new
                 {
                     id = default(string),
-                    private_key = default(VirgilBuffer),
+                    private_key = default(byte[]),
                     is_private_key_has_password = default(bool)
                 };
 
-              
-                var fileKeyBytes = VirgilBuffer.FromFile(this.FilePath).GetBytes();
-                var fileKeyJson = Encoding.UTF8.GetString(fileKeyBytes);
+                var fileKeyBase64 = File.ReadAllText(this.FilePath);
+                var fileKeyJson = VirgilBuffer.From(fileKeyBase64, StringEncoding.Base64).ToString();
 
                 this.ChangeStateText(Resources.Label_LoadingPublicKeyDetails);
 
@@ -334,13 +332,13 @@
                 {
                     enteredPassword = this.dialogs.ShowImportedPrivateKeyPassword(
                         this.CurrentAccount.OutlookAccountEmail, 
-                        result.id, 
-                        result.private_key);
+                        result.id,
+                        VirgilBuffer.From(result.private_key));
                 }
 
                 this.ChangeState(RegisterAccountState.DownloadKeyPair);
 
-                var virgilKey = virgilApi.Keys.Import(result.private_key, enteredPassword);
+                var virgilKey = virgilApi.Keys.Import(VirgilBuffer.From(result.private_key), enteredPassword);
                 var card = await virgilApi.Cards.GetAsync(result.id);
 
                 if (card != null && card.Export() != virgilKey.ExportPublicKey().ToString())

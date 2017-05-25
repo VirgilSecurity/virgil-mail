@@ -64,9 +64,8 @@ namespace Virgil.Mail
                 cancel = true;
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                var s = ex.Message;
                 cancel = true;
                 MessageBox.Show("Please restart the Outlook to use this account with the Virgil Mail Add-In.",
                                       @"Warning", MessageBoxButton.OK);
