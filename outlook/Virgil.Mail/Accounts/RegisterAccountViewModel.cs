@@ -149,11 +149,11 @@
                   var cards = await this.virgilApi.Cards.FindGlobalAsync(accountModel.OutlookAccountEmail);
                   var card = cards.LastOrDefault();
 
-                  this.ChangeState(card != null
-                  ? RegisterAccountState.DownloadKeyPair
-                  : RegisterAccountState.GenerateKeyPair);
+                //  this.ChangeState(card != null
+                //  ? RegisterAccountState.DownloadKeyPair
+                //  : RegisterAccountState.GenerateKeyPair);
 
-                //this.ChangeState(RegisterAccountState.GenerateKeyPair);
+                this.ChangeState(RegisterAccountState.GenerateKeyPair);
             }
             catch (Exception)
             {
@@ -234,16 +234,15 @@
                 await virgilApi.Cards.PublishGlobalAsync(createdCard, identityToken);
 
                 virgilKey.Save(createdCard.Id, this.hasPassword ? this.Password : null);
-              
-
                 this.CurrentAccount.VirgilCardId = createdCard.Id;
 
                 if (this.hasPassword)
                 {
-                    this.passwordHolder.Keep(this.CurrentAccount.OutlookAccountEmail, keyPassword);
-                    this.CurrentAccount.IsPrivateKeyPasswordNeedToStore = true;
-                    this.CurrentAccount.IsPrivateKeyHasPassword = true;
+                    this.passwordHolder.Keep(this.CurrentAccount.OutlookAccountEmail, keyPassword);                   
                 }
+
+                this.CurrentAccount.IsPrivateKeyPasswordNeedToStore = this.hasPassword;
+                this.CurrentAccount.IsPrivateKeyHasPassword = this.hasPassword;
 
                 this.accountsManager.UpdateAccount(this.CurrentAccount);
 
@@ -310,8 +309,7 @@
                 var exportObject = new
                 {
                     id = default(string),
-                    private_key = default(byte[]),
-                    is_private_key_has_password = default(bool)
+                    private_key = default(byte[])
                 };
 
                 var fileKeyBase64 = File.ReadAllText(this.FilePath);
@@ -328,20 +326,27 @@
 
                 string enteredPassword = null;
 
-                if (result.is_private_key_has_password)
-                {
-                    enteredPassword = this.dialogs.ShowImportedPrivateKeyPassword(
-                        this.CurrentAccount.OutlookAccountEmail, 
-                        result.id,
-                        VirgilBuffer.From(result.private_key));
-                }
-
+                VirgilKey virgilKey = null;
                 this.ChangeState(RegisterAccountState.DownloadKeyPair);
 
-                var virgilKey = virgilApi.Keys.Import(VirgilBuffer.From(result.private_key), enteredPassword);
+                try
+                {
+                    virgilKey = virgilApi.Keys.Import(VirgilBuffer.From(result.private_key));
+                }
+                catch
+                {
+                    enteredPassword = this.dialogs.ShowImportedPrivateKeyPassword(
+                        this.CurrentAccount.OutlookAccountEmail,
+                        result.id,
+                        VirgilBuffer.From(result.private_key)
+                        );
+                    virgilKey = virgilApi.Keys.Import(VirgilBuffer.From(result.private_key), enteredPassword);
+                }
+
                 var card = await virgilApi.Cards.GetAsync(result.id);
 
-                if (card != null && card.Export() != virgilKey.ExportPublicKey().ToString())
+                //TODO ==
+                if (card != null && card.Export() != virgilKey.ExportPublicKey().ToString(StringEncoding.Base64))
                 {
                     virgilKey.Save(result.id, enteredPassword);
                 }
@@ -357,9 +362,11 @@
                 {
                     this.HasPassword = true;
                     this.passwordHolder.Keep(this.CurrentAccount.OutlookAccountEmail, enteredPassword);
-                    this.CurrentAccount.IsPrivateKeyPasswordNeedToStore = true;
-                    this.CurrentAccount.IsPrivateKeyHasPassword = true;
                 }
+
+                this.CurrentAccount.IsPrivateKeyPasswordNeedToStore = this.CurrentAccount.IsPrivateKeyPasswordNeedToStore;
+                this.CurrentAccount.IsPrivateKeyHasPassword = this.CurrentAccount.IsPrivateKeyHasPassword;
+
 
                 this.CurrentAccount.VirgilCardId = card.Id;
                 this.accountsManager.UpdateAccount(this.CurrentAccount);

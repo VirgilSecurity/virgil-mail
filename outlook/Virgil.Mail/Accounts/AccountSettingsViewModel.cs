@@ -97,12 +97,11 @@
             }
         }
 
-        
+
         public void Initialize(AccountModel accountModel)
         {
             this.account = accountModel;
             this.ChangeState(AccountSettingsState.Settings);
-
             this.UpdateProperties();
         }
 
@@ -112,7 +111,6 @@
 
             this.IsDeleteAccount = false;
             this.IsDeletePrivateKeyFromLocalStorage = false;
-            this.IsDeletePrivateKeyFromVirgilServices = false;
         }
 
         
@@ -127,8 +125,7 @@
             var exportObject = new
             {
                 id = this.account.VirgilCardId,
-                private_key = exportedKey.GetBytes(),
-                is_private_key_has_password = this.account.IsPrivateKeyHasPassword
+                private_key = exportedKey.GetBytes()
             };
 
             var exportJson = JsonConvert.SerializeObject(new[] { exportObject });
@@ -142,9 +139,8 @@
 
         private void UpdateProperties()
         {
-            this.IsPrivateKeyHasPassword = this.account.IsPrivateKeyHasPassword;
             this.IsPrivateKeyPasswordNeedToStore = this.account.IsPrivateKeyPasswordNeedToStore;
-
+            this.IsPrivateKeyHasPassword = this.account.IsPrivateKeyHasPassword;
         }
 
         private void Done()
@@ -163,7 +159,6 @@
 
         private string deleteWarningMessage;
         private bool isDeleteAccount;
-        private bool isDeletePrivateKeyFromVirgilServices;
         private bool isDeletePrivateKeyFromLocalStorage;
 
         public ICommand AcceptDeleteCommand { get; set; }
@@ -177,23 +172,10 @@
                 this.isDeleteAccount = value;
                 this.RaisePropertyChanged();
                 this.RaisePropertyChanged(nameof(this.IsAnyDeleteOperation));
-
                 this.SetSuitableWarningMessage();
             }
         }
 
-        public bool IsDeletePrivateKeyFromVirgilServices
-        {
-            get { return this.isDeletePrivateKeyFromVirgilServices; }
-            set
-            {
-                this.isDeletePrivateKeyFromVirgilServices = value;
-                this.RaisePropertyChanged();
-                this.RaisePropertyChanged(nameof(this.IsAnyDeleteOperation));
-
-                this.SetSuitableWarningMessage();
-            }
-        }
 
         public bool IsDeletePrivateKeyFromLocalStorage
         {
@@ -212,8 +194,7 @@
         {
             get
             {
-                return this.IsDeleteAccount || 
-                       this.IsDeletePrivateKeyFromVirgilServices ||
+                return this.IsDeleteAccount ||
                        this.IsDeletePrivateKeyFromLocalStorage;
             }
         }

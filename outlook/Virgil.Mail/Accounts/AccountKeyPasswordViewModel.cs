@@ -23,6 +23,7 @@
         {
             this.passwordHolder = passwordHolder;
             this.accountsManager = accountsManager;
+            this.isStorePassword = true;
             this.AcceptCommand = new RelayCommand(this.Accept);
             this.CancelCommand = new RelayCommand(this.Cancel);
         }
@@ -72,17 +73,16 @@
                 this.AddCustomError(Resources.Error_IncorrectPrivateKeyPassword);
                 return;
             }
-          
+            var account = this.accountsManager.GetAccount(this.accountEmail);
 
             if (this.IsStorePassword)
             {
-                var account = this.accountsManager.GetAccount(this.accountEmail);
                 this.passwordHolder.Keep(this.accountEmail, password);
-
-                account.IsPrivateKeyPasswordNeedToStore = true;
-                this.accountsManager.UpdateAccount(account);
             }
 
+            account.IsPrivateKeyPasswordNeedToStore = this.isStorePassword;
+            account.IsPrivateKeyHasPassword = true;
+            this.accountsManager.UpdateAccount(account);
             this.Result = password;
             this.Close();
         }
