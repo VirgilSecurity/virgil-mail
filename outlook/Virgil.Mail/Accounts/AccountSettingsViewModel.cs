@@ -108,7 +108,6 @@
         private void Remove()
         {
             this.ChangeState(AccountSettingsState.DeletePrivateKey);
-
             this.IsDeleteAccount = false;
             this.IsDeletePrivateKeyFromLocalStorage = false;
         }
@@ -118,10 +117,8 @@
         {
             var password = this.account.IsPrivateKeyHasPassword ?
             this.passwordExactor.ExactOrAlarm(this.account.OutlookAccountEmail) : null;
-            
 
             var exportedKey = this.virgilApi.Keys.Load(this.account.VirgilCardId, password).Export(password);
-            
             var exportObject = new
             {
                 id = this.account.VirgilCardId,

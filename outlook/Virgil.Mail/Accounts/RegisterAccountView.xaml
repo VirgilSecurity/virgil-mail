@@ -93,7 +93,7 @@
                     <PasswordBox 
                         Name="confirmPassword"
                         Background="Transparent"
-                        Padding="5 4" />
+                        Padding="5 4"/>
                 </Grid>
             </StackPanel>
             <!-- Download Account -->
@@ -167,6 +167,7 @@
                 <Button 
                     Margin="20" 
                     MinWidth="90" 
+                    IsDefault="True"
                     Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=GenerateKeyPair}"
                     Content="Generate and Publish" 
                     Command="{Binding CreateCommand}" 
