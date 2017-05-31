@@ -31,9 +31,7 @@ namespace Virgil.Mail.Dialogs
 
             if (dialogs.ContainsKey(viewName))
             {
-                var cachedDialog = dialogs[viewName];
-                cachedDialog.Shell.ElementHost.Child = view;
-                return cachedDialog;
+                dialogs[viewName].Shell.Close();
             }
             
             var shell = new ShellWindow

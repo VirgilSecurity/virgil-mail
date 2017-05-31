@@ -6,12 +6,9 @@ namespace Virgil.Mail
     using System.IO;
     using System.Threading.Tasks;
     using System.Windows;
-
     using log4net;
-
-    using Virgil.Mail.Common;
-    using Virgil.Mail.Integration;
-
+    using Common;
+    using Integration;
     using Outlook = Microsoft.Office.Interop.Outlook;
     using Common.Exceptions;
 

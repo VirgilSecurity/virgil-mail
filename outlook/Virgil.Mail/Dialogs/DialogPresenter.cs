@@ -2,12 +2,10 @@ namespace Virgil.Mail.Dialogs
 {
     using System.IO;
     using System.Windows.Forms;
-
     using Autofac;
-
-    using Virgil.Mail.Accounts;
-    using Virgil.Mail.Common;
-    using Virgil.Mail.Models;
+    using Accounts;
+    using Common;
+    using Models;
     using SDK;
 
     public class DialogPresenter : IDialogPresenter

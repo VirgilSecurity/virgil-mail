@@ -2,8 +2,8 @@
 {
     using System.Windows.Controls;
     using Autofac;
-    using Virgil.Mail.Common;
-    using Virgil.Mail.Mvvm;
+    using Common;
+    using Mvvm;
 
     public class ViewBuilder : IViewBuilder
     {

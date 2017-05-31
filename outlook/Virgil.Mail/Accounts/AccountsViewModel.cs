@@ -7,11 +7,10 @@
     using System.IO;
     using System.Reflection;
     using log4net;
-    using Virgil.Mail.Common;
-    using Virgil.Mail.Common.Mvvm;
-    using Virgil.Mail.Models;
-    using Virgil.Mail.Mvvm;
-    using SDK;
+    using Common;
+    using Common.Mvvm;
+    using Models;
+    using Mvvm;
 
     public class AccountsViewModel : ViewModel
     {
@@ -29,7 +28,6 @@
             this.ManageAccountCommand = new RelayCommand<AccountModel>(this.ManageAccount);
             this.CompanyRedirectCommand = new RelayCommand(this.CompanyRedirect);
             this.CheckForUpdatesCommand = new RelayCommand(this.CheckForUpdates);
-
 
             messageBus.Subscribe<AccountDeletedMessage>(this, this.AccountDeleted);
             messageBus.Subscribe<AccountUpdatedMessage>(this, this.AccountUpdated);

@@ -9,11 +9,11 @@
     using HtmlAgilityPack;
     using Newtonsoft.Json;
     using SDK;
-    using Virgil.Mail.Properties;
-    using Virgil.Mail.Common;
-    using Virgil.Mail.Common.Mvvm;
-    using Virgil.Mail.Models;
-    using Virgil.Mail.Mvvm;
+    using Properties;
+    using Common;
+    using Common.Mvvm;
+    using Models;
+    using Mvvm;
     
     public class AccountSettingsViewModel : ViewModel
     {
@@ -281,11 +281,6 @@
 
             var attemptId = Guid.NewGuid().ToString();
             var option = new IdentityVerificationOptions();
-
-            //TODO upgrade SDK version
-            option.TimeToLive = TimeSpan.FromSeconds(3600);
-            option.CountToLive = 1;
-            //TODO upgrade SDK version
 
             option.ExtraFields = new Dictionary<string, string> {
                     { "attempt_id", attemptId.ToString() }

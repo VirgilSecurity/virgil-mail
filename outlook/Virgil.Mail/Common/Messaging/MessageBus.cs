@@ -19,13 +19,14 @@
             {
                 var messageHandler = handler as Action<TMessage>;
                 messageHandler?.Invoke(message);
+
             }
         }
 
         public void Subscribe<TMessage>(object instance, Action<TMessage> handler) where TMessage : IMessage
         {
             this.handlers.TryAdd(handler, instance);
-        }
+        } 
 
         public void Unsubscribe(object instance)
         {
@@ -36,5 +37,6 @@
                 this.handlers.TryRemove(handler.Key, out removedObject);
             }
         }
+
     }
 }

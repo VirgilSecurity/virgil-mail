@@ -3,11 +3,8 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-
-    using Virgil.SDK;
-
-    using Virgil.Mail.Models;
-    using System;
+    using SDK;
+    using Models;
 
     public class RecipientsService : IRecipientsService
     {

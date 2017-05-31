@@ -4,21 +4,20 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.IO;
-    using System.Text;
     using System.ComponentModel;
     using System.Threading.Tasks;
     using System.Text.RegularExpressions;
     using System.Windows.Input;
     using HtmlAgilityPack;
     using Newtonsoft.Json;
-    using Virgil.Mail.Common;
-    using Virgil.Mail.Common.Mvvm;
-    using Virgil.Mail.Models;
-    using Virgil.Mail.Mvvm;
-    using Virgil.Mail.Properties;
-    using Crypto;
+    using Common;
+    using Common.Mvvm;
+    using Models;
+    using Mvvm;
+    using Properties;
     using SDK;
     using System.Threading;
+    using Crypto;
 
     public class RegisterAccountViewModel : ViewModel
     {
@@ -144,9 +143,10 @@
 
                 this.ChangeState(RegisterAccountState.Processing, Resources.Label_SearchAccountInformation);
 
+                await Task.Delay(6000);
 
 
-                  var cards = await this.virgilApi.Cards.FindGlobalAsync(accountModel.OutlookAccountEmail);
+                var cards = await this.virgilApi.Cards.FindGlobalAsync(accountModel.OutlookAccountEmail);
                   var card = cards.LastOrDefault();
 
                 //  this.ChangeState(card != null
@@ -204,11 +204,6 @@
 
                 var attemptId = Guid.NewGuid().ToString();
                 var option = new IdentityVerificationOptions();
-
-                //TODO upgrade SDK version
-                option.TimeToLive = TimeSpan.FromSeconds(3600);
-                option.CountToLive = 1;
-                //TODO upgrade SDK version
 
                 option.ExtraFields = new Dictionary<string, string> {
                     { "attempt_id", attemptId.ToString() }
@@ -345,8 +340,7 @@
 
                 var card = await virgilApi.Cards.GetAsync(result.id);
 
-                //TODO ==
-                if (card != null && card.Export() != virgilKey.ExportPublicKey().ToString(StringEncoding.Base64))
+                if (card != null && card.IsPairFor(virgilKey))
                 {
                     virgilKey.Save(result.id, enteredPassword);
                 }
@@ -356,7 +350,6 @@
                     this.ChangeState(RegisterAccountState.DownloadKeyPair);
                     return;
                 }
-
 
                 if (enteredPassword != null)
                 {

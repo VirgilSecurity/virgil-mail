@@ -3,9 +3,8 @@
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-
-    using Virgil.Mail.Common;
-    using Virgil.Mail.Models;
+    using Common;
+    using Models;
 
     using Outlook = Microsoft.Office.Interop.Outlook;
 

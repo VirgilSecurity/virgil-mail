@@ -172,8 +172,8 @@
       <HintPath>..\packages\Virgil.Crypto.2.1.2\lib\portable-net4+sl4+wp7+win8+wpa81\Virgil.Crypto.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Virgil.SDK, Version=4.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Virgil.SDK.4.3.0.0\lib\net45\Virgil.SDK.dll</HintPath>
+    <Reference Include="Virgil.SDK, Version=4.3.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Virgil.SDK.4.3.1.0\lib\net45\Virgil.SDK.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Virgil.SDK.Contracts, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
