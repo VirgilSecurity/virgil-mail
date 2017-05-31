@@ -143,11 +143,8 @@
 
                 this.ChangeState(RegisterAccountState.Processing, Resources.Label_SearchAccountInformation);
 
-                await Task.Delay(6000);
-
-
                 var cards = await this.virgilApi.Cards.FindGlobalAsync(accountModel.OutlookAccountEmail);
-                  var card = cards.LastOrDefault();
+                var card = cards.LastOrDefault();
 
                 //  this.ChangeState(card != null
                 //  ? RegisterAccountState.DownloadKeyPair

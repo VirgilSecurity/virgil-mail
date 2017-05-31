@@ -148,18 +148,20 @@
             try
             {
                 this.mailItem = mail;
-
+                var s = mail.ReceivedByEntryID;
                 var senderEmailAddress = mail.ExtractSenderEmailAddress();
                 var reciverEmailAddress = mail.ExtractReciverEmailAddress();
             
                 Logger.InfoFormat(Resources.Log_Info_EncryptedMailViewModel_StartLoadingEmail, 
                     senderEmailAddress, reciverEmailAddress, this.mailItem.Subject);
-            
-                this.account = this.accountsManager.GetAccount(reciverEmailAddress);
+
+                // check whether mail is incoming or outgoing. For incoming emails ReceivedByEntryID is not null
+                var accountEmailAddress = mail.ReceivedByEntryID != null ? reciverEmailAddress : senderEmailAddress; 
+                this.account = this.accountsManager.GetAccount(accountEmailAddress);
             
                 if (!this.account.IsRegistered)
                 {
-                    Logger.InfoFormat(Resources.Log_Info_EncryptedMailViewModel_DecryptMailCanceledBecauseOfRegistration, reciverEmailAddress);
+                    Logger.InfoFormat(Resources.Log_Info_EncryptedMailViewModel_DecryptMailCanceledBecauseOfRegistration, accountEmailAddress);
 
                     this.ChangeState(EncryptedMailState.NotRegistered);
                     return;

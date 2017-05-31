@@ -118,17 +118,18 @@
             </Grid.RowDefinitions>
             <Grid 
                 Grid.Row="0" 
-                Height="50"
+                Height="60"
                 Margin="0 0 0 10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="13" />
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
                 <Image
@@ -138,26 +139,58 @@
                     Width="50"
                     VerticalAlignment="Center"
                     Source="/Virgil.Mail;component/Resources/icon_512x512@2x.png" />
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    VerticalAlignment="Bottom"
+                    HorizontalAlignment="Left"
+                    FontFamily="Segoe UI Symbol"
+                    FontSize="12"
+                    Margin="4 0 0 0"
+                    FontWeight="Bold"
+                    Foreground="Black"
+                    Text="from:" />
 
                 <TextBlock
                     Grid.Row="0"
                     Grid.Column="2"
+                    FontFamily="Segoe UI Light"
+                    Margin="4 0 0 0"
+                    FontSize="14"
+                    Foreground="Black"
+                    Text="{Binding From}"/>
+
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    FontFamily="Segoe UI Symbol"
+                    VerticalAlignment="Bottom"
+                    HorizontalAlignment="Left"
+                    FontSize="12"
+                    Margin="4 0 0 0"
+                    FontWeight="Bold"
+                    Foreground="Black"
+                    Text="to:" />
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="3"
                     VerticalAlignment="Center"
                     FontFamily="Segoe UI Light"
-                    Margin="0 2 0 0"
-                    FontSize="15"
+                    Margin="4 0 0 0"
+                    FontSize="14"
                     Foreground="Black"
-                    Text="{Binding From}" />
+                    Text="{Binding To}" />
 
                 <TextBlock
                     Grid.Row="2"
-                    Grid.Column="2"
-                    VerticalAlignment="Bottom"
+                    Grid.Column="1"
                     FontFamily="Segoe UI Symbol"
-                    FontSize="15"
-                    Margin="0 0 0 4"
+                    FontSize="14"
+                    Margin="4 0 0 0"
                     FontWeight="Bold"
                     Foreground="Black"
+                    Grid.ColumnSpan="2"
+                    VerticalAlignment="Center"
                     Text="{Binding Subject}" />
 
             </Grid>

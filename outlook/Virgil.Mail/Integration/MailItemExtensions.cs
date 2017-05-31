@@ -19,7 +19,7 @@
     internal static class MailItemExtensions
     {
         private static readonly Regex EmailFinder = new Regex(Constants.EmailFinderRegex, RegexOptions.Compiled);
-        
+
         /// <summary>
         /// Checks if the Outlook Mail is contain the body with Virgil structure.
         /// </summary>
@@ -95,14 +95,15 @@
         /// </summary>
         internal static string ExtractReciverEmailAddress(this Outlook.MailItem mail)
         {
-            var propertyValue = mail.PropertyAccessor.GetProperty("http://schemas.microsoft.com/mapi/proptag/0x0076001F") as string;
+            
+            var propertyValue =  string.Join("; ", mail.Recipients
+                    .Cast<Outlook.Recipient>().Select(it => it.Address));
+
             return propertyValue;
         }
 
         internal static string ExtractSenderEmailAddress(this Outlook.MailItem mail)
         {
-            var PR_SMTP_ADDRESS = @"http://schemas.microsoft.com/mapi/proptag/0x39FE001E";
-
             if (mail == null)
             {
                 throw new ArgumentNullException();
@@ -125,7 +126,7 @@
                         return exchUser?.PrimarySmtpAddress;
                     }
 
-                    return sender.PropertyAccessor.GetProperty(PR_SMTP_ADDRESS) as string;
+                    return sender.Address;
                 }
 
                 return null;
