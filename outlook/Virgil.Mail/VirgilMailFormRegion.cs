@@ -116,10 +116,6 @@
             this.mailViewerHost.Child = view;
 
             // initialize view model with mail's account
-
-            //var accountSmtpAddress = mail.ExtractReciverEmailAddress();
-            //this.account = ServiceLocator.Accounts.GetAccount(accountSmtpAddress);
-
             this.viewModel.Initialize(mail);
         }
 

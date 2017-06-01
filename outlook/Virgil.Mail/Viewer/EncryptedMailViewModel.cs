@@ -151,12 +151,11 @@
                 var s = mail.ReceivedByEntryID;
                 var senderEmailAddress = mail.ExtractSenderEmailAddress();
                 var reciverEmailAddress = mail.ExtractReciverEmailAddress();
-            
+
                 Logger.InfoFormat(Resources.Log_Info_EncryptedMailViewModel_StartLoadingEmail, 
                     senderEmailAddress, reciverEmailAddress, this.mailItem.Subject);
 
-                // check whether mail is incoming or outgoing. For incoming emails ReceivedByEntryID is not null
-                var accountEmailAddress = mail.ReceivedByEntryID != null ? reciverEmailAddress : senderEmailAddress; 
+                var accountEmailAddress = ServiceLocator.Outlook.GetOutlookAccountEmailForCurrentFolder();
                 this.account = this.accountsManager.GetAccount(accountEmailAddress);
             
                 if (!this.account.IsRegistered)
@@ -167,7 +166,6 @@
                     return;
                 }
             
-               
             
                 if (this.account.IsPrivateKeyHasPassword && !this.account.IsPrivateKeyPasswordNeedToStore)
                 {

@@ -120,5 +120,39 @@
                 ns.ReleaseCom();
             }
         }
+
+        public string GetCurrentOutlookAccountEmail()
+        {
+            return this.application.Session.CurrentUser.Address;
+        }
+
+        public string GetOutlookAccountEmailForCurrentFolder()
+        {
+            Outlook.Folder currentFolder = this.application.ActiveExplorer().CurrentFolder as Outlook.Folder;
+            return GetAccountForFolder(currentFolder).SmtpAddress;
+        }
+
+
+        private Outlook.Account GetAccountForFolder(Outlook.Folder folder)
+        {
+            // Obtain the store on which the folder resides.
+            Outlook.Store store = folder.Store;
+
+            // Enumerate the accounts defined for the session.
+            foreach (Outlook.Account account in this.application.Session.Accounts)
+            {
+                // Match the DefaultStore.StoreID of the account
+                // with the Store.StoreID for the currect folder.
+                if (account.DeliveryStore.StoreID == store.StoreID)
+                {
+                    // Return the account whose default delivery store
+                    // matches the store of the given folder.
+                    return account;
+                }
+            }
+            // No account matches, so return null.
+            return null;
+        }
+
     }
 }
