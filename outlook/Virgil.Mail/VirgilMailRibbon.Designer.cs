@@ -34,53 +34,25 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.newMailTab = this.Factory.CreateRibbonTab();
-            this.encryptionGroup = this.Factory.CreateRibbonGroup();
-            this.button1 = this.Factory.CreateRibbonButton();
-            this.encryptButton = this.Factory.CreateRibbonToggleButton();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VirgilMailRibbon));
             this.mainTabMail = this.Factory.CreateRibbonTab();
             this.mainEncryptionGroup = this.Factory.CreateRibbonGroup();
             this.mailKeysButton = this.Factory.CreateRibbonButton();
-            this.newMailTab.SuspendLayout();
-            this.encryptionGroup.SuspendLayout();
+            this.newMailTab = this.Factory.CreateRibbonTab();
+            this.encryptionGroup = this.Factory.CreateRibbonGroup();
+            this.virgilKeysButton = this.Factory.CreateRibbonButton();
+            this.encryptButton = this.Factory.CreateRibbonToggleButton();
+            this.mainTabDraft = this.Factory.CreateRibbonTab();
+            this.draftEncryptionGroup = this.Factory.CreateRibbonGroup();
+            this.virgilKeysButtonForDraft = this.Factory.CreateRibbonButton();
+            this.encryptButtonForDraft = this.Factory.CreateRibbonToggleButton();
             this.mainTabMail.SuspendLayout();
             this.mainEncryptionGroup.SuspendLayout();
+            this.newMailTab.SuspendLayout();
+            this.encryptionGroup.SuspendLayout();
+            this.mainTabDraft.SuspendLayout();
+            this.draftEncryptionGroup.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // newMailTab
-            // 
-            this.newMailTab.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
-            this.newMailTab.ControlId.OfficeId = "TabNewMailMessage";
-            this.newMailTab.Groups.Add(this.encryptionGroup);
-            this.newMailTab.Label = "TabNewMailMessage";
-            this.newMailTab.Name = "newMailTab";
-            // 
-            // encryptionGroup
-            // 
-            this.encryptionGroup.Items.Add(this.button1);
-            this.encryptionGroup.Items.Add(this.encryptButton);
-            this.encryptionGroup.Label = "Encryption";
-            this.encryptionGroup.Name = "encryptionGroup";
-            this.encryptionGroup.Position = this.Factory.RibbonPosition.AfterOfficeId("GroupBasicText");
-            // 
-            // button1
-            // 
-            this.button1.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button1.Description = "sdadasd asdasdasd";
-            this.button1.Image = global::Virgil.Mail.Properties.Resources.icon_512x512_2x;
-            this.button1.Label = "Virgil Keys";
-            this.button1.Name = "button1";
-            this.button1.ShowImage = true;
-            this.button1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.mailKeysButton_Click);
-            // 
-            // encryptButton
-            // 
-            this.encryptButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.encryptButton.Label = "Encrypt Mail";
-            this.encryptButton.Name = "encryptButton";
-            this.encryptButton.OfficeImageId = "FileDocumentEncrypt";
-            this.encryptButton.ShowImage = true;
-            this.encryptButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.encryptButton_Click);
             // 
             // mainTabMail
             // 
@@ -106,25 +78,101 @@
             this.mailKeysButton.ShowImage = true;
             this.mailKeysButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.mailKeysButton_Click);
             // 
+            // newMailTab
+            // 
+            this.newMailTab.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
+            this.newMailTab.ControlId.OfficeId = "TabNewMailMessage";
+            this.newMailTab.Groups.Add(this.encryptionGroup);
+            this.newMailTab.Label = "TabNewMailMessage";
+            this.newMailTab.Name = "newMailTab";
+            // 
+            // encryptionGroup
+            // 
+            this.encryptionGroup.Items.Add(this.virgilKeysButton);
+            this.encryptionGroup.Items.Add(this.encryptButton);
+            this.encryptionGroup.Label = "Encryption";
+            this.encryptionGroup.Name = "encryptionGroup";
+            this.encryptionGroup.Position = this.Factory.RibbonPosition.AfterOfficeId("GroupBasicText");
+            // 
+            // virgilKeysButton
+            // 
+            this.virgilKeysButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.virgilKeysButton.Description = "sdadasd asdasdasd";
+            this.virgilKeysButton.Image = global::Virgil.Mail.Properties.Resources.icon_512x512_2x;
+            this.virgilKeysButton.Label = "Virgil Keys";
+            this.virgilKeysButton.Name = "virgilKeysButton";
+            this.virgilKeysButton.ShowImage = true;
+            this.virgilKeysButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.mailKeysButton_Click);
+            // 
+            // encryptButton
+            // 
+            this.encryptButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.encryptButton.Label = "Encrypt Mail";
+            this.encryptButton.Name = "encryptButton";
+            this.encryptButton.OfficeImageId = "FileDocumentEncrypt";
+            this.encryptButton.ShowImage = true;
+            this.encryptButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.encryptButton_Click);
+            // 
+            // mainTabDraft
+            // 
+            this.mainTabDraft.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
+            this.mainTabDraft.ControlId.OfficeId = "TabMessage";
+            this.mainTabDraft.Groups.Add(this.draftEncryptionGroup);
+            this.mainTabDraft.Label = "TabMessage";
+            this.mainTabDraft.Name = "mainTabDraft";
+            // 
+            // draftEncryptionGroup
+            // 
+            this.draftEncryptionGroup.Items.Add(this.virgilKeysButtonForDraft);
+            this.draftEncryptionGroup.Items.Add(this.encryptButtonForDraft);
+            this.draftEncryptionGroup.Label = "Encryption";
+            this.draftEncryptionGroup.Name = "draftEncryptionGroup";
+            this.draftEncryptionGroup.Position = this.Factory.RibbonPosition.AfterOfficeId("GroupBasicText");
+            // 
+            // virgilKeysButtonForDraft
+            // 
+            this.virgilKeysButtonForDraft.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.virgilKeysButtonForDraft.Description = "sdadasd asdasdasd aaaa";
+            this.virgilKeysButtonForDraft.Image = global::Virgil.Mail.Properties.Resources.icon_512x512_2x;
+            this.virgilKeysButtonForDraft.Label = "Virgil Keys";
+            this.virgilKeysButtonForDraft.Name = "virgilKeysButtonForDraft";
+            this.virgilKeysButtonForDraft.ShowImage = true;
+            this.virgilKeysButtonForDraft.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.mailKeysButton_Click);
+            // 
+            // encryptButtonForDraft
+            // 
+            this.encryptButtonForDraft.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.encryptButtonForDraft.Label = "Encrypt Mail";
+            this.encryptButtonForDraft.Name = "encryptButtonForDraft";
+            this.encryptButtonForDraft.OfficeImageId = "FileDocumentEncryptDraft";
+            this.encryptButtonForDraft.ShowImage = true;
+            this.encryptButtonForDraft.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.encryptButton_Click);
+            // 
             // VirgilMailRibbon
             // 
             this.Name = "VirgilMailRibbon";
-            this.RibbonType = "Microsoft.Outlook.Explorer, Microsoft.Outlook.Mail.Compose, Microsoft.Outlook.Mai" +
-    "l.Read, Microsoft.Outlook.Post.Compose, Microsoft.Outlook.Resend";
+            this.RibbonType = resources.GetString("$this.RibbonType");
             this.Tabs.Add(this.newMailTab);
             this.Tabs.Add(this.mainTabMail);
+            this.Tabs.Add(this.mainTabDraft);
             this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.VirgilOutlookRibbon_Load);
-            this.newMailTab.ResumeLayout(false);
-            this.newMailTab.PerformLayout();
-            this.encryptionGroup.ResumeLayout(false);
-            this.encryptionGroup.PerformLayout();
             this.mainTabMail.ResumeLayout(false);
             this.mainTabMail.PerformLayout();
             this.mainEncryptionGroup.ResumeLayout(false);
             this.mainEncryptionGroup.PerformLayout();
+            this.newMailTab.ResumeLayout(false);
+            this.newMailTab.PerformLayout();
+            this.encryptionGroup.ResumeLayout(false);
+            this.encryptionGroup.PerformLayout();
+            this.mainTabDraft.ResumeLayout(false);
+            this.mainTabDraft.PerformLayout();
+            this.draftEncryptionGroup.ResumeLayout(false);
+            this.draftEncryptionGroup.PerformLayout();
             this.ResumeLayout(false);
 
         }
+
+      
 
         #endregion
 
@@ -132,9 +180,13 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup encryptionGroup;
         private Microsoft.Office.Tools.Ribbon.RibbonTab mainTabMail;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup mainEncryptionGroup;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton button1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton virgilKeysButton;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton mailKeysButton;
         internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton encryptButton;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup draftEncryptionGroup;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton virgilKeysButtonForDraft;
+        internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton encryptButtonForDraft;
+        internal Microsoft.Office.Tools.Ribbon.RibbonTab mainTabDraft;
     }
 
     partial class ThisRibbonCollection

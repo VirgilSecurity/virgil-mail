@@ -20,6 +20,11 @@ namespace Virgil.Mail
 
         private Outlook.Explorer ActiveExplorer;
 
+          protected override Microsoft.Office.Core.IRibbonExtensibility CreateRibbonExtensibilityObject()
+          {
+              return new Ribbon();
+         }
+
         /// <summary>
         /// Occurs when outlook tries to send new message.
         /// </summary>
@@ -149,6 +154,8 @@ namespace Virgil.Mail
 
             this.Application.ItemSend += this.OnApplicationMailSend;
             this.ActiveExplorer.SelectionChange += this.OnExplorerSelectionChange;
+
+            CreateRibbonExtensibilityObject();
 
             this.CheckUpdates();
         }

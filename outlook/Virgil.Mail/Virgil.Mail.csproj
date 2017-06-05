@@ -274,6 +274,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Ribbon.cs">
+      <XmlRibbon>true</XmlRibbon>
+    </Compile>
     <Compile Include="Storage\EncryptedKeyValueStorage.cs" />
     <Compile Include="Storage\PasswordHolder.cs" />
     <Compile Include="Dialogs\DialogPresenter.cs" />
@@ -337,12 +340,6 @@
     <Compile Include="VirgilMailFormRegion.Designer.cs">
       <DependentUpon>VirgilMailFormRegion.cs</DependentUpon>
     </Compile>
-    <Compile Include="VirgilMailRibbon.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="VirgilMailRibbon.Designer.cs">
-      <DependentUpon>VirgilMailRibbon.cs</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="Dialogs\ShellWindow.resx">
       <DependentUpon>ShellWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -357,9 +354,6 @@
     <EmbeddedResource Include="VirgilMailFormRegion.resx">
       <DependentUpon>VirgilMailFormRegion.cs</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="VirgilMailRibbon.resx">
-      <DependentUpon>VirgilMailRibbon.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="packages.config" />
@@ -438,7 +432,9 @@
   <ItemGroup>
     <Resource Include="Resources\pass.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Ribbon.xml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
