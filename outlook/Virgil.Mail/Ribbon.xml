@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<customUI onLoad="Ribbon_Load" xmlns="http://schemas.microsoft.com/office/2006/01/customui">
+    <ribbon>
+        <tabs>
+            <tab idMso="TabNewMailMessage">
+                <group id="encryptionGroup" insertAfterMso="GroupBasicText" label="Encryption">
+                    <button id="virgilKeysButton" onAction="mailKeysButton_Click" description="sdadasd asdasdasd"
+                            label="Virgil Keys" size="large" getImage="mailKeysButtonImage" />
+                    <toggleButton id="encryptButton" imageMso="FileDocumentEncrypt" onAction="encryptButton_Click" label="Encrypt Mail"
+                                  size="large" getPressed="IsEncryptButtonToggled" />
+                </group>
+            </tab>
+            <tab idMso="TabMail">
+                <group id="mainEncryptionGroup" insertAfterMso="GroupMailNew" label="Encryption">
+                    <button id="mailKeysButton" onAction="mailKeysButton_Click" label="Virgil Keys" size="large"  getImage="mailKeysButtonImage" />
+                </group>
+            </tab>
+        </tabs>
+        <contextualTabs>
+            <tabSet idMso="TabComposeTools">
+              <tab idMso="TabMessage">
+                <group id="draftEncryptionGroup" insertAfterMso="GroupBasicText" label="Encryption">
+                  <button id="virgilKeysButtonForDraft" onAction="mailKeysButton_Click" description="sdadasd asdasdasd aaaa" 
+                          label="Virgil Keys" size="large"  getImage="mailKeysButtonImage"/>
+                  <toggleButton id="encryptButtonForDraft" imageMso="FileDocumentEncrypt" onAction="encryptButton_Click" 
+                                label="Encrypt Mail" size="large" getPressed="IsEncryptButtonToggled" />
+                </group>
+              </tab>
+            </tabSet>
+          </contextualTabs>
+    </ribbon>
+</customUI>
