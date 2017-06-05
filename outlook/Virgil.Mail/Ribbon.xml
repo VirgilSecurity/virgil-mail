@@ -6,8 +6,8 @@
                 <group id="encryptionGroup" insertAfterMso="GroupBasicText" label="Encryption">
                     <button id="virgilKeysButton" onAction="mailKeysButton_Click" description="sdadasd asdasdasd"
                             label="Virgil Keys" size="large" getImage="mailKeysButtonImage" />
-                    <toggleButton id="encryptButton" imageMso="FileDocumentEncrypt" onAction="encryptButton_Click" label="Encrypt Mail"
-                                  size="large" getPressed="IsEncryptButtonToggled" />
+                    <toggleButton id="encryptButton" imageMso="FileDocumentEncrypt" label="Encrypt Mail"
+                                  size="large"  onAction="EncryptButton_Toggle" getPressed="EncryptButton_GetPressed"/>
                 </group>
             </tab>
             <tab idMso="TabMail">
@@ -22,8 +22,8 @@
                 <group id="draftEncryptionGroup" insertAfterMso="GroupBasicText" label="Encryption">
                   <button id="virgilKeysButtonForDraft" onAction="mailKeysButton_Click" description="sdadasd asdasdasd aaaa" 
                           label="Virgil Keys" size="large"  getImage="mailKeysButtonImage"/>
-                  <toggleButton id="encryptButtonForDraft" imageMso="FileDocumentEncrypt" onAction="encryptButton_Click" 
-                                label="Encrypt Mail" size="large" getPressed="IsEncryptButtonToggled" />
+                  <toggleButton id="encryptButtonForDraft" imageMso="FileDocumentEncrypt"  
+                                label="Encrypt Mail" size="large" onAction="EncryptButton_Toggle" getPressed="EncryptButton_GetPressed" />
                 </group>
               </tab>
             </tabSet>

@@ -73,14 +73,26 @@ namespace Virgil.Mail
             this.isEncryptButtonToggled = Properties.Settings.Default.AutoEncryptEmails;
         }
 
-        public void encryptButton_Click(Office.IRibbonControl control)
+
+
+        public void EncryptButton_Toggle(Office.IRibbonControl control, bool pressed)
         {
-            this.isEncryptButtonToggled = ((RibbonToggleButton)control).Checked;
+            this.isEncryptButtonToggled = pressed;
             Properties.Settings.Default.AutoEncryptEmails = isEncryptButtonToggled;
             Properties.Settings.Default.Save();
+
+            this.ribbon.Invalidate();
+
+
         }
-        
-        public void mailKeysButton_Click(Office.IRibbonControl control)
+
+
+        public bool EncryptButton_GetPressed(Office.IRibbonControl control)
+        {
+            return this.isEncryptButtonToggled;
+        }
+
+        public void MailKeysButton_Click(Office.IRibbonControl control)
         {
             ServiceLocator.Dialogs.ShowAccounts();
         }
