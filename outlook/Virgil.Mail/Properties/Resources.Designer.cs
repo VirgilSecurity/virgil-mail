@@ -178,6 +178,15 @@ namespace Virgil.Mail.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use this option if you haven&apos;t exported your key to the file previously..
+        /// </summary>
+        public static string Description_SelectGeneratePublicAndPrivateKeyPair {
+            get {
+                return ResourceManager.GetString("Description_SelectGeneratePublicAndPrivateKeyPair", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Use this option if you previously exported your key to the file..
         /// </summary>
         public static string Description_SelectPrivateKeyFromFile {
@@ -464,6 +473,15 @@ namespace Virgil.Mail.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Generate public/private key pair..
+        /// </summary>
+        public static string Label_SelectGeneratingPublicAndPrivateKeyPair {
+            get {
+                return ResourceManager.GetString("Label_SelectGeneratingPublicAndPrivateKeyPair", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your account is already created please select an option to get your key..
         /// </summary>
         public static string Label_SelectOptionToGetPrivateKey {
@@ -473,7 +491,7 @@ namespace Virgil.Mail.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select a file on your computer.
+        ///   Looks up a localized string similar to Import your key from a file on your computer.
         /// </summary>
         public static string Label_SelectPrivateKeyFromFile {
             get {

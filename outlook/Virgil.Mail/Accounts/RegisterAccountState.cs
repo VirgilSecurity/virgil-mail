@@ -5,6 +5,7 @@
         PrivateKeyPassword,
         GenerateKeyPair,
         DownloadKeyPair,
+        DownloadOrGenerateKeyPair,
         Processing,
         Done
     }

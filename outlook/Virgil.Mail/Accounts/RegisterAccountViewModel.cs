@@ -31,6 +31,8 @@
 
         private AccountModel currentAccount;
         private bool hasPassword;
+        private bool isImportSelected;
+        private bool isRegisteredPreviously;
         private string password;
         private string confirmPassword;
         private string filePath;
@@ -55,14 +57,14 @@
 
             this.CreateCommand = new RelayCommand(this.Create);
             this.BrowseFileCommand = new RelayCommand(this.BrowseFile);
-            this.ImportCommand = new RelayCommand(this.Import);
+            this.ImportOrCreateCommand = new RelayCommand(this.ImportOrCreate);
             this.DoneCommand = new RelayCommand(this.Close);
 
             this.AddValidationRules();
         }
 
         public RelayCommand CreateCommand { get; private set; }
-        public RelayCommand ImportCommand { get; private set; }
+        public RelayCommand ImportOrCreateCommand { get; private set; }
         public RelayCommand BrowseFileCommand { get; private set; }
         public ICommand DoneCommand { get; private set; }
 
@@ -76,6 +78,14 @@
             {
                 this.currentAccount = value;
                 this.RaisePropertyChanged();
+            }
+        }
+
+        public bool sRegisteredPreviously
+        {
+            get
+            {
+                return this.isRegisteredPreviously;
             }
         }
 
@@ -134,7 +144,20 @@
                 this.RaisePropertyChanged();
             }
         }
-        
+
+        public bool IsImportSelected
+        {
+            get
+            {
+                return this.isImportSelected;
+            }
+            set
+            {
+                this.isImportSelected = value;
+                this.RaisePropertyChanged();
+            }
+        }
+
         public async void Initialize(AccountModel accountModel)
         {
             try
@@ -146,11 +169,15 @@
                 var cards = await this.virgilApi.Cards.FindGlobalAsync(accountModel.OutlookAccountEmail);
                 var card = cards.LastOrDefault();
 
-                //  this.ChangeState(card != null
-                //  ? RegisterAccountState.DownloadKeyPair
-                //  : RegisterAccountState.GenerateKeyPair);
+                if (card != null)
+                {
+                    this.IsImportSelected = true;
+                    this.isRegisteredPreviously = true;
+                }
 
-                this.ChangeState(RegisterAccountState.GenerateKeyPair);
+                this.ChangeState(card != null
+                ? RegisterAccountState.DownloadOrGenerateKeyPair
+                : RegisterAccountState.GenerateKeyPair);
             }
             catch (Exception)
             {
@@ -163,10 +190,17 @@
             this.FilePath = this.dialogs.OpenFile("virgilkey");
         }
 
-        private async void Import()
+        private async void ImportOrCreate()
         {
             this.ClearErrors();
-            await this.ImportFromFile();
+            if (this.IsImportSelected)
+            {
+                await this.ImportFromFile();
+            }
+            else
+            {
+                 this.Create();
+            }
         }
 
         private async void Create()
@@ -246,7 +280,8 @@
                 if (!cancallationTokenSource.Token.IsCancellationRequested)
                     cancallationTokenSource.Cancel();
                 this.AddCustomError(ex.Message);
-                this.ChangeState(RegisterAccountState.GenerateKeyPair);
+                this.ChangeState(this.isRegisteredPreviously ? 
+                    RegisterAccountState.DownloadOrGenerateKeyPair : RegisterAccountState.GenerateKeyPair);
             }
         }
 
@@ -344,7 +379,7 @@
                 else
                 {
                     this.AddCustomError(Resources.Label_UploadedPrivateKeyDoesnIsNotMatch);
-                    this.ChangeState(RegisterAccountState.DownloadKeyPair);
+                    this.ChangeState(RegisterAccountState.DownloadOrGenerateKeyPair);
                     return;
                 }
 
@@ -367,7 +402,7 @@
             catch (Exception)
             {
                 this.AddCustomError(Resources.Error_UploadedFileInvalid);
-                this.ChangeState(RegisterAccountState.DownloadKeyPair);
+                this.ChangeState(RegisterAccountState.DownloadOrGenerateKeyPair);
             }
         }
 
@@ -412,7 +447,8 @@
 
         private bool ValidatePasswordsMatches()
         {
-            if (RegisterAccountState.GenerateKeyPair != (RegisterAccountState)this.State)
+            if ((RegisterAccountState.GenerateKeyPair != (RegisterAccountState)this.State) && 
+                (RegisterAccountState.DownloadOrGenerateKeyPair != (RegisterAccountState)this.State))
             {
                 return true;
             }

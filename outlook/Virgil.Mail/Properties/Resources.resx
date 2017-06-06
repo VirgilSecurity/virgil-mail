@@ -218,10 +218,16 @@
     <value>Your account is already created please select an option to get your key.</value>
   </data>
   <data name="Label_SelectPrivateKeyFromFile" xml:space="preserve">
-    <value>Select a file on your computer</value>
+    <value>Import your key from a file on your computer</value>
+  </data>
+  <data name="Label_SelectGeneratingPublicAndPrivateKeyPair" xml:space="preserve">
+    <value>Generate public/private key pair.</value>
   </data>
   <data name="Description_SelectPrivateKeyFromFile" xml:space="preserve">
     <value>Use this option if you previously exported your key to the file.</value>
+  </data>
+  <data name="Description_SelectGeneratePublicAndPrivateKeyPair" xml:space="preserve">
+    <value>Use this option if you haven't exported your key to the file previously.</value>
   </data>
   <data name="Label_SearchAccountInformation" xml:space="preserve">
     <value>Search account information...</value>

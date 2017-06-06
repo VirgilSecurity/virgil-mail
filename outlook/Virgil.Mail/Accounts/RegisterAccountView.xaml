@@ -44,78 +44,109 @@
                     Height="10" 
                     Width="200" />
             </StackPanel>
-            <!-- Account Creation -->
+            <!-- Create Account (Import or Generate Account Key) -->
             <StackPanel
-                Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=GenerateKeyPair}" >
-                <CheckBox 
-                    x:Name="keyPasswordCheckBox"
-                    Margin="0 0 0 2" 
-                    IsChecked="{Binding HasPassword, Mode=TwoWay}" 
-                    VerticalContentAlignment="Center" >
-                    <TextBlock 
-                        TextWrapping="Wrap" 
-                        Text="{x:Static Properties:Resources.Label_ProtectMyPrivateKey}" />
-                </CheckBox>
-
-                <TextBlock 
-                    FontSize="10" 
-                    Foreground="Gray" 
-                    TextWrapping="Wrap"
-                    Visibility="{Binding IsChecked, ElementName=keyPasswordCheckBox, Converter={StaticResource BoolToVisibility}}"
-                    Margin="20 0 0 0" 
-                    Text="{x:Static Properties:Resources.Description_PrivateKeyPassword}" />
-
-                <Grid 
-                    Background="White" 
-                    Margin="0 10" 
-                    Visibility="{Binding HasPassword, Converter={StaticResource BoolToVisibility}}" >
-                    <TextBlock 
-                        Name="watermarkPassword" 
-                        Padding="6 0" 
-                        Foreground="Silver" 
-                        VerticalAlignment="Center" 
-                        Text="{x:Static Properties:Resources.Watermark_Password}"  />
-                    <PasswordBox 
-                        Name="password"
-                        Background="Transparent"
-                        Padding="5 4" />
-                </Grid>
-
-                <Grid 
-                    Background="White"
-                    Visibility="{Binding HasPassword, Converter={StaticResource BoolToVisibility}}" >
-                    <TextBlock 
-                        Name="watermarkConfirmPassword" 
-                        Padding="6 0" 
-                        Foreground="Silver" 
-                        VerticalAlignment="Center" 
-                        Text="{x:Static Properties:Resources.Watermark_ConfirmPassword}" />
-                    <PasswordBox 
-                        Name="confirmPassword"
-                        Background="Transparent"
-                        Padding="5 4"/>
-                </Grid>
-            </StackPanel>
-            <!-- Download Account -->
-            <StackPanel
-                Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=DownloadKeyPair}" >
+                Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=DownloadOrGenerateKeyPair}" >
                 <TextBlock 
                     TextWrapping="Wrap" 
                     Text="{x:Static Properties:Resources.Label_SelectOptionToGetPrivateKey}">
                 </TextBlock>
                 <RadioButton 
                     Margin="0 10 0 2" 
-                    x:Name="fromFileRadioButton"
+                    x:Name="generateKeyRadioButton"
                     GroupName="DownloadKeyOption"
-                    Content="{x:Static Properties:Resources.Label_SelectPrivateKeyFromFile}"
+                    Content="{x:Static Properties:Resources.Label_SelectGeneratingPublicAndPrivateKeyPair}"
                     VerticalContentAlignment="Center" />
                 <TextBlock 
                     FontSize="10" 
                     Foreground="Gray" 
                     TextWrapping="Wrap"
                     Margin="20 0 0 0" 
-                    Text="{x:Static Properties:Resources.Description_SelectPrivateKeyFromFile}" />
-                <Grid Margin="0 5 0 0" IsEnabled="{Binding IsChecked, ElementName=fromFileRadioButton}" >
+                    Text="{x:Static Properties:Resources.Description_SelectGeneratePublicAndPrivateKeyPair}" />
+                <Grid Margin="20 0 0 0"
+                      Visibility="{Binding IsChecked, ElementName=generateKeyRadioButton, Converter={StaticResource BoolToVisibility}}"
+                      IsEnabled="{Binding IsChecked, ElementName=generateKeyRadioButton}" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="10" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <CheckBox 
+                        Grid.Row="0"
+                        x:Name="protectWithAPasswordCheckBox"
+                        Margin="0 5 0 0"
+                        IsChecked="{Binding HasPassword, Mode=TwoWay}" 
+                        VerticalContentAlignment="Center" >
+                        <TextBlock 
+                        TextWrapping="Wrap" 
+                        FontSize="10" 
+                        Text="{x:Static Properties:Resources.Label_ProtectMyPrivateKey}" />
+                    </CheckBox>
+                    <TextBlock 
+                        FontSize="10" 
+                        Foreground="Gray" 
+                        Margin="20 -10"
+                        VerticalAlignment="Center" 
+                        TextWrapping="Wrap"
+                        Grid.Row="1"
+                        Text="{x:Static Properties:Resources.Description_PrivateKeyPassword}" />
+                    <Grid 
+                    Visibility="{Binding HasPassword, Converter={StaticResource BoolToVisibility}}" 
+                    IsEnabled="{Binding HasPassword, Mode=TwoWay}"         
+                    Background="White" 
+                    Grid.Row="2"
+                    Margin="0 5 0 5" >
+                        <TextBlock 
+                        Name="watermarkPassword" 
+                        Padding="6 0" 
+                        Foreground="Silver" 
+                        VerticalAlignment="Center" 
+                        Text="{x:Static Properties:Resources.Watermark_Password}"  />
+                        <PasswordBox 
+                        Name="password"
+                        VerticalContentAlignment="Center"  
+                        Background="Transparent"
+                        Padding="5 4" />
+                    </Grid>
+                    <Grid 
+                    Background="White"
+                    Grid.Row="3"
+                    Visibility="{Binding HasPassword, Converter={StaticResource BoolToVisibility}}"     
+                    IsEnabled="{Binding HasPassword, Mode=TwoWay}"     
+                    Margin="0 5 0 5">
+                        <TextBlock 
+                        Name="watermarkConfirmPassword" 
+                        Padding="6 0" 
+                        Foreground="Silver" 
+                        VerticalAlignment="Center" 
+                        Text="{x:Static Properties:Resources.Watermark_ConfirmPassword}" />
+                        <PasswordBox 
+                        Name="confirmPassword"
+                        VerticalContentAlignment="Center"
+                        Background="Transparent"
+                        Padding="5 4"    
+                         />
+                    </Grid>
+                </Grid>
+                <RadioButton 
+                    Margin="0 10 0 2" 
+                    x:Name="fromFileRadioButton"
+                    GroupName="DownloadKeyOption"
+                    IsChecked="{Binding IsImportSelected, Mode=TwoWay}" 
+                    Content="{x:Static Properties:Resources.Label_SelectPrivateKeyFromFile}"
+                    VerticalContentAlignment="Center" 
+                    Visibility="{Binding IsRegisteredPreviously, Converter={StaticResource BoolToVisibility}}" />
+                <TextBlock 
+                    FontSize="10" 
+                    Foreground="Gray" 
+                    TextWrapping="Wrap"
+                    Margin="20 0 0 0" 
+                    Text="{x:Static Properties:Resources.Description_SelectPrivateKeyFromFile}"
+                    Visibility="{Binding IsRegisteredPreviously, Converter={StaticResource BoolToVisibility}}"/>
+                <Grid Margin="0 5 0 0" 
+                    Visibility="{Binding IsRegisteredPreviously, Converter={StaticResource BoolToVisibility}}"
+                    IsEnabled="{Binding IsChecked, ElementName=fromFileRadioButton}" >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
@@ -176,9 +207,9 @@
                 <Button 
                     Margin="20" 
                     MinWidth="90" 
-                    Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=DownloadKeyPair}"
-                    Content="Import" 
-                    Command="{Binding ImportCommand}" 
+                    Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=DownloadOrGenerateKeyPair}"
+                    Content="OK" 
+                    Command="{Binding ImportOrCreateCommand}" 
                     Padding="0 3" 
                     Background="White" />
             </Grid>
