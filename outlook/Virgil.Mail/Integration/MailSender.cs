@@ -23,7 +23,7 @@
         private readonly IAccountsManager accountsManager;
         private readonly IOutlookInteraction outlook;
         private readonly IPasswordExactor passwordExactor;
-
+        private VirgilApi virgilApi;
         public MailSender(
             IDialogPresenter dialog,
             IRecipientsService recipientsService,
@@ -36,6 +36,8 @@
             this.accountsManager = accountsManager;
             this.outlook = outlook;
             this.passwordExactor = passwordExactor;
+            this.virgilApi = new VirgilApi();
+
         }
 
         public bool EncryptAndSend(Outlook.MailItem mailItem)
@@ -49,8 +51,8 @@
             identites.Add(senderSmtpAddress);
 
             identites = identites.Distinct().ToList();
-            var searchedRecipients = this.recipientsService.Search(identites.ToArray())
-                .Result.ToList();
+
+            var searchedRecipients = this.recipientsService.Search(identites.ToArray());
 
             if (searchedRecipients.Any(it => !it.IsFound))
             {
@@ -95,8 +97,8 @@
             {
                 password = this.passwordExactor.ExactOrAlarm(senderSmtpAddress);
             }
-            var virgilApi = new VirgilApi();
-            var virgilKey = virgilApi.Keys.Load(account.VirgilCardId, password);
+
+            var virgilKey = this.virgilApi.Keys.Load(account.VirgilCardId, password);
 
             mailItem.Save();
             EncryptMail(mailItem, recipients, virgilKey);

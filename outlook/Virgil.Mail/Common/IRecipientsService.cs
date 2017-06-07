@@ -10,6 +10,6 @@
         /// <summary>
         /// Searches the specified recipients by identity.
         /// </summary>
-        Task<IEnumerable<RecipientSearchResultModel>> Search(string[] identities);
+        IEnumerable<RecipientSearchResultModel> Search(string[] identities);
     }
 }

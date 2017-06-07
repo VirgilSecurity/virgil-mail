@@ -16,12 +16,13 @@
             this.virgilApi = new VirgilApi();
             this.cache = new List<RecipientSearchResultModel>();
         }
-        
+
         /// <summary>
         /// Searches the specified recipients by identity.
         /// </summary>
-        public async Task<IEnumerable<RecipientSearchResultModel>> Search(string[] identities)
+        public IEnumerable<RecipientSearchResultModel> Search(string[] identities)
         {
+
             var cachedRecipients = this.cache
                 .Where(it => identities.Contains(it.Identity))
                 .ToList();
@@ -30,12 +31,9 @@
                 .Except(cachedRecipients.Select(it => it.Identity))
                 .ToList();
 
-            var tasks = identitiesToLoad
-                .Select(r => this.virgilApi.Cards.FindGlobalAsync(r))
-                .ToList();
-
-            await Task.WhenAll(tasks);
-            var searchResults = tasks.Select(it => it.Result).ToList();
+            var searchResults = identitiesToLoad
+                 .Select(r => this.virgilApi.Cards.FindGlobalAsync(r).Result)
+                 .ToList();
 
             var recipients = new List<RecipientSearchResultModel>();
             foreach (var identity in identitiesToLoad)
@@ -49,14 +47,14 @@
                 }
 
                 // add to cache the found recipient.
-                if (!this.cache.Exists(it => it.virgilCard.Id == recipient.virgilCard.Id) && recipient.IsFound)
+                if (recipient.IsFound && !this.cache.Exists(it => it.virgilCard.Id == recipient.virgilCard.Id))
                 {
                     this.cache.Add(recipient);
                 }
 
                 recipients.Add(recipient);
             }
-            
+
             recipients.AddRange(cachedRecipients);
             return recipients;
         }

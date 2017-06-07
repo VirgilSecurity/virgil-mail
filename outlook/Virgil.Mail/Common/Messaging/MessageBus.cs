@@ -20,7 +20,6 @@
             {
                 var messageHandler = handler as Action<TMessage>;
                 messageHandler?.Invoke(message);
-
             }
         }
 

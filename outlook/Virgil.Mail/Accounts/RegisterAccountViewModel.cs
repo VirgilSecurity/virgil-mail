@@ -81,11 +81,16 @@
             }
         }
 
-        public bool sRegisteredPreviously
+        public bool IsRegisteredPreviously
         {
             get
             {
                 return this.isRegisteredPreviously;
+            }
+            set
+            {
+                this.isRegisteredPreviously = value;
+                this.RaisePropertyChanged();
             }
         }
 
@@ -172,7 +177,7 @@
                 if (card != null)
                 {
                     this.IsImportSelected = true;
-                    this.isRegisteredPreviously = true;
+                    this.IsRegisteredPreviously = true;
                 }
 
                 this.ChangeState(card != null
