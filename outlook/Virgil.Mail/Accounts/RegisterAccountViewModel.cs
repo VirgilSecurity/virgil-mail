@@ -172,17 +172,20 @@
                 this.ChangeState(RegisterAccountState.Processing, Resources.Label_SearchAccountInformation);
 
                 var cards = await this.virgilApi.Cards.FindGlobalAsync(accountModel.OutlookAccountEmail);
-                var card = cards.LastOrDefault();
 
-                if (card != null)
+                if (cards.Any())
                 {
                     this.IsImportSelected = true;
                     this.IsRegisteredPreviously = true;
+
+                    this.ChangeState(RegisterAccountState.DownloadOrGenerateKeyPair);
+                }
+                else
+                {
+                    this.ChangeState(RegisterAccountState.GenerateKeyPair);
                 }
 
-                this.ChangeState(card != null
-                ? RegisterAccountState.DownloadOrGenerateKeyPair
-                : RegisterAccountState.GenerateKeyPair);
+   
             }
             catch (Exception)
             {

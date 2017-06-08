@@ -82,8 +82,6 @@ namespace Virgil.Mail
             Properties.Settings.Default.Save();
 
             this.ribbon.Invalidate();
-
-
         }
 
 
