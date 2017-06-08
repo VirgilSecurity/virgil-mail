@@ -272,8 +272,8 @@
 
         private async Task RemoveAccount()
         {
-            
-            var password = this.passwordExactor.ExactOrAlarm(this.account.OutlookAccountEmail);
+            var password = this.account.IsPrivateKeyHasPassword ?
+            this.passwordExactor.ExactOrAlarm(this.account.OutlookAccountEmail) : null;
 
             this.ChangeStateText(Resources.Label_SendingVerificationRequest);
 
