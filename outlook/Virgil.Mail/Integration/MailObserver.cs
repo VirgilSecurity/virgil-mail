@@ -46,7 +46,7 @@
 
                     cancellationToken.ThrowIfCancellationRequested();
 
-                    Outlook.Items unreadItems = inbox.Items.Restrict("[Unread]=true");
+                    Outlook.Items unreadItems = inbox.Items.Restrict("[Unread]=true AND [SenderEmailAddress]='" + @from + "'");
 
                     foreach (var unreadItem in unreadItems)
                     {
@@ -57,7 +57,7 @@
                         }
                     }
 
-                    Outlook.Items junkItems = junk.Items; //.Restrict("[Unread]=true");
+                    Outlook.Items junkItems = junk.Items.Restrict("[SenderEmailAddress]='" + @from + "'");
                     foreach (var unreadItem in junkItems)
                     {
                         var itemModel = ExtractIsMatch(@from, unreadItem);

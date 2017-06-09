@@ -177,15 +177,9 @@
                 {
                     this.IsImportSelected = true;
                     this.IsRegisteredPreviously = true;
-
-                    this.ChangeState(RegisterAccountState.DownloadOrGenerateKeyPair);
                 }
-                else
-                {
-                    this.ChangeState(RegisterAccountState.GenerateKeyPair);
-                }
+                this.ChangeState(RegisterAccountState.DownloadOrGenerateKeyPair);
 
-   
             }
             catch (Exception)
             {
@@ -229,6 +223,8 @@
 
                 this.ChangeStateText(Resources.Label_GeneratingPublicAndPrivateKeyPair);
 
+                cancallationTokenSource.Token.ThrowIfCancellationRequested();
+
                 var virgilKey = virgilApi.Keys.Generate();
 
                 var createdCard = virgilApi.Cards.CreateGlobal(
@@ -249,7 +245,8 @@
                 };
 
                 var attempt = await createdCard.CheckIdentityAsync(option);
-               
+
+                cancallationTokenSource.Token.ThrowIfCancellationRequested();
 
                 var code = await this.ExtractConfirmationCode(this.CurrentAccount.OutlookAccountEmail,
                     attemptId.ToString());
@@ -288,8 +285,7 @@
                 if (!cancallationTokenSource.Token.IsCancellationRequested)
                     cancallationTokenSource.Cancel();
                 this.AddCustomError(ex.Message);
-                this.ChangeState(this.isRegisteredPreviously ? 
-                    RegisterAccountState.DownloadOrGenerateKeyPair : RegisterAccountState.GenerateKeyPair);
+                this.ChangeState(RegisterAccountState.DownloadOrGenerateKeyPair);
             }
         }
 
@@ -433,7 +429,7 @@
 
         private bool ValidatePassword()
         {
-            if (RegisterAccountState.GenerateKeyPair != (RegisterAccountState)this.State)
+            if (RegisterAccountState.DownloadOrGenerateKeyPair != (RegisterAccountState)this.State)
             {
                 return true;
             }
@@ -455,8 +451,7 @@
 
         private bool ValidatePasswordsMatches()
         {
-            if ((RegisterAccountState.GenerateKeyPair != (RegisterAccountState)this.State) && 
-                (RegisterAccountState.DownloadOrGenerateKeyPair != (RegisterAccountState)this.State))
+            if (RegisterAccountState.DownloadOrGenerateKeyPair != (RegisterAccountState)this.State)
             {
                 return true;
             }

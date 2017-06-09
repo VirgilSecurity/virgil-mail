@@ -198,15 +198,6 @@
                 <Button 
                     Margin="20" 
                     MinWidth="90" 
-                    IsDefault="True"
-                    Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=GenerateKeyPair}"
-                    Content="Generate and Publish" 
-                    Command="{Binding CreateCommand}" 
-                    Padding="0 3" 
-                    Background="White" />
-                <Button 
-                    Margin="20" 
-                    MinWidth="90" 
                     Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=DownloadOrGenerateKeyPair}"
                     Content="OK" 
                     Command="{Binding ImportOrCreateCommand}" 

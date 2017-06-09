@@ -45,6 +45,7 @@ namespace Virgil.Mail
                 if (!ServiceLocator.Accounts.IsRegistered(senderAccount))
                 {
                     var accountModel = ServiceLocator.Accounts.GetAccount(senderAccount);
+
                     ServiceLocator.Dialogs.ShowRegisterAccount(accountModel);
 
                     if (!ServiceLocator.Accounts.IsRegistered(senderAccount))
