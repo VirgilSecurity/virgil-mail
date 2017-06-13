@@ -6,7 +6,7 @@
         {
             this.InitializeComponent();
             this.password.PasswordChanged += this.OnPasswordChanged;
-            this.confirmPassword.PasswordChanged += this.OnConfirmPasswordChanged;
+            this.confirmPassword.PasswordChanged += this.OnConfirmPasswordChanged;   
         }
 
         private void OnPasswordChanged(object sender, System.Windows.RoutedEventArgs e)

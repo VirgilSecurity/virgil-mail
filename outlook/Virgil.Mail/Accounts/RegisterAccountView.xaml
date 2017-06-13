@@ -49,12 +49,15 @@
                 Visibility="{Binding State, Converter={StaticResource EnumToVisibility}, ConverterParameter=DownloadOrGenerateKeyPair}" >
                 <TextBlock 
                     TextWrapping="Wrap" 
+                    Visibility="{Binding IsRegisteredPreviously, Converter={StaticResource BoolToVisibility}}"                    
                     Text="{x:Static Properties:Resources.Label_SelectOptionToGetPrivateKey}">
                 </TextBlock>
                 <RadioButton 
                     Margin="0 10 0 2" 
                     x:Name="generateKeyRadioButton"
+                    Visibility="{Binding IsRegisteredPreviously, Converter={StaticResource BoolToVisibility}}"  
                     GroupName="DownloadKeyOption"
+                    IsChecked="{Binding IsGenerateSelected, Mode=TwoWay}" 
                     Content="{x:Static Properties:Resources.Label_SelectGeneratingPublicAndPrivateKeyPair}"
                     VerticalContentAlignment="Center" />
                 <TextBlock 
@@ -62,6 +65,7 @@
                     Foreground="Gray" 
                     TextWrapping="Wrap"
                     Margin="20 0 0 0" 
+                    Visibility="{Binding IsRegisteredPreviously, Converter={StaticResource BoolToVisibility}}"  
                     Text="{x:Static Properties:Resources.Description_SelectGeneratePublicAndPrivateKeyPair}" />
                 <Grid Margin="20 0 0 0"
                       Visibility="{Binding IsChecked, ElementName=generateKeyRadioButton, Converter={StaticResource BoolToVisibility}}"

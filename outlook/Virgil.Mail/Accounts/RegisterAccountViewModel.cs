@@ -91,8 +91,10 @@
             {
                 this.isRegisteredPreviously = value;
                 this.RaisePropertyChanged();
+                this.RaisePropertyChanged(nameof(this.IsGenerateSelected));
             }
         }
+
 
         public bool HasPassword
         {
@@ -160,6 +162,21 @@
             {
                 this.isImportSelected = value;
                 this.RaisePropertyChanged();
+            }
+        }
+
+        public bool IsGenerateSelected
+        {
+            get
+            {
+                if (!this.IsRegisteredPreviously)
+                    return true;
+
+                return !this.IsImportSelected;
+            }
+            set
+            {
+                this.IsImportSelected = !value;
             }
         }
 
