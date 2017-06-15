@@ -43,15 +43,15 @@
 
                 if (searchResult != null)
                 {
-                    recipient.virgilCard = searchResult.Last(); //OrderBy(it => it.CreatedAt)
+                    recipient.VirgilCards = searchResult.ToArray(); 
                 }
 
                 // add to cache the found recipient.
-                if (recipient.IsFound && !this.cache.Exists(it => it.virgilCard.Id == recipient.virgilCard.Id))
+                if (recipient.IsFound && !this.cache.Exists(it => it.VirgilCards.SequenceEqual(recipient.VirgilCards)))
                 {
                     this.cache.Add(recipient);
                 }
-
+                
                 recipients.Add(recipient);
             }
 

@@ -311,7 +311,8 @@ namespace Virgil.Mail.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You can&apos;t read this email because your private key is not registered for this account..
+        ///   Looks up a localized string similar to You can&apos;t read this email because your private key is not registered for this account. 
+        ///    Please note that after registering your private key for this account you will be able to read only subsequent emails..
         /// </summary>
         public static string Label_CanNotReadEmailBecauseOfUnregisteredAccount {
             get {

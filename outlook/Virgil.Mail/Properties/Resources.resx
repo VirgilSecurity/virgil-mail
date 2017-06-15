@@ -301,7 +301,8 @@ StackTrace:
 {1}</value>
   </data>
   <data name="Label_CanNotReadEmailBecauseOfUnregisteredAccount" xml:space="preserve">
-    <value>You can't read this email because your private key is not registered for this account.</value>
+    <value>You can't read this email because your private key is not registered for this account. 
+    Please note that after registering your private key for this account you will be able to read only subsequent emails.</value>
   </data>
   <data name="Button_Register" xml:space="preserve">
     <value>Register</value>

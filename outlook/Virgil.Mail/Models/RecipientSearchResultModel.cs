@@ -1,12 +1,12 @@
 ﻿namespace Virgil.Mail.Models
 {
     using SDK;
-    using System;
+    using System.Collections.Generic;
 
     public class RecipientSearchResultModel
     {
         public string Identity  { get; set; }
-        public VirgilCard virgilCard { get; set; }
-        public bool IsFound => this.virgilCard != null;
+        public VirgilCard[] VirgilCards { get; set; }
+        public bool IsFound => (this.VirgilCards.Length > 0);
     }
 }

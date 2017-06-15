@@ -87,7 +87,7 @@
 
             var recipients = searchedRecipients
                 .Where(it => it.IsFound)
-                .Select(it => it.virgilCard).ToList();
+                .SelectMany(it => it.VirgilCards).ToList();
 
             var account = this.accountsManager.GetAccount(senderSmtpAddress);
 
