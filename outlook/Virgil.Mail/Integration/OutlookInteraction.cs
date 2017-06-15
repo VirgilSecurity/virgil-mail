@@ -89,26 +89,66 @@
             Outlook.Account account = null;
             
             var result = new List<AccountIntegrationModel>();
+            var stores = new List<Outlook.Store>(); 
             
             try
             {
                 ns = this.application.GetNamespace("MAPI");
+                var folders = ns.Folders;
                 accounts = ns.Accounts;
+
+                foreach(Outlook.Folder folder in folders)
+                {
+                    stores.Add(folder.Store);
+                }
+
+                /* foreach(Outlook.Folder folder in folders)
+                 {
+                     var store = folder.Store;
+                     if (result.All(it => it.Email != store.DisplayName))
+                     {
+                         result.Add(new AccountIntegrationModel
+                         {
+                             Email = store.DisplayName,
+                             Description = account.UserName
+                         });
+                     }
+
+                     if (account != null)
+                         Marshal.ReleaseComObject(account);
+                 };*/
+
                 for (var i = 1; i <= accounts.Count; i++)
                 {
                     account = accounts[i];
 
                     if (result.All(it => it.Email != account.SmtpAddress))
                     {
-                        result.Add(new AccountIntegrationModel
+                        var store = stores.FirstOrDefault(it => it.DisplayName == account.SmtpAddress);
+                        if (store != null)
                         {
-                            Email = account.SmtpAddress,
-                            Description = account.UserName
-                        });
+                            result.Add(new AccountIntegrationModel
+                            {
+                                Email = account.SmtpAddress,
+                                Description = account.UserName
+                            });
+
+                            stores.Remove(store);
+                        }
+
                     }
 
                     if (account != null)
                         Marshal.ReleaseComObject(account);
+                }
+
+                foreach(var story in stores)
+                {
+                    result.Add(new AccountIntegrationModel
+                    {
+                        Email = story.DisplayName,
+                        Description = ""
+                    });
                 }
 
                 return result;

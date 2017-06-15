@@ -31,6 +31,7 @@
 
             messageBus.Subscribe<AccountDeletedMessage>(this, this.AccountDeleted);
             messageBus.Subscribe<AccountUpdatedMessage>(this, this.AccountUpdated);
+            messageBus.Subscribe<OutlookAccountsListUpdatedMessage>(this, this.AccountsListUpdated);
         }
         
         public RelayCommand CheckForUpdatesCommand { get; private set; }
@@ -95,6 +96,11 @@
         }
 
         private void AccountUpdated(AccountUpdatedMessage message)
+        {
+            this.Initialize();
+        }
+
+        private void AccountsListUpdated(OutlookAccountsListUpdatedMessage message)
         {
             this.Initialize();
         }

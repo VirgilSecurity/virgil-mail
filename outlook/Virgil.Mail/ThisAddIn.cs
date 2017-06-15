@@ -19,8 +19,10 @@ namespace Virgil.Mail
         private static readonly ILog Logger = LogManager.GetLogger(typeof(ThisAddIn));
 
         private Outlook.Explorer ActiveExplorer;
+        private Outlook.Folders FoldersMAPI;
+        private Outlook.Stores StoresMAPI;
 
-          protected override Microsoft.Office.Core.IRibbonExtensibility CreateRibbonExtensibilityObject()
+        protected override Microsoft.Office.Core.IRibbonExtensibility CreateRibbonExtensibilityObject()
           {
               return new Ribbon();
          }
@@ -78,6 +80,7 @@ namespace Virgil.Mail
                 mail.ReleaseCom();
             }
         }
+
 
         /// <summary>
         /// Occurs when the user selects a different or additional Microsoft Outlook by 
@@ -152,21 +155,42 @@ namespace Virgil.Mail
             Bootstraper.Initialize(this.Application);
 
             // subscrube to outlook events
-
             this.Application.ItemSend += this.OnApplicationMailSend;
             this.ActiveExplorer.SelectionChange += this.OnExplorerSelectionChange;
+
+            var ns = this.Application.GetNamespace("MAPI");
+
+            this.FoldersMAPI = ns.Folders;
+            this.StoresMAPI = ns.Stores;
+
+            this.StoresMAPI.StoreAdd += new Outlook.StoresEvents_12_StoreAddEventHandler(this.OnFolderAdded);
+            this.FoldersMAPI.FolderRemove += new Outlook.FoldersEvents_FolderRemoveEventHandler(this.OnFolderRemoved);
+
             CreateRibbonExtensibilityObject();
 
             this.CheckUpdates();
         }
         
+        private void OnFolderAdded(object folder)
+        {
+            ServiceLocator.MessageBus.Publish(new Accounts.OutlookAccountsListUpdatedMessage());
+        }
+
+        private void OnFolderRemoved()
+        {
+            ServiceLocator.MessageBus.Publish(new Accounts.OutlookAccountsListUpdatedMessage());
+        }
+
         /// <summary>
         /// Occurs when add-in shouted down.
         /// </summary>
         private void OnAddInShutdown(object sender, EventArgs e)
         {
-            // Note: Outlook no longer raises this event. If you have code that 
-            // must run when Outlook shuts down, see http://go.microsoft.com/fwlink/?LinkId=506785
+            this.Application.ItemSend -= this.OnApplicationMailSend;
+            this.ActiveExplorer.SelectionChange -= this.OnExplorerSelectionChange;
+
+            this.StoresMAPI.StoreAdd -= new Outlook.StoresEvents_12_StoreAddEventHandler(this.OnFolderAdded);
+            this.FoldersMAPI.FolderRemove -= new Outlook.FoldersEvents_FolderRemoveEventHandler(this.OnFolderRemoved);
         }
 
         private void CheckUpdates()

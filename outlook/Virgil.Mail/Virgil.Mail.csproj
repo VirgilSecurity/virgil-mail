@@ -239,6 +239,7 @@
     </Compile>
     <Compile Include="Accounts\AccountsViewModel.cs" />
     <Compile Include="Accounts\AccountDeletedMessage.cs" />
+    <Compile Include="Accounts\OutlookAccountListUpdatedMessage.cs" />
     <Compile Include="Bootstraper.cs" />
     <Compile Include="Common\Constants.cs" />
     <Compile Include="Common\Exceptions\PasswordExactionException.cs" />
